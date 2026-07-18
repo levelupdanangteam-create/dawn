@@ -28,6 +28,84 @@
   {{ 'quick-order-list.css' | asset_url | stylesheet_tag }}
   {{ 'quantity-popover.css' | asset_url | stylesheet_tag }}
 {%- endunless -%}
+
+{%- unless skip_styles -%}
+  <style>
+    .pf-card-actions {
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 1rem;
+      position: relative;
+      z-index: 2;
+    }
+    .pf-card-actions__form {
+      flex: 1;
+      display: flex;
+      margin: 0;
+    }
+    .pf-card-actions .pf-btn-cart,
+    .pf-card-actions .pf-btn-view {
+      flex: 1;
+      width: 100%;
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.2;
+      padding: 0.9rem 0.6rem;
+      border-radius: 8px;
+      border: 1.5px solid #1e6b1e;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .pf-btn-cart {
+      background: #1e6b1e;
+      color: #ffffff;
+    }
+    .pf-btn-cart:hover {
+      background: #155e20;
+      border-color: #155e20;
+    }
+    .pf-btn-cart[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .pf-btn-view {
+      background: #ffffff;
+      color: #1e6b1e;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pf-btn-view:hover {
+      background: #1e6b1e;
+      color: #ffffff;
+    }
+    /* Desktop: reveal on hover; Mobile: always visible */
+    @media screen and (min-width: 750px) {
+      .pf-card-actions {
+        opacity: 0;
+        max-height: 0;
+        margin-top: 0;
+        overflow: hidden;
+        transform: translateY(6px);
+        pointer-events: none;
+        transition: opacity 0.18s ease, transform 0.18s ease, max-height 0.18s ease, margin-top 0.18s ease;
+      }
+      .card-wrapper:hover .pf-card-actions,
+      .card-wrapper:focus-within .pf-card-actions {
+        opacity: 1;
+        max-height: 8rem;
+        margin-top: 1rem;
+        transform: none;
+        pointer-events: auto;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .pf-card-actions { transition: none; }
+    }
+  </style>
+{%- endunless -%}
 {%- if card_product and card_product != empty -%}
   {%- liquid
     assign ratio = 1
@@ -289,6 +367,24 @@
                 {% endif %}
               {%- endif -%}
             </div>
+            {%- if card_product and card_product != empty -%}
+              <div class="pf-card-actions">
+                {%- if card_product.available -%}
+                  {%- assign pf_add_id = 'pf-add-' | append: section_id | append: '-' | append: card_product.id -%}
+                  {%- form 'product', card_product, id: pf_add_id, class: 'pf-card-actions__form' -%}
+                    <input
+                      type="hidden"
+                      name="id"
+                      value="{{ card_product.selected_or_first_available_variant.id }}"
+                    >
+                    <button type="submit" name="add" class="pf-btn-cart">Thêm vào giỏ</button>
+                  {%- endform -%}
+                {%- else -%}
+                  <button type="button" class="pf-btn-cart" disabled>Hết hàng</button>
+                {%- endif -%}
+                <a href="{{ card_product.url }}" class="pf-btn-view">Xem ngay</a>
+              </div>
+            {%- endif -%}
           </div>
           {% assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id %}
           {% if quick_add == 'standard' %}
