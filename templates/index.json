@@ -100,6 +100,10 @@
         "padding_bottom": 48
       }
     },
+    "pf_banner_strip_1": { "type": "pf-banner-strip", "settings": { "alt_text": "Banner ưu đãi", "padding_top": 12, "padding_bottom": 12 } },
+    "pf_banner_strip_2": { "type": "pf-banner-strip", "settings": { "alt_text": "Banner ưu đãi", "padding_top": 12, "padding_bottom": 12 } },
+    "pf_banner_strip_3": { "type": "pf-banner-strip", "settings": { "alt_text": "Banner ưu đãi", "padding_top": 12, "padding_bottom": 12 } },
+    "pf_banner_strip_4": { "type": "pf-banner-strip", "settings": { "alt_text": "Banner ưu đãi", "padding_top": 12, "padding_bottom": 12 } },
     "pf_buying_guide": {
       "type": "pf-buying-guide",
       "blocks": {
@@ -120,10 +124,14 @@
     "pf_hero_slideshow",
     "featured_collection",
     "pf_flash_sale",
+    "pf_banner_strip_1",
     "pf_daily_deals",
+    "pf_banner_strip_2",
     "pf_category_grid",
     "pf_three_regions",
+    "pf_banner_strip_3",
     "pf_snacks",
+    "pf_banner_strip_4",
     "pf_buying_guide"
   ]
 }

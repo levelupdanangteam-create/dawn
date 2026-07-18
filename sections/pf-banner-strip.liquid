@@ -1,0 +1,50 @@
+<style>
+  #pf-strip-{{ section.id }} {
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+  #pf-strip-{{ section.id }} .pf-wrap { max-width: var(--page-width, 120rem); margin-inline: auto; padding-inline: 2rem; }
+  #pf-strip-{{ section.id }} .pf-strip {
+    display: block; width: 100%; max-height: 120px; overflow: hidden; border-radius: 10px;
+  }
+  #pf-strip-{{ section.id }} .pf-strip img {
+    width: 100%; max-height: 120px; object-fit: cover; display: block;
+  }
+  #pf-strip-{{ section.id }} .pf-strip--placeholder {
+    height: 120px; background: #f0f0f0; display: grid; place-items: center;
+    color: #9a9a9a; font-size: 1.5rem; font-weight: 600; letter-spacing: .02em;
+    border: 1px dashed #d8d8d8;
+  }
+</style>
+
+<div id="pf-strip-{{ section.id }}">
+  <div class="pf-wrap">
+    {%- if section.settings.image != blank -%}
+      {%- if section.settings.link != blank -%}
+        <a class="pf-strip" href="{{ section.settings.link }}">
+          {{ section.settings.image | image_url: width: 1600 | image_tag: loading: 'lazy', alt: section.settings.alt_text, widths: '600, 900, 1200, 1600' }}
+        </a>
+      {%- else -%}
+        <div class="pf-strip">
+          {{ section.settings.image | image_url: width: 1600 | image_tag: loading: 'lazy', alt: section.settings.alt_text, widths: '600, 900, 1200, 1600' }}
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <div class="pf-strip pf-strip--placeholder">Đặt banner ưu đãi tại đây</div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Banner ngang",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Ảnh banner (full width)" },
+    { "type": "url", "id": "link", "label": "Liên kết khi bấm vào banner" },
+    { "type": "text", "id": "alt_text", "label": "Mô tả ảnh (alt)", "default": "Banner ưu đãi" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 60, "step": 2, "unit": "px", "label": "Khoảng cách trên", "default": 12 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 60, "step": 2, "unit": "px", "label": "Khoảng cách dưới", "default": 12 }
+  ],
+  "presets": [{ "name": "Banner ngang" }]
+}
+{% endschema %}
