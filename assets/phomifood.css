@@ -1,152 +1,267 @@
 /*
-  PHOMIFOOD.EU brand overrides for the Dawn theme.
-  Loaded after base.css so these rules win over the default color schemes.
+  PHOMIFOOD.EU — brand styling for Dawn
+  Direction: clean, premium, light. Deep green as an accent only
+  (logo, buttons, small details); wheat gold for prices & badges.
+  Loaded after base.css so these rules win over the defaults.
 
-  Brand palette:
-  - Primary (buttons, header, footer background): #1E6B1E (deep green)
-  - Accent  (hover, price, badge):                #C8870A (wheat gold)
-  - Text on green:                                #FFFFFF (white)
+  Palette
+    Primary green  #1E6B1E   (hover deep #16511A)
+    Accent gold    #C8870A   (deep #A06E07)
+    Green tint     #EAF1E6   soft surfaces / chips
+    Paper          #FAFAF5   warm off-white page ground
+    Hairline       #E7E6DC
 */
 :root {
-  --pf-primary: #1e6b1e;
-  --pf-accent: #c8870a;
-  --pf-on-primary: #ffffff;
+  --pf-green: #1e6b1e;
+  --pf-green-deep: #16511a;
+  --pf-green-soft: #eaf1e6;
+  --pf-gold: #c8870a;
+  --pf-gold-deep: #a06e07;
+  --pf-paper: #fafaf5;
+  --pf-line: #e7e6dc;
+  --pf-lift: 0 2px 6px rgba(23, 35, 26, 0.06), 0 18px 40px rgba(23, 35, 26, 0.1);
+}
+
+/* Warm paper ground shows in section gaps and behind cards */
+body.gradient {
+  background-color: var(--pf-paper);
+}
+
+/* Green, brand-tinted focus ring for keyboard users */
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+.button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--pf-green) !important;
+  outline-offset: 2px;
 }
 
 /* ------------------------------------------------------------------ */
-/* 1. Announcement bar — green background, gold text                   */
+/* 1. Announcement bar — slim deep-green accent strip                 */
 /* ------------------------------------------------------------------ */
-.announcement-bar-section .utility-bar,
-.announcement-bar-section .announcement-bar {
-  background-color: var(--pf-primary) !important;
+.announcement-bar-section .utility-bar {
+  background-color: var(--pf-green) !important;
+  border: 0 !important;
 }
 
 .announcement-bar-section .announcement-bar__message,
 .announcement-bar-section .announcement-bar__message span,
 .announcement-bar-section .announcement-bar__link,
 .announcement-bar-section .announcement-bar__link:hover {
-  color: var(--pf-accent) !important;
+  color: #ffffff !important;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
 }
 
-/* Slider arrows on the announcement bar stay readable on green */
-.announcement-bar-section .slider-button .icon-caret,
-.announcement-bar-section .announcement-bar__link .icon-arrow {
-  color: var(--pf-accent) !important;
+.announcement-bar-section .slider-button .icon-caret {
+  color: #ffffff !important;
 }
 
 /* ------------------------------------------------------------------ */
-/* 2. Header — green background, white logo & navigation               */
+/* 2. Header — stays light; green logo, gold underline on nav hover   */
 /* ------------------------------------------------------------------ */
-.header-wrapper,
-.section-header .header {
-  background-color: var(--pf-primary) !important;
+.header {
+  padding-top: 1.4rem;
+  padding-bottom: 1.4rem;
 }
 
-.header,
-.header__heading-link,
+/* Shop name / logo text in brand green */
 .header__heading-link .h2,
-.header__heading-logo,
-.header__menu-item,
-.header__active-menu-item,
-.header__icons .header__icon,
-.header__icons .header__icon .icon,
-.header__inline-menu .list-menu__item--link {
-  color: var(--pf-on-primary) !important;
+.header__heading-link {
+  color: var(--pf-green) !important;
+  font-weight: 700;
 }
 
-/* Navigation hover — gold underline */
-.header__menu-item:hover,
-.header__menu-item:focus,
-.header__active-menu-item:hover,
-.header__inline-menu .list-menu__item--link:hover {
-  color: var(--pf-accent) !important;
-  text-decoration: underline;
-  text-decoration-color: var(--pf-accent);
-  text-underline-offset: 0.3rem;
+/* Navigation links — gold underline that grows on hover */
+.header__menu-item {
+  position: relative;
+  font-weight: 600;
 }
 
-/* Keep header icons (search / cart / account) legible on green */
-.header__icon .icon,
-.header__icon-cart .cart-count-bubble {
-  color: var(--pf-on-primary);
+.header__menu-item span {
+  transition: color 0.16s ease;
+}
+
+.header__inline-menu .header__menu-item::after {
+  content: '';
+  position: absolute;
+  left: 1.2rem;
+  right: 1.2rem;
+  bottom: 0.4rem;
+  height: 2px;
+  background: var(--pf-gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+
+.header__inline-menu .header__menu-item:hover::after,
+.header__inline-menu .header__menu-item:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.header__menu-item:hover span,
+.header__active-menu-item {
+  color: var(--pf-green) !important;
+}
+
+/* Header action icons pick up a soft green on hover */
+.header__icon:hover .icon,
+.header__icon:hover {
+  color: var(--pf-green);
+}
+
+.header__icon .cart-count-bubble {
+  background-color: var(--pf-gold) !important;
+  color: #ffffff !important;
 }
 
 /* ------------------------------------------------------------------ */
-/* 3. Footer — green background, white text                           */
-/* ------------------------------------------------------------------ */
-.footer {
-  background-color: var(--pf-primary) !important;
-}
-
-.footer,
-.footer .footer-block__heading,
-.footer .footer-block__details-content .list-menu__item,
-.footer .copyright__content,
-.footer a {
-  color: var(--pf-on-primary) !important;
-}
-
-.footer a:hover {
-  color: var(--pf-accent) !important;
-}
-
-/* ------------------------------------------------------------------ */
-/* 4. Buttons — green background, white text, gold on hover            */
+/* 3. Buttons — green fill, white text, gold on hover                 */
 /* ------------------------------------------------------------------ */
 .button,
 .button--primary,
 .shopify-payment-button__button--unbranded,
 .product-form__submit,
-.quick-add__submit {
+.quick-add__submit,
+.cart__checkout-button {
   --color-button: 30, 107, 30; /* #1E6B1E */
   --color-button-text: 255, 255, 255; /* #FFFFFF */
-  background-color: var(--pf-primary) !important;
-  color: var(--pf-on-primary) !important;
-  border-color: var(--pf-primary) !important;
+  background-color: var(--pf-green) !important;
+  color: #ffffff !important;
+  border-color: var(--pf-green) !important;
+  font-weight: 700;
 }
 
 .button:not([disabled]):hover,
 .button--primary:not([disabled]):hover,
 .shopify-payment-button__button--unbranded:not([disabled]):hover,
 .product-form__submit:not([disabled]):hover,
-.quick-add__submit:not([disabled]):hover {
-  background-color: var(--pf-accent) !important;
-  color: var(--pf-on-primary) !important;
-  border-color: var(--pf-accent) !important;
+.quick-add__submit:not([disabled]):hover,
+.cart__checkout-button:not([disabled]):hover {
+  background-color: var(--pf-gold) !important;
+  color: #ffffff !important;
+  border-color: var(--pf-gold) !important;
+}
+
+/* Secondary / outline buttons — green outline, fills green on hover */
+.button--secondary {
+  background-color: transparent !important;
+  color: var(--pf-green) !important;
+  border-color: var(--pf-green) !important;
+}
+
+.button--secondary:not([disabled]):hover {
+  background-color: var(--pf-green) !important;
+  color: #ffffff !important;
+}
+
+/* Text/link-style CTAs in accent green */
+.link,
+.link--text,
+a.product__view-details {
+  color: var(--pf-green);
 }
 
 /* ------------------------------------------------------------------ */
-/* 5. Product card — larger title, bold gold price                    */
+/* 4. Product cards — boxed, airy, larger title, bold gold price      */
 /* ------------------------------------------------------------------ */
+.product-card-wrapper .card {
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.product-card-wrapper .card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--pf-lift);
+  border-color: color-mix(in srgb, var(--pf-green) 32%, var(--pf-line)) !important;
+}
+
+/* Soft neutral behind product imagery */
+.product-card-wrapper .card__inner,
+.product-card-wrapper .card__media {
+  background-color: #ffffff;
+}
+
+/* Larger, fully readable title (helps older shoppers) */
 .card__heading,
 .card-information .card__heading {
-  font-size: 1.1rem;
+  font-size: 1.1rem !important;
+  font-weight: 600;
   line-height: 1.4;
-  /* Let long Vietnamese product names wrap instead of being clipped */
   overflow: visible;
   text-overflow: unset;
   white-space: normal;
 }
 
-.card__heading a {
-  color: inherit;
+.card__heading a:hover {
+  color: var(--pf-green);
 }
 
-/* Price — accent gold, bold, in cards and on product pages */
+/* Price — accent gold, bold, aligned digits */
 .price .price-item,
 .price__regular .price-item--regular,
 .price__sale .price-item--sale,
 .price--on-sale .price-item--sale {
-  color: var(--pf-accent) !important;
+  color: var(--pf-gold) !important;
   font-weight: 700 !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.price .price-item--regular {
+  letter-spacing: -0.01em;
+}
+
+/* Compare-at (old) price stays muted and struck through */
+.price__sale .price-item--regular {
+  color: rgba(var(--color-foreground), 0.55) !important;
+  font-weight: 500 !important;
 }
 
 /* ------------------------------------------------------------------ */
-/* 6. Badges — accent gold                                            */
+/* 5. Badges — gold sale flag                                         */
 /* ------------------------------------------------------------------ */
-.card__badge .badge,
+.card__badge .badge:not(.color-scheme-3),
 .price .price__badge-sale {
-  background-color: var(--pf-accent) !important;
-  color: var(--pf-on-primary) !important;
-  border-color: var(--pf-accent) !important;
+  background-color: var(--pf-gold) !important;
+  color: #ffffff !important;
+  border-color: var(--pf-gold) !important;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+/* ------------------------------------------------------------------ */
+/* 6. Footer — stays light; green links, gold hover                   */
+/* ------------------------------------------------------------------ */
+.footer .footer-block__heading {
+  color: var(--pf-green);
+}
+
+.footer a:not(.button):hover,
+.footer__list-social .list-social__link:hover .icon {
+  color: var(--pf-gold) !important;
+}
+
+.footer__content-bottom {
+  border-top: 1px solid var(--pf-line);
+}
+
+/* Newsletter field picks up the rounded, hairline treatment */
+.footer__newsletter .newsletter-form__field-wrapper .field__input {
+  border-radius: 10px;
+}
+
+/* ------------------------------------------------------------------ */
+/* 7. Small accents                                                   */
+/* ------------------------------------------------------------------ */
+/* Section headings get a touch more presence */
+.title-wrapper-with-link .title,
+.collection__title .title {
+  font-weight: 700;
+}
+
+/* Links that underline on hover use the gold accent */
+.underline-links-hover a:hover {
+  text-decoration-color: var(--pf-gold);
 }
