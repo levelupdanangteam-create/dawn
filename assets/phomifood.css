@@ -1,0 +1,152 @@
+/*
+  PHOMIFOOD.EU brand overrides for the Dawn theme.
+  Loaded after base.css so these rules win over the default color schemes.
+
+  Brand palette:
+  - Primary (buttons, header, footer background): #1E6B1E (deep green)
+  - Accent  (hover, price, badge):                #C8870A (wheat gold)
+  - Text on green:                                #FFFFFF (white)
+*/
+:root {
+  --pf-primary: #1e6b1e;
+  --pf-accent: #c8870a;
+  --pf-on-primary: #ffffff;
+}
+
+/* ------------------------------------------------------------------ */
+/* 1. Announcement bar — green background, gold text                   */
+/* ------------------------------------------------------------------ */
+.announcement-bar-section .utility-bar,
+.announcement-bar-section .announcement-bar {
+  background-color: var(--pf-primary) !important;
+}
+
+.announcement-bar-section .announcement-bar__message,
+.announcement-bar-section .announcement-bar__message span,
+.announcement-bar-section .announcement-bar__link,
+.announcement-bar-section .announcement-bar__link:hover {
+  color: var(--pf-accent) !important;
+}
+
+/* Slider arrows on the announcement bar stay readable on green */
+.announcement-bar-section .slider-button .icon-caret,
+.announcement-bar-section .announcement-bar__link .icon-arrow {
+  color: var(--pf-accent) !important;
+}
+
+/* ------------------------------------------------------------------ */
+/* 2. Header — green background, white logo & navigation               */
+/* ------------------------------------------------------------------ */
+.header-wrapper,
+.section-header .header {
+  background-color: var(--pf-primary) !important;
+}
+
+.header,
+.header__heading-link,
+.header__heading-link .h2,
+.header__heading-logo,
+.header__menu-item,
+.header__active-menu-item,
+.header__icons .header__icon,
+.header__icons .header__icon .icon,
+.header__inline-menu .list-menu__item--link {
+  color: var(--pf-on-primary) !important;
+}
+
+/* Navigation hover — gold underline */
+.header__menu-item:hover,
+.header__menu-item:focus,
+.header__active-menu-item:hover,
+.header__inline-menu .list-menu__item--link:hover {
+  color: var(--pf-accent) !important;
+  text-decoration: underline;
+  text-decoration-color: var(--pf-accent);
+  text-underline-offset: 0.3rem;
+}
+
+/* Keep header icons (search / cart / account) legible on green */
+.header__icon .icon,
+.header__icon-cart .cart-count-bubble {
+  color: var(--pf-on-primary);
+}
+
+/* ------------------------------------------------------------------ */
+/* 3. Footer — green background, white text                           */
+/* ------------------------------------------------------------------ */
+.footer {
+  background-color: var(--pf-primary) !important;
+}
+
+.footer,
+.footer .footer-block__heading,
+.footer .footer-block__details-content .list-menu__item,
+.footer .copyright__content,
+.footer a {
+  color: var(--pf-on-primary) !important;
+}
+
+.footer a:hover {
+  color: var(--pf-accent) !important;
+}
+
+/* ------------------------------------------------------------------ */
+/* 4. Buttons — green background, white text, gold on hover            */
+/* ------------------------------------------------------------------ */
+.button,
+.button--primary,
+.shopify-payment-button__button--unbranded,
+.product-form__submit,
+.quick-add__submit {
+  --color-button: 30, 107, 30; /* #1E6B1E */
+  --color-button-text: 255, 255, 255; /* #FFFFFF */
+  background-color: var(--pf-primary) !important;
+  color: var(--pf-on-primary) !important;
+  border-color: var(--pf-primary) !important;
+}
+
+.button:not([disabled]):hover,
+.button--primary:not([disabled]):hover,
+.shopify-payment-button__button--unbranded:not([disabled]):hover,
+.product-form__submit:not([disabled]):hover,
+.quick-add__submit:not([disabled]):hover {
+  background-color: var(--pf-accent) !important;
+  color: var(--pf-on-primary) !important;
+  border-color: var(--pf-accent) !important;
+}
+
+/* ------------------------------------------------------------------ */
+/* 5. Product card — larger title, bold gold price                    */
+/* ------------------------------------------------------------------ */
+.card__heading,
+.card-information .card__heading {
+  font-size: 1.1rem;
+  line-height: 1.4;
+  /* Let long Vietnamese product names wrap instead of being clipped */
+  overflow: visible;
+  text-overflow: unset;
+  white-space: normal;
+}
+
+.card__heading a {
+  color: inherit;
+}
+
+/* Price — accent gold, bold, in cards and on product pages */
+.price .price-item,
+.price__regular .price-item--regular,
+.price__sale .price-item--sale,
+.price--on-sale .price-item--sale {
+  color: var(--pf-accent) !important;
+  font-weight: 700 !important;
+}
+
+/* ------------------------------------------------------------------ */
+/* 6. Badges — accent gold                                            */
+/* ------------------------------------------------------------------ */
+.card__badge .badge,
+.price .price__badge-sale {
+  background-color: var(--pf-accent) !important;
+  color: var(--pf-on-primary) !important;
+  border-color: var(--pf-accent) !important;
+}
