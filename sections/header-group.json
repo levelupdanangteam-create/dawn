@@ -2,15 +2,31 @@
   "name": "t:sections.header.name",
   "type": "header",
   "sections": {
-    "pf_utility_bar": {
-      "type": "pf-utility-bar",
+    "announcement-bar": {
+      "type": "announcement-bar",
       "settings": {
-        "center_text": "🚚 Miễn phí ship đơn từ <b>150€</b> · Giảm 3% từ 250€ · Giảm 5% từ 400€ · Ship toàn châu Âu",
-        "phone": "+49 1520 900122",
-        "lang_label": "Tiếng Việt",
-        "currency_label": "EUR €",
-        "bg_color": "#F7F3EA"
-      }
+        "color_scheme": "scheme-1",
+        "show_line_separator": true,
+        "show_social": false,
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "enable_country_selector": false,
+        "enable_language_selector": false
+      },
+      "blocks": {
+        "announcement-bar-0": {
+          "type": "announcement",
+          "settings": {
+            "text": "Welcome to our store",
+            "text_alignment": "center",
+            "color_scheme": "scheme-1",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "announcement-bar-0"
+      ]
     },
     "header": {
       "type": "header",
@@ -32,5 +48,8 @@
       }
     }
   },
-  "order": ["pf_utility_bar", "header"]
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
 }

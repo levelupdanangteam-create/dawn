@@ -1,94 +1,154 @@
 {
   "sections": {
-    "pf_hero": {
-      "type": "pf-hero",
+    "image_banner": {
+      "type": "image-banner",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Browse our latest products",
+            "heading_size": "h0"
+          }
+        },
+        "button": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Shop all",
+            "button_link_1": "shopify://collections/all",
+            "button_style_secondary_1": true,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "button"
+      ],
       "settings": {
-        "heading": "Đặc sản Việt · Ưu đãi lớn",
-        "subheading": "Giảm tới 50% cho đơn hàng đầu tiên",
-        "show_subscribe": true,
-        "subscribe_placeholder": "Nhập email của bạn",
-        "subscribe_label": "Đăng ký",
-        "show_dots": true,
-        "bg_from": "#DFF0DC",
-        "bg_to": "#EAF1E6",
-        "padding_top": 24,
-        "padding_bottom": 16
+        "image_overlay_opacity": 40,
+        "image_height": "large",
+        "desktop_content_position": "bottom-center",
+        "show_text_box": false,
+        "image_behavior": "none",
+        "desktop_content_alignment": "center",
+        "color_scheme": "scheme-3",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
       }
-    },
-    "pf_featured_categories": {
-      "type": "pf-featured-categories",
-      "blocks": {
-        "c1": { "type": "category", "settings": { "label": "Mì & Bún", "count": "12 sản phẩm", "bg_color": "#EAF1E6" } },
-        "c2": { "type": "category", "settings": { "label": "Nước mắm", "count": "8 sản phẩm", "bg_color": "#FBF0DD" } },
-        "c3": { "type": "category", "settings": { "label": "Gia vị", "count": "16 sản phẩm", "bg_color": "#FCE7E4" } },
-        "c4": { "type": "category", "settings": { "label": "Đồ khô", "count": "10 sản phẩm", "bg_color": "#E7F0F6" } },
-        "c5": { "type": "category", "settings": { "label": "Đồ uống", "count": "9 sản phẩm", "bg_color": "#F3ECF7" } },
-        "c6": { "type": "category", "settings": { "label": "Bánh kẹo", "count": "14 sản phẩm", "bg_color": "#EAF1E6" } },
-        "c7": { "type": "category", "settings": { "label": "Đồ đông lạnh", "count": "7 sản phẩm", "bg_color": "#FBF0DD" } },
-        "c8": { "type": "category", "settings": { "label": "Đồ ăn nhanh", "count": "11 sản phẩm", "bg_color": "#FCE7E4" } }
-      },
-      "block_order": ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"],
-      "settings": { "title": "Danh mục nổi bật", "padding_top": 40, "padding_bottom": 20 }
-    },
-    "pf_banners": {
-      "type": "pf-banners",
-      "blocks": {
-        "b1": { "type": "banner", "settings": { "heading": "Thực phẩm tươi sạch mỗi ngày", "button_label": "Mua ngay", "bg_color": "#F3EEDF" } },
-        "b2": { "type": "banner", "settings": { "heading": "Bữa sáng nhanh gọn, đủ chất", "button_label": "Mua ngay", "bg_color": "#FCE7E4" } },
-        "b3": { "type": "banner", "settings": { "heading": "Đặc sản Việt chính hãng online", "button_label": "Mua ngay", "bg_color": "#E7F0F6" } }
-      },
-      "block_order": ["b1", "b2", "b3"],
-      "settings": { "padding_top": 20, "padding_bottom": 20 }
     },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
-        "title": "Sản phẩm phổ biến",
+        "title": "Featured products",
         "heading_size": "h2",
         "description": "",
         "show_description": false,
+        "description_style": "body",
         "collection": "all",
-        "products_to_show": 10,
-        "columns_desktop": 5,
+        "products_to_show": 8,
+        "columns_desktop": 4,
         "color_scheme": "scheme-1",
         "full_width": false,
         "show_view_all": true,
         "view_all_style": "solid",
         "enable_desktop_slider": false,
-        "swipe_on_mobile": true,
-        "image_ratio": "square",
+        "swipe_on_mobile": false,
+        "image_ratio": "adapt",
         "image_shape": "default",
         "show_secondary_image": true,
         "show_vendor": false,
-        "show_rating": true,
-        "quick_add": "standard",
+        "show_rating": false,
+        "quick_add": "none",
         "columns_mobile": "2",
-        "padding_top": 36,
-        "padding_bottom": 40
+        "padding_top": 44,
+        "padding_bottom": 36
       }
     },
-    "pf_trust": {
-      "type": "pf-trust",
-      "blocks": {
-        "t1": { "type": "item", "settings": { "icon": "globe", "color": "green", "text": "Ship nhanh toàn Châu Âu" } },
-        "t2": { "type": "item", "settings": { "icon": "box", "color": "green", "text": "Đóng gói cẩn thận" } },
-        "t3": { "type": "item", "settings": { "icon": "star", "color": "red", "text": "Hàng Việt chính hãng" } },
-        "t4": { "type": "item", "settings": { "icon": "return", "color": "green", "text": "Đổi trả dễ dàng trong 14 ngày" } },
-        "t5": { "type": "item", "settings": { "icon": "headset", "color": "red", "text": "Hỗ trợ 24/7 bằng tiếng Việt" } }
-      },
-      "block_order": ["t1", "t2", "t3", "t4", "t5"],
-      "settings": { "padding_top": 26, "padding_bottom": 26 }
+    "pf_flash_sale": {
+      "type": "pf-flash-sale",
+      "settings": {
+        "heading": "Flash Sale — Ưu đãi tháng 9",
+        "products_to_show": 5,
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
     },
-    "pf_promo": {
-      "type": "pf-promo",
+    "pf_daily_deals": {
+      "type": "pf-daily-deals",
+      "settings": {
+        "heading": "Giá Tốt Mỗi Ngày",
+        "products_to_show": 8,
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "pf_category_grid": {
+      "type": "pf-category-grid",
       "blocks": {
-        "p1": { "type": "tier", "settings": { "icon": "truck", "color": "red", "kicker": "Freeship", "value": "từ €150" } },
-        "p2": { "type": "tier", "settings": { "icon": "gift", "color": "green", "kicker": "Freeship + <b>giảm 3%</b>", "value": "từ €250" } },
-        "p3": { "type": "tier", "settings": { "icon": "heart", "color": "green", "kicker": "Freeship + <b>giảm 5%</b>", "value": "từ €400" } }
+        "cat1": { "type": "category", "settings": {} },
+        "cat2": { "type": "category", "settings": {} },
+        "cat3": { "type": "category", "settings": {} },
+        "cat4": { "type": "category", "settings": {} },
+        "cat5": { "type": "category", "settings": {} },
+        "cat6": { "type": "category", "settings": {} }
       },
-      "block_order": ["p1", "p2", "p3"],
-      "settings": { "lead": "Đừng quên <u>ưu đãi!</u>", "padding_top": 34, "padding_bottom": 34 }
+      "block_order": ["cat1", "cat2", "cat3", "cat4", "cat5", "cat6"],
+      "settings": {
+        "heading": "Danh Mục Sản Phẩm",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "pf_three_regions": {
+      "type": "pf-three-regions",
+      "blocks": {
+        "north": { "type": "region", "settings": { "subtitle": "Miền Bắc" } },
+        "central": { "type": "region", "settings": { "subtitle": "Miền Trung" } },
+        "south": { "type": "region", "settings": { "subtitle": "Miền Nam" } }
+      },
+      "block_order": ["north", "central", "south"],
+      "settings": {
+        "heading": "Đặc Sản 3 Miền",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "pf_snacks": {
+      "type": "pf-snacks",
+      "settings": {
+        "heading": "Ăn Vặt",
+        "products_to_show": 6,
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "pf_buying_guide": {
+      "type": "pf-buying-guide",
+      "blocks": {
+        "s1": { "type": "step", "settings": { "title": "Chọn sản phẩm", "description": "Vào phomifood.eu, chọn món bạn thích" } },
+        "s2": { "type": "step", "settings": { "title": "Thêm vào giỏ", "description": "Chọn số lượng, bấm Thêm vào giỏ" } },
+        "s3": { "type": "step", "settings": { "title": "Đặt hàng", "description": "Điền địa chỉ, chọn thanh toán COD hoặc chuyển khoản" } },
+        "s4": { "type": "step", "settings": { "title": "Nhận hàng", "description": "Giao toàn châu Âu, Séc có thể nhận trong ngày" } }
+      },
+      "block_order": ["s1", "s2", "s3", "s4"],
+      "settings": {
+        "heading": "Mua Hàng Dễ Dàng",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
     }
   },
-  "order": ["pf_hero", "pf_featured_categories", "pf_banners", "featured_collection", "pf_trust", "pf_promo"]
+  "order": [
+    "image_banner",
+    "featured_collection",
+    "pf_flash_sale",
+    "pf_daily_deals",
+    "pf_category_grid",
+    "pf_three_regions",
+    "pf_snacks",
+    "pf_buying_guide"
+  ]
 }
