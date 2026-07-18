@@ -1,0 +1,81 @@
+/*
+  PHOMIFOOD brand layer for Dawn
+  - Pastel green page ground (#E8F5E8, derived from #1E6B1E) with a subtle
+    Vietnamese four-petal motif (inline SVG, white @ 0.15 opacity)
+  - Alternating pastel-yellow homepage sections (#FFF8E7, derived from #C8870A)
+  - Brand colours: header #1E6B1E, price #C8870A, primary buttons #1E6B1E
+*/
+
+/* ---- Page ground + traditional pattern ---------------------------- */
+body.gradient {
+  background-color: #e8f5e8 !important;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='48'%20height='48'%20viewBox='0%200%2048%2048'%3E%3Cpath%20fill='%23ffffff'%20fill-opacity='0.15'%20d='M24%2014c4%204%204%206%200%2010-4-4-4-6%200-10zM24%2034c-4-4-4-6%200-10%204%204%204%206%200%2010zM14%2024c4-4%206-4%2010%200-4%204-6%204-10%200zM34%2024c-4%204-6%204-10%200%204-4%206-4%2010%200z'/%3E%3Ccircle%20cx='24'%20cy='24'%20r='1.5'%20fill='%23ffffff'%20fill-opacity='0.15'/%3E%3C/svg%3E");
+  background-attachment: fixed;
+}
+
+/* ---- Alternating homepage section grounds ------------------------- */
+/* Let the pastel ground + pattern show through native sections on the home page */
+#MainContent[data-template='index'] > .shopify-section > .color-scheme-1,
+#MainContent[data-template='index'] > .shopify-section > .gradient {
+  background: transparent !important;
+}
+#MainContent[data-template='index'] > .shopify-section:nth-of-type(even) {
+  background-color: #fff8e7;
+}
+#MainContent[data-template='index'] > .shopify-section:nth-of-type(odd) {
+  background-color: transparent;
+}
+
+/* ---- Header: brand green with white text -------------------------- */
+.header-wrapper,
+.section-header .header {
+  background-color: #1e6b1e !important;
+}
+.header,
+.header__heading-link,
+.header__heading-link .h2,
+.header__menu-item,
+.header__active-menu-item,
+.header__inline-menu .list-menu__item--link,
+.header__icons .header__icon,
+.header__icons .header__icon .icon {
+  color: #ffffff !important;
+}
+.header__menu-item:hover span,
+.header__inline-menu .list-menu__item--link:hover {
+  color: #c8870a !important;
+}
+.header__icon .cart-count-bubble {
+  background-color: #c8870a !important;
+  color: #ffffff !important;
+}
+
+/* ---- Price in brand gold ------------------------------------------ */
+.price .price-item,
+.price__regular .price-item--regular,
+.price__sale .price-item--sale,
+.price--on-sale .price-item--sale {
+  color: #c8870a !important;
+  font-weight: 700 !important;
+}
+
+/* ---- Primary buttons in brand green ------------------------------- */
+.button--primary,
+.product-form__submit,
+.shopify-payment-button__button--unbranded,
+.cart__checkout-button,
+.card .quick-add__submit.button--secondary {
+  --color-button: 30, 107, 30;
+  --color-button-text: 255, 255, 255;
+  background-color: #1e6b1e !important;
+  color: #ffffff !important;
+  border-color: #1e6b1e !important;
+}
+.button--primary:not([disabled]):hover,
+.product-form__submit:not([disabled]):hover,
+.shopify-payment-button__button--unbranded:not([disabled]):hover,
+.cart__checkout-button:not([disabled]):hover {
+  background-color: #155e20 !important;
+  color: #ffffff !important;
+  border-color: #155e20 !important;
+}
