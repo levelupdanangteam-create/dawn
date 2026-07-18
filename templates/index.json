@@ -3,44 +3,52 @@
     "pf_hero": {
       "type": "pf-hero",
       "settings": {
-        "show_heart": true,
-        "script_pre": "Một",
-        "script_red": "bữa ăn Việt",
-        "line_mid": "có thể khiến bạn cảm thấy như đang",
-        "script_post": "ở nhà.",
-        "show_lotus": true,
-        "text": "<p>Từ tô phở nóng hổi, gói mì quen thuộc đến chai nước mắm đậm đà — tất cả đều có tại Phomifood.eu.</p>",
-        "button_label": "Mua ngay",
-        "button_link": "shopify://collections/all",
-        "color_scheme": "scheme-1",
-        "padding_top": 40,
-        "padding_bottom": 32
+        "heading": "Đặc sản Việt · Ưu đãi lớn",
+        "subheading": "Giảm tới 50% cho đơn hàng đầu tiên",
+        "show_subscribe": true,
+        "subscribe_placeholder": "Nhập email của bạn",
+        "subscribe_label": "Đăng ký",
+        "show_dots": true,
+        "bg_from": "#DFF0DC",
+        "bg_to": "#EAF1E6",
+        "padding_top": 24,
+        "padding_bottom": 16
       }
     },
-    "pf_categories": {
-      "type": "pf-categories",
+    "pf_featured_categories": {
+      "type": "pf-featured-categories",
       "blocks": {
-        "c1": { "type": "category", "settings": { "label": "Mì & Bún" } },
-        "c2": { "type": "category", "settings": { "label": "Nước mắm" } },
-        "c3": { "type": "category", "settings": { "label": "Gia vị" } },
-        "c4": { "type": "category", "settings": { "label": "Đồ khô" } },
-        "c5": { "type": "category", "settings": { "label": "Đồ uống" } },
-        "c6": { "type": "category", "settings": { "label": "Bánh kẹo" } },
-        "c7": { "type": "category", "settings": { "label": "Đồ ăn nhanh" } },
-        "c8": { "type": "category", "settings": { "label": "Ưu đãi đặc biệt", "special": true } }
+        "c1": { "type": "category", "settings": { "label": "Mì & Bún", "count": "12 sản phẩm", "bg_color": "#EAF1E6" } },
+        "c2": { "type": "category", "settings": { "label": "Nước mắm", "count": "8 sản phẩm", "bg_color": "#FBF0DD" } },
+        "c3": { "type": "category", "settings": { "label": "Gia vị", "count": "16 sản phẩm", "bg_color": "#FCE7E4" } },
+        "c4": { "type": "category", "settings": { "label": "Đồ khô", "count": "10 sản phẩm", "bg_color": "#E7F0F6" } },
+        "c5": { "type": "category", "settings": { "label": "Đồ uống", "count": "9 sản phẩm", "bg_color": "#F3ECF7" } },
+        "c6": { "type": "category", "settings": { "label": "Bánh kẹo", "count": "14 sản phẩm", "bg_color": "#EAF1E6" } },
+        "c7": { "type": "category", "settings": { "label": "Đồ đông lạnh", "count": "7 sản phẩm", "bg_color": "#FBF0DD" } },
+        "c8": { "type": "category", "settings": { "label": "Đồ ăn nhanh", "count": "11 sản phẩm", "bg_color": "#FCE7E4" } }
       },
       "block_order": ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"],
-      "settings": { "columns": 8, "padding_top": 26, "padding_bottom": 26 }
+      "settings": { "title": "Danh mục nổi bật", "padding_top": 40, "padding_bottom": 20 }
+    },
+    "pf_banners": {
+      "type": "pf-banners",
+      "blocks": {
+        "b1": { "type": "banner", "settings": { "heading": "Thực phẩm tươi sạch mỗi ngày", "button_label": "Mua ngay", "bg_color": "#F3EEDF" } },
+        "b2": { "type": "banner", "settings": { "heading": "Bữa sáng nhanh gọn, đủ chất", "button_label": "Mua ngay", "bg_color": "#FCE7E4" } },
+        "b3": { "type": "banner", "settings": { "heading": "Đặc sản Việt chính hãng online", "button_label": "Mua ngay", "bg_color": "#E7F0F6" } }
+      },
+      "block_order": ["b1", "b2", "b3"],
+      "settings": { "padding_top": 20, "padding_bottom": 20 }
     },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
-        "title": "Sản phẩm nổi bật",
+        "title": "Sản phẩm phổ biến",
         "heading_size": "h2",
         "description": "",
         "show_description": false,
         "collection": "all",
-        "products_to_show": 5,
+        "products_to_show": 10,
         "columns_desktop": 5,
         "color_scheme": "scheme-1",
         "full_width": false,
@@ -55,7 +63,7 @@
         "show_rating": true,
         "quick_add": "standard",
         "columns_mobile": "2",
-        "padding_top": 44,
+        "padding_top": 36,
         "padding_bottom": 40
       }
     },
@@ -82,5 +90,5 @@
       "settings": { "lead": "Đừng quên <u>ưu đãi!</u>", "padding_top": 34, "padding_bottom": 34 }
     }
   },
-  "order": ["pf_hero", "pf_categories", "featured_collection", "pf_trust", "pf_promo"]
+  "order": ["pf_hero", "pf_featured_categories", "pf_banners", "featured_collection", "pf_trust", "pf_promo"]
 }

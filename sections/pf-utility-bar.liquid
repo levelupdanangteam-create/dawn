@@ -1,0 +1,66 @@
+{{ 'phomifood.css' | asset_url | stylesheet_tag }}
+
+<style>
+  #pf-util-{{ section.id }} { background: {{ section.settings.bg_color }}; border-bottom: 1px solid var(--pf-line); font-size: 1.25rem; }
+  #pf-util-{{ section.id }} .pf-util-row { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding-block: 0.7rem; }
+  #pf-util-{{ section.id }} .pf-util-left, #pf-util-{{ section.id }} .pf-util-right { display: flex; align-items: center; gap: 1.6rem; flex-wrap: wrap; }
+  #pf-util-{{ section.id }} a { color: var(--pf-muted); }
+  #pf-util-{{ section.id }} a:hover { color: var(--pf-green); }
+  #pf-util-{{ section.id }} .pf-util-center { color: var(--pf-green); font-weight: 700; text-align: center; flex: 1; }
+  #pf-util-{{ section.id }} .pf-util-center b { color: var(--pf-red); }
+  #pf-util-{{ section.id }} .pf-util-right .phone { color: var(--pf-ink); }
+  #pf-util-{{ section.id }} .pf-util-right .phone b { color: var(--pf-green); font-weight: 800; }
+  @media screen and (max-width: 989px) {
+    #pf-util-{{ section.id }} .pf-util-center { display: none; }
+  }
+  @media screen and (max-width: 749px) {
+    #pf-util-{{ section.id }} .pf-util-left { display: none; }
+    #pf-util-{{ section.id }} .pf-util-row { justify-content: center; }
+  }
+</style>
+
+<div id="pf-util-{{ section.id }}" class="pf-section">
+  <div class="pf-wrap pf-util-row">
+    <div class="pf-util-left">
+      {%- if section.settings.menu != blank -%}
+        {%- for link in section.settings.menu.links -%}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {%- endfor -%}
+      {%- else -%}
+        <a href="/pages/about">Về chúng tôi</a>
+        <a href="/account">Tài khoản</a>
+        <a href="#">Yêu thích</a>
+        <a href="#">Theo dõi đơn hàng</a>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.center_text != blank -%}
+      <div class="pf-util-center">{{ section.settings.center_text }}</div>
+    {%- endif -%}
+
+    <div class="pf-util-right">
+      {%- if section.settings.phone != blank -%}
+        <span class="phone">Hỗ trợ: <b>{{ section.settings.phone }}</b></span>
+      {%- endif -%}
+      {%- if section.settings.lang_label != blank -%}<a href="#">{{ section.settings.lang_label }} &#9662;</a>{%- endif -%}
+      {%- if section.settings.currency_label != blank -%}<a href="#">{{ section.settings.currency_label }} &#9662;</a>{%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Phomifood Thanh tiện ích",
+  "tag": "section",
+  "class": "pf-utility-bar-section",
+  "enabled_on": { "groups": ["header"] },
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Menu liên kết (trái)", "info": "Để trống dùng liên kết mặc định." },
+    { "type": "inline_richtext", "id": "center_text", "label": "Nội dung giữa", "default": "🚚 Miễn phí ship đơn từ <b>150€</b> · Ship toàn châu Âu" },
+    { "type": "text", "id": "phone", "label": "Số điện thoại / Zalo", "default": "+49 1520 900122" },
+    { "type": "text", "id": "lang_label", "label": "Nhãn ngôn ngữ", "default": "Tiếng Việt" },
+    { "type": "text", "id": "currency_label", "label": "Nhãn tiền tệ", "default": "EUR €" },
+    { "type": "color", "id": "bg_color", "label": "Màu nền", "default": "#F7F3EA" }
+  ]
+}
+{% endschema %}
