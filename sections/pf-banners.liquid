@@ -1,0 +1,83 @@
+{{ 'phomifood.css' | asset_url | stylesheet_tag }}
+
+<style>
+  #pf-ban-{{ section.id }} { padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px; }
+  #pf-ban-{{ section.id }} .pf-ban-grid { display: grid; grid-template-columns: repeat({{ section.blocks.size }}, 1fr); gap: 1.8rem; }
+  #pf-ban-{{ section.id }} .pf-ban {
+    position: relative; border-radius: 1.8rem; overflow: hidden; min-height: 18rem;
+    display: flex; align-items: center; padding: 2.6rem; background-color: #eef3ea;
+    background-size: cover; background-position: right center; background-repeat: no-repeat;
+  }
+  #pf-ban-{{ section.id }} .pf-ban .pf-ban-body { position: relative; z-index: 1; max-width: 60%; }
+  #pf-ban-{{ section.id }} .pf-ban h3 { margin: 0 0 1.6rem; font-family: var(--font-heading-family); font-weight: 800; font-size: 1.9rem; line-height: 1.2; color: var(--pf-ink); }
+  #pf-ban-{{ section.id }} .pf-ban-btn {
+    display: inline-flex; align-items: center; gap: 0.6rem; background: var(--pf-green); color: #fff;
+    font-weight: 800; font-size: 1.25rem; padding: 1rem 1.8rem; border-radius: 0.9rem;
+    transition: background .15s ease;
+  }
+  #pf-ban-{{ section.id }} .pf-ban-btn:hover { background: var(--pf-green-deep); color: #fff; }
+  @media screen and (max-width: 989px) {
+    #pf-ban-{{ section.id }} .pf-ban-grid { grid-template-columns: 1fr; }
+    #pf-ban-{{ section.id }} .pf-ban .pf-ban-body { max-width: 70%; }
+  }
+</style>
+
+<div id="pf-ban-{{ section.id }}" class="pf-section">
+  <div class="pf-wrap">
+    <div class="pf-ban-grid">
+      {%- for block in section.blocks -%}
+        <div
+          class="pf-ban"
+          style="background-color: {{ block.settings.bg_color }};{% if block.settings.image != blank %} background-image: url({{ block.settings.image | image_url: width: 700 }});{% endif %}"
+          {{ block.shopify_attributes }}
+        >
+          <div class="pf-ban-body">
+            <h3>{{ block.settings.heading }}</h3>
+            {%- if block.settings.button_label != blank -%}
+              <a class="pf-ban-btn" href="{{ block.settings.link | default: '#' }}">
+                {{ block.settings.button_label }}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Phomifood Banner",
+  "tag": "section",
+  "class": "pf-banners-section",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "range", "id": "padding_top", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 20 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 20 }
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Banner",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Thực phẩm tươi sạch mỗi ngày" },
+        { "type": "text", "id": "button_label", "label": "Nhãn nút", "default": "Mua ngay" },
+        { "type": "url", "id": "link", "label": "Liên kết" },
+        { "type": "image_picker", "id": "image", "label": "Ảnh nền (bên phải)" },
+        { "type": "color", "id": "bg_color", "label": "Màu nền", "default": "#F3EEDF" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Phomifood Banner",
+      "blocks": [
+        { "type": "banner", "settings": { "heading": "Thực phẩm tươi sạch mỗi ngày", "button_label": "Mua ngay", "bg_color": "#F3EEDF" } },
+        { "type": "banner", "settings": { "heading": "Bữa sáng nhanh gọn, đủ chất", "button_label": "Mua ngay", "bg_color": "#FCE7E4" } },
+        { "type": "banner", "settings": { "heading": "Đặc sản Việt chính hãng online", "button_label": "Mua ngay", "bg_color": "#E7F0F6" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

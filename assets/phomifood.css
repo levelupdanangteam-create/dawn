@@ -291,3 +291,48 @@ a.product__view-details {
 }
 .pf-btn:hover { background: var(--pf-green-deep); color: #fff; }
 .pf-btn:active { transform: translateY(1px); }
+
+/* ------------------------------------------------------------------ */
+/* 8. Nest-style grocery layout tweaks                                */
+/* ------------------------------------------------------------------ */
+/* Small green category label above the product title */
+.pf-card-cat {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--pf-green);
+  letter-spacing: 0.01em;
+  margin-bottom: 0.4rem;
+}
+
+/* Sale badge: bold red pill, top-left corner (percentage) */
+.card__badge .badge:not(.color-scheme-3) {
+  border-radius: 0.8rem;
+  padding: 0.4rem 0.9rem;
+  font-size: 1.15rem;
+}
+
+/* Compact, green "add" quick button under the card */
+.card .quick-add__submit {
+  border-radius: 0.9rem;
+  min-height: 4rem;
+  font-size: 1.3rem;
+}
+
+/* Search icon/submit and header cart accent in the grocery header */
+.header__search .search__button:hover .icon {
+  color: var(--pf-green);
+}
+
+/* "Browse categories"-style pill using Dawn menu when desired */
+.header .header__menu-item.list-menu__item--active,
+.header__menu-item[aria-current] span {
+  color: var(--pf-green) !important;
+}
+
+/* Section headings across the grocery homepage */
+.pf-fcat-section .pf-fcat-title,
+.pf-hero-section .pf-hero-h { font-family: var(--font-heading-family); }
+
+/* Featured-collection ("Popular Products") heading weight */
+.collection .title-wrapper .title { font-weight: 800; }
+
