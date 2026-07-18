@@ -1,0 +1,123 @@
+{{ 'phomifood.css' | asset_url | stylesheet_tag }}
+
+<style>
+  #pf-hero-{{ section.id }} {
+    background:
+      radial-gradient(120% 80% at 88% 8%, #fff7e6 0%, transparent 46%),
+      linear-gradient(180deg, #fffdf8, var(--pf-cream));
+    border-bottom: 1px solid var(--pf-line);
+  }
+  #pf-hero-{{ section.id }} .pf-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.02fr;
+    gap: 3rem;
+    align-items: center;
+    padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;
+  }
+  #pf-hero-{{ section.id }} .pf-hero-h { margin: 0; font-weight: 400; }
+  #pf-hero-{{ section.id }} .pf-l1 {
+    font-family: var(--pf-script); font-style: italic; font-weight: 700;
+    font-size: clamp(3.4rem, 6.4vw, 5.6rem); line-height: 0.98; display: block;
+  }
+  #pf-hero-{{ section.id }} .pf-l1 .heart { color: var(--pf-red); display: inline-block; transform: translateY(0.4rem); }
+  #pf-hero-{{ section.id }} .pf-l1 .a { color: var(--pf-green); }
+  #pf-hero-{{ section.id }} .pf-l1 .b { color: var(--pf-red); }
+  #pf-hero-{{ section.id }} .pf-l2 {
+    display: block; color: var(--pf-green-deep); font-weight: 700;
+    font-size: clamp(2rem, 3.4vw, 2.9rem); line-height: 1.18; margin-top: 1rem; letter-spacing: -0.01em;
+  }
+  #pf-hero-{{ section.id }} .pf-l3 {
+    font-family: var(--pf-script); font-style: italic; font-weight: 700;
+    color: var(--pf-red); font-size: clamp(3.2rem, 5.6vw, 4.8rem); display: inline-block; margin-top: 0.4rem;
+  }
+  #pf-hero-{{ section.id }} .pf-lotus { color: var(--pf-gold); margin: 1.8rem 0 1.2rem; }
+  #pf-hero-{{ section.id }} .pf-hero-text,
+  #pf-hero-{{ section.id }} .pf-hero-text p { color: #5c5148; font-size: 1.5rem; max-width: 42ch; margin: 0; }
+  #pf-hero-{{ section.id }} .pf-cta { margin-top: 2.6rem; }
+  #pf-hero-{{ section.id }} .pf-hero-media {
+    border-radius: 1.8rem; overflow: hidden; box-shadow: var(--pf-lift);
+    border: 1px solid rgba(120, 80, 40, 0.2); aspect-ratio: 1 / 0.82; background: #f3e6cf;
+  }
+  #pf-hero-{{ section.id }} .pf-hero-media img { width: 100%; height: 100%; object-fit: cover; }
+  #pf-hero-{{ section.id }} .pf-still {
+    width: 100%; height: 100%;
+    background:
+      radial-gradient(90% 70% at 30% 18%, rgba(255,255,255,.7), transparent 55%),
+      linear-gradient(160deg, #e9cfa0 0%, #d9b27e 46%, #b98a55 100%);
+  }
+  @media screen and (max-width: 749px) {
+    #pf-hero-{{ section.id }} .pf-hero-grid { grid-template-columns: 1fr; gap: 2.4rem; }
+    #pf-hero-{{ section.id }} .pf-hero-media { order: -1; }
+  }
+</style>
+
+<div id="pf-hero-{{ section.id }}" class="pf-section color-{{ section.settings.color_scheme }}">
+  <div class="pf-wrap pf-hero-grid">
+    <div class="pf-hero-copy">
+      <h1 class="pf-hero-h">
+        <span class="pf-l1">
+          {%- if section.settings.show_heart -%}<span class="heart">&#10084;</span> {% endif -%}
+          {%- if section.settings.script_pre != blank -%}<span class="a">{{ section.settings.script_pre }}</span> {% endif -%}
+          {%- if section.settings.script_red != blank -%}<span class="b">{{ section.settings.script_red }}</span>{%- endif -%}
+        </span>
+        {%- if section.settings.line_mid != blank -%}
+          <span class="pf-l2">{{ section.settings.line_mid }}</span>
+        {%- endif -%}
+        {%- if section.settings.script_post != blank -%}
+          <span class="pf-l1"><span class="pf-l3">{{ section.settings.script_post }}</span></span>
+        {%- endif -%}
+      </h1>
+
+      {%- if section.settings.show_lotus -%}
+        <div class="pf-lotus" aria-hidden="true">
+          <svg width="46" height="18" viewBox="0 0 40 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M20 13c-3-5-8-6-12-5 1 4 6 6 12 5Zm0 0c3-5 8-6 12-5-1 4-6 6-12 5Zm0 0c0-6 0-9 0-11 2 3 2 8 0 11Z"/></svg>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.text != blank -%}
+        <div class="pf-hero-text">{{ section.settings.text }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank -%}
+        <div class="pf-cta">
+          <a class="pf-btn" href="{{ section.settings.button_link | default: '#' }}">
+            {{ section.settings.button_label }}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="pf-hero-media">
+      {%- if section.settings.image != blank -%}
+        {{ section.settings.image | image_url: width: 1100 | image_tag: loading: 'eager', sizes: '(max-width: 749px) 100vw, 50vw', widths: '400, 600, 800, 1100' }}
+      {%- else -%}
+        <div class="pf-still" role="img" aria-label="Mâm đặc sản Việt"></div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Phomifood Hero",
+  "tag": "section",
+  "class": "pf-hero-section",
+  "settings": [
+    { "type": "checkbox", "id": "show_heart", "label": "Hiện trái tim đỏ", "default": true },
+    { "type": "text", "id": "script_pre", "label": "Chữ viết tay (xanh)", "default": "Một" },
+    { "type": "text", "id": "script_red", "label": "Chữ viết tay (đỏ)", "default": "bữa ăn Việt" },
+    { "type": "text", "id": "line_mid", "label": "Dòng giữa", "default": "có thể khiến bạn cảm thấy như đang" },
+    { "type": "text", "id": "script_post", "label": "Chữ viết tay cuối (đỏ)", "default": "ở nhà." },
+    { "type": "checkbox", "id": "show_lotus", "label": "Hiện hoa sen", "default": true },
+    { "type": "richtext", "id": "text", "label": "Đoạn mô tả", "default": "<p>Từ tô phở nóng hổi, gói mì quen thuộc đến chai nước mắm đậm đà — tất cả đều có tại Phomifood.eu.</p>" },
+    { "type": "text", "id": "button_label", "label": "Nhãn nút", "default": "Mua ngay" },
+    { "type": "url", "id": "button_link", "label": "Liên kết nút" },
+    { "type": "image_picker", "id": "image", "label": "Ảnh sản phẩm (hero)", "info": "Để trống sẽ dùng nền minh hoạ." },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Bảng màu", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 32 }
+  ],
+  "presets": [{ "name": "Phomifood Hero" }]
+}
+{% endschema %}
