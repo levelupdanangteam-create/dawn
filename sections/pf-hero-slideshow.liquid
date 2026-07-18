@@ -1,0 +1,174 @@
+<style>
+  #pf-slideshow-{{ section.id }} {
+    position: relative;
+    background: #eef3ea;
+    --pf-ss-h-desktop: {{ section.settings.height_desktop }}px;
+    --pf-ss-h-mobile: {{ section.settings.height_mobile }}px;
+  }
+  #pf-slideshow-{{ section.id }} .pf-ss-viewport { position: relative; height: var(--pf-ss-h-desktop); overflow: hidden; }
+  #pf-slideshow-{{ section.id }} .pf-ss-slide {
+    position: absolute; inset: 0; opacity: 0; visibility: hidden;
+    transition: opacity .6s ease; display: flex; align-items: center;
+    background-size: cover; background-position: center; background-repeat: no-repeat;
+  }
+  #pf-slideshow-{{ section.id }} .pf-ss-slide.is-active { opacity: 1; visibility: visible; }
+  #pf-slideshow-{{ section.id }} .pf-ss-slide.pf-placeholder { background: #f0f0f0; }
+  #pf-slideshow-{{ section.id }} .pf-ss-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.18); }
+  #pf-slideshow-{{ section.id }} .pf-ss-inner {
+    position: relative; z-index: 2; max-width: 60rem; padding: 0 clamp(2rem, 6vw, 8rem);
+    color: #fff; text-align: {{ section.settings.text_align }};
+    margin-{{ section.settings.text_align }}: {% if section.settings.text_align == 'center' %}auto{% else %}clamp(2rem, 6vw, 8rem){% endif %};
+    {% if section.settings.text_align == 'center' %}margin-inline: auto;{% endif %}
+  }
+  #pf-slideshow-{{ section.id }} .pf-ss-slide.pf-placeholder .pf-ss-inner { color: #8a8a8a; }
+  #pf-slideshow-{{ section.id }} .pf-ss-title { margin: 0; font-family: var(--font-heading-family, sans-serif); font-weight: 800; font-size: clamp(2.6rem, 4vw, 4.4rem); line-height: 1.1; text-shadow: 0 2px 12px rgba(0,0,0,.25); }
+  #pf-slideshow-{{ section.id }} .pf-ss-slide.pf-placeholder .pf-ss-title { text-shadow: none; }
+  #pf-slideshow-{{ section.id }} .pf-ss-desc { margin: 1.4rem 0 0; font-size: clamp(1.5rem, 2vw, 1.9rem); text-shadow: 0 1px 8px rgba(0,0,0,.25); }
+  #pf-slideshow-{{ section.id }} .pf-ss-cta {
+    display: inline-block; margin-top: 2.4rem; background: #1E6B1E; color: #fff; font-weight: 700;
+    padding: 1.3rem 2.8rem; border-radius: 8px; font-size: 1.5rem; transition: background .15s ease;
+  }
+  #pf-slideshow-{{ section.id }} .pf-ss-cta:hover { background: #C8870A; }
+
+  /* arrows */
+  #pf-slideshow-{{ section.id }} .pf-ss-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
+    width: 4.6rem; height: 4.6rem; border-radius: 50%; border: none; cursor: pointer;
+    background: rgba(255,255,255,.85); color: #1E6B1E; display: grid; place-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15); transition: background .15s ease;
+  }
+  #pf-slideshow-{{ section.id }} .pf-ss-arrow:hover { background: #fff; }
+  #pf-slideshow-{{ section.id }} .pf-ss-arrow--prev { left: 1.6rem; }
+  #pf-slideshow-{{ section.id }} .pf-ss-arrow--next { right: 1.6rem; }
+
+  /* dots */
+  #pf-slideshow-{{ section.id }} .pf-ss-dots { position: absolute; left: 0; right: 0; bottom: 1.6rem; z-index: 3; display: flex; gap: .8rem; justify-content: center; }
+  #pf-slideshow-{{ section.id }} .pf-ss-dot { width: 1.1rem; height: 1.1rem; border-radius: 50%; border: none; cursor: pointer; background: rgba(255,255,255,.55); padding: 0; }
+  #pf-slideshow-{{ section.id }} .pf-ss-dot.is-active { background: #fff; width: 2.8rem; border-radius: 999px; }
+
+  @media screen and (max-width: 749px) {
+    #pf-slideshow-{{ section.id }} .pf-ss-viewport { height: var(--pf-ss-h-mobile); }
+    #pf-slideshow-{{ section.id }} .pf-ss-arrow { width: 3.6rem; height: 3.6rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #pf-slideshow-{{ section.id }} .pf-ss-slide { transition: none; }
+  }
+</style>
+
+<div id="pf-slideshow-{{ section.id }}" data-interval="{{ section.settings.autoplay_interval | times: 1000 }}">
+  <div class="pf-ss-viewport">
+    {%- for block in section.blocks -%}
+      {%- assign has_image = block.settings.image != blank -%}
+      <div
+        class="pf-ss-slide{% if forloop.first %} is-active{% endif %}{% unless has_image %} pf-placeholder{% endunless %}"
+        data-index="{{ forloop.index0 }}"
+        {% if has_image %}style="background-image: url({{ block.settings.image | image_url: width: 2000 }});"{% endif %}
+        {{ block.shopify_attributes }}
+      >
+        {%- if has_image -%}<div class="pf-ss-overlay"></div>{%- endif -%}
+        <div class="pf-ss-inner">
+          {%- if block.settings.title != blank -%}
+            <h2 class="pf-ss-title">{{ block.settings.title }}</h2>
+          {%- elsif has_image == false -%}
+            <h2 class="pf-ss-title">Đặt banner tại đây</h2>
+          {%- endif -%}
+          {%- if block.settings.text != blank -%}<p class="pf-ss-desc">{{ block.settings.text }}</p>{%- endif -%}
+          {%- if block.settings.button_label != blank -%}
+            <a class="pf-ss-cta" href="{{ block.settings.button_link | default: '#' }}">{{ block.settings.button_label }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+
+    {%- if section.blocks.size > 1 -%}
+      <button type="button" class="pf-ss-arrow pf-ss-arrow--prev" aria-label="Slide trước">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg>
+      </button>
+      <button type="button" class="pf-ss-arrow pf-ss-arrow--next" aria-label="Slide sau">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+      </button>
+      <div class="pf-ss-dots">
+        {%- for block in section.blocks -%}
+          <button type="button" class="pf-ss-dot{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}" aria-label="Slide {{ forloop.index }}"></button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('pf-slideshow-{{ section.id }}');
+    if (!root) return;
+    var slides = Array.prototype.slice.call(root.querySelectorAll('.pf-ss-slide'));
+    var dots = Array.prototype.slice.call(root.querySelectorAll('.pf-ss-dot'));
+    if (slides.length < 2) return;
+    var current = 0, timer = null;
+    var interval = parseInt(root.getAttribute('data-interval'), 10) || 5000;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function go(i) {
+      current = (i + slides.length) % slides.length;
+      slides.forEach(function (s, idx) { s.classList.toggle('is-active', idx === current); });
+      dots.forEach(function (d, idx) { d.classList.toggle('is-active', idx === current); });
+    }
+    function next() { go(current + 1); }
+    function prev() { go(current - 1); }
+    function start() { if (reduce) return; stop(); timer = setInterval(next, interval); }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+
+    var pn = root.querySelector('.pf-ss-arrow--next');
+    var pp = root.querySelector('.pf-ss-arrow--prev');
+    if (pn) pn.addEventListener('click', function () { next(); start(); });
+    if (pp) pp.addEventListener('click', function () { prev(); start(); });
+    dots.forEach(function (d) { d.addEventListener('click', function () { go(parseInt(d.getAttribute('data-index'), 10)); start(); }); });
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+    start();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Hero Slideshow",
+  "tag": "section",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "range", "id": "autoplay_interval", "min": 3, "max": 10, "step": 1, "unit": "s", "label": "Thời gian chuyển slide", "default": 5 },
+    { "type": "range", "id": "height_desktop", "min": 300, "max": 800, "step": 20, "unit": "px", "label": "Chiều cao (desktop)", "default": 500 },
+    { "type": "range", "id": "height_mobile", "min": 200, "max": 600, "step": 20, "unit": "px", "label": "Chiều cao (mobile)", "default": 300 },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Canh chữ",
+      "options": [
+        { "value": "left", "label": "Trái" },
+        { "value": "center", "label": "Giữa" }
+      ],
+      "default": "left"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Ảnh nền" },
+        { "type": "text", "id": "title", "label": "Tiêu đề" },
+        { "type": "textarea", "id": "text", "label": "Mô tả ngắn" },
+        { "type": "text", "id": "button_label", "label": "Nhãn nút CTA" },
+        { "type": "url", "id": "button_link", "label": "Liên kết nút" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Slideshow",
+      "blocks": [
+        { "type": "slide" },
+        { "type": "slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}
