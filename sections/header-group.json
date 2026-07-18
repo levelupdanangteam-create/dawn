@@ -17,7 +17,7 @@
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
-            "text": "Welcome to our store",
+            "text": "🚚 Miễn phí ship đơn từ 150€ · Giảm 3% từ 250€ · Giảm 5% từ 400€ · Ship toàn châu Âu",
             "text_alignment": "center",
             "color_scheme": "scheme-1",
             "link": ""
