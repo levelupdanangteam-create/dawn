@@ -752,6 +752,20 @@
       </script>
     </div>
   </product-component>
+
+  {%- if settings.pf_deal_collection != blank -%}
+    <div class="pf-section" style="padding: 3rem 0 1rem;">
+      <div class="page-width">
+        {% render 'pf-flash-deals',
+          deal_collection: settings.pf_deal_collection,
+          heading: settings.pf_deal_heading,
+          countdown_hours: 3,
+          limit: 5,
+          uid: 'product'
+        %}
+      </div>
+    </div>
+  {%- endif -%}
 </product-info>
 
 {% schema %}

@@ -1,0 +1,92 @@
+{%- comment -%}
+  Flash-sale deals box: FLASH SALE header + 3h countdown + product cards.
+  Params: deal_collection (collection), heading (string, optional),
+          countdown_hours (int, default 3), limit (int, default 5),
+          uid (unique id string, required)
+{%- endcomment -%}
+{%- liquid
+  assign hrs = countdown_hours | default: 3
+  assign lim = limit | default: 5
+  assign col = deal_collection
+-%}
+<div class="pf-flash" id="pf-flash-{{ uid }}">
+  <div class="pf-flash__head">
+    <div class="pf-flash__brand">
+      <span class="pf-flash__clock" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      </span>
+      <span class="pf-flash__name">{{ heading | default: 'FLASH SALE' }}</span>
+      <span class="pf-flash__timer" data-hours="{{ hrs }}" role="timer" aria-label="Đếm ngược ưu đãi">
+        <span class="pf-u hh">00</span><i>:</i><span class="pf-u mm">00</span><i>:</i><span class="pf-u ss">00</span>
+      </span>
+    </div>
+    {%- if col != blank -%}
+      <a class="pf-flash__more" href="{{ col.url }}">Xem thêm ›</a>
+    {%- endif -%}
+  </div>
+
+  <div class="pf-flash__row">
+    {%- if col != blank and col.products_count > 0 -%}
+      {%- for product in col.products limit: lim -%}
+        <div class="pf-flash__card">
+          <a class="pf-flash__media" href="{{ product.url }}">
+            <span class="pf-flash__hot">HOT</span>
+            {%- if product.featured_image -%}
+              <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title | escape }}" loading="lazy" width="400" height="400">
+            {%- else -%}
+              {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </a>
+          <div class="pf-flash__info">
+            <h3 class="pf-flash__nm"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+            <div class="pf-flash__price">{{ product.price | money }}</div>
+            <span class="pf-flash__tag">Best Seller</span>
+            {% render 'pf-card-buttons', product: product, section_id: uid %}
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..lim) -%}
+        <div class="pf-flash__card">
+          <div class="pf-flash__media">
+            <span class="pf-flash__hot">HOT</span>
+            {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+          <div class="pf-flash__info">
+            <h3 class="pf-flash__nm">Tên sản phẩm</h3>
+            <div class="pf-flash__price">0&nbsp;€</div>
+            <span class="pf-flash__tag">Best Seller</span>
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</div>
+
+<script>
+  (function () {
+    var box = document.getElementById('pf-flash-{{ uid }}');
+    if (!box) return;
+    var el = box.querySelector('.pf-flash__timer');
+    if (!el || el.dataset.pfInit) return;
+    el.dataset.pfInit = '1';
+    var hrs = parseInt(el.getAttribute('data-hours'), 10) || 3;
+    var key = 'pfFlashEnd_{{ uid }}';
+    function fresh() { var e = Date.now() + hrs * 3600 * 1000; try { localStorage.setItem(key, e); } catch (_) {} return e; }
+    var end;
+    try { end = parseInt(localStorage.getItem(key), 10); } catch (_) {}
+    if (!end || isNaN(end) || end <= Date.now()) end = fresh();
+    var hh = el.querySelector('.hh'), mm = el.querySelector('.mm'), ss = el.querySelector('.ss');
+    function p(n) { return (n < 10 ? '0' : '') + n; }
+    function tick() {
+      var d = end - Date.now();
+      if (d <= 0) { end = fresh(); d = end - Date.now(); }
+      var s = Math.floor(d / 1000);
+      hh.textContent = p(Math.floor(s / 3600));
+      mm.textContent = p(Math.floor((s % 3600) / 60));
+      ss.textContent = p(s % 60);
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
+</script>

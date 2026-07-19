@@ -1451,5 +1451,13 @@
         "default": "scheme-1"
       }
     ]
+  },
+  {
+    "name": "Phomifood",
+    "settings": [
+      { "type": "header", "content": "Ưu đãi hôm nay (upsell trang sản phẩm)" },
+      { "type": "collection", "id": "pf_deal_collection", "label": "Bộ sưu tập sản phẩm giảm giá", "info": "Hiển thị ở cuối mỗi trang chi tiết sản phẩm để upsell." },
+      { "type": "text", "id": "pf_deal_heading", "label": "Tiêu đề", "default": "Sản phẩm giảm giá – Ưu đãi hôm nay" }
+    ]
   }
 ]
