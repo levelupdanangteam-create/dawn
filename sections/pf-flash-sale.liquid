@@ -1,76 +1,12 @@
-<style>
-  #pf-flash-{{ section.id }} {
-    background: #ffffff;
-    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
-  }
-  #pf-flash-{{ section.id }} .pf-wrap { max-width: var(--page-width, 120rem); margin-inline: auto; padding-inline: 2rem; }
-  #pf-flash-{{ section.id }} .pf-flash-title {
-    font-family: var(--font-heading-family, sans-serif); font-weight: 800; color: #1a1a1a;
-    font-size: 2.2rem; margin: 0 0 1.6rem; padding-bottom: 1.2rem; display: inline-block;
-    border-bottom: 3px solid #C8870A;
-  }
-  #pf-flash-{{ section.id }} .pf-flash-head { border-bottom: 1px solid #eee; margin-bottom: 2.4rem; }
-  #pf-flash-{{ section.id }} .pf-flash-row {
-    display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.6rem;
-  }
-  #pf-flash-{{ section.id }} .pf-card {
-    display: block; background: #fff; border: 1px solid #ececec; border-radius: 12px; overflow: hidden;
-    transition: box-shadow .16s ease, transform .16s ease;
-  }
-  #pf-flash-{{ section.id }} .pf-card:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(0,0,0,.08); }
-  #pf-flash-{{ section.id }} .pf-media { position: relative; aspect-ratio: 1; background: #f7f7f7; display: grid; place-items: center; }
-  #pf-flash-{{ section.id }} .pf-media img, #pf-flash-{{ section.id }} .pf-media svg { width: 100%; height: 100%; object-fit: cover; }
-  #pf-flash-{{ section.id }} .pf-badge {
-    position: absolute; top: 1rem; left: 1rem; z-index: 2;
-    background: #D62828; color: #fff; font-size: 1.1rem; font-weight: 800; letter-spacing: .03em;
-    padding: .4rem 1rem; border-radius: 6px;
-  }
-  #pf-flash-{{ section.id }} .pf-info { padding: 1.2rem 1.4rem 1.5rem; }
-  #pf-flash-{{ section.id }} .pf-name { margin: 0 0 .6rem; font-size: 1.4rem; font-weight: 600; color: #1a1a1a; line-height: 1.35; }
-  #pf-flash-{{ section.id }} .pf-price { font-size: 1.5rem; font-weight: 800; color: #D62828; }
-  @media (max-width: 989px) { #pf-flash-{{ section.id }} .pf-flash-row { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 599px) { #pf-flash-{{ section.id }} .pf-flash-row { grid-template-columns: repeat(2, 1fr); } }
-</style>
-
-<div id="pf-flash-{{ section.id }}">
-  <div class="pf-wrap">
-    <div class="pf-flash-head">
-      <h2 class="pf-flash-title">{{ section.settings.heading }}</h2>
-    </div>
-    <div class="pf-flash-row">
-      {%- if section.settings.collection != blank and section.settings.collection.products_count > 0 -%}
-        {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
-          <div class="pf-card">
-            <a class="pf-media" href="{{ product.url }}">
-              <span class="pf-badge">SALE</span>
-              {%- if product.featured_image -%}
-                <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title | escape }}" loading="lazy" width="400" height="400">
-              {%- else -%}
-                {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
-              {%- endif -%}
-            </a>
-            <div class="pf-info">
-              <h3 class="pf-name"><a href="{{ product.url }}">{{ product.title }}</a></h3>
-              <div class="pf-price">{{ product.price | money }}</div>
-              {% render 'pf-card-buttons', product: product, section_id: section.id %}
-            </div>
-          </div>
-        {%- endfor -%}
-      {%- else -%}
-        {%- for i in (1..section.settings.products_to_show) -%}
-          <div class="pf-card">
-            <div class="pf-media">
-              <span class="pf-badge">SALE</span>
-              {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
-            </div>
-            <div class="pf-info">
-              <h3 class="pf-name">Tên sản phẩm</h3>
-              <div class="pf-price">0&nbsp;€</div>
-            </div>
-          </div>
-        {%- endfor -%}
-      {%- endif -%}
-    </div>
+<div class="pf-section" style="padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    {% render 'pf-flash-deals',
+      deal_collection: section.settings.collection,
+      heading: section.settings.heading,
+      countdown_hours: section.settings.countdown_hours,
+      limit: section.settings.products_to_show,
+      uid: section.id
+    %}
   </div>
 </div>
 
@@ -82,6 +18,7 @@
     { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Flash Sale — Ưu đãi tháng 9" },
     { "type": "collection", "id": "collection", "label": "Bộ sưu tập" },
     { "type": "range", "id": "products_to_show", "min": 2, "max": 5, "step": 1, "label": "Số sản phẩm hiển thị", "default": 5 },
+    { "type": "range", "id": "countdown_hours", "min": 1, "max": 24, "step": 1, "unit": "h", "label": "Đếm ngược (giờ)", "default": 3 },
     { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 48 },
     { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 48 }
   ],
