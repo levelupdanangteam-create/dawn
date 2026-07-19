@@ -1,35 +1,29 @@
 /*
   PHOMIFOOD brand layer for Dawn
-  - Pastel green page ground (#E8F5E8, derived from #1E6B1E) with a subtle
-    Vietnamese four-petal motif (inline SVG, white @ 0.15 opacity)
-  - Alternating pastel-yellow homepage sections (#FFF8E7, derived from #C8870A)
-  - Brand colours: header #1E6B1E, price #C8870A, primary buttons #1E6B1E
+  - Warm beige page ground (#F7F1E9); content sections as white boxes
+  - Accent: blue (#1E63C8); header on white to highlight the logo
+  - Flash Sale keeps a red urgency tone
 */
 
-/* ---- Page ground + traditional pattern ---------------------------- */
+/* ---- Page ground: warm beige -------------------------------------- */
 body.gradient {
-  background-color: #e8f5e8 !important;
-  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='48'%20height='48'%20viewBox='0%200%2048%2048'%3E%3Cpath%20fill='%23ffffff'%20fill-opacity='0.15'%20d='M24%2014c4%204%204%206%200%2010-4-4-4-6%200-10zM24%2034c-4-4-4-6%200-10%204%204%204%206%200%2010zM14%2024c4-4%206-4%2010%200-4%204-6%204-10%200zM34%2024c-4%204-6%204-10%200%204-4%206-4%2010%200z'/%3E%3Ccircle%20cx='24'%20cy='24'%20r='1.5'%20fill='%23ffffff'%20fill-opacity='0.15'/%3E%3C/svg%3E");
-  background-attachment: fixed;
+  background-color: #f7f1e9 !important;
+  background-image: none !important;
 }
 
-/* ---- Alternating homepage section grounds ------------------------- */
-/* Let the pastel ground + pattern show through native sections on the home page */
+/* Let native homepage sections show the beige ground through */
 #MainContent[data-template='index'] > .shopify-section > .color-scheme-1,
 #MainContent[data-template='index'] > .shopify-section > .gradient {
   background: transparent !important;
 }
-#MainContent[data-template='index'] > .shopify-section:nth-of-type(even) {
-  background-color: #fff8e7;
-}
-#MainContent[data-template='index'] > .shopify-section:nth-of-type(odd) {
-  background-color: transparent;
-}
 
-/* ---- Header: brand green with white text -------------------------- */
+/* ---- Header: white background to highlight the logo --------------- */
 .header-wrapper,
 .section-header .header {
-  background-color: #1e6b1e !important;
+  background-color: #ffffff !important;
+}
+.header-wrapper {
+  border-bottom: 1px solid #ece4d8;
 }
 .header,
 .header__heading-link,
@@ -39,45 +33,49 @@ body.gradient {
 .header__inline-menu .list-menu__item--link,
 .header__icons .header__icon,
 .header__icons .header__icon .icon {
-  color: #ffffff !important;
+  color: #2a2622 !important;
 }
 .header__menu-item:hover span,
-.header__inline-menu .list-menu__item--link:hover {
-  color: #c8870a !important;
+.header__inline-menu .list-menu__item--link:hover,
+.header__active-menu-item {
+  color: #1e63c8 !important;
+}
+.header__icon:hover .icon {
+  color: #1e63c8;
 }
 .header__icon .cart-count-bubble {
-  background-color: #c8870a !important;
+  background-color: #1e63c8 !important;
   color: #ffffff !important;
 }
 
-/* ---- Price in brand gold ------------------------------------------ */
+/* ---- Price in accent blue ----------------------------------------- */
 .price .price-item,
 .price__regular .price-item--regular,
 .price__sale .price-item--sale,
 .price--on-sale .price-item--sale {
-  color: #c8870a !important;
+  color: #1e63c8 !important;
   font-weight: 700 !important;
 }
 
-/* ---- Primary buttons in brand green ------------------------------- */
+/* ---- Primary buttons in accent blue ------------------------------- */
 .button--primary,
 .product-form__submit,
 .shopify-payment-button__button--unbranded,
 .cart__checkout-button,
 .card .quick-add__submit.button--secondary {
-  --color-button: 30, 107, 30;
+  --color-button: 30, 99, 200;
   --color-button-text: 255, 255, 255;
-  background-color: #1e6b1e !important;
+  background-color: #1e63c8 !important;
   color: #ffffff !important;
-  border-color: #1e6b1e !important;
+  border-color: #1e63c8 !important;
 }
 .button--primary:not([disabled]):hover,
 .product-form__submit:not([disabled]):hover,
 .shopify-payment-button__button--unbranded:not([disabled]):hover,
 .cart__checkout-button:not([disabled]):hover {
-  background-color: #155e20 !important;
+  background-color: #164fa0 !important;
   color: #ffffff !important;
-  border-color: #155e20 !important;
+  border-color: #164fa0 !important;
 }
 
 /* ---- Policy / guide pages -------------------------------------- */
@@ -88,21 +86,21 @@ body.gradient {
   box-shadow: 0 10px 30px rgba(60, 40, 20, 0.06);
 }
 .pf-policy__title {
-  font-family: var(--font-heading-family, sans-serif); font-weight: 800; color: #1e6b1e;
+  font-family: var(--font-heading-family, sans-serif); font-weight: 800; color: #1e63c8;
   font-size: clamp(2.6rem, 4vw, 3.4rem); margin: 0 0 2.4rem; text-align: center; line-height: 1.15;
 }
-.pf-policy__wrap h2 { color: #1e6b1e; font-size: 2.1rem; margin: 2.8rem 0 1rem; line-height: 1.3; }
-.pf-policy__wrap h3 { color: #c8870a; font-size: 1.65rem; margin: 1.8rem 0 0.8rem; }
+.pf-policy__wrap h2 { color: #1e63c8; font-size: 2.1rem; margin: 2.8rem 0 1rem; line-height: 1.3; }
+.pf-policy__wrap h3 { color: #1e63c8; font-size: 1.65rem; margin: 1.8rem 0 0.8rem; }
 .pf-policy__wrap p, .pf-policy__wrap li { font-size: 1.55rem; line-height: 1.75; color: #3a352f; }
 .pf-policy__wrap ul { padding-left: 2.2rem; margin: 0.8rem 0 1.4rem; }
 .pf-policy__wrap li { margin-bottom: 0.6rem; }
-.pf-policy__wrap a { color: #1e6b1e; text-decoration: underline; }
+.pf-policy__wrap a { color: #1e63c8; text-decoration: underline; }
 .pf-policy__lead { font-size: 1.6rem; color: #574f45; }
 .pf-policy table { width: 100%; border-collapse: collapse; margin: 1.4rem 0; }
 .pf-policy th, .pf-policy td { border: 1px solid #ecdfc8; padding: 1rem 1.2rem; text-align: left; font-size: 1.45rem; }
 .pf-policy th { background: #f6ead3; color: #3a352f; }
 .pf-policy__note {
-  background: #fff8e7; border-left: 4px solid #c8870a; padding: 1.2rem 1.6rem;
+  background: #fff8e7; border-left: 4px solid #1e63c8; padding: 1.2rem 1.6rem;
   border-radius: 8px; margin: 1.6rem 0;
 }
 .pf-policy__cols { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.2rem 2.4rem; }
@@ -115,14 +113,14 @@ body.gradient {
 .pf-card-actions .pf-btn-cart,
 .pf-card-actions .pf-btn-view {
   flex: 1; width: 100%; text-align: center; font-size: 1.25rem; font-weight: 700; line-height: 1.2;
-  padding: 0.9rem 0.6rem; border-radius: 8px; border: 1.5px solid #1e6b1e; cursor: pointer;
+  padding: 0.9rem 0.6rem; border-radius: 8px; border: 1.5px solid #1e63c8; cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
 }
-.pf-btn-cart { background: #1e6b1e; color: #ffffff; }
-.pf-btn-cart:hover { background: #155e20; border-color: #155e20; }
+.pf-btn-cart { background: #1e63c8; color: #ffffff; }
+.pf-btn-cart:hover { background: #164fa0; border-color: #164fa0; }
 .pf-btn-cart[disabled] { opacity: 0.5; cursor: not-allowed; }
-.pf-btn-view { background: #ffffff; color: #1e6b1e; text-decoration: none; display: flex; align-items: center; justify-content: center; }
-.pf-btn-view:hover { background: #1e6b1e; color: #ffffff; }
+.pf-btn-view { background: #ffffff; color: #1e63c8; text-decoration: none; display: flex; align-items: center; justify-content: center; }
+.pf-btn-view:hover { background: #1e63c8; color: #ffffff; }
 
 /* Native Dawn cards only: hide on desktop, reveal on hover. */
 @media screen and (min-width: 750px) {
@@ -140,4 +138,4 @@ body.gradient {
 
 /* Title link inside custom deal-section cards */
 .pf-card .pf-name a { color: inherit; text-decoration: none; }
-.pf-card .pf-name a:hover { color: #1e6b1e; }
+.pf-card .pf-name a:hover { color: #1e63c8; }
