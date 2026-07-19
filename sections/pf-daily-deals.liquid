@@ -29,19 +29,20 @@
     <div class="pf-grid">
       {%- if section.settings.collection != blank and section.settings.collection.products_count > 0 -%}
         {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
-          <a class="pf-card" href="{{ product.url }}">
-            <div class="pf-media">
+          <div class="pf-card">
+            <a class="pf-media" href="{{ product.url }}">
               {%- if product.featured_image -%}
                 <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title | escape }}" loading="lazy" width="400" height="400">
               {%- else -%}
                 {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
               {%- endif -%}
-            </div>
+            </a>
             <div class="pf-info">
-              <h3 class="pf-name">{{ product.title }}</h3>
+              <h3 class="pf-name"><a href="{{ product.url }}">{{ product.title }}</a></h3>
               <div class="pf-price">{{ product.price | money }}</div>
+              {% render 'pf-card-buttons', product: product, section_id: section.id %}
             </div>
-          </a>
+          </div>
         {%- endfor -%}
       {%- else -%}
         {%- for i in (1..section.settings.products_to_show) -%}

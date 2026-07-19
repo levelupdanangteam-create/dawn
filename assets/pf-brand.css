@@ -107,3 +107,37 @@ body.gradient {
 }
 .pf-policy__cols { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.2rem 2.4rem; }
 @media (max-width: 749px) { .pf-policy__cols { grid-template-columns: 1fr; } }
+
+/* ---- Product-card action buttons (Add to cart / View) ---------- */
+/* Base: visible everywhere (used by custom deal sections too). */
+.pf-card-actions { display: flex; gap: 0.8rem; margin-top: 1rem; position: relative; z-index: 2; }
+.pf-card-actions__form { flex: 1; display: flex; margin: 0; }
+.pf-card-actions .pf-btn-cart,
+.pf-card-actions .pf-btn-view {
+  flex: 1; width: 100%; text-align: center; font-size: 1.25rem; font-weight: 700; line-height: 1.2;
+  padding: 0.9rem 0.6rem; border-radius: 8px; border: 1.5px solid #1e6b1e; cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.pf-btn-cart { background: #1e6b1e; color: #ffffff; }
+.pf-btn-cart:hover { background: #155e20; border-color: #155e20; }
+.pf-btn-cart[disabled] { opacity: 0.5; cursor: not-allowed; }
+.pf-btn-view { background: #ffffff; color: #1e6b1e; text-decoration: none; display: flex; align-items: center; justify-content: center; }
+.pf-btn-view:hover { background: #1e6b1e; color: #ffffff; }
+
+/* Native Dawn cards only: hide on desktop, reveal on hover. */
+@media screen and (min-width: 750px) {
+  .card-wrapper .pf-card-actions {
+    opacity: 0; max-height: 0; margin-top: 0; overflow: hidden; transform: translateY(6px);
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease, max-height 0.18s ease, margin-top 0.18s ease;
+  }
+  .card-wrapper:hover .pf-card-actions,
+  .card-wrapper:focus-within .pf-card-actions {
+    opacity: 1; max-height: 8rem; margin-top: 1rem; transform: none; pointer-events: auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) { .pf-card-actions { transition: none; } }
+
+/* Title link inside custom deal-section cards */
+.pf-card .pf-name a { color: inherit; text-decoration: none; }
+.pf-card .pf-name a:hover { color: #1e6b1e; }
