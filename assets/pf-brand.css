@@ -139,3 +139,13 @@ body.gradient {
 /* Title link inside custom deal-section cards */
 .pf-card .pf-name a { color: inherit; text-decoration: none; }
 .pf-card .pf-name a:hover { color: #1e63c8; }
+
+/* ---- Boxed content sections (white card on the beige page) ------ */
+.pf-boxed-section { background: transparent !important; }
+.pf-boxed-section .pf-wrap {
+  background: #ffffff;
+  border: 1px solid #ece4d8;
+  border-radius: 20px;
+  padding-block: 2.6rem;
+  box-shadow: 0 10px 30px rgba(60, 40, 20, 0.05);
+}
