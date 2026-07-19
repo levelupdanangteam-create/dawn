@@ -53,7 +53,7 @@
       "type": "featured-collection",
       "settings": {
         "collection": "all",
-        "products_to_show": 8,
+        "products_to_show": 18,
         "title": "Sản phẩm được mua nhiều nhất",
         "heading_size": "h2",
         "description": "",
@@ -83,6 +83,7 @@
         "heading": "Sản phẩm giảm giá – Ưu đãi hôm nay",
         "collection": "asset-pack-77889830914-example-products",
         "products_to_show": 5,
+        "countdown_hours": 3,
         "padding_top": 48,
         "padding_bottom": 48
       }
@@ -93,7 +94,7 @@
         "cat1": {
           "type": "category",
           "settings": {
-            "collection": "",
+            "collection": "giảm-gia",
             "label": "Mì Ăn Liền"
           }
         },
@@ -107,28 +108,28 @@
         "cat3": {
           "type": "category",
           "settings": {
-            "collection": "",
+            "collection": "bột-gia-vị",
             "label": "Gia Vị"
           }
         },
         "cat5": {
           "type": "category",
           "settings": {
-            "collection": "",
+            "collection": "dồ-an-vặt-sữa",
             "label": "Đồ Ăn Vặt"
           }
         },
         "cat6": {
           "type": "category",
           "settings": {
-            "collection": "",
+            "collection": "ca-phe",
             "label": "Cà phê"
           }
         },
         "cat7": {
           "type": "category",
           "settings": {
-            "collection": "",
+            "collection": "gạo-banh-gạo",
             "label": "Các loại bột, gạo, nếp"
           }
         }
