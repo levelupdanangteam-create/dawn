@@ -1,0 +1,32 @@
+{%- comment -%} Shipping-policy detail box on the product detail page {%- endcomment -%}
+<style>
+  .pf-ship { margin: 1.6rem 0 0; background: #1f3a2a; border-radius: 14px; padding: 2.4rem 2.6rem; color: #eae7d8; }
+  .pf-ship__eyebrow { font-size: 1.25rem; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; color: #d2a24a; margin: 0 0 1.6rem; }
+  .pf-ship__group + .pf-ship__group { margin-top: 2rem; }
+  .pf-ship__h { display: flex; align-items: center; gap: 0.8rem; margin: 0 0 1rem; font-size: 1.6rem; font-weight: 800; color: #ffffff; }
+  .pf-ship__list { list-style: none; margin: 0; padding: 0 0 0 2.6rem; display: flex; flex-direction: column; gap: 0.7rem; }
+  .pf-ship__list li { font-size: 1.4rem; color: #c3c9b8; line-height: 1.45; }
+  .pf-ship__list li b { color: #e6b34d; font-weight: 800; }
+</style>
+
+<div class="pf-ship">
+  <p class="pf-ship__eyebrow">Chính sách</p>
+
+  <div class="pf-ship__group">
+    <h3 class="pf-ship__h">🚚 Phí vận chuyển cực tiết kiệm</h3>
+    <ul class="pf-ship__list">
+      <li>Đơn từ 0 – 10kg: <b>19€</b></li>
+      <li>Đơn từ 10 – 20kg: <b>13€</b></li>
+      <li>Đơn từ 20kg trở lên: <b>MIỄN PHÍ VẬN CHUYỂN</b></li>
+    </ul>
+  </div>
+
+  <div class="pf-ship__group">
+    <h3 class="pf-ship__h">🎁 Ưu đãi hấp dẫn dành cho mọi đơn hàng</h3>
+    <ul class="pf-ship__list">
+      <li>FREESHIP cho đơn từ <b>150€</b></li>
+      <li>FREESHIP + Giảm 3% cho đơn từ <b>250€</b></li>
+      <li>FREESHIP + Giảm 5% cho đơn từ <b>400€</b></li>
+    </ul>
+  </div>
+</div>
