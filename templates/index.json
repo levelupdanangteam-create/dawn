@@ -158,6 +158,35 @@
         "padding_bottom": 48
       }
     },
+    "image_banner_gbfQkJ": {
+      "type": "image-banner",
+      "blocks": {
+        "text_PAjX8T": {
+          "type": "text",
+          "settings": {
+            "text": "",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "text_PAjX8T"
+      ],
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/ChatGPT_Image_Jul_19_2026_10_25_33_PM.png",
+        "image_overlay_opacity": 0,
+        "image_height": "medium",
+        "image_behavior": "none",
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "show_text_box": false,
+        "color_scheme": "",
+        "stack_images_on_mobile": true,
+        "mobile_content_alignment": "center",
+        "show_text_below": true
+      }
+    },
     "pf_three_regions": {
       "type": "pf-three-regions",
       "blocks": {
@@ -245,6 +274,7 @@
     "pf_flash_sale",
     "pf_category_grid",
     "pf_daily_deals",
+    "image_banner_gbfQkJ",
     "pf_three_regions",
     "pf_buying_guide"
   ]
