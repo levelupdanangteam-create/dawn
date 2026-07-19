@@ -53,7 +53,7 @@
       "settings": {
         "collection": "all",
         "products_to_show": 8,
-        "title": "Featured products",
+        "title": "Sản phẩm được mua nhiều nhất",
         "heading_size": "h2",
         "description": "",
         "show_description": false,
@@ -79,7 +79,7 @@
     "pf_flash_sale": {
       "type": "pf-flash-sale",
       "settings": {
-        "heading": "Flash Sale — Ưu đãi tháng 9",
+        "heading": "Sản phẩm giảm giá – Ưu đãi hôm nay",
         "collection": "asset-pack-77889830914-example-products",
         "products_to_show": 5,
         "padding_top": 48,
@@ -103,42 +103,49 @@
           "type": "category",
           "settings": {
             "collection": "",
-            "label": ""
+            "label": "Mì Ăn Liền"
           }
         },
         "cat2": {
           "type": "category",
           "settings": {
             "collection": "",
-            "label": ""
+            "label": "Bún & Phở"
           }
         },
         "cat3": {
           "type": "category",
           "settings": {
             "collection": "",
-            "label": ""
+            "label": "Gia Vị"
           }
         },
         "cat4": {
           "type": "category",
           "settings": {
             "collection": "asset-pack-77889830914-example-products",
-            "label": ""
+            "label": "Đồ Uống"
           }
         },
         "cat5": {
           "type": "category",
           "settings": {
             "collection": "",
-            "label": ""
+            "label": "Đồ Ăn Vặt"
           }
         },
         "cat6": {
           "type": "category",
           "settings": {
             "collection": "",
-            "label": ""
+            "label": "Cà phê"
+          }
+        },
+        "cat7": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "label": "Các loại bột, gạo, nếp"
           }
         }
       },
@@ -148,7 +155,8 @@
         "cat3",
         "cat4",
         "cat5",
-        "cat6"
+        "cat6",
+        "cat7"
       ],
       "settings": {
         "heading": "Danh Mục Sản Phẩm",
@@ -241,8 +249,8 @@
     "image_banner",
     "featured_collection",
     "pf_flash_sale",
-    "pf_daily_deals",
     "pf_category_grid",
+    "pf_daily_deals",
     "pf_three_regions",
     "pf_buying_guide"
   ]
