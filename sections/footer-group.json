@@ -4,8 +4,16 @@
   "sections": {
     "footer": {
       "type": "footer",
-      "blocks": {},
-      "block_order": [],
+      "blocks": {
+        "business_info": {
+          "type": "text",
+          "settings": {
+            "heading": "Business Information",
+            "subtext": "<p><strong>LEVELUPVN LIMITED</strong></p><p>Business Reg. No.: 77795525-000-03-26-8</p><p>Unit E01, 10/F, Wong King Industrial Building, 2-4 Tai Yau Street, San Po Kong, Hong Kong</p><p><a href=\"mailto:nhatngo@levelupvn.com\">nhatngo@levelupvn.com</a></p><p><a href=\"tel:+84988818036\">+84 988 818 036</a></p>"
+          }
+        }
+      },
+      "block_order": ["business_info"],
       "settings": {
         "color_scheme": "scheme-1",
         "newsletter_enable": true,
