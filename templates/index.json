@@ -1,36 +1,69 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "pf_hero_slideshow": {
-      "type": "pf-hero-slideshow",
+    "image_banner": {
+      "type": "image-banner",
       "blocks": {
-        "slide1": { "type": "slide", "settings": {} },
-        "slide2": { "type": "slide", "settings": {} }
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Browse our latest products",
+            "heading_size": "h0"
+          }
+        },
+        "button": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Shop all",
+            "button_link_1": "shopify://collections/all",
+            "button_style_secondary_1": true,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
       },
-      "block_order": ["slide1", "slide2"],
+      "block_order": [
+        "heading",
+        "button"
+      ],
       "settings": {
-        "autoplay_interval": 5,
-        "height_desktop": 500,
-        "height_mobile": 300,
-        "text_align": "left"
+        "image_overlay_opacity": 40,
+        "image_height": "large",
+        "image_behavior": "none",
+        "desktop_content_position": "bottom-center",
+        "desktop_content_alignment": "center",
+        "show_text_box": false,
+        "color_scheme": "scheme-3",
+        "stack_images_on_mobile": false,
+        "mobile_content_alignment": "center",
+        "show_text_below": false
       }
     },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
+        "collection": "all",
+        "products_to_show": 8,
         "title": "Featured products",
         "heading_size": "h2",
         "description": "",
         "show_description": false,
         "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
         "columns_desktop": 4,
-        "color_scheme": "scheme-1",
+        "enable_desktop_slider": false,
         "full_width": false,
         "show_view_all": true,
         "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
+        "color_scheme": "scheme-1",
         "image_ratio": "adapt",
         "image_shape": "default",
         "show_secondary_image": true,
@@ -38,6 +71,7 @@
         "show_rating": false,
         "quick_add": "none",
         "columns_mobile": "2",
+        "swipe_on_mobile": false,
         "padding_top": 44,
         "padding_bottom": 36
       }
@@ -46,6 +80,7 @@
       "type": "pf-flash-sale",
       "settings": {
         "heading": "Flash Sale — Ưu đãi tháng 9",
+        "collection": "asset-pack-77889830914-example-products",
         "products_to_show": 5,
         "padding_top": 48,
         "padding_bottom": 48
@@ -55,6 +90,7 @@
       "type": "pf-daily-deals",
       "settings": {
         "heading": "Giá Tốt Mỗi Ngày",
+        "collection": "asset-pack-77889830914-example-products",
         "products_to_show": 8,
         "padding_top": 48,
         "padding_bottom": 48
@@ -63,14 +99,57 @@
     "pf_category_grid": {
       "type": "pf-category-grid",
       "blocks": {
-        "cat1": { "type": "category", "settings": {} },
-        "cat2": { "type": "category", "settings": {} },
-        "cat3": { "type": "category", "settings": {} },
-        "cat4": { "type": "category", "settings": {} },
-        "cat5": { "type": "category", "settings": {} },
-        "cat6": { "type": "category", "settings": {} }
+        "cat1": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "label": ""
+          }
+        },
+        "cat2": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "label": ""
+          }
+        },
+        "cat3": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "label": ""
+          }
+        },
+        "cat4": {
+          "type": "category",
+          "settings": {
+            "collection": "asset-pack-77889830914-example-products",
+            "label": ""
+          }
+        },
+        "cat5": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "label": ""
+          }
+        },
+        "cat6": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "label": ""
+          }
+        }
       },
-      "block_order": ["cat1", "cat2", "cat3", "cat4", "cat5", "cat6"],
+      "block_order": [
+        "cat1",
+        "cat2",
+        "cat3",
+        "cat4",
+        "cat5",
+        "cat6"
+      ],
       "settings": {
         "heading": "Danh Mục Sản Phẩm",
         "padding_top": 48,
@@ -80,11 +159,33 @@
     "pf_three_regions": {
       "type": "pf-three-regions",
       "blocks": {
-        "north": { "type": "region", "settings": { "subtitle": "Miền Bắc" } },
-        "central": { "type": "region", "settings": { "subtitle": "Miền Trung" } },
-        "south": { "type": "region", "settings": { "subtitle": "Miền Nam" } }
+        "north": {
+          "type": "region",
+          "settings": {
+            "subtitle": "Miền Bắc",
+            "collection": ""
+          }
+        },
+        "central": {
+          "type": "region",
+          "settings": {
+            "subtitle": "Miền Trung",
+            "collection": ""
+          }
+        },
+        "south": {
+          "type": "region",
+          "settings": {
+            "subtitle": "Miền Nam",
+            "collection": ""
+          }
+        }
       },
-      "block_order": ["north", "central", "south"],
+      "block_order": [
+        "north",
+        "central",
+        "south"
+      ],
       "settings": {
         "heading": "Đặc Sản 3 Miền",
         "padding_top": 48,
@@ -95,24 +196,50 @@
       "type": "pf-snacks",
       "settings": {
         "heading": "Ăn Vặt",
+        "collection": "",
         "products_to_show": 6,
         "padding_top": 48,
         "padding_bottom": 48
       }
     },
-    "pf_banner_strip_1": { "type": "pf-banner-strip", "settings": { "alt_text": "Banner ưu đãi", "padding_top": 12, "padding_bottom": 12 } },
-    "pf_banner_strip_2": { "type": "pf-banner-strip", "settings": { "alt_text": "Banner ưu đãi", "padding_top": 12, "padding_bottom": 12 } },
-    "pf_banner_strip_3": { "type": "pf-banner-strip", "settings": { "alt_text": "Banner ưu đãi", "padding_top": 12, "padding_bottom": 12 } },
-    "pf_banner_strip_4": { "type": "pf-banner-strip", "settings": { "alt_text": "Banner ưu đãi", "padding_top": 12, "padding_bottom": 12 } },
     "pf_buying_guide": {
       "type": "pf-buying-guide",
       "blocks": {
-        "s1": { "type": "step", "settings": { "title": "Chọn sản phẩm", "description": "Vào phomifood.eu, chọn món bạn thích" } },
-        "s2": { "type": "step", "settings": { "title": "Thêm vào giỏ", "description": "Chọn số lượng, bấm Thêm vào giỏ" } },
-        "s3": { "type": "step", "settings": { "title": "Đặt hàng", "description": "Điền địa chỉ, chọn thanh toán COD hoặc chuyển khoản" } },
-        "s4": { "type": "step", "settings": { "title": "Nhận hàng", "description": "Giao toàn châu Âu, Séc có thể nhận trong ngày" } }
+        "s1": {
+          "type": "step",
+          "settings": {
+            "title": "Chọn sản phẩm",
+            "description": "Vào phomifood.eu, chọn món bạn thích"
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "title": "Thêm vào giỏ",
+            "description": "Chọn số lượng, bấm Thêm vào giỏ"
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "title": "Đặt hàng",
+            "description": "Điền địa chỉ, chọn thanh toán COD hoặc chuyển khoản"
+          }
+        },
+        "s4": {
+          "type": "step",
+          "settings": {
+            "title": "Nhận hàng",
+            "description": "Giao toàn châu Âu, Séc có thể nhận trong ngày"
+          }
+        }
       },
-      "block_order": ["s1", "s2", "s3", "s4"],
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
       "settings": {
         "heading": "Mua Hàng Dễ Dàng",
         "padding_top": 56,
@@ -121,17 +248,13 @@
     }
   },
   "order": [
-    "pf_hero_slideshow",
+    "image_banner",
     "featured_collection",
     "pf_flash_sale",
-    "pf_banner_strip_1",
     "pf_daily_deals",
-    "pf_banner_strip_2",
     "pf_category_grid",
     "pf_three_regions",
-    "pf_banner_strip_3",
     "pf_snacks",
-    "pf_banner_strip_4",
     "pf_buying_guide"
   ]
 }
