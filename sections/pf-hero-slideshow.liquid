@@ -58,11 +58,22 @@
 <div id="pf-slideshow-{{ section.id }}" data-interval="{{ section.settings.autoplay_interval | times: 1000 }}">
   <div class="pf-ss-viewport">
     {%- for block in section.blocks -%}
-      {%- assign has_image = block.settings.image != blank -%}
+      {%- liquid
+        assign slide_bg = ''
+        if block.settings.image != blank
+          assign slide_bg = block.settings.image | image_url: width: 2000
+        elsif section.settings.fallback_asset != blank
+          assign slide_bg = section.settings.fallback_asset | asset_url
+        endif
+        assign has_image = false
+        if slide_bg != ''
+          assign has_image = true
+        endif
+      -%}
       <div
         class="pf-ss-slide{% if forloop.first %} is-active{% endif %}{% unless has_image %} pf-placeholder{% endunless %}"
         data-index="{{ forloop.index0 }}"
-        {% if has_image %}style="background-image: url({{ block.settings.image | image_url: width: 2000 }});"{% endif %}
+        {% if has_image %}style="background-image: url({{ slide_bg }});"{% endif %}
         {{ block.shopify_attributes }}
       >
         {%- if has_image -%}<div class="pf-ss-overlay"></div>{%- endif -%}
@@ -146,6 +157,13 @@
         { "value": "center", "label": "Giữa" }
       ],
       "default": "left"
+    },
+    {
+      "type": "text",
+      "id": "fallback_asset",
+      "label": "Ảnh nền mặc định (file trong assets/)",
+      "info": "Dùng khi slide chưa có ảnh riêng. Đặt file ảnh vào thư mục assets/ của theme, rồi nhập đúng tên file (vd: pf-hero.jpg).",
+      "default": "pf-hero.jpg"
     }
   ],
   "blocks": [
