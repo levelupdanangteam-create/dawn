@@ -79,3 +79,31 @@ body.gradient {
   color: #ffffff !important;
   border-color: #155e20 !important;
 }
+
+/* ---- Policy / guide pages -------------------------------------- */
+.pf-policy { padding: 4rem 0 6rem; }
+.pf-policy__wrap {
+  max-width: 84rem; margin-inline: auto; padding: 3.4rem clamp(2rem, 4vw, 4.4rem);
+  background: #ffffff; border: 1px solid #ecdfc8; border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(60, 40, 20, 0.06);
+}
+.pf-policy__title {
+  font-family: var(--font-heading-family, sans-serif); font-weight: 800; color: #1e6b1e;
+  font-size: clamp(2.6rem, 4vw, 3.4rem); margin: 0 0 2.4rem; text-align: center; line-height: 1.15;
+}
+.pf-policy__wrap h2 { color: #1e6b1e; font-size: 2.1rem; margin: 2.8rem 0 1rem; line-height: 1.3; }
+.pf-policy__wrap h3 { color: #c8870a; font-size: 1.65rem; margin: 1.8rem 0 0.8rem; }
+.pf-policy__wrap p, .pf-policy__wrap li { font-size: 1.55rem; line-height: 1.75; color: #3a352f; }
+.pf-policy__wrap ul { padding-left: 2.2rem; margin: 0.8rem 0 1.4rem; }
+.pf-policy__wrap li { margin-bottom: 0.6rem; }
+.pf-policy__wrap a { color: #1e6b1e; text-decoration: underline; }
+.pf-policy__lead { font-size: 1.6rem; color: #574f45; }
+.pf-policy table { width: 100%; border-collapse: collapse; margin: 1.4rem 0; }
+.pf-policy th, .pf-policy td { border: 1px solid #ecdfc8; padding: 1rem 1.2rem; text-align: left; font-size: 1.45rem; }
+.pf-policy th { background: #f6ead3; color: #3a352f; }
+.pf-policy__note {
+  background: #fff8e7; border-left: 4px solid #c8870a; padding: 1.2rem 1.6rem;
+  border-radius: 8px; margin: 1.6rem 0;
+}
+.pf-policy__cols { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.2rem 2.4rem; }
+@media (max-width: 749px) { .pf-policy__cols { grid-template-columns: 1fr; } }
