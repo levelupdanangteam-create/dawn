@@ -1,0 +1,31 @@
+{%- comment -%} Trust / assurance box on the product detail page {%- endcomment -%}
+<style>
+  .pf-ptrust { margin: 2rem 0 0; border: 1px solid #ecdfc8; border-radius: 12px; overflow: hidden; background: #fff8e7; }
+  .pf-ptrust__row { display: flex; align-items: flex-start; gap: 1.4rem; padding: 1.6rem 1.8rem; }
+  .pf-ptrust__row + .pf-ptrust__row { border-top: 1px solid #ecdfc8; }
+  .pf-ptrust__ic { flex: none; width: 4.2rem; height: 4.2rem; border-radius: 50%; display: grid; place-items: center; background: #1e6b1e; color: #fff; }
+  .pf-ptrust__ic.gold { background: #c8870a; }
+  .pf-ptrust__t { font-size: 1.5rem; font-weight: 800; color: #1e6b1e; letter-spacing: 0.01em; margin: 0 0 0.3rem; text-transform: uppercase; }
+  .pf-ptrust__d { font-size: 1.35rem; line-height: 1.55; color: #574f45; margin: 0; }
+</style>
+
+<div class="pf-ptrust">
+  <div class="pf-ptrust__row">
+    <span class="pf-ptrust__ic" aria-hidden="true">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v8H3z"/><path d="M14 10h4l3 3v2h-7z"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+    </span>
+    <div>
+      <p class="pf-ptrust__t">Miễn phí giao hàng trên 25 nước Châu Âu</p>
+      <p class="pf-ptrust__d">Áp dụng với đơn hàng &gt; 150€.</p>
+    </div>
+  </div>
+  <div class="pf-ptrust__row">
+    <span class="pf-ptrust__ic gold" aria-hidden="true">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 1 1-4.9-7.7"/><path d="M21 4v4h-4"/></svg>
+    </span>
+    <div>
+      <p class="pf-ptrust__t">Đổi trả dễ dàng</p>
+      <p class="pf-ptrust__d">Sản phẩm bị lỗi khi giao nhận: hoàn lại tiền <strong>100%</strong>. Nếu khách hàng phát hiện hàng giả: hoàn <strong>120%</strong> giá trị sản phẩm.</p>
+    </div>
+  </div>
+</div>
