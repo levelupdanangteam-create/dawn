@@ -11,31 +11,49 @@
 
   #pf-catgrid-{{ section.id }} .pf-grid { display: grid; grid-template-columns: repeat(var(--pf-cols, 5), 1fr); gap: 2rem; max-width: 100rem; margin-inline: auto; }
   #pf-catgrid-{{ section.id }} .pf-cat {
+    position: relative; overflow: hidden;
     display: flex; flex-direction: column; align-items: center; gap: 1.4rem; text-align: center;
-    padding: 2.2rem 1rem 1.9rem; background: #fff;
-    border: 1px solid #ece3d4; border-radius: 18px;
-    box-shadow: 0 8px 22px rgba(120,100,70,.09); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    padding: 2.6rem 1rem 1.9rem; background: #fff;
+    border: 1px solid #ece3d4; border-radius: 20px;
+    box-shadow: 0 8px 22px rgba(120,100,70,.09); transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
   }
-  #pf-catgrid-{{ section.id }} .pf-cat:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 18px 36px rgba(30,60,120,.18); border-color: #bcd3f7;
+  #pf-catgrid-{{ section.id }} .pf-cat::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 5px;
+    background: linear-gradient(90deg, #1e63c8, #6aa0ef); transform: scaleX(0); transform-origin: left;
+    transition: transform .3s ease;
   }
+  #pf-catgrid-{{ section.id }} .pf-cat:hover { transform: translateY(-8px); box-shadow: 0 22px 40px rgba(30,60,120,.2); border-color: #bcd3f7; }
+  #pf-catgrid-{{ section.id }} .pf-cat:hover::before { transform: scaleX(1); }
+
   #pf-catgrid-{{ section.id }} .pf-cat .thumb {
-    width: 10.5rem; height: 10.5rem; border-radius: 50%; overflow: hidden; display: grid; place-items: center;
-    background: radial-gradient(circle at 50% 35%, #eaf1fd 0%, #dbe8fb 100%); border: 4px solid #fff;
-    box-shadow: 0 0 0 1px #d3e1f7, 0 10px 22px rgba(30,60,120,.14); color: #1e63c8;
-    transition: box-shadow .2s ease, transform .2s ease;
+    width: 11rem; height: 11rem; border-radius: 50%; overflow: hidden; display: grid; place-items: center;
+    background: #fff; color: #1e63c8; padding: 5px;
+    background-image: linear-gradient(#fff, #fff), linear-gradient(135deg, #1e63c8, #6aa0ef);
+    background-origin: border-box; background-clip: content-box, border-box; border: 3px solid transparent;
+    box-shadow: 0 10px 24px rgba(30,60,120,.16);
+    transition: box-shadow .22s ease, transform .22s ease;
   }
-  #pf-catgrid-{{ section.id }} .pf-cat:hover .thumb { transform: scale(1.03); box-shadow: 0 0 0 1px #9dc0f2, 0 14px 28px rgba(30,60,120,.24); }
-  #pf-catgrid-{{ section.id }} .pf-cat .thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
-  #pf-catgrid-{{ section.id }} .pf-cat:hover .thumb img { transform: scale(1.08); }
-  #pf-catgrid-{{ section.id }} .pf-cat .name { font-size: 1.45rem; font-weight: 700; color: #2a2622; line-height: 1.3; text-decoration: none; transition: color .18s ease; }
+  #pf-catgrid-{{ section.id }} .pf-cat:hover .thumb { transform: scale(1.04); box-shadow: 0 16px 32px rgba(30,60,120,.28); }
+  #pf-catgrid-{{ section.id }} .pf-cat .thumb img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; transition: transform .4s ease; }
+  #pf-catgrid-{{ section.id }} .pf-cat:hover .thumb img { transform: scale(1.09); }
+
+  #pf-catgrid-{{ section.id }} .pf-cat .name {
+    display: inline-flex; align-items: center; gap: .4rem;
+    font-size: 1.45rem; font-weight: 700; color: #2a2622; line-height: 1.3; text-decoration: none; transition: color .18s ease;
+  }
+  #pf-catgrid-{{ section.id }} .pf-cat .name .arrow {
+    display: inline-block; color: #1e63c8; font-weight: 800;
+    max-width: 0; opacity: 0; transform: translateX(-4px); overflow: hidden;
+    transition: max-width .25s ease, opacity .25s ease, transform .25s ease;
+  }
   #pf-catgrid-{{ section.id }} .pf-cat:hover .name { color: #1e63c8; }
+  #pf-catgrid-{{ section.id }} .pf-cat:hover .name .arrow { max-width: 2rem; opacity: 1; transform: translateX(0); }
+
   @media (max-width: 989px) { #pf-catgrid-{{ section.id }} .pf-grid { grid-template-columns: repeat(3, 1fr); gap: 1.6rem; } }
   @media (max-width: 599px) {
     #pf-catgrid-{{ section.id }} .pf-grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
-    #pf-catgrid-{{ section.id }} .pf-cat { padding: 1.6rem .8rem 1.4rem; }
-    #pf-catgrid-{{ section.id }} .pf-cat .thumb { width: 8.5rem; height: 8.5rem; }
+    #pf-catgrid-{{ section.id }} .pf-cat { padding: 2rem .8rem 1.4rem; }
+    #pf-catgrid-{{ section.id }} .pf-cat .thumb { width: 8.8rem; height: 8.8rem; }
     #pf-catgrid-{{ section.id }} .pf-cat .name { font-size: 1.3rem; }
   }
 </style>
@@ -67,7 +85,7 @@
               {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
             {%- endif -%}
           </a>
-          <a class="name" href="{{ cat_url }}">{{ cat_label }}</a>
+          <a class="name" href="{{ cat_url }}">{{ cat_label }}<span class="arrow" aria-hidden="true">→</span></a>
         </div>
       {%- endfor -%}
     </div>
