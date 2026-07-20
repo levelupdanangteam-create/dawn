@@ -403,5 +403,9 @@
     {%- if settings.cart_type == 'drawer' -%}
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
+
+    {%- unless request.page_type == 'cart' -%}
+      {% render 'pf-sticky-cart' %}
+    {%- endunless -%}
   </body>
 </html>

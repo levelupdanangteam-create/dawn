@@ -1,0 +1,142 @@
+{%- comment -%}
+  Floating sticky cart bar shown at the bottom of the screen. Appears when a
+  product is added to the cart and stays visible on every page while the cart
+  has items. Shows the last-added product, item count + total, and a view-cart
+  button. Reacts to the pf:cart:added event and to header cart-bubble changes.
+{%- endcomment -%}
+<style>
+  .pf-sc {
+    position: fixed; left: 50%; bottom: 1.6rem; transform: translateX(-50%) translateY(160%);
+    z-index: 20; width: min(72rem, calc(100vw - 2.4rem));
+    display: flex; align-items: center; gap: 1.2rem;
+    background: #ffffff; border: 1px solid #ece3d4; border-radius: 999px;
+    box-shadow: 0 14px 40px rgba(30, 40, 20, .22); padding: .8rem 1rem .8rem 1.2rem;
+    opacity: 0; pointer-events: none; transition: transform .35s cubic-bezier(.2,.7,.3,1), opacity .3s ease;
+  }
+  .pf-sc.is-visible { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
+  .pf-sc__prod { display: flex; align-items: center; gap: 1rem; min-width: 0; flex: 1 1 auto; }
+  .pf-sc__img {
+    flex: none; width: 4.4rem; height: 4.4rem; border-radius: 10px; object-fit: cover;
+    background: #f4efe6; border: 1px solid #eee2cf;
+  }
+  .pf-sc__img:not([src]) { display: none; }
+  .pf-sc__text { min-width: 0; display: flex; flex-direction: column; gap: .1rem; }
+  .pf-sc__name {
+    font-size: 1.4rem; font-weight: 700; color: #2a2622; line-height: 1.25;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .pf-sc__meta { font-size: 1.25rem; color: #6a6255; }
+  .pf-sc__meta b { color: #d62828; font-weight: 800; }
+  .pf-sc__btn {
+    flex: none; display: inline-flex; align-items: center; gap: .6rem; text-decoration: none;
+    background: linear-gradient(90deg, #1e8541, #14672f); color: #fff; font-weight: 800; font-size: 1.4rem;
+    padding: 1rem 1.8rem; border-radius: 999px; white-space: nowrap; transition: filter .15s ease;
+  }
+  .pf-sc__btn:hover { filter: brightness(1.07); }
+  .pf-sc__close {
+    flex: none; width: 2.8rem; height: 2.8rem; border: none; background: transparent; cursor: pointer;
+    color: #9a9184; font-size: 2rem; line-height: 1; border-radius: 50%;
+  }
+  .pf-sc__close:hover { background: #f3ede2; color: #2a2622; }
+  @media (max-width: 599px) {
+    .pf-sc { border-radius: 18px; padding: .9rem; gap: .9rem; }
+    .pf-sc__btn { padding: 1rem 1.4rem; font-size: 1.3rem; }
+    .pf-sc__name { font-size: 1.3rem; }
+  }
+</style>
+
+<div
+  id="pf-sticky-cart"
+  class="pf-sc{% if cart.item_count > 0 %} is-visible{% endif %}"
+  data-currency="{{ cart.currency.iso_code }}"
+  data-locale="{{ request.locale.iso_code | default: 'vi' }}"
+  data-count="{{ cart.item_count }}"
+  data-total="{{ cart.total_price }}"
+  role="region"
+  aria-label="Giỏ hàng"
+>
+  <div class="pf-sc__prod">
+    <img class="pf-sc__img" id="pf-sc-img" alt="" width="44" height="44"
+      {%- if cart.items.last.image %} src="{{ cart.items.last.image | image_url: width: 120 }}"{% endif -%}>
+    <div class="pf-sc__text">
+      <span class="pf-sc__name" id="pf-sc-name">{{ cart.items.last.product.title | default: 'Sản phẩm đã thêm vào giỏ' }}</span>
+      <span class="pf-sc__meta"><span id="pf-sc-count">{{ cart.item_count }}</span> sản phẩm · <b id="pf-sc-total">{{ cart.total_price | money }}</b></span>
+    </div>
+  </div>
+  <a class="pf-sc__btn" href="{{ routes.cart_url }}">🛒 Xem giỏ hàng</a>
+  <button type="button" class="pf-sc__close" id="pf-sc-close" aria-label="Ẩn">×</button>
+</div>
+
+<script>
+  (function () {
+    if (window.__pfStickyCart) return;
+    window.__pfStickyCart = true;
+
+    var bar = document.getElementById('pf-sticky-cart');
+    if (!bar) return;
+    var imgEl = document.getElementById('pf-sc-img');
+    var nameEl = document.getElementById('pf-sc-name');
+    var countEl = document.getElementById('pf-sc-count');
+    var totalEl = document.getElementById('pf-sc-total');
+    var closeBtn = document.getElementById('pf-sc-close');
+    var currency = bar.getAttribute('data-currency') || 'EUR';
+    var locale = bar.getAttribute('data-locale') || 'vi';
+
+    function fmt(cents) {
+      try {
+        return new Intl.NumberFormat(locale, { style: 'currency', currency: currency }).format((cents || 0) / 100);
+      } catch (e) {
+        return ((cents || 0) / 100).toFixed(2);
+      }
+    }
+    function show() { bar.classList.add('is-visible'); }
+    function hide() { bar.classList.remove('is-visible'); }
+
+    // Restore last-added product name/image from previous pages
+    try {
+      var saved = JSON.parse(localStorage.getItem('pfLastAdded') || 'null');
+      if (saved && parseInt(bar.getAttribute('data-count'), 10) > 0) {
+        if (saved.name) nameEl.textContent = saved.name;
+        if (saved.img) imgEl.setAttribute('src', saved.img);
+      }
+    } catch (e) {}
+
+    function refresh(reveal) {
+      fetch((window.Shopify && Shopify.routes ? Shopify.routes.root : '/') + 'cart.js', { headers: { Accept: 'application/json' } })
+        .then(function (r) { return r.json(); })
+        .then(function (cart) {
+          if (countEl) countEl.textContent = cart.item_count;
+          if (totalEl) totalEl.textContent = fmt(cart.total_price);
+          bar.setAttribute('data-count', cart.item_count);
+          if (cart.item_count > 0) { if (reveal) show(); }
+          else hide();
+        })
+        .catch(function () {});
+    }
+
+    // A product was added via the custom card buttons (pf-cart-ajax.js)
+    document.addEventListener('pf:cart:added', function (e) {
+      var d = e.detail || {};
+      var name = d.product_title || d.title || nameEl.textContent;
+      var img = d.image || (d.featured_image && d.featured_image.url) || '';
+      if (name) nameEl.textContent = name;
+      if (img) imgEl.setAttribute('src', img);
+      try { localStorage.setItem('pfLastAdded', JSON.stringify({ name: name, img: img })); } catch (_) {}
+      show();
+      refresh(true);
+    });
+
+    // Catch every other add path (product page, cart drawer) by watching the
+    // header cart bubble for changes, then re-reading the cart.
+    var bubble = document.getElementById('cart-icon-bubble');
+    if (bubble && 'MutationObserver' in window) {
+      var t;
+      new MutationObserver(function () {
+        clearTimeout(t);
+        t = setTimeout(function () { refresh(true); }, 250);
+      }).observe(bubble, { childList: true, subtree: true });
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', hide);
+  })();
+</script>
