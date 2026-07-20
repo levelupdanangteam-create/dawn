@@ -21,8 +21,14 @@
   #pf-catgrid-{{ section.id }} .pf-cat:hover .thumb { transform: translateY(-5px); box-shadow: 0 16px 30px rgba(30,60,120,.18); }
   #pf-catgrid-{{ section.id }} .pf-cat .thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
   #pf-catgrid-{{ section.id }} .pf-cat:hover .thumb img { transform: scale(1.07); }
-  #pf-catgrid-{{ section.id }} .pf-cat .name { font-size: 1.4rem; font-weight: 700; color: #2a2622; line-height: 1.3; }
+  #pf-catgrid-{{ section.id }} .pf-cat .name { font-size: 1.4rem; font-weight: 700; color: #2a2622; line-height: 1.3; text-decoration: none; }
   #pf-catgrid-{{ section.id }} .pf-cat:hover .name { color: #1e63c8; }
+  #pf-catgrid-{{ section.id }} .pf-cat-btn {
+    margin-top: auto; display: inline-flex; align-items: center; gap: .4rem; border: 1.5px solid #1e63c8;
+    color: #1e63c8; background: #fff; font-weight: 700; font-size: 1.2rem; padding: .7rem 1.6rem;
+    border-radius: 999px; text-decoration: none; transition: background .15s ease, color .15s ease;
+  }
+  #pf-catgrid-{{ section.id }} .pf-cat-btn:hover { background: #1e63c8; color: #fff; }
   @media (max-width: 989px) { #pf-catgrid-{{ section.id }} .pf-grid { grid-template-columns: repeat(3, 1fr); } }
   @media (max-width: 599px) { #pf-catgrid-{{ section.id }} .pf-grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; } }
 </style>
@@ -36,12 +42,16 @@
     <div class="pf-grid" style="--pf-cols: {{ section.blocks.size | at_most: 6 }};">
       {%- for block in section.blocks -%}
         {%- assign col = block.settings.collection -%}
-        <a
-          class="pf-cat"
-          {% if col != blank %}href="{{ col.url }}"{% else %}href="#" role="link" aria-disabled="true"{% endif %}
-          {{ block.shopify_attributes }}
-        >
-          <span class="thumb">
+        {%- if block.settings.label != blank -%}
+          {%- assign cat_label = block.settings.label -%}
+        {%- elsif col != blank -%}
+          {%- assign cat_label = col.title -%}
+        {%- else -%}
+          {%- assign cat_label = 'Tên danh mục' -%}
+        {%- endif -%}
+        {%- if col != blank -%}{%- assign cat_url = col.url -%}{%- else -%}{%- assign cat_url = '#' -%}{%- endif -%}
+        <div class="pf-cat" {{ block.shopify_attributes }}>
+          <a class="thumb" href="{{ cat_url }}" aria-label="{{ cat_label | escape }}">
             {%- if col != blank and col.image -%}
               <img src="{{ col.image | image_url: width: 300 }}" alt="{{ col.title | escape }}" loading="lazy" width="300" height="300">
             {%- elsif col != blank and col.products.first.featured_image -%}
@@ -49,11 +59,10 @@
             {%- else -%}
               {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
             {%- endif -%}
-          </span>
-          <span class="name">
-            {%- if block.settings.label != blank -%}{{ block.settings.label }}{%- elsif col != blank -%}{{ col.title }}{%- else -%}Tên danh mục{%- endif -%}
-          </span>
-        </a>
+          </a>
+          <a class="name" href="{{ cat_url }}">{{ cat_label }}</a>
+          <a class="pf-cat-btn" href="{{ cat_url }}">Xem sản phẩm</a>
+        </div>
       {%- endfor -%}
     </div>
   </div>
