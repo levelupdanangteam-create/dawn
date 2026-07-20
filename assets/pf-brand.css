@@ -175,7 +175,8 @@ body.gradient {
 .pf-flash__media svg { width: 100%; height: 100%; object-fit: cover; }
 .pf-flash__disc { position: absolute; top: 0; left: 0; z-index: 2; background: linear-gradient(135deg, #ff5a3c, #d62828); color: #fff; font-size: 1.15rem; font-weight: 800; padding: 0.4rem 0.9rem; border-radius: 0 0 12px 0; box-shadow: 0 4px 10px rgba(214, 40, 40, 0.3); }
 .pf-flash__hot { position: absolute; top: 1rem; right: 1rem; z-index: 2; background: #ffe08a; color: #a35a12; font-size: 1rem; font-weight: 800; padding: 0.3rem 0.8rem; border-radius: 7px; letter-spacing: 0.04em; }
-.pf-flash__info { padding: 1.2rem 1.3rem 1.4rem; display: flex; flex-direction: column; gap: 0.6rem; }
+.pf-flash__info { padding: 1.2rem 1.3rem 1.4rem; display: flex; flex-direction: column; gap: 0.6rem; flex: 1; }
+.pf-flash__info .pf-card-actions { margin-top: auto; }
 .pf-flash__nm { margin: 0; font-size: 1.35rem; font-weight: 600; line-height: 1.35; color: #2a2622; }
 .pf-flash__nm a { color: inherit; text-decoration: none; }
 .pf-flash__nm a:hover { color: #d62828; }

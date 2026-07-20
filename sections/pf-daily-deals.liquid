@@ -10,13 +10,14 @@
   }
   #pf-daily-{{ section.id }} .pf-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.8rem; }
   #pf-daily-{{ section.id }} .pf-card {
-    display: block; background: #fff; border: 1px solid #ececec; border-radius: 12px; overflow: hidden;
+    display: flex; flex-direction: column; background: #fff; border: 1px solid #ececec; border-radius: 12px; overflow: hidden;
     transition: box-shadow .16s ease, transform .16s ease;
   }
   #pf-daily-{{ section.id }} .pf-card:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(0,0,0,.08); }
   #pf-daily-{{ section.id }} .pf-media { aspect-ratio: 1; background: #f7f7f7; display: grid; place-items: center; }
   #pf-daily-{{ section.id }} .pf-media img, #pf-daily-{{ section.id }} .pf-media svg { width: 100%; height: 100%; object-fit: cover; }
-  #pf-daily-{{ section.id }} .pf-info { padding: 1.2rem 1.4rem 1.5rem; }
+  #pf-daily-{{ section.id }} .pf-info { padding: 1.2rem 1.4rem 1.5rem; display: flex; flex-direction: column; flex: 1; }
+  #pf-daily-{{ section.id }} .pf-info .pf-card-actions { margin-top: auto; }
   #pf-daily-{{ section.id }} .pf-name { margin: 0 0 .6rem; font-size: 1.4rem; font-weight: 600; color: #1a1a1a; line-height: 1.35; }
   #pf-daily-{{ section.id }} .pf-price { font-size: 1.5rem; font-weight: 800; color: #1e63c8; }
   @media (max-width: 989px) { #pf-daily-{{ section.id }} .pf-grid { grid-template-columns: repeat(3, 1fr); } }

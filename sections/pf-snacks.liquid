@@ -10,13 +10,14 @@
   }
   #pf-snacks-{{ section.id }} .pf-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1.6rem; }
   #pf-snacks-{{ section.id }} .pf-card {
-    display: block; background: #fff; border: 1px solid #efe6da; border-radius: 12px; overflow: hidden;
+    display: flex; flex-direction: column; background: #fff; border: 1px solid #efe6da; border-radius: 12px; overflow: hidden;
     transition: box-shadow .16s ease, transform .16s ease;
   }
   #pf-snacks-{{ section.id }} .pf-card:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(0,0,0,.08); }
   #pf-snacks-{{ section.id }} .pf-media { aspect-ratio: 1; background: #f7f1e8; display: grid; place-items: center; }
   #pf-snacks-{{ section.id }} .pf-media img, #pf-snacks-{{ section.id }} .pf-media svg { width: 100%; height: 100%; object-fit: cover; }
-  #pf-snacks-{{ section.id }} .pf-info { padding: 1.1rem 1.2rem 1.4rem; }
+  #pf-snacks-{{ section.id }} .pf-info { padding: 1.1rem 1.2rem 1.4rem; display: flex; flex-direction: column; flex: 1; }
+  #pf-snacks-{{ section.id }} .pf-info .pf-card-actions { margin-top: auto; }
   #pf-snacks-{{ section.id }} .pf-name { margin: 0 0 .5rem; font-size: 1.3rem; font-weight: 600; color: #1a1a1a; line-height: 1.35; }
   #pf-snacks-{{ section.id }} .pf-price { font-size: 1.4rem; font-weight: 800; color: #1e63c8; }
   @media (max-width: 989px) { #pf-snacks-{{ section.id }} .pf-row { grid-template-columns: repeat(3, 1fr); } }
