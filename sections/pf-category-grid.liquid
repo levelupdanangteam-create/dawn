@@ -23,12 +23,6 @@
   #pf-catgrid-{{ section.id }} .pf-cat:hover .thumb img { transform: scale(1.07); }
   #pf-catgrid-{{ section.id }} .pf-cat .name { font-size: 1.4rem; font-weight: 700; color: #2a2622; line-height: 1.3; text-decoration: none; }
   #pf-catgrid-{{ section.id }} .pf-cat:hover .name { color: #1e63c8; }
-  #pf-catgrid-{{ section.id }} .pf-cat-btn {
-    margin-top: auto; display: inline-flex; align-items: center; gap: .4rem; border: 1.5px solid #1e63c8;
-    color: #1e63c8; background: #fff; font-weight: 700; font-size: 1.2rem; padding: .7rem 1.6rem;
-    border-radius: 999px; text-decoration: none; transition: background .15s ease, color .15s ease;
-  }
-  #pf-catgrid-{{ section.id }} .pf-cat-btn:hover { background: #1e63c8; color: #fff; }
   @media (max-width: 989px) { #pf-catgrid-{{ section.id }} .pf-grid { grid-template-columns: repeat(3, 1fr); } }
   @media (max-width: 599px) { #pf-catgrid-{{ section.id }} .pf-grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; } }
 </style>
@@ -61,7 +55,6 @@
             {%- endif -%}
           </a>
           <a class="name" href="{{ cat_url }}">{{ cat_label }}</a>
-          <a class="pf-cat-btn" href="{{ cat_url }}">Xem sản phẩm</a>
         </div>
       {%- endfor -%}
     </div>
