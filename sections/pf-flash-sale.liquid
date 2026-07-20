@@ -5,6 +5,7 @@
       heading: section.settings.heading,
       countdown_hours: section.settings.countdown_hours,
       limit: section.settings.products_to_show,
+      show_all: section.settings.show_all,
       uid: section.id
     %}
   </div>
@@ -17,7 +18,8 @@
   "settings": [
     { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Flash Sale — Ưu đãi tháng 9" },
     { "type": "collection", "id": "collection", "label": "Bộ sưu tập" },
-    { "type": "range", "id": "products_to_show", "min": 2, "max": 5, "step": 1, "label": "Số sản phẩm hiển thị", "default": 5 },
+    { "type": "checkbox", "id": "show_all", "label": "Hiện tất cả sản phẩm trong bộ sưu tập", "default": true },
+    { "type": "range", "id": "products_to_show", "min": 2, "max": 50, "step": 1, "label": "Số sản phẩm (khi tắt 'Hiện tất cả')", "default": 10 },
     { "type": "range", "id": "countdown_hours", "min": 1, "max": 24, "step": 1, "unit": "h", "label": "Đếm ngược (giờ)", "default": 3 },
     { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 48 },
     { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 48 }

@@ -8,6 +8,9 @@
   assign hrs = countdown_hours | default: 3
   assign lim = limit | default: 5
   assign col = deal_collection
+  if show_all and col != blank
+    assign lim = col.products_count
+  endif
 -%}
 <div class="pf-flash" id="pf-flash-{{ uid }}">
   <div class="pf-flash__head">
@@ -24,7 +27,7 @@
         <span class="pf-u hh">00</span><i>:</i><span class="pf-u mm">00</span><i>:</i><span class="pf-u ss">00</span>
       </span>
     </div>
-    {%- if col != blank -%}
+    {%- if col != blank and show_all != true -%}
       <a class="pf-flash__more" href="{{ col.url }}">Xem tất cả
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
       </a>
