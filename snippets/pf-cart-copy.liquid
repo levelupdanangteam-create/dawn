@@ -23,12 +23,6 @@
   }
   .pf-ordercopy__btn:hover { filter: brightness(1.08); }
   .pf-ordercopy__btn.copied { background: #1e63c8; }
-  .pf-ordercopy__wa {
-    margin-top: .9rem; width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
-    background: #25d366; color: #fff; text-decoration: none;
-    font-size: 1.5rem; font-weight: 800; padding: 1.2rem 1.6rem; border-radius: 12px; transition: filter .15s ease;
-  }
-  .pf-ordercopy__wa:hover { filter: brightness(1.06); }
   .pf-ordercopy__hint { margin: .9rem 0 0; font-size: 1.25rem; color: #7a7266; text-align: center; line-height: 1.5; }
   .pf-ordercopy__hint b { color: #14672f; }
   .pf-ordercopy__src { position: absolute; left: -9999px; top: 0; opacity: 0; }
@@ -71,9 +65,6 @@ TỔNG TẠM TÍNH: {{ cart.total_price | money }}
     <button type="button" class="pf-ordercopy__btn" id="pf-order-copy-btn" data-label="📋 Copy thông tin đơn hàng">
       📋 Copy thông tin đơn hàng
     </button>
-    <a class="pf-ordercopy__wa" href="https://wa.me/?text={{ pf_order_text | url_encode }}" target="_blank" rel="noopener">
-      💬 Gửi qua WhatsApp
-    </a>
     <p class="pf-ordercopy__hint">Muốn được <b>tư vấn kỹ hơn</b>? Hãy sao chép đơn hàng và gửi vào <b>Fanpage / Messenger của PHOMIFOOD</b> để được hỗ trợ nhanh nhất.</p>
   </div>
 </div>
