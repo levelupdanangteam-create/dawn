@@ -23,7 +23,24 @@ body.gradient {
   background-color: #ffffff !important;
 }
 .header-wrapper {
-  border-bottom: 1px solid #ece4d8;
+  position: relative;
+  border-bottom: 1px solid #efe7db;
+  box-shadow: 0 2px 14px rgba(120, 100, 70, .06);
+}
+/* Thin brand gradient strip across the very top of the header */
+.header-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #1e63c8 0%, #3f8ae0 50%, #d62828 100%);
+  z-index: 4;
+}
+/* Slightly deeper shadow once the header sticks on scroll */
+.shopify-section-header-sticky .header-wrapper {
+  box-shadow: 0 6px 22px rgba(120, 100, 70, .12);
 }
 .header,
 .header__heading-link,
@@ -35,17 +52,52 @@ body.gradient {
 .header__icons .header__icon .icon {
   color: #2a2622 !important;
 }
+.header__menu-item {
+  font-weight: 600;
+  letter-spacing: .01em;
+  transition: color .18s ease;
+}
+/* Animated gradient underline under each menu label */
+.header__menu-item span {
+  position: relative;
+}
+.header__menu-item span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #1e63c8, #d62828);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .22s ease;
+}
+.header__menu-item:hover span::after,
+span.header__active-menu-item::after {
+  transform: scaleX(1);
+}
 .header__menu-item:hover span,
 .header__inline-menu .list-menu__item--link:hover,
 .header__active-menu-item {
   color: #1e63c8 !important;
 }
+/* Soft rounded highlight when hovering the header icons */
+.header__icons .header__icon {
+  border-radius: 50%;
+  transition: background-color .18s ease, color .18s ease;
+}
+.header__icons .header__icon:hover {
+  background-color: #eef4fd;
+}
 .header__icon:hover .icon {
   color: #1e63c8;
 }
 .header__icon .cart-count-bubble {
-  background-color: #1e63c8 !important;
+  background-color: #d62828 !important;
   color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(214, 40, 40, .35);
 }
 
 /* ---- Price in accent blue ----------------------------------------- */
