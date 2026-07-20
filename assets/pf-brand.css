@@ -17,51 +17,65 @@ body.gradient {
   background: transparent !important;
 }
 
-/* ---- Header: white background to highlight the logo --------------- */
+/* ---- Header: blue brand background -------------------------------- */
 .header-wrapper,
 .section-header .header {
-  background-color: #ffffff !important;
+  background-color: transparent !important;
 }
 .header-wrapper {
   position: relative;
-  border-bottom: 1px solid #efe7db;
-  box-shadow: 0 2px 14px rgba(120, 100, 70, .06);
+  background: linear-gradient(90deg, #1e63c8 0%, #1a56b0 100%) !important;
+  border-bottom: none;
+  box-shadow: 0 3px 16px rgba(30, 60, 120, .18);
 }
-/* Thin brand gradient strip across the very top of the header */
-.header-wrapper::before {
+/* Red brand accent line along the bottom edge */
+.header-wrapper::after {
   content: "";
   position: absolute;
-  top: 0;
   left: 0;
   right: 0;
+  bottom: 0;
   height: 3px;
-  background: linear-gradient(90deg, #1e63c8 0%, #3f8ae0 50%, #d62828 100%);
+  background: linear-gradient(90deg, #d62828 0%, #f2792a 100%);
   z-index: 4;
 }
-/* Slightly deeper shadow once the header sticks on scroll */
+/* Deeper shadow once the header sticks on scroll */
 .shopify-section-header-sticky .header-wrapper {
-  box-shadow: 0 6px 22px rgba(120, 100, 70, .12);
+  box-shadow: 0 6px 24px rgba(30, 60, 120, .3);
 }
+/* White nav text + icons on the blue header */
 .header,
-.header__heading-link,
-.header__heading-link .h2,
 .header__menu-item,
 .header__active-menu-item,
 .header__inline-menu .list-menu__item--link,
 .header__icons .header__icon,
-.header__icons .header__icon .icon {
-  color: #2a2622 !important;
+.header__icons .header__icon .icon,
+.header-wrapper .localization-form__select,
+.header-wrapper .disclosure__button,
+.header-wrapper .header__localization .icon-caret {
+  color: #ffffff !important;
 }
+.header-wrapper .localization-form__select option { color: #2a2622; }
 .header__menu-item {
   font-weight: 600;
   letter-spacing: .01em;
   transition: color .18s ease;
 }
-/* Animated gradient underline under each menu label */
-.header__menu-item span {
+/* Logo sits on a white rounded pill so it stays crisp on blue */
+.header__heading-link,
+.header__heading-link.link {
+  display: inline-flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: .5rem 1.1rem !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .14);
+}
+/* Animated white underline under each top-level menu label */
+.header__inline-menu .header__menu-item span {
   position: relative;
 }
-.header__menu-item span::after {
+.header__inline-menu .header__menu-item span::after {
   content: "";
   position: absolute;
   left: 0;
@@ -69,35 +83,47 @@ body.gradient {
   bottom: -6px;
   height: 2px;
   border-radius: 2px;
-  background: linear-gradient(90deg, #1e63c8, #d62828);
+  background: #ffffff;
   transform: scaleX(0);
   transform-origin: left;
   transition: transform .22s ease;
 }
-.header__menu-item:hover span::after,
-span.header__active-menu-item::after {
+.header__inline-menu .header__menu-item:hover span::after,
+.header__inline-menu span.header__active-menu-item::after {
   transform: scaleX(1);
 }
 .header__menu-item:hover span,
 .header__inline-menu .list-menu__item--link:hover,
 .header__active-menu-item {
+  color: #ffffff !important;
+}
+/* Dropdown submenus stay on white with dark text */
+.header__submenu {
+  background: #ffffff !important;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 10px 26px rgba(30, 60, 120, .16);
+}
+.header__submenu .header__menu-item {
+  color: #2a2622 !important;
+}
+.header__submenu .header__menu-item:hover {
   color: #1e63c8 !important;
 }
-/* Soft rounded highlight when hovering the header icons */
+/* Soft translucent circle when hovering the header icons */
 .header__icons .header__icon {
   border-radius: 50%;
   transition: background-color .18s ease, color .18s ease;
 }
 .header__icons .header__icon:hover {
-  background-color: #eef4fd;
+  background-color: rgba(255, 255, 255, .16);
 }
 .header__icon:hover .icon {
-  color: #1e63c8;
+  color: #ffffff !important;
 }
 .header__icon .cart-count-bubble {
   background-color: #d62828 !important;
   color: #ffffff !important;
-  box-shadow: 0 2px 6px rgba(214, 40, 40, .35);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .3);
 }
 
 /* ---- Price in accent blue ----------------------------------------- */
