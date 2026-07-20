@@ -386,11 +386,36 @@ body.gradient {
 }
 /* Info column as a clean white card on the beige page */
 #MainContent[data-template='product'] .product__info-container {
+  position: relative;
   background: #ffffff;
   border: 1px solid #ece3d4;
   border-radius: 20px;
   padding: clamp(1.8rem, 2.6vw, 3rem);
   box-shadow: 0 12px 32px rgba(120, 100, 70, .08);
+}
+/* Colorful brand accent strip across the top of the info card */
+#MainContent[data-template='product'] .product__info-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  border-radius: 20px 20px 0 0;
+  background: linear-gradient(90deg, #1e8541 0%, #1e63c8 50%, #d62828 100%);
+}
+/* Colored form labels (variant options, quantity) */
+#MainContent[data-template='product'] .product-form__input .form__label,
+#MainContent[data-template='product'] .product-form__input > label,
+#MainContent[data-template='product'] .quantity__label,
+#MainContent[data-template='product'] variant-selects .form__label {
+  color: #14672f !important;
+  font-weight: 700;
+}
+/* Variant pills: green when selected */
+#MainContent[data-template='product'] .product-form__input input[type='radio']:checked + label {
+  border-color: #1e8541;
+  box-shadow: 0 0 0 1px #1e8541;
 }
 @media screen and (max-width: 749px) {
   #MainContent[data-template='product'] .product__info-container {
