@@ -483,6 +483,35 @@ body.gradient {
   -webkit-text-fill-color: transparent;
 }
 
+/* ---- Cart page --------------------------------------------------- */
+#MainContent[data-template='cart'] > .shopify-section > .color-scheme-1,
+#MainContent[data-template='cart'] > .shopify-section > .gradient,
+.cart__footer-wrapper > .color-scheme-1,
+.cart__footer-wrapper > .gradient { background: transparent !important; }
+#MainContent[data-template='cart'] .title--primary { font-weight: 800; color: #2a2622; }
+/* White card around the cart items */
+#MainContent[data-template='cart'] .cart__items {
+  background: #ffffff;
+  border: 1px solid #ece3d4;
+  border-radius: 18px;
+  padding: .4rem 2rem;
+  box-shadow: 0 8px 22px rgba(120, 100, 70, .07);
+}
+/* Totals + checkout block as a soft white card */
+.cart__footer .cart__blocks {
+  background: #ffffff;
+  border: 1px solid #ece3d4;
+  border-radius: 18px;
+  padding: 1.8rem 2rem;
+  box-shadow: 0 8px 22px rgba(120, 100, 70, .07);
+}
+/* Rounded quantity selector on the cart */
+#MainContent[data-template='cart'] .quantity { border-radius: 12px; overflow: hidden; }
+#MainContent[data-template='cart'] .quantity:after { border-radius: 12px; border-color: #d9cdb6; }
+#MainContent[data-template='cart'] .quantity__button:hover .svg-wrapper { color: #1e8541; }
+/* Line-item titles a touch bolder */
+#MainContent[data-template='cart'] .cart-item__name { font-weight: 700; color: #2a2622; }
+
 /* ---- Boxed content sections (white card on the beige page) ------ */
 .pf-boxed-section { background: transparent !important; }
 .pf-boxed-section .pf-wrap {
