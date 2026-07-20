@@ -191,6 +191,13 @@ body.gradient {
 .footer .caption {
   color: #eaf3ec !important;
 }
+/* Brand intro paragraph in white */
+.footer .rte,
+.footer .rte p,
+.footer .footer-block__brand-info .rte,
+.footer .footer-block__brand-info .rte p {
+  color: #ffffff !important;
+}
 /* Gold section headings for a warmer, premium look */
 .footer .footer-block__heading {
   color: #f2c14e !important;
