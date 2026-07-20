@@ -39,13 +39,13 @@ TỔNG TẠM TÍNH: {{ cart.total_price | money }}
 (Chưa gồm phí vận chuyển)
 {%- endcapture -%}
 
-<div class="pf-ordercopy">
+<div class="pf-ordercopy" id="pf-ordercopy" data-currency="{{ cart.currency.iso_code }}" data-locale="{{ request.locale.iso_code | default: 'vi' }}">
   <div class="pf-ordercopy__head">
     <span aria-hidden="true">📋</span>
     <h3>Thông tin đơn hàng của bạn</h3>
   </div>
   <div class="pf-ordercopy__body">
-    <ul class="pf-ordercopy__list">
+    <ul class="pf-ordercopy__list" id="pf-oc-list">
       {%- for item in cart.items -%}
         <li class="pf-ordercopy__item">
           <span class="pf-ordercopy__name">
@@ -58,7 +58,7 @@ TỔNG TẠM TÍNH: {{ cart.total_price | money }}
     </ul>
     <div class="pf-ordercopy__total">
       <span>Tổng tạm tính</span>
-      <span>{{ cart.total_price | money }}</span>
+      <span id="pf-oc-total">{{ cart.total_price | money }}</span>
     </div>
 
     <textarea class="pf-ordercopy__src" id="pf-order-src" readonly aria-hidden="true">{{ pf_order_text }}</textarea>
@@ -73,6 +73,60 @@ TỔNG TẠM TÍNH: {{ cart.total_price | money }}
   (function () {
     if (window.pfOrderCopyBound) return;
     window.pfOrderCopyBound = true;
+
+    var box = document.getElementById('pf-ordercopy');
+    var root = (window.Shopify && Shopify.routes ? Shopify.routes.root : '/');
+
+    function money(cents, cur, loc) {
+      try { return new Intl.NumberFormat(loc, { style: 'currency', currency: cur }).format((cents || 0) / 100); }
+      catch (e) { return ((cents || 0) / 100).toFixed(2); }
+    }
+    function esc(s) { var d = document.createElement('div'); d.textContent = s == null ? '' : s; return d.innerHTML; }
+
+    // Rebuild the order summary + copy text from the live cart so it stays in
+    // sync when quantities change or items are removed on the cart page.
+    function rebuild() {
+      var b = document.getElementById('pf-ordercopy');
+      if (!b) return;
+      var cur = b.getAttribute('data-currency') || 'EUR';
+      var loc = b.getAttribute('data-locale') || 'vi';
+      fetch(root + 'cart.js', { headers: { Accept: 'application/json' } })
+        .then(function (r) { return r.json(); })
+        .then(function (cart) {
+          var list = document.getElementById('pf-oc-list');
+          var totalEl = document.getElementById('pf-oc-total');
+          var src = document.getElementById('pf-order-src');
+          var rows = '', text = '🛒 ĐƠN HÀNG – PHOMIFOOD.EU\n------------------------------\n';
+          (cart.items || []).forEach(function (it, i) {
+            var vt = (it.variant_title && it.variant_title.indexOf('Default') === -1) ? it.variant_title : '';
+            var line = money(it.final_line_price, cur, loc);
+            rows += '<li class="pf-ordercopy__item"><span class="pf-ordercopy__name">' + esc(it.product_title) +
+              (vt ? ' <b>(' + esc(vt) + ')</b>' : '') + ' × ' + it.quantity +
+              '</span><span class="pf-ordercopy__price">' + line + '</span></li>';
+            text += (i + 1) + '. ' + it.product_title + (vt ? ' (' + vt + ')' : '') +
+              ' | SL: ' + it.quantity + ' | ' + line + '\n';
+          });
+          text += '------------------------------\nTỔNG TẠM TÍNH: ' + money(cart.total_price, cur, loc) + '\n(Chưa gồm phí vận chuyển)';
+          if (list) list.innerHTML = rows;
+          if (totalEl) totalEl.textContent = money(cart.total_price, cur, loc);
+          if (src) src.value = text;
+        })
+        .catch(function () {});
+    }
+    window.pfOrderCopyRebuild = rebuild;
+
+    // Re-sync whenever the header cart bubble changes (Dawn re-renders it on
+    // every quantity/remove change on the cart page).
+    var bubble = document.getElementById('cart-icon-bubble');
+    if (bubble && 'MutationObserver' in window) {
+      var t;
+      new MutationObserver(function () {
+        clearTimeout(t);
+        t = setTimeout(rebuild, 250);
+      }).observe(bubble, { childList: true, subtree: true });
+    }
+    document.addEventListener('pf:cart:added', rebuild);
+
     document.addEventListener('click', function (e) {
       var btn = e.target.closest ? e.target.closest('#pf-order-copy-btn') : null;
       if (!btn) return;
