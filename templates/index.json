@@ -89,18 +89,6 @@
         "padding_bottom": 40
       }
     },
-    "pf_promo_image": {
-      "type": "pf-promo-image",
-      "settings": {
-        "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/a206d210-2d7b-4262-8930-5d659a92e314_1.png?v=1784527901",
-        "alt": "Ưu đãi vận chuyển PHOMIFOOD",
-        "max_width": 108,
-        "corner_radius": 20,
-        "shadow": true,
-        "padding_top": 32,
-        "padding_bottom": 32
-      }
-    },
     "pf_flash_sale": {
       "type": "pf-flash-sale",
       "settings": {
@@ -128,6 +116,19 @@
         "padding_bottom": 40
       }
     },
+    "pf_promo_image": {
+      "type": "pf-promo-image",
+      "settings": {
+        "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/a206d210-2d7b-4262-8930-5d659a92e314_1.png?v=1784527901",
+        "alt": "Ưu đãi vận chuyển PHOMIFOOD",
+        "link": "",
+        "max_width": 108,
+        "corner_radius": 20,
+        "shadow": true,
+        "padding_top": 32,
+        "padding_bottom": 32
+      }
+    },
     "image_banner_gbfQkJ": {
       "type": "image-banner",
       "blocks": {
@@ -142,6 +143,7 @@
       "block_order": [
         "text_PAjX8T"
       ],
+      "disabled": true,
       "name": "t:sections.image-banner.presets.name",
       "settings": {
         "image": "shopify://shop_images/ChatGPT_Image_Jul_19_2026_10_25_33_PM.png",
@@ -232,6 +234,7 @@
         "s3",
         "s4"
       ],
+      "disabled": true,
       "settings": {
         "heading": "Mua Hàng Dễ Dàng",
         "padding_top": 56,
