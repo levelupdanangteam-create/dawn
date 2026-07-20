@@ -12,17 +12,21 @@
   #pf-catgrid-{{ section.id }} .pf-grid { display: grid; grid-template-columns: repeat(var(--pf-cols, 5), 1fr); gap: 2rem; max-width: 100rem; margin-inline: auto; }
   #pf-catgrid-{{ section.id }} .pf-cat {
     display: flex; flex-direction: column; align-items: center; gap: 1.4rem; text-align: center;
-    padding: 2rem 1rem 1.8rem; background: #fff; border: 1px solid #efe7db; border-radius: 18px;
-    box-shadow: 0 6px 18px rgba(120,100,70,.06); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    padding: 2.2rem 1rem 1.9rem; background: linear-gradient(180deg, #fbf6ee 0%, #fdfbf7 100%);
+    border: 1px solid #eee2cf; border-radius: 18px;
+    box-shadow: 0 6px 18px rgba(120,100,70,.07); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
   }
-  #pf-catgrid-{{ section.id }} .pf-cat:hover { transform: translateY(-6px); box-shadow: 0 18px 34px rgba(30,60,120,.14); border-color: #cfe0fa; }
+  #pf-catgrid-{{ section.id }} .pf-cat:hover {
+    transform: translateY(-6px); background: linear-gradient(180deg, #f3f8ff 0%, #ffffff 100%);
+    box-shadow: 0 18px 34px rgba(30,60,120,.16); border-color: #bcd3f7;
+  }
   #pf-catgrid-{{ section.id }} .pf-cat .thumb {
     width: 10.5rem; height: 10.5rem; border-radius: 50%; overflow: hidden; display: grid; place-items: center;
-    background: radial-gradient(circle at 50% 35%, #f4f8ff 0%, #eaf1fd 100%); border: 3px solid #fff;
-    box-shadow: 0 0 0 1px #e3ebf7, 0 8px 20px rgba(30,60,120,.12); color: #1e63c8;
-    transition: box-shadow .2s ease;
+    background: radial-gradient(circle at 50% 35%, #eaf1fd 0%, #dbe8fb 100%); border: 4px solid #fff;
+    box-shadow: 0 0 0 1px #d3e1f7, 0 10px 22px rgba(30,60,120,.14); color: #1e63c8;
+    transition: box-shadow .2s ease, transform .2s ease;
   }
-  #pf-catgrid-{{ section.id }} .pf-cat:hover .thumb { box-shadow: 0 0 0 1px #bcd3f7, 0 12px 26px rgba(30,60,120,.2); }
+  #pf-catgrid-{{ section.id }} .pf-cat:hover .thumb { transform: scale(1.03); box-shadow: 0 0 0 1px #9dc0f2, 0 14px 28px rgba(30,60,120,.24); }
   #pf-catgrid-{{ section.id }} .pf-cat .thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
   #pf-catgrid-{{ section.id }} .pf-cat:hover .thumb img { transform: scale(1.08); }
   #pf-catgrid-{{ section.id }} .pf-cat .name { font-size: 1.45rem; font-weight: 700; color: #2a2622; line-height: 1.3; text-decoration: none; transition: color .18s ease; }
