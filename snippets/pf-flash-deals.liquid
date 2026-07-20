@@ -12,24 +12,38 @@
 <div class="pf-flash" id="pf-flash-{{ uid }}">
   <div class="pf-flash__head">
     <div class="pf-flash__brand">
-      <span class="pf-flash__clock" aria-hidden="true">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      <span class="pf-flash__badge">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>
+        FLASH SALE
       </span>
-      <span class="pf-flash__name">{{ heading | default: 'FLASH SALE' }}</span>
+      <span class="pf-flash__name">{{ heading | default: 'Ưu đãi hôm nay' }}</span>
+    </div>
+    <div class="pf-flash__count">
+      <span class="pf-flash__count-label">Kết thúc sau</span>
       <span class="pf-flash__timer" data-hours="{{ hrs }}" role="timer" aria-label="Đếm ngược ưu đãi">
         <span class="pf-u hh">00</span><i>:</i><span class="pf-u mm">00</span><i>:</i><span class="pf-u ss">00</span>
       </span>
     </div>
     {%- if col != blank -%}
-      <a class="pf-flash__more" href="{{ col.url }}">Xem thêm ›</a>
+      <a class="pf-flash__more" href="{{ col.url }}">Xem tất cả
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+      </a>
     {%- endif -%}
   </div>
 
   <div class="pf-flash__row">
     {%- if col != blank and col.products_count > 0 -%}
       {%- for product in col.products limit: lim -%}
+        {%- liquid
+          assign on_sale = false
+          if product.compare_at_price > product.price
+            assign on_sale = true
+            assign disc = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round
+          endif
+        -%}
         <div class="pf-flash__card">
           <a class="pf-flash__media" href="{{ product.url }}">
+            {%- if on_sale -%}<span class="pf-flash__disc">-{{ disc }}%</span>{%- endif -%}
             <span class="pf-flash__hot">HOT</span>
             {%- if product.featured_image -%}
               <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title | escape }}" loading="lazy" width="400" height="400">
@@ -39,7 +53,10 @@
           </a>
           <div class="pf-flash__info">
             <h3 class="pf-flash__nm"><a href="{{ product.url }}">{{ product.title }}</a></h3>
-            <div class="pf-flash__price">{{ product.price | money }}</div>
+            <div class="pf-flash__price">
+              <span class="now">{{ product.price | money }}</span>
+              {%- if on_sale -%}<span class="was">{{ product.compare_at_price | money }}</span>{%- endif -%}
+            </div>
             <span class="pf-flash__tag">Best Seller</span>
             {% render 'pf-card-buttons', product: product, section_id: uid %}
           </div>
@@ -49,12 +66,13 @@
       {%- for i in (1..lim) -%}
         <div class="pf-flash__card">
           <div class="pf-flash__media">
+            <span class="pf-flash__disc">-20%</span>
             <span class="pf-flash__hot">HOT</span>
             {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
           </div>
           <div class="pf-flash__info">
             <h3 class="pf-flash__nm">Tên sản phẩm</h3>
-            <div class="pf-flash__price">0&nbsp;€</div>
+            <div class="pf-flash__price"><span class="now">0&nbsp;€</span></div>
             <span class="pf-flash__tag">Best Seller</span>
           </div>
         </div>

@@ -270,8 +270,8 @@
   },
   "order": [
     "image_banner",
-    "featured_collection",
     "pf_flash_sale",
+    "featured_collection",
     "pf_category_grid",
     "pf_daily_deals",
     "image_banner_gbfQkJ",
