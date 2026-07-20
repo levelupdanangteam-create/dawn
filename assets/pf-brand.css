@@ -373,6 +373,58 @@ body.gradient {
 .pf-card .pf-name a { color: inherit; text-decoration: none; }
 .pf-card .pf-name a:hover { color: #1e63c8; }
 
+/* ---- Product detail page ---------------------------------------- */
+/* Product media: rounded corners + soft shadow */
+#MainContent[data-template='product'] .product__media-wrapper .media,
+#MainContent[data-template='product'] .product__media-wrapper .product-media-container,
+#MainContent[data-template='product'] .product__media-wrapper .media img {
+  border-radius: 16px;
+}
+#MainContent[data-template='product'] .product__media-wrapper .product-media-container {
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(120, 100, 70, .1);
+}
+/* Info column as a clean white card on the beige page */
+#MainContent[data-template='product'] .product__info-container {
+  background: #ffffff;
+  border: 1px solid #ece3d4;
+  border-radius: 20px;
+  padding: clamp(1.8rem, 2.6vw, 3rem);
+  box-shadow: 0 12px 32px rgba(120, 100, 70, .08);
+}
+@media screen and (max-width: 749px) {
+  #MainContent[data-template='product'] .product__info-container {
+    padding: 1.8rem 1.4rem;
+    border-radius: 16px;
+  }
+}
+/* Prominent product title */
+#MainContent[data-template='product'] .product__title,
+#MainContent[data-template='product'] .product__title > * {
+  font-weight: 800 !important;
+  color: #2a2622 !important;
+  line-height: 1.2;
+}
+/* Price stands out a bit more */
+#MainContent[data-template='product'] .price__container .price-item {
+  font-size: 2.2rem;
+}
+/* Accordion / description headings */
+#MainContent[data-template='product'] .product__accordion summary .accordion__title {
+  font-weight: 700;
+  color: #2a2622;
+}
+/* Related products heading */
+.related-products .related-products__heading,
+.related-products__heading.title {
+  font-weight: 800;
+  color: #d62828;
+  background: linear-gradient(90deg, #d62828 0%, #e8452f 55%, #f2792a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 /* ---- Boxed content sections (white card on the beige page) ------ */
 .pf-boxed-section { background: transparent !important; }
 .pf-boxed-section .pf-wrap {

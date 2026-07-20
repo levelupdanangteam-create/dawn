@@ -1,11 +1,12 @@
 {%- comment -%} Trust / assurance box on the product detail page {%- endcomment -%}
 <style>
-  .pf-ptrust { margin: 2rem 0 0; border: 1px solid #ecdfc8; border-radius: 12px; overflow: hidden; background: #fff8e7; }
+  .pf-ptrust { margin: 2rem 0 0; border: 1px solid #e3ece5; border-radius: 14px; overflow: hidden; background: linear-gradient(180deg, #f4faf5 0%, #ffffff 100%); box-shadow: 0 6px 18px rgba(20, 90, 45, .05); }
   .pf-ptrust__row { display: flex; align-items: flex-start; gap: 1.4rem; padding: 1.6rem 1.8rem; }
-  .pf-ptrust__row + .pf-ptrust__row { border-top: 1px solid #ecdfc8; }
-  .pf-ptrust__ic { flex: none; width: 4.2rem; height: 4.2rem; border-radius: 50%; display: grid; place-items: center; background: #1e63c8; color: #fff; }
-  .pf-ptrust__ic.gold { background: #1e63c8; }
-  .pf-ptrust__t { font-size: 1.5rem; font-weight: 800; color: #1e63c8; letter-spacing: 0.01em; margin: 0 0 0.3rem; text-transform: uppercase; }
+  .pf-ptrust__row + .pf-ptrust__row { border-top: 1px solid #e7ede8; }
+  .pf-ptrust__ic { flex: none; width: 4.4rem; height: 4.4rem; border-radius: 50%; display: grid; place-items: center; background: #1e8541; color: #fff; box-shadow: 0 6px 14px rgba(20, 90, 45, .22); }
+  .pf-ptrust__ic.gold { background: #1e63c8; box-shadow: 0 6px 14px rgba(30, 99, 200, .22); }
+  .pf-ptrust__t { font-size: 1.5rem; font-weight: 800; color: #14672f; letter-spacing: 0.01em; margin: 0 0 0.3rem; }
+  .pf-ptrust__row.gold .pf-ptrust__t { color: #1e63c8; }
   .pf-ptrust__d { font-size: 1.35rem; line-height: 1.55; color: #574f45; margin: 0; }
 </style>
 
@@ -19,7 +20,7 @@
       <p class="pf-ptrust__d">Áp dụng với đơn hàng &gt; 150€.</p>
     </div>
   </div>
-  <div class="pf-ptrust__row">
+  <div class="pf-ptrust__row gold">
     <span class="pf-ptrust__ic gold" aria-hidden="true">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 1 1-4.9-7.7"/><path d="M21 4v4h-4"/></svg>
     </span>
