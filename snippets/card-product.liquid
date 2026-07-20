@@ -292,6 +292,7 @@
             </div>
             {%- if card_product and card_product != empty -%}
               <div class="pf-card-actions">
+                <a href="{{ card_product.url }}" class="pf-btn-view">Xem sản phẩm</a>
                 {%- if card_product.available -%}
                   {%- assign pf_add_id = 'pf-add-' | append: section_id | append: '-' | append: card_product.id -%}
                   {%- form 'product', card_product, id: pf_add_id, class: 'pf-card-actions__form' -%}
@@ -305,7 +306,6 @@
                 {%- else -%}
                   <button type="button" class="pf-btn-cart" disabled>Hết hàng</button>
                 {%- endif -%}
-                <a href="{{ card_product.url }}" class="pf-btn-view">Xem sản phẩm</a>
               </div>
             {%- endif -%}
           </div>
