@@ -14,6 +14,13 @@
     "footer": {
       "type": "footer",
       "blocks": {
+        "brand_info": {
+          "type": "brand_information",
+          "settings": {
+            "enable_follow_on_shop": true,
+            "show_social": true
+          }
+        },
         "help_policies": {
           "type": "text",
           "settings": {
@@ -29,7 +36,7 @@
           }
         }
       },
-      "block_order": ["help_policies", "business_info"],
+      "block_order": ["brand_info", "help_policies", "business_info"],
       "settings": {
         "color_scheme": "scheme-1",
         "newsletter_enable": true,

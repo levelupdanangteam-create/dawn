@@ -162,6 +162,84 @@ body.gradient {
   border-color: #164fa0 !important;
 }
 
+/* ---- Footer: deep green brand background --------------------------- */
+.footer {
+  background: linear-gradient(180deg, #14672f 0%, #0e4a24 100%) !important;
+  border-top: 3px solid #d62828;
+}
+/* White logo pill in the footer brand block */
+.footer .footer-block--newsletter .footer-block__brand-info,
+.footer .footer-block__image-wrapper {
+  background: #ffffff;
+  display: inline-block;
+  padding: .6rem 1rem;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .2);
+}
+.footer .footer-block__image-wrapper img { display: block; }
+/* Light text everywhere in the footer */
+.footer .footer-block__heading,
+.footer .footer-block__details-content,
+.footer .footer-block__details-content .rte,
+.footer .footer-block__details-content p,
+.footer .footer__content-bottom,
+.footer .copyright__content,
+.footer .footer__copyright,
+.footer .list-menu__item,
+.footer .footer-block-image__description,
+.footer small,
+.footer .caption {
+  color: #eaf3ec !important;
+}
+/* Gold section headings for a warmer, premium look */
+.footer .footer-block__heading {
+  color: #f2c14e !important;
+  font-weight: 800;
+  letter-spacing: .01em;
+}
+/* Footer links: light with a smooth hover */
+.footer a,
+.footer .footer-block__details-content a,
+.footer .list-menu__item--link {
+  color: #eaf3ec !important;
+  text-decoration: none;
+  transition: color .18s ease;
+}
+.footer a:hover,
+.footer .footer-block__details-content a:hover,
+.footer .list-menu__item--link:hover {
+  color: #ffffff !important;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+/* Social icons in light tone */
+.footer .footer__list-social .icon {
+  color: #eaf3ec;
+}
+.footer .footer__list-social .list-social__link:hover .icon {
+  color: #f2c14e;
+}
+/* Newsletter field on the dark background */
+.footer .newsletter-form__field-wrapper .field__input {
+  background: rgba(255, 255, 255, .1) !important;
+  border: 1px solid rgba(255, 255, 255, .35) !important;
+  color: #ffffff !important;
+  border-radius: 10px;
+}
+.footer .newsletter-form__field-wrapper .field__input::placeholder { color: rgba(255, 255, 255, .6) !important; }
+.footer .newsletter-form__field-wrapper .field__label { color: rgba(255, 255, 255, .7) !important; }
+.footer .newsletter-form__button .icon { color: #ffffff; }
+/* Soften separators / bottom bar on green */
+.footer .footer__content-bottom { border-top: 1px solid rgba(255, 255, 255, .16); }
+.footer .footer-block--newsletter { border-color: rgba(255, 255, 255, .16); }
+/* Payment icons sit on a light chip so they stay visible */
+.footer .payment-icon,
+.footer .list-payment__item svg {
+  background: #ffffff;
+  border-radius: 4px;
+  padding: 2px;
+}
+
 /* ---- Policy / guide pages -------------------------------------- */
 .pf-policy { padding: 4rem 0 6rem; }
 .pf-policy__wrap {
