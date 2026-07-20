@@ -427,6 +427,7 @@ body.gradient {
   border: 1px solid #ece3d4;
   border-radius: 22px;
   padding: 3rem clamp(1.4rem, 3vw, 3rem);
+  margin-top: clamp(4rem, 7vw, 7rem);
 }
 /* Each related card = white rounded card that lifts on hover */
 #MainContent[data-template='product'] .related-products .card-wrapper {
