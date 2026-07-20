@@ -8,7 +8,7 @@
     font-family: var(--font-heading-family, sans-serif); font-weight: 800; color: #1a1a1a;
     font-size: 2.2rem; margin: 0 0 2.4rem; text-align: center;
   }
-  #pf-catgrid-{{ section.id }} .pf-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1.6rem; }
+  #pf-catgrid-{{ section.id }} .pf-grid { display: grid; grid-template-columns: repeat(var(--pf-cols, 6), 1fr); gap: 1.6rem; max-width: 96rem; margin-inline: auto; }
   #pf-catgrid-{{ section.id }} .pf-cat { display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center; }
   #pf-catgrid-{{ section.id }} .pf-cat .thumb {
     width: 100%; aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: #f5f0e8;
@@ -23,7 +23,7 @@
 <div id="pf-catgrid-{{ section.id }}" class="pf-boxed-section">
   <div class="pf-wrap">
     <h2 class="pf-title">{{ section.settings.heading }}</h2>
-    <div class="pf-grid">
+    <div class="pf-grid" style="--pf-cols: {{ section.blocks.size | at_most: 6 }};">
       {%- for block in section.blocks -%}
         {%- assign col = block.settings.collection -%}
         <a

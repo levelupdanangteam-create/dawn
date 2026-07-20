@@ -77,61 +77,17 @@
     "pf_category_grid": {
       "type": "pf-category-grid",
       "blocks": {
-        "cat1": {
-          "type": "category",
-          "settings": {
-            "collection": "giảm-gia",
-            "label": "Mì Ăn Liền"
-          }
-        },
-        "cat2": {
-          "type": "category",
-          "settings": {
-            "collection": "bun-phở",
-            "label": "Bún & Phở"
-          }
-        },
-        "cat3": {
-          "type": "category",
-          "settings": {
-            "collection": "bột-gia-vị",
-            "label": "Gia Vị"
-          }
-        },
-        "cat5": {
-          "type": "category",
-          "settings": {
-            "collection": "dồ-an-vặt-sữa",
-            "label": "Đồ Ăn Vặt"
-          }
-        },
-        "cat6": {
-          "type": "category",
-          "settings": {
-            "collection": "ca-phe",
-            "label": "Cà phê"
-          }
-        },
-        "cat7": {
-          "type": "category",
-          "settings": {
-            "collection": "gạo-banh-gạo",
-            "label": "Các loại bột, gạo, nếp"
-          }
-        }
+        "cat1": { "type": "category", "settings": { "collection": "bột-gia-vị", "label": "Gia Vị" } },
+        "cat2": { "type": "category", "settings": { "collection": "gạo-banh-gạo", "label": "Các loại bột, gạo, nếp" } },
+        "cat3": { "type": "category", "settings": { "collection": "ca-phe", "label": "Cà phê" } },
+        "cat4": { "type": "category", "settings": { "collection": "bun-phở", "label": "Bún & Phở" } },
+        "cat5": { "type": "category", "settings": { "collection": "dồ-an-vặt-sữa", "label": "Đồ Ăn Vặt" } }
       },
-      "block_order": [
-        "cat1",
-        "cat2",
-        "cat3",
-        "cat5",
-        "cat6",
-        "cat7"
-      ],
+      "block_order": ["cat1", "cat2", "cat3", "cat4", "cat5"],
       "settings": {
         "heading": "Danh Mục Sản Phẩm",
-        "padding_top": 48,
-        "padding_bottom": 48
+        "padding_top": 40,
+        "padding_bottom": 40
       }
     },
     "pf_daily_deals": {
@@ -255,10 +211,10 @@
     }
   },
   "order": [
+    "pf_category_grid",
     "image_banner",
     "pf_flash_sale",
     "pf_bestsellers",
-    "pf_category_grid",
     "pf_daily_deals",
     "image_banner_gbfQkJ",
     "pf_three_regions",
