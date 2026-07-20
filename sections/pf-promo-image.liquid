@@ -1,0 +1,55 @@
+<style>
+  #pf-promo-{{ section.id }} { padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px; }
+  #pf-promo-{{ section.id }} .pf-wrap { max-width: {{ section.settings.max_width }}rem; margin-inline: auto; padding-inline: clamp(1.6rem, 3vw, 3rem); }
+  #pf-promo-{{ section.id }} .pf-promo-img {
+    display: block; width: 100%; height: auto; border-radius: {{ section.settings.corner_radius }}px; overflow: hidden;
+  }
+  {%- if section.settings.shadow -%}
+  #pf-promo-{{ section.id }} .pf-promo-img { box-shadow: 0 12px 30px rgba(120,100,70,.14); }
+  {%- endif -%}
+  #pf-promo-{{ section.id }} a.pf-promo-link { display: block; }
+</style>
+
+<div id="pf-promo-{{ section.id }}">
+  <div class="pf-wrap">
+    {%- assign img_src = section.settings.image_url -%}
+    {%- if section.settings.image != blank -%}
+      {%- assign img_src = section.settings.image | image_url: width: 1600 -%}
+    {%- endif -%}
+
+    {%- if img_src != blank -%}
+      {%- if section.settings.link != blank -%}
+        <a class="pf-promo-link" href="{{ section.settings.link }}">
+          <img class="pf-promo-img" src="{{ img_src }}" alt="{{ section.settings.alt | escape }}" loading="lazy">
+        </a>
+      {%- else -%}
+        <img class="pf-promo-img" src="{{ img_src }}" alt="{{ section.settings.alt | escape }}" loading="lazy">
+      {%- endif -%}
+    {%- else -%}
+      <div style="padding:4rem;text-align:center;color:#999;border:1px dashed #ccc;border-radius:12px;">
+        Thêm ảnh trong Theme Editor
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Ảnh khuyến mãi",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Ảnh (tải lên)" },
+    { "type": "text", "id": "image_url", "label": "Hoặc dán URL ảnh", "info": "Dùng khi ảnh đã có sẵn trên CDN." },
+    { "type": "text", "id": "alt", "label": "Mô tả ảnh (alt)", "default": "Ưu đãi vận chuyển PHOMIFOOD" },
+    { "type": "url", "id": "link", "label": "Liên kết khi bấm (tuỳ chọn)" },
+    { "type": "range", "id": "max_width", "min": 60, "max": 160, "step": 2, "unit": "rem", "label": "Chiều rộng tối đa", "default": 108 },
+    { "type": "range", "id": "corner_radius", "min": 0, "max": 40, "step": 2, "unit": "px", "label": "Bo góc", "default": 20 },
+    { "type": "checkbox", "id": "shadow", "label": "Đổ bóng", "default": true },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 32 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 32 }
+  ],
+  "presets": [
+    { "name": "Ảnh khuyến mãi" }
+  ]
+}
+{% endschema %}

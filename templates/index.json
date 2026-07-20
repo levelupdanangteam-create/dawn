@@ -89,20 +89,16 @@
         "padding_bottom": 40
       }
     },
-    "pf_shipping_benefits": {
-      "type": "pf-shipping-benefits",
-      "blocks": {
-        "b1": { "type": "benefit", "settings": { "icon": "🚚", "title": "Phí ship tiết kiệm", "desc": "0–10kg: 19€  •  10–20kg: 13€" } },
-        "b2": { "type": "benefit", "settings": { "icon": "🎁", "title": "Freeship từ 150€", "desc": "Miễn phí vận chuyển cho đơn từ 150€" } },
-        "b3": { "type": "benefit", "settings": { "icon": "💚", "title": "Freeship + Giảm 3%", "desc": "Áp dụng cho đơn từ 250€", "badge": "Hot", "highlight": true } },
-        "b4": { "type": "benefit", "settings": { "icon": "🏷️", "title": "Giá sỉ từ 350€", "desc": "Đơn từ 350€ được áp dụng giá sỉ", "badge": "VIP", "highlight": true } }
-      },
-      "block_order": ["b1", "b2", "b3", "b4"],
+    "pf_promo_image": {
+      "type": "pf-promo-image",
       "settings": {
-        "heading": "Ưu đãi dành cho mọi đơn hàng",
-        "subheading": "🌍 Ship nhanh toàn Châu Âu — phí chỉ từ 13€ (đơn 10–20kg)",
-        "padding_top": 40,
-        "padding_bottom": 40
+        "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/a206d210-2d7b-4262-8930-5d659a92e314_1.png?v=1784527901",
+        "alt": "Ưu đãi vận chuyển PHOMIFOOD",
+        "max_width": 108,
+        "corner_radius": 20,
+        "shadow": true,
+        "padding_top": 32,
+        "padding_bottom": 32
       }
     },
     "pf_flash_sale": {
@@ -248,7 +244,7 @@
     "pf_category_grid",
     "pf_flash_sale",
     "pf_bestsellers",
-    "pf_shipping_benefits",
+    "pf_promo_image",
     "image_banner_gbfQkJ",
     "pf_three_regions",
     "pf_buying_guide"
