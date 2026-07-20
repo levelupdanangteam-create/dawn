@@ -34,16 +34,19 @@
   }
   #pf-catgrid-{{ section.id }} .pf-cat:hover .name { color: #1e63c8; }
 
-  #pf-catgrid-{{ section.id }} .pf-cat-all { text-align: center; margin-top: 3.2rem; }
-  #pf-catgrid-{{ section.id }} .pf-cat-all a {
-    display: inline-flex; align-items: center; gap: .7rem; text-decoration: none;
-    font-size: 1.5rem; font-weight: 800; color: #fff; padding: 1.2rem 2.8rem; border-radius: 999px;
-    background: linear-gradient(90deg, #1e63c8, #164fa0); box-shadow: 0 8px 20px rgba(30, 60, 120, .25);
-    transition: transform .18s ease, filter .18s ease;
+  #pf-catgrid-{{ section.id }} .pf-titlerow { position: relative; display: flex; align-items: center; justify-content: center; gap: 1.2rem; }
+  #pf-catgrid-{{ section.id }} .pf-all-link {
+    position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+    display: inline-flex; align-items: center; gap: .5rem; text-decoration: none; white-space: nowrap;
+    font-size: 1.45rem; font-weight: 800; color: #1e63c8;
   }
-  #pf-catgrid-{{ section.id }} .pf-cat-all a:hover { transform: translateY(-2px); filter: brightness(1.07); }
-  #pf-catgrid-{{ section.id }} .pf-cat-all a .arw { transition: transform .18s ease; }
-  #pf-catgrid-{{ section.id }} .pf-cat-all a:hover .arw { transform: translateX(4px); }
+  #pf-catgrid-{{ section.id }} .pf-all-link:hover { color: #d62828; }
+  #pf-catgrid-{{ section.id }} .pf-all-link .arw { transition: transform .18s ease; }
+  #pf-catgrid-{{ section.id }} .pf-all-link:hover .arw { transform: translateX(4px); }
+  @media (max-width: 749px) {
+    #pf-catgrid-{{ section.id }} .pf-titlerow { flex-direction: column; }
+    #pf-catgrid-{{ section.id }} .pf-all-link { position: static; transform: none; margin-top: .8rem; }
+  }
 
   @media (max-width: 989px) { #pf-catgrid-{{ section.id }} .pf-grid { grid-template-columns: repeat(3, 1fr); } }
   @media (max-width: 599px) {
@@ -60,7 +63,15 @@
         <span class="dia"></span>
         <span class="line"></span>
       </div>
-      <h2 class="pf-title">{{ section.settings.heading }}</h2>
+      <div class="pf-titlerow">
+        <h2 class="pf-title">{{ section.settings.heading }}</h2>
+        {%- if section.settings.show_all_button -%}
+          <a class="pf-all-link" href="{{ section.settings.all_button_link | default: routes.collections_url }}">
+            {{ section.settings.all_button_label | default: 'Xem tất cả danh mục' }}
+            <span class="arw" aria-hidden="true">→</span>
+          </a>
+        {%- endif -%}
+      </div>
     </div>
     <div class="pf-grid" style="--pf-cols: {{ section.blocks.size | at_most: 6 }};">
       {%- for block in section.blocks -%}
@@ -87,15 +98,6 @@
         </div>
       {%- endfor -%}
     </div>
-
-    {%- if section.settings.show_all_button -%}
-      <div class="pf-cat-all">
-        <a href="{{ section.settings.all_button_link | default: routes.collections_url }}">
-          {{ section.settings.all_button_label | default: 'Xem tất cả danh mục' }}
-          <span class="arw" aria-hidden="true">→</span>
-        </a>
-      </div>
-    {%- endif -%}
   </div>
 </div>
 
@@ -106,9 +108,9 @@
   "max_blocks": 12,
   "settings": [
     { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Danh Mục Sản Phẩm" },
-    { "type": "checkbox", "id": "show_all_button", "label": "Hiện nút \"Xem tất cả danh mục\"", "default": true },
-    { "type": "text", "id": "all_button_label", "label": "Chữ trên nút", "default": "Xem tất cả danh mục" },
-    { "type": "url", "id": "all_button_link", "label": "Liên kết nút (mặc định: trang bộ sưu tập)" },
+    { "type": "checkbox", "id": "show_all_button", "label": "Hiện link \"Xem tất cả danh mục\"", "default": true },
+    { "type": "text", "id": "all_button_label", "label": "Chữ của link", "default": "Xem tất cả danh mục" },
+    { "type": "url", "id": "all_button_link", "label": "Liên kết (mặc định: trang bộ sưu tập)" },
     { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 48 },
     { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 48 }
   ],
