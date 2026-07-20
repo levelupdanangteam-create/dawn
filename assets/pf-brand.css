@@ -338,6 +338,43 @@ body.gradient {
 .card-wrapper .card__heading a { color: #2a2622 !important; font-weight: 700; }
 .card-wrapper .card__heading a:hover { color: #1e63c8 !important; }
 
+/* Equal-height cards with every element pinned to a fixed position.
+   Uses `.card > .card__content` (child combinator) to target ONLY the info
+   area below the media — never the overlay content inside .card__inner. */
+.related-products .grid__item,
+#MainContent[data-template='collection'] .grid__item,
+#MainContent[data-template='search'] .grid__item { display: flex; }
+.related-products .grid__item > .card-wrapper,
+#MainContent[data-template='collection'] .grid__item > .card-wrapper,
+#MainContent[data-template='search'] .grid__item > .card-wrapper { width: 100%; }
+.related-products .card-wrapper .card,
+#MainContent[data-template='collection'] .card-wrapper .card,
+#MainContent[data-template='search'] .card-wrapper .card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.related-products .card-wrapper .card > .card__inner,
+#MainContent[data-template='collection'] .card-wrapper .card > .card__inner,
+#MainContent[data-template='search'] .card-wrapper .card > .card__inner { flex: 0 0 auto; }
+.related-products .card-wrapper .card > .card__content,
+#MainContent[data-template='collection'] .card-wrapper .card > .card__content,
+#MainContent[data-template='search'] .card-wrapper .card > .card__content {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+.related-products .card-wrapper .card > .card__content > .card__information,
+#MainContent[data-template='collection'] .card-wrapper .card > .card__content > .card__information,
+#MainContent[data-template='search'] .card-wrapper .card > .card__content > .card__information {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+.related-products .card-wrapper .pf-card-actions,
+#MainContent[data-template='collection'] .card-wrapper .pf-card-actions,
+#MainContent[data-template='search'] .card-wrapper .pf-card-actions { margin-top: auto; }
+
 /* Title link inside custom deal-section cards */
 .pf-card .pf-name a { color: inherit; text-decoration: none; }
 .pf-card .pf-name a:hover { color: #1e63c8; }
