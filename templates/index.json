@@ -211,8 +211,8 @@
     }
   },
   "order": [
-    "pf_category_grid",
     "image_banner",
+    "pf_category_grid",
     "pf_flash_sale",
     "pf_bestsellers",
     "pf_daily_deals",
