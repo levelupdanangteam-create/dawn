@@ -189,3 +189,13 @@ body.gradient {
 @media (prefers-reduced-motion: reduce) { .pf-flash__badge svg, .pf-flash__badge::after { animation: none; } .pf-flash__media img, .pf-flash__card { transition: none; } }
 @media (max-width: 989px) { .pf-flash__row { grid-template-columns: repeat(3, 1fr); } .pf-flash__count { margin-left: 0; } }
 @media (max-width: 599px) { .pf-flash__row { grid-template-columns: repeat(2, 1fr); } }
+
+/* Flash-sale: hide-beyond-initial + 'Xem thêm' reveal */
+.pf-flash__card.is-hidden { display: none; }
+.pf-flash__morewrap { text-align: center; margin-top: 2rem; }
+.pf-flash__more-btn {
+  display: inline-flex; align-items: center; gap: 0.5rem; background: #fff; border: 1.5px solid #d62828;
+  color: #d62828; font-weight: 800; font-size: 1.4rem; padding: 1.1rem 2.8rem; border-radius: 999px;
+  cursor: pointer; transition: background 0.15s ease, color 0.15s ease;
+}
+.pf-flash__more-btn:hover { background: #d62828; color: #fff; }

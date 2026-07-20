@@ -55,8 +55,8 @@
         "heading": "Sản phẩm bán chạy nhất",
         "subheading": "Những sản phẩm được khách hàng yêu thích và đặt mua nhiều nhất",
         "collection": "ban-chay-nhat",
-        "products_to_show": 20,
-        "initial_count": 10,
+        "products_to_show": 50,
+        "initial_count": 15,
         "columns_desktop": 5,
         "padding_top": 40,
         "padding_bottom": 40
@@ -68,6 +68,7 @@
         "heading": "Sản phẩm giảm giá – Ưu đãi hôm nay",
         "collection": "asset-pack-77889830914-example-products",
         "products_to_show": 5,
+        "initial_count": 10,
         "countdown_hours": 3,
         "padding_top": 48,
         "padding_bottom": 48

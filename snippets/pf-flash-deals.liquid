@@ -11,6 +11,11 @@
   if show_all and col != blank
     assign lim = col.products_count
   endif
+  assign init = initial | default: 0
+  assign rendered = lim
+  if col != blank and col.products_count < rendered
+    assign rendered = col.products_count
+  endif
 -%}
 <div class="pf-flash" id="pf-flash-{{ uid }}">
   <div class="pf-flash__head">
@@ -44,7 +49,7 @@
             assign disc = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round
           endif
         -%}
-        <div class="pf-flash__card">
+        <div class="pf-flash__card{% if init > 0 and forloop.index > init %} is-hidden{% endif %}">
           <a class="pf-flash__media" href="{{ product.url }}">
             {%- if on_sale -%}<span class="pf-flash__disc">-{{ disc }}%</span>{%- endif -%}
             <span class="pf-flash__hot">HOT</span>
@@ -82,12 +87,30 @@
       {%- endfor -%}
     {%- endif -%}
   </div>
+
+  {%- if init > 0 and rendered > init -%}
+    <div class="pf-flash__morewrap">
+      <button type="button" class="pf-flash__more-btn">
+        Xem thêm
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+    </div>
+  {%- endif -%}
 </div>
 
 <script>
   (function () {
     var box = document.getElementById('pf-flash-{{ uid }}');
     if (!box) return;
+    var moreBtn = box.querySelector('.pf-flash__more-btn');
+    if (moreBtn && !moreBtn.dataset.pfInit) {
+      moreBtn.dataset.pfInit = '1';
+      moreBtn.addEventListener('click', function () {
+        box.querySelectorAll('.pf-flash__card.is-hidden').forEach(function (c) { c.classList.remove('is-hidden'); });
+        var w = moreBtn.closest('.pf-flash__morewrap');
+        if (w) w.remove();
+      });
+    }
     var el = box.querySelector('.pf-flash__timer');
     if (!el || el.dataset.pfInit) return;
     el.dataset.pfInit = '1';
