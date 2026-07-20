@@ -17,7 +17,9 @@ body.gradient {
 #MainContent[data-template='collection'] > .shopify-section > .color-scheme-1,
 #MainContent[data-template='collection'] > .shopify-section > .gradient,
 #MainContent[data-template='search'] > .shopify-section > .color-scheme-1,
-#MainContent[data-template='search'] > .shopify-section > .gradient {
+#MainContent[data-template='search'] > .shopify-section > .gradient,
+#MainContent[data-template='collection'] collection-component > .color-scheme-1,
+#MainContent[data-template='collection'] collection-component > .gradient {
   background: transparent !important;
 }
 /* Hide Dawn's default Availability/Price/Sort bar on collections

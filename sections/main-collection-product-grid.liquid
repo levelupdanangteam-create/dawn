@@ -41,6 +41,67 @@
   data-collection-id="{{ collection.id }}"
 >
   <div class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}">
+    {%- style -%}
+      #pf-cbox-{{ section.id }} {
+        max-width: var(--page-width, 120rem); margin-inline: auto;
+        background: #fff; border: 1px solid #ece3d4; border-radius: 22px;
+        box-shadow: 0 10px 30px rgba(120,100,70,.08);
+        padding: 1.8rem clamp(1.6rem,3vw,3rem) 2.4rem;
+      }
+      #pf-cbox-{{ section.id }} .collection.page-width,
+      #pf-cbox-{{ section.id }} .collection--empty.page-width { max-width: 100%; padding-inline: 0; }
+      #pf-cbox-{{ section.id }} .pf-ctbar {
+        display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.4rem;
+        margin-bottom: 2rem; padding-bottom: 1.6rem; border-bottom: 1px solid #f0e8db;
+      }
+      #pf-cbox-{{ section.id }} .pf-chips { display: flex; flex-wrap: wrap; gap: .8rem; }
+      #pf-cbox-{{ section.id }} .pf-chip {
+        display: inline-flex; align-items: center; gap: .4rem; padding: .7rem 1.4rem; border-radius: 999px;
+        font-size: 1.35rem; font-weight: 700; text-decoration: none; color: #2a2622;
+        background: #f4efe6; border: 1px solid #e7ddcd; transition: all .18s ease; white-space: nowrap;
+      }
+      #pf-cbox-{{ section.id }} .pf-chip:hover { background: #eaf3ec; border-color: #bfe0c7; color: #14672f; transform: translateY(-2px); }
+      #pf-cbox-{{ section.id }} .pf-chip.is-active { background: linear-gradient(90deg,#1e8541,#14672f); border-color: #14672f; color: #fff; box-shadow: 0 6px 14px rgba(20,90,45,.28); }
+      #pf-cbox-{{ section.id }} .pf-search { display: flex; align-items: stretch; min-width: 22rem; flex: 0 1 30rem; }
+      #pf-cbox-{{ section.id }} .pf-search input {
+        flex: 1; min-width: 0; border: 1px solid #e0d6c4; border-right: none; border-radius: 999px 0 0 999px;
+        padding: 1rem 1.6rem; font-size: 1.4rem; color: #2a2622; background: #fbf8f2;
+      }
+      #pf-cbox-{{ section.id }} .pf-search input:focus { outline: none; border-color: #1e8541; box-shadow: inset 0 0 0 1px #1e8541; }
+      #pf-cbox-{{ section.id }} .pf-search button {
+        border: none; border-radius: 0 999px 999px 0; padding: 0 1.8rem; cursor: pointer;
+        background: linear-gradient(90deg,#1e8541,#14672f); color: #fff; font-size: 1.5rem; font-weight: 700;
+        display: inline-flex; align-items: center; gap: .5rem;
+      }
+      #pf-cbox-{{ section.id }} .pf-search button:hover { filter: brightness(1.08); }
+      @media (max-width: 749px) {
+        #pf-cbox-{{ section.id }} { border-radius: 16px; padding: 1.4rem 1.2rem 1.8rem; }
+        #pf-cbox-{{ section.id }} .pf-ctbar { flex-direction: column; align-items: stretch; }
+        #pf-cbox-{{ section.id }} .pf-chips { justify-content: center; }
+        #pf-cbox-{{ section.id }} .pf-search { min-width: 0; }
+      }
+    {%- endstyle -%}
+
+    <div id="pf-cbox-{{ section.id }}">
+      {%- assign pf_cats = 'bột-gia-vị,gạo-banh-gạo,ca-phe,bun-phở,dồ-an-vặt-sữa' | split: ',' -%}
+      {%- assign pf_labels = 'Gia Vị,Bột gạo nếp,Cà phê,Bún & Phở,Đồ ăn vặt' | split: ',' -%}
+      {%- assign pf_icons = '🧂,🌾,☕,🍜,🍬' | split: ',' -%}
+      <div class="pf-ctbar">
+        <div class="pf-chips">
+          <a class="pf-chip{% if collection.handle == 'all' %} is-active{% endif %}" href="/collections/all">🍜 Tất cả</a>
+          {%- for h in pf_cats -%}
+            {%- assign pf_col = collections[h] -%}
+            {%- if pf_col != empty -%}
+              <a class="pf-chip{% if collection.handle == pf_col.handle %} is-active{% endif %}" href="{{ pf_col.url }}">{{ pf_icons[forloop.index0] }} {{ pf_labels[forloop.index0] }}</a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        <form class="pf-search" action="{{ routes.search_url }}" method="get" role="search">
+          <input type="hidden" name="type" value="product">
+          <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Tìm sản phẩm..." aria-label="Tìm kiếm sản phẩm">
+          <button type="submit" aria-label="Tìm kiếm">🔍 Tìm</button>
+        </form>
+      </div>
     {%- paginate collection.products by section.settings.products_per_page -%}
       {% comment %} Sort is the first tabbable element when filter type is vertical {% endcomment %}
       {%- if section.settings.enable_sorting and section.settings.filter_type == 'vertical' -%}
@@ -198,6 +259,7 @@
     {% if section.settings.image_shape == 'arch' %}
       {{ 'mask-arch.svg' | inline_asset_content }}
     {%- endif -%}
+    </div>
   </div>
 </collection-component>
 
