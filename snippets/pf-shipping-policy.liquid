@@ -1,32 +1,63 @@
 {%- comment -%} Shipping-policy detail box on the product detail page {%- endcomment -%}
 <style>
-  .pf-ship { margin: 1.6rem 0 0; background: #1f3a2a; border-radius: 14px; padding: 2.4rem 2.6rem; color: #eae7d8; }
-  .pf-ship__eyebrow { font-size: 1.25rem; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; color: #d2a24a; margin: 0 0 1.6rem; }
-  .pf-ship__group + .pf-ship__group { margin-top: 2rem; }
-  .pf-ship__h { display: flex; align-items: center; gap: 0.8rem; margin: 0 0 1rem; font-size: 1.6rem; font-weight: 800; color: #ffffff; }
-  .pf-ship__list { list-style: none; margin: 0; padding: 0 0 0 2.6rem; display: flex; flex-direction: column; gap: 0.7rem; }
-  .pf-ship__list li { font-size: 1.4rem; color: #c3c9b8; line-height: 1.45; }
-  .pf-ship__list li b { color: #e6b34d; font-weight: 800; }
+  .pf-ship {
+    margin: 1.6rem 0 0; position: relative; overflow: hidden;
+    background: linear-gradient(160deg, #1e7a41 0%, #14532b 100%);
+    border: 1px solid #2c7a48; border-radius: 18px; padding: 2.4rem 2.4rem 2.6rem;
+    color: #eefaf0; box-shadow: 0 14px 34px rgba(20, 80, 40, .2);
+  }
+  .pf-ship::before {
+    content: ""; position: absolute; top: -40%; right: -20%; width: 60%; height: 120%;
+    background: radial-gradient(circle, rgba(255,255,255,.10) 0%, transparent 60%); pointer-events: none;
+  }
+  .pf-ship__eyebrow {
+    position: relative; display: inline-flex; align-items: center; gap: .6rem;
+    font-size: 1.2rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase;
+    color: #f2c14e; margin: 0 0 1.8rem;
+  }
+  .pf-ship__grid { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; }
+  .pf-ship__card {
+    background: rgba(255, 255, 255, .07); border: 1px solid rgba(255, 255, 255, .16);
+    border-radius: 14px; padding: 1.6rem 1.6rem 1.4rem;
+  }
+  .pf-ship__h { display: flex; align-items: center; gap: 0.7rem; margin: 0 0 1.2rem; font-size: 1.55rem; font-weight: 800; color: #ffffff; }
+  .pf-ship__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.7rem; }
+  .pf-ship__row {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 0.7rem 0; border-bottom: 1px dashed rgba(255, 255, 255, .14);
+  }
+  .pf-ship__row:last-child { border-bottom: none; }
+  .pf-ship__label { font-size: 1.35rem; color: #dcefe1; line-height: 1.4; }
+  .pf-ship__val {
+    flex: none; font-size: 1.35rem; font-weight: 800; color: #14532b; background: #f2c14e;
+    padding: .35rem .9rem; border-radius: 999px; white-space: nowrap;
+  }
+  .pf-ship__val.free { background: #ffffff; color: #14672f; }
+  .pf-ship__row.hot { background: rgba(242, 193, 78, .12); border-radius: 10px; padding: .8rem 1rem; margin: .2rem -.4rem 0; border-bottom: none; }
+  .pf-ship__row.hot .pf-ship__label { color: #fff; font-weight: 700; }
+  @media (max-width: 749px) { .pf-ship__grid { grid-template-columns: 1fr; } }
 </style>
 
 <div class="pf-ship">
-  <p class="pf-ship__eyebrow">Chính sách</p>
+  <p class="pf-ship__eyebrow">🌿 Chính sách vận chuyển &amp; ưu đãi</p>
 
-  <div class="pf-ship__group">
-    <h3 class="pf-ship__h">🚚 Phí vận chuyển cực tiết kiệm</h3>
-    <ul class="pf-ship__list">
-      <li>Đơn từ 0 – 10kg: <b>19€</b></li>
-      <li>Đơn từ 10 – 20kg: <b>13€</b></li>
-      <li>Đơn từ 20kg trở lên: <b>MIỄN PHÍ VẬN CHUYỂN</b></li>
-    </ul>
-  </div>
+  <div class="pf-ship__grid">
+    <div class="pf-ship__card">
+      <h3 class="pf-ship__h">🚚 Phí vận chuyển tiết kiệm</h3>
+      <ul class="pf-ship__list">
+        <li class="pf-ship__row"><span class="pf-ship__label">Đơn từ 0 – 10kg</span><span class="pf-ship__val">19€</span></li>
+        <li class="pf-ship__row"><span class="pf-ship__label">Đơn từ 10 – 20kg</span><span class="pf-ship__val">13€</span></li>
+        <li class="pf-ship__row"><span class="pf-ship__label">Đơn trên 20kg</span><span class="pf-ship__val free">Miễn phí</span></li>
+      </ul>
+    </div>
 
-  <div class="pf-ship__group">
-    <h3 class="pf-ship__h">🎁 Ưu đãi hấp dẫn dành cho mọi đơn hàng</h3>
-    <ul class="pf-ship__list">
-      <li>FREESHIP cho đơn từ <b>150€</b></li>
-      <li>FREESHIP + Giảm 3% cho đơn từ <b>250€</b></li>
-      <li>FREESHIP + Giảm 5% cho đơn từ <b>400€</b></li>
-    </ul>
+    <div class="pf-ship__card">
+      <h3 class="pf-ship__h">🎁 Ưu đãi theo giá trị đơn</h3>
+      <ul class="pf-ship__list">
+        <li class="pf-ship__row"><span class="pf-ship__label">Đơn từ 150€</span><span class="pf-ship__val free">Freeship</span></li>
+        <li class="pf-ship__row"><span class="pf-ship__label">Đơn từ 250€</span><span class="pf-ship__val free">Freeship + Giảm 3%</span></li>
+        <li class="pf-ship__row hot"><span class="pf-ship__label">Đơn từ 350€</span><span class="pf-ship__val">Áp dụng giá sỉ</span></li>
+      </ul>
+    </div>
   </div>
 </div>
