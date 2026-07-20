@@ -354,6 +354,19 @@ body.gradient {
   -webkit-box-orient: vertical;
   overflow: hidden;
   min-height: 2.8em;
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+/* Make the product name stand out more (darker, bolder) */
+#MainContent[data-template='collection'] .card-wrapper .card__heading a,
+#MainContent[data-template='search'] .card-wrapper .card__heading a {
+  color: #2a2622 !important;
+  font-weight: 700;
+}
+#MainContent[data-template='collection'] .card-wrapper .card__heading a:hover,
+#MainContent[data-template='search'] .card-wrapper .card__heading a:hover {
+  color: #1e63c8 !important;
 }
 
 /* Title link inside custom deal-section cards */
