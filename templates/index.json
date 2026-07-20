@@ -52,7 +52,7 @@
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
-        "collection": "all",
+        "collection": "ban-chay-nhat",
         "products_to_show": 18,
         "title": "Sản phẩm được mua nhiều nhất",
         "heading_size": "h2",
