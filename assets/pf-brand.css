@@ -381,9 +381,12 @@ body.gradient {
   color: #14672f !important;
   font-weight: 700;
 }
-/* Variant pills: green when selected */
-#MainContent[data-template='product'] .product-form__input input[type='radio']:checked + label {
-  border-color: #1e8541;
+/* Variant pills: filled green (not black) when selected */
+#MainContent[data-template='product'] .product-form__input input[type='radio']:checked + label,
+#MainContent[data-template='product'] .product-variant-options input[type='radio']:checked + label {
+  background-color: #1e8541 !important;
+  color: #ffffff !important;
+  border-color: #1e8541 !important;
   box-shadow: 0 0 0 1px #1e8541;
 }
 /* Rounded quantity selector + product inputs */
