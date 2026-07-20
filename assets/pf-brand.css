@@ -24,9 +24,9 @@ body.gradient {
 }
 .header-wrapper {
   position: relative;
-  background: linear-gradient(90deg, #1e63c8 0%, #1a56b0 100%) !important;
+  background: linear-gradient(90deg, #1e8541 0%, #14672f 100%) !important;
   border-bottom: none;
-  box-shadow: 0 3px 16px rgba(30, 60, 120, .18);
+  box-shadow: 0 3px 16px rgba(20, 90, 45, .2);
 }
 /* Red brand accent line along the bottom edge */
 .header-wrapper::after {
@@ -41,7 +41,7 @@ body.gradient {
 }
 /* Deeper shadow once the header sticks on scroll */
 .shopify-section-header-sticky .header-wrapper {
-  box-shadow: 0 6px 24px rgba(30, 60, 120, .3);
+  box-shadow: 0 6px 24px rgba(20, 90, 45, .32);
 }
 /* White nav text + icons on the blue header */
 .header,
