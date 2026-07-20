@@ -7,8 +7,11 @@
   #pf-catgrid-{{ section.id }} .pf-ornament .line + .line { background: linear-gradient(90deg, #c9a24a, transparent); }
   #pf-catgrid-{{ section.id }} .pf-ornament .dia { width: 9px; height: 9px; background: #c9a24a; transform: rotate(45deg); }
   #pf-catgrid-{{ section.id }} .pf-title {
-    font-family: var(--font-heading-family, sans-serif); font-weight: 700; color: #2a2622;
+    font-family: var(--font-heading-family, sans-serif); font-weight: 800;
     font-size: clamp(2.4rem, 3.8vw, 3.4rem); margin: 0; line-height: 1.15;
+    color: #1e63c8;
+    background: linear-gradient(90deg, #1e63c8 0%, #3f8ae0 45%, #c9a24a 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
   }
 
   #pf-catgrid-{{ section.id }} .pf-grid { display: grid; grid-template-columns: repeat(var(--pf-cols, 5), 1fr); gap: clamp(1.6rem, 3vw, 3rem); max-width: 96rem; margin-inline: auto; }
