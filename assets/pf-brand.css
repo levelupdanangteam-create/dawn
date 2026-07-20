@@ -316,13 +316,18 @@ body.gradient {
 }
 @media (prefers-reduced-motion: reduce) { .pf-card-actions { transition: none; } }
 
-/* Force a fixed SQUARE image on every product card so heights match
-   (overrides the inline adapt ratio) */
+/* Force a fixed SQUARE image on every product card so all frames are equal
+   (override the inline adapt ratio directly on the ratio box) */
 .card-wrapper,
-.card-wrapper .card__inner { --ratio-percent: 100% !important; }
+.card-wrapper .card__inner,
+.card-wrapper .card.ratio { --ratio-percent: 100% !important; }
+.card-wrapper .card__inner.ratio,
+.card-wrapper .card.ratio { padding-bottom: 100% !important; }
 /* Show the whole product inside the square (no cropping) on a white ground */
+.card-wrapper .card__media,
 .card-wrapper .card__media .media { background: #ffffff; }
-.card-wrapper .card__media .media img { object-fit: contain !important; padding: 8px; }
+.card-wrapper .card__media .media img,
+.card-wrapper .card__inner img { object-fit: contain !important; padding: 8px; }
 
 /* Uniform, prominent 2-line product titles so price + buttons line up */
 .card-wrapper .card__heading {
