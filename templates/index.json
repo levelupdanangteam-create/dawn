@@ -18,25 +18,13 @@
             "heading": "",
             "heading_size": "h0"
           }
-        },
-        "button": {
-          "type": "buttons",
-          "settings": {
-            "button_label_1": "Nhận ưu đãi ngay!",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
-          }
         }
       },
       "block_order": [
-        "heading",
-        "button"
+        "heading"
       ],
       "settings": {
-        "image": "shopify://shop_images/ChatGPT_Image_Jul_19_2026_08_09_34_AM.png",
+        "image": "shopify://shop_images/banner_web.png",
         "image_overlay_opacity": 0,
         "image_height": "large",
         "image_behavior": "none",
@@ -49,15 +37,54 @@
         "show_text_below": false
       }
     },
-    "pf_bestsellers": {
-      "type": "pf-bestsellers",
+    "pf_category_grid": {
+      "type": "pf-category-grid",
+      "blocks": {
+        "cat1": {
+          "type": "category",
+          "settings": {
+            "collection": "bột-gia-vị",
+            "label": "Gia Vị"
+          }
+        },
+        "cat2": {
+          "type": "category",
+          "settings": {
+            "collection": "gạo-banh-gạo",
+            "label": "Các loại bột, gạo, nếp"
+          }
+        },
+        "cat3": {
+          "type": "category",
+          "settings": {
+            "collection": "ca-phe",
+            "label": "Cà phê"
+          }
+        },
+        "cat4": {
+          "type": "category",
+          "settings": {
+            "collection": "bun-phở",
+            "label": "Bún & Phở"
+          }
+        },
+        "cat5": {
+          "type": "category",
+          "settings": {
+            "collection": "dồ-an-vặt-sữa",
+            "label": "Đồ Ăn Vặt"
+          }
+        }
+      },
+      "block_order": [
+        "cat1",
+        "cat2",
+        "cat3",
+        "cat4",
+        "cat5"
+      ],
       "settings": {
-        "heading": "Sản phẩm bán chạy nhất",
-        "subheading": "Những sản phẩm được khách hàng yêu thích và đặt mua nhiều nhất",
-        "collection": "ban-chay-nhat",
-        "products_to_show": 50,
-        "initial_count": 15,
-        "columns_desktop": 5,
+        "heading": "Danh Mục Sản Phẩm",
         "padding_top": 40,
         "padding_bottom": 40
       }
@@ -67,6 +94,7 @@
       "settings": {
         "heading": "Sản phẩm giảm giá – Ưu đãi hôm nay",
         "collection": "asset-pack-77889830914-example-products",
+        "show_all": true,
         "products_to_show": 5,
         "initial_count": 10,
         "countdown_hours": 3,
@@ -74,30 +102,18 @@
         "padding_bottom": 48
       }
     },
-    "pf_category_grid": {
-      "type": "pf-category-grid",
-      "blocks": {
-        "cat1": { "type": "category", "settings": { "collection": "bột-gia-vị", "label": "Gia Vị" } },
-        "cat2": { "type": "category", "settings": { "collection": "gạo-banh-gạo", "label": "Các loại bột, gạo, nếp" } },
-        "cat3": { "type": "category", "settings": { "collection": "ca-phe", "label": "Cà phê" } },
-        "cat4": { "type": "category", "settings": { "collection": "bun-phở", "label": "Bún & Phở" } },
-        "cat5": { "type": "category", "settings": { "collection": "dồ-an-vặt-sữa", "label": "Đồ Ăn Vặt" } }
-      },
-      "block_order": ["cat1", "cat2", "cat3", "cat4", "cat5"],
+    "pf_bestsellers": {
+      "type": "pf-bestsellers",
       "settings": {
-        "heading": "Danh Mục Sản Phẩm",
+        "heading": "Sản phẩm bán chạy nhất",
+        "subheading": "Những sản phẩm được khách hàng yêu thích và đặt mua nhiều nhất",
+        "collection": "ban-chay-nhat",
+        "products_to_show": 50,
+        "initial_count": 15,
+        "show_more_label": "Xem thêm",
+        "columns_desktop": 5,
         "padding_top": 40,
         "padding_bottom": 40
-      }
-    },
-    "pf_daily_deals": {
-      "type": "pf-daily-deals",
-      "settings": {
-        "heading": "Giá Tốt Mỗi Ngày",
-        "collection": "asset-pack-77889830914-example-products",
-        "products_to_show": 8,
-        "padding_top": 48,
-        "padding_bottom": 48
       }
     },
     "image_banner_gbfQkJ": {
@@ -215,7 +231,6 @@
     "pf_category_grid",
     "pf_flash_sale",
     "pf_bestsellers",
-    "pf_daily_deals",
     "image_banner_gbfQkJ",
     "pf_three_regions",
     "pf_buying_guide"
