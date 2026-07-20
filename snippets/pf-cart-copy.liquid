@@ -1,0 +1,99 @@
+{%- comment -%}
+  Order-summary box on the cart page with a "copy order details" button.
+  Lets customers copy their order as text to paste into Messenger/Zalo/email.
+{%- endcomment -%}
+{%- unless cart == empty -%}
+<style>
+  .pf-ordercopy { margin: 2rem 0 0; background: #ffffff; border: 1px solid #ece3d4; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 22px rgba(120,100,70,.07); }
+  .pf-ordercopy__head { display: flex; align-items: center; gap: .8rem; padding: 1.4rem 1.8rem; background: linear-gradient(90deg, #1e8541, #14672f); color: #fff; }
+  .pf-ordercopy__head h3 { margin: 0; font-size: 1.6rem; font-weight: 800; color: #fff; }
+  .pf-ordercopy__body { padding: 1.6rem 1.8rem; }
+  .pf-ordercopy__list { list-style: none; margin: 0 0 1.2rem; padding: 0; display: flex; flex-direction: column; gap: .7rem; }
+  .pf-ordercopy__item { display: flex; justify-content: space-between; gap: 1rem; font-size: 1.4rem; color: #2a2622; padding-bottom: .7rem; border-bottom: 1px solid #f0e8db; }
+  .pf-ordercopy__item:last-child { border-bottom: none; padding-bottom: 0; }
+  .pf-ordercopy__name { line-height: 1.4; }
+  .pf-ordercopy__name b { color: #1e63c8; }
+  .pf-ordercopy__price { flex: none; font-weight: 800; color: #1e63c8; white-space: nowrap; }
+  .pf-ordercopy__total { display: flex; justify-content: space-between; align-items: center; font-size: 1.55rem; font-weight: 800; color: #2a2622; padding-top: 1rem; border-top: 2px solid #ece3d4; }
+  .pf-ordercopy__total span:last-child { color: #d62828; }
+  .pf-ordercopy__btn {
+    margin-top: 1.4rem; width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
+    background: linear-gradient(90deg, #1e8541, #14672f); color: #fff; border: none; cursor: pointer;
+    font-size: 1.5rem; font-weight: 800; padding: 1.2rem 1.6rem; border-radius: 12px; transition: filter .15s ease;
+  }
+  .pf-ordercopy__btn:hover { filter: brightness(1.08); }
+  .pf-ordercopy__btn.copied { background: #1e63c8; }
+  .pf-ordercopy__hint { margin: .8rem 0 0; font-size: 1.25rem; color: #7a7266; text-align: center; }
+  .pf-ordercopy__src { position: absolute; left: -9999px; top: 0; opacity: 0; }
+</style>
+
+{%- capture pf_order_text -%}
+🛒 ĐƠN HÀNG – PHOMIFOOD.EU
+------------------------------
+{% for item in cart.items -%}
+{{ forloop.index }}. {{ item.product.title }}{% unless item.variant.title contains 'Default' %} ({{ item.variant.title }}){% endunless %} | SL: {{ item.quantity }} | {{ item.final_line_price | money }}
+{% endfor -%}
+------------------------------
+TỔNG TẠM TÍNH: {{ cart.total_price | money }}
+(Chưa gồm phí vận chuyển)
+{%- endcapture -%}
+
+<div class="pf-ordercopy">
+  <div class="pf-ordercopy__head">
+    <span aria-hidden="true">📋</span>
+    <h3>Thông tin đơn hàng của bạn</h3>
+  </div>
+  <div class="pf-ordercopy__body">
+    <ul class="pf-ordercopy__list">
+      {%- for item in cart.items -%}
+        <li class="pf-ordercopy__item">
+          <span class="pf-ordercopy__name">
+            {{ item.product.title }}{% unless item.variant.title contains 'Default' %} <b>({{ item.variant.title }})</b>{% endunless %}
+            × {{ item.quantity }}
+          </span>
+          <span class="pf-ordercopy__price">{{ item.final_line_price | money }}</span>
+        </li>
+      {%- endfor -%}
+    </ul>
+    <div class="pf-ordercopy__total">
+      <span>Tổng tạm tính</span>
+      <span>{{ cart.total_price | money }}</span>
+    </div>
+
+    <textarea class="pf-ordercopy__src" id="pf-order-src" readonly aria-hidden="true">{{ pf_order_text }}</textarea>
+    <button type="button" class="pf-ordercopy__btn" id="pf-order-copy-btn" data-label="📋 Copy thông tin đơn hàng">
+      📋 Copy thông tin đơn hàng
+    </button>
+    <p class="pf-ordercopy__hint">Sao chép để gửi qua Messenger / Zalo / Email khi đặt hàng.</p>
+  </div>
+</div>
+
+<script>
+  (function () {
+    if (window.pfOrderCopyBound) return;
+    window.pfOrderCopyBound = true;
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest ? e.target.closest('#pf-order-copy-btn') : null;
+      if (!btn) return;
+      var src = document.getElementById('pf-order-src');
+      if (!src) return;
+      var text = src.value;
+      function done() {
+        btn.classList.add('copied');
+        btn.textContent = '✅ Đã copy!';
+        setTimeout(function () {
+          btn.classList.remove('copied');
+          btn.textContent = btn.getAttribute('data-label');
+        }, 1800);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(function () {
+          src.select(); document.execCommand('copy'); done();
+        });
+      } else {
+        src.select(); document.execCommand('copy'); done();
+      }
+    });
+  })();
+</script>
+{%- endunless -%}
