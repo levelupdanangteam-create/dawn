@@ -1,0 +1,128 @@
+<style>
+  #pf-ctb-{{ section.id }} { padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px; }
+  #pf-ctb-{{ section.id }} .pf-wrap { max-width: var(--page-width, 120rem); margin-inline: auto; padding-inline: clamp(1.6rem, 3vw, 3rem); }
+
+  #pf-ctb-{{ section.id }} .pf-ctb-head { text-align: center; margin-bottom: 2rem; }
+  #pf-ctb-{{ section.id }} .pf-ornament { display: flex; align-items: center; justify-content: center; gap: 1.2rem; margin-bottom: .8rem; }
+  #pf-ctb-{{ section.id }} .pf-ornament .line { width: clamp(3rem, 8vw, 6rem); height: 1px; background: linear-gradient(90deg, transparent, #d62828); }
+  #pf-ctb-{{ section.id }} .pf-ornament .line + .line { background: linear-gradient(90deg, #d62828, transparent); }
+  #pf-ctb-{{ section.id }} .pf-ornament .dia { width: 9px; height: 9px; background: #d62828; transform: rotate(45deg); }
+  #pf-ctb-{{ section.id }} .pf-ctb-title {
+    font-family: var(--font-heading-family, sans-serif); font-weight: 800; margin: 0;
+    font-size: clamp(2.2rem, 3.6vw, 3.2rem); line-height: 1.15;
+    color: #d62828; background: linear-gradient(90deg, #d62828 0%, #e8452f 55%, #f2792a 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  #pf-ctb-{{ section.id }} .pf-ctb-bar {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.4rem;
+    background: #fff; border: 1px solid #ece3d4; border-radius: 16px; padding: 1.4rem 1.6rem;
+    box-shadow: 0 8px 22px rgba(120,100,70,.08);
+  }
+
+  #pf-ctb-{{ section.id }} .pf-chips { display: flex; flex-wrap: wrap; gap: .8rem; }
+  #pf-ctb-{{ section.id }} .pf-chip {
+    display: inline-flex; align-items: center; gap: .5rem; padding: .7rem 1.4rem; border-radius: 999px;
+    font-size: 1.35rem; font-weight: 700; text-decoration: none; color: #2a2622;
+    background: #f4efe6; border: 1px solid #e7ddcd; transition: all .18s ease; white-space: nowrap;
+  }
+  #pf-ctb-{{ section.id }} .pf-chip:hover { background: #eaf3ec; border-color: #bfe0c7; color: #14672f; transform: translateY(-2px); }
+  #pf-ctb-{{ section.id }} .pf-chip.is-active { background: linear-gradient(90deg, #1e8541, #14672f); border-color: #14672f; color: #fff; box-shadow: 0 6px 14px rgba(20,90,45,.28); }
+
+  #pf-ctb-{{ section.id }} .pf-search { display: flex; align-items: stretch; min-width: 24rem; flex: 0 1 32rem; }
+  #pf-ctb-{{ section.id }} .pf-search input {
+    flex: 1; border: 1px solid #e0d6c4; border-right: none; border-radius: 999px 0 0 999px;
+    padding: 1rem 1.6rem; font-size: 1.4rem; color: #2a2622; background: #fbf8f2; min-width: 0;
+  }
+  #pf-ctb-{{ section.id }} .pf-search input:focus { outline: none; border-color: #1e8541; box-shadow: inset 0 0 0 1px #1e8541; }
+  #pf-ctb-{{ section.id }} .pf-search button {
+    border: none; border-radius: 0 999px 999px 0; padding: 0 1.8rem; cursor: pointer;
+    background: linear-gradient(90deg, #1e8541, #14672f); color: #fff; font-size: 1.5rem; font-weight: 700;
+    display: inline-flex; align-items: center; gap: .5rem; transition: filter .18s ease;
+  }
+  #pf-ctb-{{ section.id }} .pf-search button:hover { filter: brightness(1.08); }
+
+  @media (max-width: 749px) {
+    #pf-ctb-{{ section.id }} .pf-ctb-bar { flex-direction: column; align-items: stretch; }
+    #pf-ctb-{{ section.id }} .pf-search { min-width: 0; }
+    #pf-ctb-{{ section.id }} .pf-chips { justify-content: center; }
+  }
+</style>
+
+<div id="pf-ctb-{{ section.id }}">
+  <div class="pf-wrap">
+    {%- if section.settings.show_title -%}
+      <div class="pf-ctb-head">
+        <div class="pf-ornament" aria-hidden="true">
+          <span class="line"></span><span class="dia"></span><span class="line"></span>
+        </div>
+        <h1 class="pf-ctb-title">
+          {%- if collection and collection.title != blank -%}{{ collection.title }}{%- else -%}{{ section.settings.fallback_title }}{%- endif -%}
+        </h1>
+      </div>
+    {%- endif -%}
+
+    <div class="pf-ctb-bar">
+      {%- if section.blocks.size > 0 -%}
+        <div class="pf-chips">
+          {%- if section.settings.show_all_chip -%}
+            <a class="pf-chip{% if collection.handle == section.settings.all_handle %} is-active{% endif %}" href="/collections/{{ section.settings.all_handle }}">🍜 Tất cả</a>
+          {%- endif -%}
+          {%- for block in section.blocks -%}
+            {%- assign chip_col = block.settings.collection -%}
+            {%- if block.settings.label != blank -%}{%- assign chip_label = block.settings.label -%}
+            {%- elsif chip_col != blank -%}{%- assign chip_label = chip_col.title -%}
+            {%- else -%}{%- assign chip_label = 'Danh mục' -%}{%- endif -%}
+            {%- if chip_col != blank -%}
+              <a class="pf-chip{% if collection.handle == chip_col.handle %} is-active{% endif %}" href="{{ chip_col.url }}" {{ block.shopify_attributes }}>
+                {%- if block.settings.icon != blank -%}{{ block.settings.icon }} {% endif -%}{{ chip_label }}
+              </a>
+            {%- else -%}
+              <span class="pf-chip" {{ block.shopify_attributes }}>{% if block.settings.icon != blank %}{{ block.settings.icon }} {% endif %}{{ chip_label }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.show_search -%}
+        <form class="pf-search" action="{{ routes.search_url }}" method="get" role="search">
+          <input type="hidden" name="type" value="product">
+          <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ section.settings.search_placeholder }}" aria-label="Tìm kiếm sản phẩm">
+          <button type="submit" aria-label="Tìm kiếm">🔍 Tìm</button>
+        </form>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Thanh lọc danh mục + Tìm kiếm",
+  "tag": "section",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "checkbox", "id": "show_title", "label": "Hiện tiêu đề danh mục", "default": true },
+    { "type": "text", "id": "fallback_title", "label": "Tiêu đề mặc định", "default": "Tất cả sản phẩm" },
+    { "type": "checkbox", "id": "show_all_chip", "label": "Hiện chip \"Tất cả\"", "default": true },
+    { "type": "text", "id": "all_handle", "label": "Handle collection \"Tất cả\"", "default": "all" },
+    { "type": "checkbox", "id": "show_search", "label": "Hiện ô tìm kiếm", "default": true },
+    { "type": "text", "id": "search_placeholder", "label": "Gợi ý ô tìm kiếm", "default": "Tìm sản phẩm..." },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 32 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 16 }
+  ],
+  "blocks": [
+    {
+      "type": "chip",
+      "name": "Danh mục",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Bộ sưu tập" },
+        { "type": "text", "id": "label", "label": "Tên hiển thị (tuỳ chọn)" },
+        { "type": "text", "id": "icon", "label": "Icon (emoji, tuỳ chọn)" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Thanh lọc danh mục + Tìm kiếm" }
+  ]
+}
+{% endschema %}
