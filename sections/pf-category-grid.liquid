@@ -12,13 +12,13 @@
   #pf-catgrid-{{ section.id }} .pf-grid { display: grid; grid-template-columns: repeat(var(--pf-cols, 5), 1fr); gap: 2rem; max-width: 100rem; margin-inline: auto; }
   #pf-catgrid-{{ section.id }} .pf-cat {
     display: flex; flex-direction: column; align-items: center; gap: 1.4rem; text-align: center;
-    padding: 2.2rem 1rem 1.9rem; background: linear-gradient(180deg, #fbf6ee 0%, #fdfbf7 100%);
-    border: 1px solid #eee2cf; border-radius: 18px;
-    box-shadow: 0 6px 18px rgba(120,100,70,.07); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+    padding: 2.2rem 1rem 1.9rem; background: #fff;
+    border: 1px solid #ece3d4; border-radius: 18px;
+    box-shadow: 0 8px 22px rgba(120,100,70,.09); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
   }
   #pf-catgrid-{{ section.id }} .pf-cat:hover {
-    transform: translateY(-6px); background: linear-gradient(180deg, #f3f8ff 0%, #ffffff 100%);
-    box-shadow: 0 18px 34px rgba(30,60,120,.16); border-color: #bcd3f7;
+    transform: translateY(-6px);
+    box-shadow: 0 18px 36px rgba(30,60,120,.18); border-color: #bcd3f7;
   }
   #pf-catgrid-{{ section.id }} .pf-cat .thumb {
     width: 10.5rem; height: 10.5rem; border-radius: 50%; overflow: hidden; display: grid; place-items: center;
@@ -40,7 +40,7 @@
   }
 </style>
 
-<div id="pf-catgrid-{{ section.id }}" class="pf-boxed-section">
+<div id="pf-catgrid-{{ section.id }}">
   <div class="pf-wrap">
     <div class="pf-cathead">
       <span class="pf-eyebrow">🛒 Mua sắm theo danh mục</span>
