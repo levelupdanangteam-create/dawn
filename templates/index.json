@@ -175,6 +175,7 @@
         "central",
         "south"
       ],
+      "disabled": true,
       "settings": {
         "heading": "Đặc Sản 3 Miền",
         "padding_top": 48,
