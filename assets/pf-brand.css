@@ -128,6 +128,11 @@ body.gradient {
 .header__submenu .header__menu-item:hover {
   color: #1e63c8 !important;
 }
+/* Hide the account (user) icon in the header */
+.header__icons .header__icon--account,
+.header__icon--account {
+  display: none !important;
+}
 /* Soft translucent circle when hovering the header icons */
 .header__icons .header__icon {
   border-radius: 50%;
