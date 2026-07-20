@@ -328,19 +328,15 @@ body.gradient {
     overflow: visible !important;
   }
 }
-/* Equal-height cards with the action buttons pinned to the bottom edge */
-#MainContent[data-template='collection'] .grid__item,
-#MainContent[data-template='search'] .grid__item { display: flex; }
-#MainContent[data-template='collection'] .grid__item > .card-wrapper,
-#MainContent[data-template='search'] .grid__item > .card-wrapper { width: 100%; height: 100%; }
-#MainContent[data-template='collection'] .card-wrapper .card,
-#MainContent[data-template='search'] .card-wrapper .card { height: 100%; display: flex; flex-direction: column; }
-#MainContent[data-template='collection'] .card-wrapper .card__content,
-#MainContent[data-template='search'] .card-wrapper .card__content { flex: 1 1 auto; display: flex; flex-direction: column; }
-#MainContent[data-template='collection'] .card-wrapper .card__information,
-#MainContent[data-template='search'] .card-wrapper .card__information { flex: 1 1 auto; display: flex; flex-direction: column; }
-#MainContent[data-template='collection'] .card-wrapper .pf-card-actions,
-#MainContent[data-template='search'] .card-wrapper .pf-card-actions { margin-top: auto; }
+/* Uniform 2-line product titles so price + action buttons line up across cards */
+#MainContent[data-template='collection'] .card-wrapper .card__heading,
+#MainContent[data-template='search'] .card-wrapper .card__heading {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.8em;
+}
 
 /* Title link inside custom deal-section cards */
 .pf-card .pf-name a { color: inherit; text-decoration: none; }
