@@ -11,10 +11,25 @@ body.gradient {
   background-image: none !important;
 }
 
-/* Let native homepage sections show the beige ground through */
+/* Let native homepage + collection + search sections show the beige ground through */
 #MainContent[data-template='index'] > .shopify-section > .color-scheme-1,
-#MainContent[data-template='index'] > .shopify-section > .gradient {
+#MainContent[data-template='index'] > .shopify-section > .gradient,
+#MainContent[data-template='collection'] > .shopify-section > .color-scheme-1,
+#MainContent[data-template='collection'] > .shopify-section > .gradient,
+#MainContent[data-template='search'] > .shopify-section > .color-scheme-1,
+#MainContent[data-template='search'] > .shopify-section > .gradient {
   background: transparent !important;
+}
+/* Facet / sort bar as a soft white card on the beige ground */
+#MainContent[data-template='collection'] .facets-container,
+#MainContent[data-template='search'] .facets-container,
+#MainContent[data-template='collection'] facet-filters-form .facets__form,
+#MainContent[data-template='collection'] .facets.facets--horizontal {
+  background: #ffffff;
+  border: 1px solid #ece3d4;
+  border-radius: 14px;
+  padding: 1rem 1.6rem;
+  box-shadow: 0 6px 18px rgba(120, 100, 70, .07);
 }
 
 /* ---- Header: blue brand background -------------------------------- */
@@ -304,6 +319,18 @@ body.gradient {
   }
 }
 @media (prefers-reduced-motion: reduce) { .pf-card-actions { transition: none; } }
+/* Collection & search grids: always show the Xem/Thêm buttons (no hover needed) */
+@media screen and (min-width: 750px) {
+  #MainContent[data-template='collection'] .card-wrapper .pf-card-actions,
+  #MainContent[data-template='search'] .card-wrapper .pf-card-actions {
+    opacity: 1 !important;
+    max-height: 16rem !important;
+    margin-top: 1rem !important;
+    transform: none !important;
+    pointer-events: auto !important;
+    overflow: visible !important;
+  }
+}
 
 /* Title link inside custom deal-section cards */
 .pf-card .pf-name a { color: inherit; text-decoration: none; }
