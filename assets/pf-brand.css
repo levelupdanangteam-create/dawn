@@ -133,6 +133,16 @@ body.gradient {
 .header__icon--account {
   display: none !important;
 }
+/* Center the nav menu: logo left · menu center · icons right */
+@media screen and (min-width: 990px) {
+  .header.header--middle-left {
+    grid-template-columns: 1fr auto 1fr !important;
+  }
+  .header--middle-left .header__heading,
+  .header--middle-left .header__heading-link { justify-self: start; }
+  .header--middle-left .header__inline-menu { justify-self: center; margin: 0; }
+  .header--middle-left .header__icons { justify-self: end; }
+}
 /* Soft translucent circle when hovering the header icons */
 .header__icons .header__icon {
   border-radius: 50%;
