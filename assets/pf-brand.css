@@ -304,70 +304,39 @@ body.gradient {
 .pf-btn-view { background: #ffffff; color: #1e63c8; text-decoration: none; display: flex; align-items: center; justify-content: center; }
 .pf-btn-view:hover { background: #1e63c8; color: #ffffff; }
 
-/* Native Dawn cards only: hide on desktop, reveal on hover. */
-@media screen and (min-width: 750px) {
-  .card-wrapper .pf-card-actions {
-    opacity: 0; max-height: 0; margin-top: 0; overflow: hidden; transform: translateY(6px);
-    pointer-events: none;
-    transition: opacity 0.18s ease, transform 0.18s ease, max-height 0.18s ease, margin-top 0.18s ease;
-  }
-  .card-wrapper:hover .pf-card-actions,
-  .card-wrapper:focus-within .pf-card-actions {
-    opacity: 1; max-height: 14rem; margin-top: 1rem; transform: none; pointer-events: auto;
-  }
+/* Native product cards (collection, search, related products): always show
+   the Xem sản phẩm / Thêm vào giỏ buttons — no hover needed. */
+.card-wrapper .pf-card-actions {
+  opacity: 1;
+  max-height: none;
+  margin-top: 1rem;
+  transform: none;
+  pointer-events: auto;
+  overflow: visible;
 }
 @media (prefers-reduced-motion: reduce) { .pf-card-actions { transition: none; } }
-/* Collection & search grids: always show the Xem/Thêm buttons (no hover needed) */
-@media screen and (min-width: 750px) {
-  #MainContent[data-template='collection'] .card-wrapper .pf-card-actions,
-  #MainContent[data-template='search'] .card-wrapper .pf-card-actions {
-    opacity: 1 !important;
-    max-height: 16rem !important;
-    transform: none !important;
-    pointer-events: auto !important;
-    overflow: visible !important;
-  }
-}
-/* Force a fixed SQUARE image on every collection/search card so image height
-   (and everything below it) is identical — overrides the inline adapt ratio */
-#MainContent[data-template='collection'] .card-wrapper,
-#MainContent[data-template='collection'] .card-wrapper .card__inner,
-#MainContent[data-template='search'] .card-wrapper,
-#MainContent[data-template='search'] .card-wrapper .card__inner {
-  --ratio-percent: 100% !important;
-}
+
+/* Force a fixed SQUARE image on every product card so heights match
+   (overrides the inline adapt ratio) */
+.card-wrapper,
+.card-wrapper .card__inner { --ratio-percent: 100% !important; }
 /* Show the whole product inside the square (no cropping) on a white ground */
-#MainContent[data-template='collection'] .card-wrapper .card__media .media,
-#MainContent[data-template='search'] .card-wrapper .card__media .media {
-  background: #ffffff;
-}
-#MainContent[data-template='collection'] .card-wrapper .card__media .media img,
-#MainContent[data-template='search'] .card-wrapper .card__media .media img {
-  object-fit: contain !important;
-  padding: 8px;
-}
-/* Uniform 2-line product titles so price + action buttons line up across cards */
-#MainContent[data-template='collection'] .card-wrapper .card__heading,
-#MainContent[data-template='search'] .card-wrapper .card__heading {
+.card-wrapper .card__media .media { background: #ffffff; }
+.card-wrapper .card__media .media img { object-fit: contain !important; padding: 8px; }
+
+/* Uniform, prominent 2-line product titles so price + buttons line up */
+.card-wrapper .card__heading {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   min-height: 2.8em;
-  font-size: 1.55rem;
+  font-size: 1.6rem;
   font-weight: 700;
   line-height: 1.35;
 }
-/* Make the product name stand out more (darker, bolder) */
-#MainContent[data-template='collection'] .card-wrapper .card__heading a,
-#MainContent[data-template='search'] .card-wrapper .card__heading a {
-  color: #2a2622 !important;
-  font-weight: 700;
-}
-#MainContent[data-template='collection'] .card-wrapper .card__heading a:hover,
-#MainContent[data-template='search'] .card-wrapper .card__heading a:hover {
-  color: #1e63c8 !important;
-}
+.card-wrapper .card__heading a { color: #2a2622 !important; font-weight: 700; }
+.card-wrapper .card__heading a:hover { color: #1e63c8 !important; }
 
 /* Title link inside custom deal-section cards */
 .pf-card .pf-name a { color: inherit; text-decoration: none; }
@@ -416,6 +385,27 @@ body.gradient {
 #MainContent[data-template='product'] .product-form__input input[type='radio']:checked + label {
   border-color: #1e8541;
   box-shadow: 0 0 0 1px #1e8541;
+}
+/* Rounded quantity selector + product inputs */
+#MainContent[data-template='product'] .quantity {
+  border-radius: 12px;
+  overflow: hidden;
+}
+#MainContent[data-template='product'] .quantity:after {
+  border-radius: 12px;
+  border-color: #d9cdb6;
+}
+#MainContent[data-template='product'] .quantity__button:hover .svg-wrapper { color: #1e8541; }
+#MainContent[data-template='product'] .product-form__input .select__select {
+  border-radius: 12px;
+}
+#MainContent[data-template='product'] .product-form__input .select:after {
+  border-radius: 12px;
+}
+/* Related products: prominent Vietnamese heading, centered */
+.related-products .related-products__heading {
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  text-align: center;
 }
 @media screen and (max-width: 749px) {
   #MainContent[data-template='product'] .product__info-container {
