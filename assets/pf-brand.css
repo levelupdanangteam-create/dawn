@@ -328,6 +328,24 @@ body.gradient {
     overflow: visible !important;
   }
 }
+/* Force a fixed SQUARE image on every collection/search card so image height
+   (and everything below it) is identical — overrides the inline adapt ratio */
+#MainContent[data-template='collection'] .card-wrapper,
+#MainContent[data-template='collection'] .card-wrapper .card__inner,
+#MainContent[data-template='search'] .card-wrapper,
+#MainContent[data-template='search'] .card-wrapper .card__inner {
+  --ratio-percent: 100% !important;
+}
+/* Show the whole product inside the square (no cropping) on a white ground */
+#MainContent[data-template='collection'] .card-wrapper .card__media .media,
+#MainContent[data-template='search'] .card-wrapper .card__media .media {
+  background: #ffffff;
+}
+#MainContent[data-template='collection'] .card-wrapper .card__media .media img,
+#MainContent[data-template='search'] .card-wrapper .card__media .media img {
+  object-fit: contain !important;
+  padding: 8px;
+}
 /* Uniform 2-line product titles so price + action buttons line up across cards */
 #MainContent[data-template='collection'] .card-wrapper .card__heading,
 #MainContent[data-template='search'] .card-wrapper .card__heading {
