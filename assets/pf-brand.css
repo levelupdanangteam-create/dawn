@@ -421,13 +421,13 @@ body.gradient {
   margin: 1.1rem auto 0;
   background: linear-gradient(90deg, #d62828, #f2792a);
 }
-/* Give the related section its own soft beige band so it separates cleanly */
+/* Let the related section sit directly on the beige page (no full-width band) */
+#MainContent[data-template='product'] > .shopify-section > .color-scheme-1,
+#MainContent[data-template='product'] > .shopify-section > .gradient {
+  background: transparent !important;
+}
 #MainContent[data-template='product'] .related-products {
-  background: #f7f1e9;
-  border: 1px solid #ece3d4;
-  border-radius: 22px;
-  padding: 3rem clamp(1.4rem, 3vw, 3rem);
-  margin-top: clamp(4rem, 7vw, 7rem);
+  margin-top: clamp(3rem, 6vw, 6rem);
 }
 /* Each related card = white rounded card that lifts on hover */
 #MainContent[data-template='product'] .related-products .card-wrapper {
