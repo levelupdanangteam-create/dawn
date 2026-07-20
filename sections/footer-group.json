@@ -24,8 +24,8 @@
         "help_policies": {
           "type": "text",
           "settings": {
-            "heading": "Hướng dẫn & Chính sách",
-            "subtext": "<p><a href=\"/pages/huong-dan-mua-hang\">Hướng dẫn mua hàng</a></p><p><a href=\"/pages/chinh-sach-doi-tra\">Chính sách đổi trả</a></p><p><a href=\"/pages/chinh-sach-giao-hang\">Chính sách giao hàng</a></p><p><a href=\"/pages/chinh-sach-bao-mat-thanh-toan\">Chính sách bảo mật thanh toán</a></p><p><a href=\"/pages/chinh-sach-bao-mat-thong-tin\">Chính sách bảo mật thông tin</a></p>"
+            "heading": "Chính sách & Hỗ trợ",
+            "subtext": "<p><a href=\"/pages/chinh-sach-mua-sam\">Chính sách mua sắm &amp; vận chuyển</a></p><p><a href=\"/pages/contact\">Liên hệ</a></p>"
           }
         },
         "business_info": {
