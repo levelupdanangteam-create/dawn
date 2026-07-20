@@ -539,6 +539,25 @@ body.gradient {
 #MainContent[data-template='cart'] .quantity__button:hover .svg-wrapper { color: #1e8541; }
 /* Line-item titles a touch bolder */
 #MainContent[data-template='cart'] .cart-item__name { font-weight: 700; color: #2a2622; }
+/* Make the estimated total stand out */
+#MainContent[data-template='cart'] .totals {
+  align-items: center;
+  padding: 1.2rem 1.6rem;
+  background: #fbf6ee;
+  border: 1px solid #efe2cd;
+  border-radius: 12px;
+}
+#MainContent[data-template='cart'] .totals__total {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #2a2622;
+}
+#MainContent[data-template='cart'] .totals__total-value {
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: #d62828;
+  margin: 0;
+}
 
 /* ---- Boxed content sections (white card on the beige page) ------ */
 .pf-boxed-section { background: transparent !important; }
