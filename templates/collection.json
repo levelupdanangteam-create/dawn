@@ -1,36 +1,11 @@
 {
   "sections": {
-    "pf_banner": {
-      "type": "pf-promo-image",
+    "banner": {
+      "type": "main-collection-banner",
       "settings": {
-        "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/6814e16b-944b-461b-bfb1-8231ed7be634.png?v=1784528877",
-        "alt": "PHOMIFOOD - Đặc sản & thực phẩm Việt",
-        "max_width": 120,
-        "corner_radius": 20,
-        "shadow": true,
-        "padding_top": 24,
-        "padding_bottom": 8
-      }
-    },
-    "pf_toolbar": {
-      "type": "pf-collection-toolbar",
-      "blocks": {
-        "c1": { "type": "chip", "settings": { "collection": "bột-gia-vị", "label": "Gia Vị", "icon": "🧂" } },
-        "c2": { "type": "chip", "settings": { "collection": "gạo-banh-gạo", "label": "Bột, gạo, nếp", "icon": "🌾" } },
-        "c3": { "type": "chip", "settings": { "collection": "ca-phe", "label": "Cà phê", "icon": "☕" } },
-        "c4": { "type": "chip", "settings": { "collection": "bun-phở", "label": "Bún & Phở", "icon": "🍜" } },
-        "c5": { "type": "chip", "settings": { "collection": "dồ-an-vặt-sữa", "label": "Đồ ăn vặt", "icon": "🍬" } }
-      },
-      "block_order": ["c1", "c2", "c3", "c4", "c5"],
-      "settings": {
-        "show_title": true,
-        "fallback_title": "Tất cả sản phẩm",
-        "show_all_chip": true,
-        "all_handle": "all",
-        "show_search": true,
-        "search_placeholder": "Tìm sản phẩm...",
-        "padding_top": 28,
-        "padding_bottom": 12
+        "show_collection_description": true,
+        "show_collection_image": false,
+        "color_scheme": "scheme-1"
       }
     },
     "product-grid": {
@@ -45,9 +20,9 @@
         "show_vendor": false,
         "show_rating": false,
         "quick_add": "none",
-        "enable_filtering": false,
+        "enable_filtering": true,
         "filter_type": "horizontal",
-        "enable_sorting": false,
+        "enable_sorting": true,
         "columns_mobile": "2",
         "padding_top": 12,
         "padding_bottom": 36
@@ -55,8 +30,7 @@
     }
   },
   "order": [
-    "pf_banner",
-    "pf_toolbar",
+    "banner",
     "product-grid"
   ]
 }

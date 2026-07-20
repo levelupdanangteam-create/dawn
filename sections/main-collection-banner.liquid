@@ -9,6 +9,53 @@
   }
 {%- endstyle -%}
 
+{%- style -%}
+  .pf-collbanner { max-width: var(--page-width, 120rem); margin: 0 auto; padding: 2.4rem clamp(1.6rem,3vw,3rem) .4rem; }
+  .pf-collbanner img { display: block; width: 100%; height: auto; border-radius: 20px; box-shadow: 0 12px 30px rgba(120,100,70,.14); }
+  .collection-hero__title {
+    color: #d62828;
+    background: linear-gradient(90deg, #d62828 0%, #e8452f 55%, #f2792a 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .pf-collbar { max-width: var(--page-width, 120rem); margin: 0 auto; padding: 0 clamp(1.6rem,3vw,3rem); }
+  .pf-collbar__inner {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.4rem;
+    background: #fff; border: 1px solid #ece3d4; border-radius: 16px; padding: 1.4rem 1.6rem;
+    box-shadow: 0 8px 22px rgba(120,100,70,.08);
+  }
+  .pf-collbar .pf-chips { display: flex; flex-wrap: wrap; gap: .8rem; }
+  .pf-collbar .pf-chip {
+    display: inline-flex; align-items: center; gap: .4rem; padding: .7rem 1.4rem; border-radius: 999px;
+    font-size: 1.35rem; font-weight: 700; text-decoration: none; color: #2a2622;
+    background: #f4efe6; border: 1px solid #e7ddcd; transition: all .18s ease; white-space: nowrap;
+  }
+  .pf-collbar .pf-chip:hover { background: #eaf3ec; border-color: #bfe0c7; color: #14672f; transform: translateY(-2px); }
+  .pf-collbar .pf-chip.is-active { background: linear-gradient(90deg,#1e8541,#14672f); border-color: #14672f; color: #fff; box-shadow: 0 6px 14px rgba(20,90,45,.28); }
+  .pf-collbar .pf-search { display: flex; align-items: stretch; min-width: 22rem; flex: 0 1 30rem; }
+  .pf-collbar .pf-search input {
+    flex: 1; min-width: 0; border: 1px solid #e0d6c4; border-right: none; border-radius: 999px 0 0 999px;
+    padding: 1rem 1.6rem; font-size: 1.4rem; color: #2a2622; background: #fbf8f2;
+  }
+  .pf-collbar .pf-search input:focus { outline: none; border-color: #1e8541; box-shadow: inset 0 0 0 1px #1e8541; }
+  .pf-collbar .pf-search button {
+    border: none; border-radius: 0 999px 999px 0; padding: 0 1.8rem; cursor: pointer;
+    background: linear-gradient(90deg,#1e8541,#14672f); color: #fff; font-size: 1.5rem; font-weight: 700;
+    display: inline-flex; align-items: center; gap: .5rem;
+  }
+  .pf-collbar .pf-search button:hover { filter: brightness(1.08); }
+  @media (max-width: 749px) {
+    .pf-collbar__inner { flex-direction: column; align-items: stretch; }
+    .pf-collbar .pf-chips { justify-content: center; }
+    .pf-collbar .pf-search { min-width: 0; }
+  }
+{%- endstyle -%}
+
+{%- if section.settings.pf_show_banner and section.settings.pf_banner_url != blank -%}
+  <div class="pf-collbanner">
+    <img src="{{ section.settings.pf_banner_url }}" alt="{{ collection.title | escape }}" loading="eager">
+  </div>
+{%- endif -%}
+
 <div class="collection-hero{% if section.settings.show_collection_image and collection.image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient">
   <div class="collection-hero__inner page-width {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
     <div class="collection-hero__text-wrapper">
@@ -45,6 +92,30 @@
   </div>
 </div>
 
+{%- if section.settings.pf_show_toolbar -%}
+  {%- assign pf_cats = 'bột-gia-vị,gạo-banh-gạo,ca-phe,bun-phở,dồ-an-vặt-sữa' | split: ',' -%}
+  {%- assign pf_labels = 'Gia Vị,Bột gạo nếp,Cà phê,Bún & Phở,Đồ ăn vặt' | split: ',' -%}
+  {%- assign pf_icons = '🧂,🌾,☕,🍜,🍬' | split: ',' -%}
+  <div class="pf-collbar">
+    <div class="pf-collbar__inner">
+      <div class="pf-chips">
+        <a class="pf-chip{% if collection.handle == 'all' %} is-active{% endif %}" href="/collections/all">🍜 Tất cả</a>
+        {%- for h in pf_cats -%}
+          {%- assign pf_col = collections[h] -%}
+          {%- if pf_col != empty -%}
+            <a class="pf-chip{% if collection.handle == pf_col.handle %} is-active{% endif %}" href="{{ pf_col.url }}">{{ pf_icons[forloop.index0] }} {{ pf_labels[forloop.index0] }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <form class="pf-search" action="{{ routes.search_url }}" method="get" role="search">
+        <input type="hidden" name="type" value="product">
+        <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Tìm sản phẩm..." aria-label="Tìm kiếm sản phẩm">
+        <button type="submit" aria-label="Tìm kiếm">🔍 Tìm</button>
+      </form>
+    </div>
+  </div>
+{%- endif -%}
+
 {% schema %}
 {
   "name": "t:sections.main-collection-banner.name",
@@ -71,6 +142,28 @@
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
       "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "PHOMIFOOD"
+    },
+    {
+      "type": "checkbox",
+      "id": "pf_show_banner",
+      "label": "Hiện banner ảnh trên cùng",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "pf_banner_url",
+      "label": "URL ảnh banner",
+      "default": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/6814e16b-944b-461b-bfb1-8231ed7be634.png?v=1784528877"
+    },
+    {
+      "type": "checkbox",
+      "id": "pf_show_toolbar",
+      "label": "Hiện thanh danh mục + tìm kiếm",
+      "default": true
     }
   ]
 }

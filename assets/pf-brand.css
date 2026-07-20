@@ -20,16 +20,12 @@ body.gradient {
 #MainContent[data-template='search'] > .shopify-section > .gradient {
   background: transparent !important;
 }
-/* Facet / sort bar as a soft white card on the beige ground */
+/* Hide Dawn's default Availability/Price/Sort bar on collections
+   (replaced by the PHOMIFOOD category chips + search toolbar) */
+#MainContent[data-template='collection'] #main-collection-filters,
 #MainContent[data-template='collection'] .facets-container,
-#MainContent[data-template='search'] .facets-container,
-#MainContent[data-template='collection'] facet-filters-form .facets__form,
-#MainContent[data-template='collection'] .facets.facets--horizontal {
-  background: #ffffff;
-  border: 1px solid #ece3d4;
-  border-radius: 14px;
-  padding: 1rem 1.6rem;
-  box-shadow: 0 6px 18px rgba(120, 100, 70, .07);
+#MainContent[data-template='collection'] facet-filters-form {
+  display: none !important;
 }
 
 /* ---- Header: blue brand background -------------------------------- */
