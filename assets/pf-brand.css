@@ -229,8 +229,8 @@ body.gradient {
 .footer .newsletter-form__field-wrapper .field__input::placeholder { color: rgba(255, 255, 255, .6) !important; }
 .footer .newsletter-form__field-wrapper .field__label { color: rgba(255, 255, 255, .7) !important; }
 .footer .newsletter-form__button .icon { color: #ffffff; }
-/* Soften separators / bottom bar on green */
-.footer .footer__content-bottom { border-top: 1px solid rgba(255, 255, 255, .16); }
+/* Hide the bottom bar (language selector, payment icons, copyright/policy) */
+.footer .footer__content-bottom { display: none !important; }
 .footer .footer-block--newsletter { border-color: rgba(255, 255, 255, .16); }
 /* Payment icons sit on a light chip so they stay visible */
 .footer .payment-icon,
