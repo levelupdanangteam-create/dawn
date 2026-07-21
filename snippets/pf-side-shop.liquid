@@ -1,38 +1,65 @@
 {%- comment -%}
-  Floating vertical "Tiếp tục mua sắm" tab pinned to the right edge of the
-  screen (like a contact side button). Links to all products.
+  Floating round "Tiếp tục mua sắm" button pinned to the bottom-left corner,
+  with a label pill beside it (contact-button style). Bottom-left to avoid the
+  store's existing bottom-right chat/scroll widgets. Links to all products.
 {%- endcomment -%}
 <style>
   .pf-sideshop {
     position: fixed;
-    right: 0;
-    top: 62%;
-    transform: translateY(-50%);
+    left: 2rem;
+    bottom: 2.6rem;
     z-index: 16;
-    writing-mode: vertical-rl;
     display: inline-flex;
     align-items: center;
-    gap: .8rem;
-    background: linear-gradient(180deg, #e8452f, #d62828);
-    color: #ffffff;
-    font-weight: 800;
-    font-size: 1.4rem;
-    letter-spacing: .03em;
+    gap: 1rem;
     text-decoration: none;
-    padding: 1.6rem .95rem;
-    border-radius: 14px 0 0 14px;
-    box-shadow: -5px 6px 18px rgba(180, 30, 20, .3);
-    transition: padding-right .18s ease, filter .18s ease;
   }
-  .pf-sideshop:hover { filter: brightness(1.06); padding-right: 1.3rem; }
-  .pf-sideshop .ic { writing-mode: horizontal-tb; font-size: 1.8rem; line-height: 1; }
+  .pf-sideshop__btn {
+    position: relative;
+    flex: none;
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 2.8rem;
+    color: #fff;
+    background: linear-gradient(180deg, #e8452f, #d62828);
+    box-shadow: 0 8px 20px rgba(180, 30, 20, .35);
+    transition: transform .18s ease, filter .18s ease;
+  }
+  .pf-sideshop__btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(214, 40, 40, .5);
+    animation: pf-shop-pulse 2s infinite;
+  }
+  @keyframes pf-shop-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(214, 40, 40, .45); }
+    70% { box-shadow: 0 0 0 14px rgba(214, 40, 40, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(214, 40, 40, 0); }
+  }
+  .pf-sideshop__label {
+    background: #fff;
+    color: #d62828;
+    font-weight: 800;
+    font-size: 1.5rem;
+    padding: 1rem 1.6rem;
+    border-radius: 999px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, .14);
+    white-space: nowrap;
+  }
+  .pf-sideshop:hover .pf-sideshop__btn { transform: scale(1.06); filter: brightness(1.05); }
   @media (max-width: 749px) {
-    .pf-sideshop { font-size: 1.25rem; padding: 1.3rem .8rem; top: 60%; }
-    .pf-sideshop .ic { font-size: 1.5rem; }
+    .pf-sideshop { left: 1.4rem; bottom: 1.8rem; }
+    .pf-sideshop__btn { width: 5.2rem; height: 5.2rem; font-size: 2.4rem; }
+    .pf-sideshop__label { display: none; }
   }
 </style>
 
 <a class="pf-sideshop" href="{{ routes.all_products_collection_url }}" aria-label="Tiếp tục mua sắm">
-  <span class="ic" aria-hidden="true">🛍️</span>
-  Tiếp tục mua sắm
+  <span class="pf-sideshop__btn" aria-hidden="true">🛍️</span>
+  <span class="pf-sideshop__label">Tiếp tục mua sắm</span>
 </a>
