@@ -33,13 +33,6 @@
   .pf-ordercopy__wa:hover { filter: brightness(1.06); }
   .pf-ordercopy__hint { margin: .9rem 0 0; font-size: 1.25rem; color: #7a7266; text-align: center; line-height: 1.5; }
   .pf-ordercopy__hint b { color: #14672f; }
-  .pf-ordercopy__continue {
-    margin-top: 1.4rem; width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
-    color: #d62828; font-weight: 800; font-size: 1.5rem; text-decoration: none;
-    background: #fff; border: 2px solid #d62828; border-radius: 999px; padding: 1.1rem 1.6rem;
-    box-shadow: 0 4px 12px rgba(214,40,40,.12); transition: background .18s ease, color .18s ease, box-shadow .18s ease;
-  }
-  .pf-ordercopy__continue:hover { background: #d62828; color: #fff; box-shadow: 0 8px 18px rgba(214,40,40,.28); }
   .pf-ordercopy__src { position: absolute; left: -9999px; top: 0; opacity: 0; }
 </style>
 
@@ -86,8 +79,6 @@ TỔNG TẠM TÍNH: {{ cart.total_price | money }}
       Gửi đơn qua WhatsApp
     </a>
     <p class="pf-ordercopy__hint">Hoặc <b>copy đơn</b> rồi gửi vào <b>Fanpage / Messenger của PHOMIFOOD</b> để được tư vấn kỹ hơn.</p>
-
-    <a class="pf-ordercopy__continue" href="{{ routes.all_products_collection_url }}">🛍️ Tiếp tục mua sắm</a>
   </div>
 </div>
 
