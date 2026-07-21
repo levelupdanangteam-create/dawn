@@ -45,7 +45,8 @@
           "settings": {
             "collection": "bột-gia-vị",
             "label": "Gia Vị",
-            "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/gia_v.png?v=1784600459"
+            "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/gia_v.png?v=1784600459",
+            "price_text": "Giá chỉ từ 1,3€"
           }
         },
         "cat2": {
@@ -56,14 +57,6 @@
             "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/g_o_2.png?v=1784600460"
           }
         },
-        "cat3": {
-          "type": "category",
-          "settings": {
-            "collection": "ca-phe",
-            "label": "Đồ uống",
-            "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/d_u_ng.png?v=1784600461"
-          }
-        },
         "cat4": {
           "type": "category",
           "settings": {
@@ -71,22 +64,12 @@
             "label": "Bún & Phở",
             "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/bun_ph.png?v=1784600460"
           }
-        },
-        "cat5": {
-          "type": "category",
-          "settings": {
-            "collection": "dồ-an-vặt-sữa",
-            "label": "Đồ Ăn Vặt",
-            "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/d_an_v_t.png?v=1784600461"
-          }
         }
       },
       "block_order": [
         "cat1",
         "cat2",
-        "cat3",
-        "cat4",
-        "cat5"
+        "cat4"
       ],
       "settings": {
         "heading": "Danh Mục Sản Phẩm",
