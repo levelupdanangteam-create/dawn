@@ -8,6 +8,7 @@
 {%- assign bt_handle = bt_handle | default: 'ban-chay-nhat' -%}
 {%- assign bt_initial = bt_initial | default: 4 -%}
 {%- assign bt_limit = bt_limit | default: 12 -%}
+{%- assign bt_heading = bt_heading | default: '🛒 Thường được mua kèm' -%}
 {%- assign bt_coll = collections[bt_handle] -%}
 {%- if bt_coll != empty and bt_coll.products_count > 0 -%}
   {%- assign bt_shown = 0 -%}
@@ -57,7 +58,7 @@
 
   <div class="pf-bt color-scheme-1">
     <div class="pf-bt__head">
-      <h2 class="pf-bt__title"><span aria-hidden="true">🛒</span> Thường được mua kèm</h2>
+      <h2 class="pf-bt__title">{{ bt_heading }}</h2>
     </div>
     <div class="pf-bt__grid">
       {%- for p in bt_coll.products -%}
