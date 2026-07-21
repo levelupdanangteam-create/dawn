@@ -1,0 +1,35 @@
+{%- comment -%}
+  "Liên hệ tư vấn giá sỉ" box on the product detail page. Opens WhatsApp
+  (+84 938227250) with the current product name pre-filled.
+{%- endcomment -%}
+<style>
+  .pf-wsale {
+    margin: 1.8rem 0 0; display: flex; align-items: center; gap: 1.4rem; flex-wrap: wrap;
+    background: linear-gradient(180deg, #fffaf0 0%, #fffdf9 100%);
+    border: 1px solid #e8cf90; border-radius: 14px; padding: 1.6rem 1.8rem;
+  }
+  .pf-wsale__txt { flex: 1 1 20rem; min-width: 0; }
+  .pf-wsale__t { margin: 0 0 .2rem; font-size: 1.55rem; font-weight: 800; color: #b8894b; }
+  .pf-wsale__d { margin: 0; font-size: 1.35rem; color: #6a6255; line-height: 1.5; }
+  .pf-wsale__btn {
+    flex: none; display: inline-flex; align-items: center; gap: .7rem; text-decoration: none;
+    background: #25d366; color: #fff; font-weight: 800; font-size: 1.45rem;
+    padding: 1.1rem 1.8rem; border-radius: 999px; box-shadow: 0 6px 16px rgba(37, 211, 102, .3);
+    transition: filter .15s ease, transform .15s ease;
+  }
+  .pf-wsale__btn:hover { filter: brightness(1.06); transform: translateY(-1px); }
+  @media (max-width: 599px) { .pf-wsale__btn { width: 100%; justify-content: center; } }
+</style>
+
+{%- capture pf_wsale_text -%}Xin chào PHOMIFOOD, tôi muốn được tư vấn GIÁ SỈ cho sản phẩm: {{ product.title }} ({{ shop.url }}{{ product.url }}){%- endcapture -%}
+
+<div class="pf-wsale">
+  <div class="pf-wsale__txt">
+    <p class="pf-wsale__t">🏷️ Mua số lượng lớn?</p>
+    <p class="pf-wsale__d">Liên hệ ngay để được <b>tư vấn giá sỉ</b> tốt nhất cho cửa hàng, nhà hàng, đại lý.</p>
+  </div>
+  <a class="pf-wsale__btn" href="https://wa.me/84938227250?text={{ pf_wsale_text | url_encode }}" target="_blank" rel="noopener">
+    <svg viewBox="0 0 32 32" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M16.003 3.2c-7.06 0-12.8 5.74-12.8 12.8 0 2.257.59 4.46 1.712 6.4L3.2 28.8l6.56-1.712a12.74 12.74 0 0 0 6.243 1.6h.005c7.06 0 12.8-5.74 12.8-12.8s-5.74-12.8-12.8-12.8zm0 23.36h-.004a10.55 10.55 0 0 1-5.375-1.472l-.386-.229-3.893 1.016 1.04-3.79-.251-.4a10.53 10.53 0 0 1-1.613-5.615c0-5.83 4.744-10.573 10.577-10.573 2.826 0 5.48 1.1 7.478 3.1a10.5 10.5 0 0 1 3.096 7.48c0 5.83-4.744 10.573-10.576 10.573zm5.8-7.92c-.318-.16-1.88-.928-2.172-1.034-.291-.106-.503-.16-.715.16-.212.318-.82 1.033-1.006 1.245-.185.212-.371.239-.689.08-.318-.16-1.343-.495-2.558-1.578-.945-.843-1.583-1.884-1.769-2.202-.185-.318-.02-.49.14-.649.143-.142.318-.371.477-.557.16-.185.212-.318.318-.53.106-.212.053-.398-.027-.557-.08-.16-.715-1.724-.98-2.36-.258-.62-.52-.536-.715-.546l-.61-.011c-.212 0-.557.08-.848.398-.291.318-1.113 1.087-1.113 2.651s1.14 3.075 1.298 3.287c.16.212 2.242 3.423 5.431 4.8.759.328 1.351.524 1.813.67.762.242 1.455.208 2.003.126.611-.091 1.88-.769 2.145-1.511.265-.742.265-1.378.185-1.511-.079-.133-.291-.212-.61-.371z"/></svg>
+    Tư vấn giá sỉ
+  </a>
+</div>
