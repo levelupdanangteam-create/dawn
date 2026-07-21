@@ -224,6 +224,10 @@
     {%- endif -%}
 
     <div class="header__icons{% if section.settings.enable_country_selector or section.settings.enable_language_selector %} header__icons--localization header-localization{% endif %}">
+      <a href="https://wa.me/84938227250" target="_blank" rel="noopener" class="pf-wholesale-btn" aria-label="Liên hệ mua sỉ">
+        <svg class="pf-wholesale-btn__ic" viewBox="0 0 32 32" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M16.003 3.2c-7.06 0-12.8 5.74-12.8 12.8 0 2.257.59 4.46 1.712 6.4L3.2 28.8l6.56-1.712a12.74 12.74 0 0 0 6.243 1.6h.005c7.06 0 12.8-5.74 12.8-12.8s-5.74-12.8-12.8-12.8zm0 23.36h-.004a10.55 10.55 0 0 1-5.375-1.472l-.386-.229-3.893 1.016 1.04-3.79-.251-.4a10.53 10.53 0 0 1-1.613-5.615c0-5.83 4.744-10.573 10.577-10.573 2.826 0 5.48 1.1 7.478 3.1a10.5 10.5 0 0 1 3.096 7.48c0 5.83-4.744 10.573-10.576 10.573zm5.8-7.92c-.318-.16-1.88-.928-2.172-1.034-.291-.106-.503-.16-.715.16-.212.318-.82 1.033-1.006 1.245-.185.212-.371.239-.689.08-.318-.16-1.343-.495-2.558-1.578-.945-.843-1.583-1.884-1.769-2.202-.185-.318-.02-.49.14-.649.143-.142.318-.371.477-.557.16-.185.212-.318.318-.53.106-.212.053-.398-.027-.557-.08-.16-.715-1.724-.98-2.36-.258-.62-.52-.536-.715-.546l-.61-.011c-.212 0-.557.08-.848.398-.291.318-1.113 1.087-1.113 2.651s1.14 3.075 1.298 3.287c.16.212 2.242 3.423 5.431 4.8.759.328 1.351.524 1.813.67.762.242 1.455.208 2.003.126.611-.091 1.88-.769 2.145-1.511.265-.742.265-1.378.185-1.511-.079-.133-.291-.212-.61-.371z"/></svg>
+        <span class="pf-wholesale-btn__tx">Liên hệ mua sỉ</span>
+      </a>
       <div class="desktop-localization-wrapper">
         {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
           <localization-form class="small-hide medium-hide" data-prevent-hide>

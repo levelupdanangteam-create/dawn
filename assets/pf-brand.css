@@ -133,6 +133,30 @@ body.gradient {
 .header__icon--account {
   display: none !important;
 }
+/* "Liên hệ mua sỉ" WhatsApp button in the header */
+.pf-wholesale-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  margin-right: .8rem;
+  background: #25d366;
+  color: #ffffff !important;
+  font-weight: 800;
+  font-size: 1.35rem;
+  line-height: 1;
+  padding: .9rem 1.4rem;
+  border-radius: 999px;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .18);
+  transition: filter .15s ease, transform .15s ease;
+}
+.pf-wholesale-btn:hover { filter: brightness(1.07); transform: translateY(-1px); }
+.pf-wholesale-btn__ic { flex: none; }
+@media (max-width: 989px) {
+  .pf-wholesale-btn { padding: .8rem; margin-right: .4rem; }
+  .pf-wholesale-btn__tx { display: none; }
+}
 /* Center the nav menu: logo left · menu center · icons right */
 @media screen and (min-width: 990px) {
   .header.header--middle-left {
