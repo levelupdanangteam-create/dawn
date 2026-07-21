@@ -504,6 +504,30 @@ body.gradient {
 .cart__footer-wrapper > .color-scheme-1,
 .cart__footer-wrapper > .gradient { background: transparent !important; }
 #MainContent[data-template='cart'] .title--primary { font-weight: 800; color: #2a2622; }
+/* "Tiếp tục mua sắm" as a bold red outlined pill to nudge more shopping */
+#MainContent[data-template='cart'] .title-wrapper-with-link .underlined-link,
+#MainContent[data-template='cart'] a.underlined-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  color: #d62828 !important;
+  font-weight: 800;
+  text-decoration: none;
+  border: 2px solid #d62828;
+  border-radius: 999px;
+  padding: .8rem 1.8rem;
+  transition: background .18s ease, color .18s ease, box-shadow .18s ease;
+  box-shadow: 0 4px 12px rgba(214, 40, 40, .12);
+}
+#MainContent[data-template='cart'] .title-wrapper-with-link .underlined-link:hover,
+#MainContent[data-template='cart'] a.underlined-link:hover {
+  background: #d62828;
+  color: #ffffff !important;
+  box-shadow: 0 8px 18px rgba(214, 40, 40, .28);
+}
+#MainContent[data-template='cart'] .title-wrapper-with-link .underlined-link::before {
+  content: "🛍️";
+}
 /* White card around the cart items */
 #MainContent[data-template='cart'] .cart__items {
   background: #ffffff;
