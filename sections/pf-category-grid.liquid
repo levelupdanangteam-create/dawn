@@ -6,35 +6,13 @@
   #pf-catgrid-{{ section.id }} .pf-ornament .line { width: clamp(3rem, 8vw, 6rem); height: 1px; background: linear-gradient(90deg, transparent, #d62828); }
   #pf-catgrid-{{ section.id }} .pf-ornament .line + .line { background: linear-gradient(90deg, #d62828, transparent); }
   #pf-catgrid-{{ section.id }} .pf-ornament .dia { width: 9px; height: 9px; background: #d62828; transform: rotate(45deg); }
+  #pf-catgrid-{{ section.id }} .pf-titlerow { position: relative; display: flex; align-items: center; justify-content: center; gap: 1.2rem; }
   #pf-catgrid-{{ section.id }} .pf-title {
-    font-family: var(--font-heading-family, sans-serif); font-weight: 800;
-    font-size: clamp(2.4rem, 3.8vw, 3.4rem); margin: 0; line-height: 1.15;
-    color: #d62828;
-    background: linear-gradient(90deg, #d62828 0%, #e8452f 55%, #f2792a 100%);
+    font-family: var(--font-heading-family, sans-serif); font-weight: 800; margin: 0;
+    font-size: clamp(2.4rem, 3.8vw, 3.4rem); line-height: 1.15;
+    color: #d62828; background: linear-gradient(90deg, #d62828 0%, #e8452f 55%, #f2792a 100%);
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
   }
-
-  #pf-catgrid-{{ section.id }} .pf-grid { display: grid; grid-template-columns: repeat(var(--pf-cols, 5), 1fr); gap: clamp(1.6rem, 3vw, 3rem); max-width: 96rem; margin-inline: auto; }
-  #pf-catgrid-{{ section.id }} .pf-cat {
-    display: flex; flex-direction: column; align-items: center; gap: 1.4rem; text-align: center;
-  }
-  #pf-catgrid-{{ section.id }} .pf-cat .thumb {
-    width: 100%; max-width: 15rem; aspect-ratio: 1; border-radius: 50%; overflow: hidden;
-    display: grid; place-items: center; background: #f1ece3; color: #1e63c8;
-    box-shadow: 0 10px 26px rgba(120,100,70,.14);
-    transition: box-shadow .25s ease, transform .25s ease;
-  }
-  #pf-catgrid-{{ section.id }} .pf-cat:hover .thumb { transform: translateY(-6px); box-shadow: 0 18px 34px rgba(120,100,70,.24); }
-  #pf-catgrid-{{ section.id }} .pf-cat .thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
-  #pf-catgrid-{{ section.id }} .pf-cat:hover .thumb img { transform: scale(1.08); }
-
-  #pf-catgrid-{{ section.id }} .pf-cat .name {
-    font-size: 1.35rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
-    color: #3a332c; line-height: 1.35; text-decoration: none; transition: color .18s ease;
-  }
-  #pf-catgrid-{{ section.id }} .pf-cat:hover .name { color: #1e63c8; }
-
-  #pf-catgrid-{{ section.id }} .pf-titlerow { position: relative; display: flex; align-items: center; justify-content: center; gap: 1.2rem; }
   #pf-catgrid-{{ section.id }} .pf-all-link {
     position: absolute; right: 0; top: 50%; transform: translateY(-50%);
     display: inline-flex; align-items: center; gap: .5rem; text-decoration: none; white-space: nowrap;
@@ -43,15 +21,30 @@
   #pf-catgrid-{{ section.id }} .pf-all-link:hover { color: #d62828; }
   #pf-catgrid-{{ section.id }} .pf-all-link .arw { transition: transform .18s ease; }
   #pf-catgrid-{{ section.id }} .pf-all-link:hover .arw { transform: translateX(4px); }
-  @media (max-width: 749px) {
+
+  #pf-catgrid-{{ section.id }} .pf-grid2 { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.4rem, 2.2vw, 2.2rem); max-width: 116rem; margin-inline: auto; }
+  #pf-catgrid-{{ section.id }} .pf-cat2 {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    background: #f3f1ec; border: 1px solid #ece7dd; border-radius: 16px; padding: 1.8rem 2rem;
+    text-decoration: none; min-height: 13rem; overflow: hidden;
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  #pf-catgrid-{{ section.id }} .pf-cat2:hover { transform: translateY(-5px); box-shadow: 0 16px 32px rgba(120,100,70,.16); border-color: #d9cdb6; }
+  #pf-catgrid-{{ section.id }} .pf-cat2__text { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; min-width: 0; }
+  #pf-catgrid-{{ section.id }} .pf-cat2__name { font-size: clamp(1.7rem, 1.6vw, 2rem); font-weight: 800; color: #2a2622; line-height: 1.25; }
+  #pf-catgrid-{{ section.id }} .pf-cat2__badge {
+    display: inline-block; background: var(--pf-badge, #22a45d); color: #fff; font-weight: 700;
+    font-size: 1.45rem; padding: .7rem 1.3rem; border-radius: 8px; white-space: nowrap; box-shadow: 0 6px 14px rgba(0,0,0,.12);
+  }
+  #pf-catgrid-{{ section.id }} .pf-cat2__img { flex: none; width: 44%; max-width: 15rem; display: grid; place-items: center; }
+  #pf-catgrid-{{ section.id }} .pf-cat2__img img { width: 100%; height: 11rem; object-fit: contain; transition: transform .3s ease; }
+  #pf-catgrid-{{ section.id }} .pf-cat2:hover .pf-cat2__img img { transform: scale(1.06); }
+
+  @media (max-width: 989px) { #pf-catgrid-{{ section.id }} .pf-grid2 { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 599px) {
+    #pf-catgrid-{{ section.id }} .pf-grid2 { grid-template-columns: 1fr; }
     #pf-catgrid-{{ section.id }} .pf-titlerow { flex-direction: column; }
     #pf-catgrid-{{ section.id }} .pf-all-link { position: static; transform: none; margin-top: .8rem; }
-  }
-
-  @media (max-width: 989px) { #pf-catgrid-{{ section.id }} .pf-grid { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 599px) {
-    #pf-catgrid-{{ section.id }} .pf-grid { grid-template-columns: repeat(2, 1fr); gap: 2rem 1.4rem; }
-    #pf-catgrid-{{ section.id }} .pf-cat .name { font-size: 1.2rem; letter-spacing: .08em; }
   }
 </style>
 
@@ -73,29 +66,54 @@
         {%- endif -%}
       </div>
     </div>
-    <div class="pf-grid" style="--pf-cols: {{ section.blocks.size | at_most: 6 }};">
+
+    {%- assign palette = 'seed' | split: ',' -%}
+    <div class="pf-grid2">
       {%- for block in section.blocks -%}
         {%- assign col = block.settings.collection -%}
-        {%- if block.settings.label != blank -%}
-          {%- assign cat_label = block.settings.label -%}
-        {%- elsif col != blank -%}
-          {%- assign cat_label = col.title -%}
-        {%- else -%}
-          {%- assign cat_label = 'Tên danh mục' -%}
-        {%- endif -%}
+        {%- if block.settings.label != blank -%}{%- assign cat_label = block.settings.label -%}
+        {%- elsif col != blank -%}{%- assign cat_label = col.title -%}
+        {%- else -%}{%- assign cat_label = 'Tên danh mục' -%}{%- endif -%}
         {%- if col != blank -%}{%- assign cat_url = col.url -%}{%- else -%}{%- assign cat_url = '#' -%}{%- endif -%}
-        <div class="pf-cat" {{ block.shopify_attributes }}>
-          <a class="thumb" href="{{ cat_url }}" aria-label="{{ cat_label | escape }}">
-            {%- if col != blank and col.image -%}
-              <img src="{{ col.image | image_url: width: 300 }}" alt="{{ col.title | escape }}" loading="lazy" width="300" height="300">
-            {%- elsif col != blank and col.products.first.featured_image -%}
-              <img src="{{ col.products.first.featured_image | image_url: width: 300 }}" alt="{{ col.title | escape }}" loading="lazy" width="300" height="300">
+
+        {%- comment -%} Badge color: block setting or cycle a default palette {%- endcomment -%}
+        {%- assign badge = block.settings.badge_color -%}
+        {%- if badge == blank -%}
+          {%- assign m = forloop.index0 | modulo: 5 -%}
+          {%- case m -%}
+            {%- when 0 -%}{%- assign badge = '#22a45d' -%}
+            {%- when 1 -%}{%- assign badge = '#e0a92a' -%}
+            {%- when 2 -%}{%- assign badge = '#d64545' -%}
+            {%- when 3 -%}{%- assign badge = '#1e63c8' -%}
+            {%- else -%}{%- assign badge = '#0ca7a0' -%}
+          {%- endcase -%}
+        {%- endif -%}
+
+        {%- comment -%} Price text: manual, else lowest product price of the collection {%- endcomment -%}
+        {%- assign price_text = block.settings.price_text -%}
+        {%- if price_text == blank and col != blank and col.products.size > 0 -%}
+          {%- assign minp = col.products.first.price -%}
+          {%- for p in col.products -%}{%- if p.price < minp -%}{%- assign minp = p.price -%}{%- endif -%}{%- endfor -%}
+          {%- capture price_text -%}Giá chỉ từ {{ minp | money }}{%- endcapture -%}
+        {%- endif -%}
+
+        <a class="pf-cat2" href="{{ cat_url }}" style="--pf-badge: {{ badge }};" {{ block.shopify_attributes }}>
+          <div class="pf-cat2__text">
+            <span class="pf-cat2__name">{{ cat_label }}</span>
+            {%- if price_text != blank -%}<span class="pf-cat2__badge">{{ price_text }}</span>{%- endif -%}
+          </div>
+          <div class="pf-cat2__img">
+            {%- if block.settings.image_url != blank -%}
+              <img src="{{ block.settings.image_url }}" alt="{{ cat_label | escape }}" loading="lazy">
+            {%- elsif block.settings.image != blank -%}
+              <img src="{{ block.settings.image | image_url: width: 400 }}" alt="{{ cat_label | escape }}" loading="lazy">
+            {%- elsif col != blank and col.image -%}
+              <img src="{{ col.image | image_url: width: 400 }}" alt="{{ cat_label | escape }}" loading="lazy">
             {%- else -%}
               {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
             {%- endif -%}
-          </a>
-          <a class="name" href="{{ cat_url }}">{{ cat_label }}<span class="arrow" aria-hidden="true">→</span></a>
-        </div>
+          </div>
+        </a>
       {%- endfor -%}
     </div>
   </div>
@@ -120,7 +138,11 @@
       "name": "Ô danh mục",
       "settings": [
         { "type": "collection", "id": "collection", "label": "Bộ sưu tập" },
-        { "type": "text", "id": "label", "label": "Tên hiển thị (nếu chưa chọn bộ sưu tập)" }
+        { "type": "text", "id": "label", "label": "Tên hiển thị (nếu chưa chọn bộ sưu tập)" },
+        { "type": "image_picker", "id": "image", "label": "Ảnh (tải lên)" },
+        { "type": "text", "id": "image_url", "label": "Hoặc dán URL ảnh" },
+        { "type": "text", "id": "price_text", "label": "Chữ badge giá", "info": "Để trống sẽ tự lấy giá thấp nhất của bộ sưu tập." },
+        { "type": "color", "id": "badge_color", "label": "Màu badge" }
       ]
     }
   ],
@@ -128,12 +150,8 @@
     {
       "name": "Danh Mục Sản Phẩm",
       "blocks": [
-        { "type": "category" },
-        { "type": "category" },
-        { "type": "category" },
-        { "type": "category" },
-        { "type": "category" },
-        { "type": "category" }
+        { "type": "category" }, { "type": "category" }, { "type": "category" },
+        { "type": "category" }, { "type": "category" }, { "type": "category" }
       ]
     }
   ]

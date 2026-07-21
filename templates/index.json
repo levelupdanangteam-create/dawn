@@ -44,35 +44,40 @@
           "type": "category",
           "settings": {
             "collection": "bột-gia-vị",
-            "label": "Gia Vị"
+            "label": "Gia Vị",
+            "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/gia_v.png?v=1784600459"
           }
         },
         "cat2": {
           "type": "category",
           "settings": {
             "collection": "gạo-banh-gạo",
-            "label": "Các loại bột, gạo, nếp"
+            "label": "Gạo, các loại bột",
+            "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/g_o_2.png?v=1784600460"
           }
         },
         "cat3": {
           "type": "category",
           "settings": {
             "collection": "ca-phe",
-            "label": "Cà phê"
+            "label": "Đồ uống",
+            "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/d_u_ng.png?v=1784600461"
           }
         },
         "cat4": {
           "type": "category",
           "settings": {
             "collection": "bun-phở",
-            "label": "Bún & Phở"
+            "label": "Bún & Phở",
+            "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/bun_ph.png?v=1784600460"
           }
         },
         "cat5": {
           "type": "category",
           "settings": {
             "collection": "dồ-an-vặt-sữa",
-            "label": "Đồ Ăn Vặt"
+            "label": "Đồ Ăn Vặt",
+            "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/d_an_v_t.png?v=1784600461"
           }
         }
       },
