@@ -38,6 +38,7 @@
   #pf-bs-{{ section.id }} .pf-bs__price { display: flex; align-items: baseline; gap: .8rem; font-variant-numeric: tabular-nums; }
   #pf-bs-{{ section.id }} .pf-bs__price .now { font-size: 1.65rem; font-weight: 800; color: #1e63c8; }
   #pf-bs-{{ section.id }} .pf-bs__price .was { font-size: 1.2rem; color: #a79c8e; text-decoration: line-through; }
+  #pf-bs-{{ section.id }} .pf-bs__sold { margin-top: .5rem; font-size: 1.2rem; font-weight: 700; color: #d64545; }
 
   @media (max-width: 989px) { #pf-bs-{{ section.id }} .pf-bs__grid { grid-template-columns: repeat(3, 1fr); } }
   @media (max-width: 599px) { #pf-bs-{{ section.id }} .pf-bs__grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; } }
@@ -86,6 +87,10 @@
                   <span class="now">{{ product.price | money }}</span>
                   {%- if product.compare_at_price > product.price -%}<span class="was">{{ product.compare_at_price | money }}</span>{%- endif -%}
                 </div>
+                {%- assign pf_sold = product.metafields.custom.sold_count -%}
+                {%- if pf_sold != blank and pf_sold.value != blank -%}
+                  <div class="pf-bs__sold">🔥 Đã bán {{ pf_sold.value }}</div>
+                {%- endif -%}
                 {% render 'pf-card-buttons', product: product, section_id: section.id %}
               </div>
             </div>
