@@ -598,24 +598,6 @@ body.gradient {
   margin: 0;
 }
 
-/* ---- Homepage hero banner: show the full image on mobile (no crop) ---- */
-@media screen and (max-width: 749px) {
-  #MainContent[data-template='index'] .banner.banner--large {
-    min-height: auto !important;
-    height: auto !important;
-  }
-  #MainContent[data-template='index'] .banner.banner--large .banner__media {
-    position: relative !important;
-    height: auto !important;
-  }
-  #MainContent[data-template='index'] .banner.banner--large .banner__media img {
-    position: relative !important;
-    width: 100% !important;
-    height: auto !important;
-    object-fit: contain !important;
-  }
-}
-
 /* ---- Boxed content sections (white card on the beige page) ------ */
 .pf-boxed-section { background: transparent !important; }
 .pf-boxed-section .pf-wrap {
