@@ -1,0 +1,38 @@
+{%- comment -%}
+  "Thường được mua kèm" block for the product page. Shows products from the
+  best-sellers collection (ban-chay-nhat), excluding the current product.
+  Reuses the .related-products styling for a consistent boxed look.
+  Optional param: bt_handle (collection handle), bt_limit (max products).
+{%- endcomment -%}
+{%- assign bt_handle = bt_handle | default: 'ban-chay-nhat' -%}
+{%- assign bt_limit = bt_limit | default: 4 -%}
+{%- assign bt_coll = collections[bt_handle] -%}
+{%- if bt_coll != empty and bt_coll.products.size > 0 -%}
+  {%- assign bt_count = 0 -%}
+  {%- for p in bt_coll.products -%}{%- unless p.id == product.id -%}{%- assign bt_count = bt_count | plus: 1 -%}{%- endunless -%}{%- endfor -%}
+  {%- if bt_count > 0 -%}
+    <div class="color-scheme-1 gradient">
+      <div class="related-products page-width isolate" style="padding-top: 1rem;">
+        <h2 class="related-products__heading h2">🛒 Thường được mua kèm</h2>
+        <ul class="grid product-grid grid--{{ bt_limit }}-col-desktop grid--2-col-tablet-down" role="list">
+          {%- assign shown = 0 -%}
+          {%- for p in bt_coll.products -%}
+            {%- if p.id != product.id and shown < bt_limit -%}
+              <li class="grid__item">
+                {% render 'card-product',
+                  card_product: p,
+                  media_aspect_ratio: 'square',
+                  show_secondary_image: false,
+                  show_vendor: false,
+                  show_rating: false,
+                  section_id: 'bought-together'
+                %}
+              </li>
+              {%- assign shown = shown | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+  {%- endif -%}
+{%- endif -%}
