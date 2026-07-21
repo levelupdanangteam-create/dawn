@@ -408,6 +408,8 @@
       {% render 'pf-sticky-cart' %}
     {%- endunless -%}
 
-    {% render 'pf-side-shop' %}
+    {%- if request.page_type == 'cart' -%}
+      {% render 'pf-side-shop' %}
+    {%- endif -%}
   </body>
 </html>
