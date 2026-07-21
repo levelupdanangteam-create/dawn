@@ -6,10 +6,11 @@
 <style>
   .pf-sideshop {
     position: fixed;
-    left: 2rem;
+    right: 2rem;
     bottom: 2.6rem;
     z-index: 16;
     display: inline-flex;
+    flex-direction: row-reverse;
     align-items: center;
     gap: 1rem;
     text-decoration: none;
@@ -53,7 +54,7 @@
   }
   .pf-sideshop:hover .pf-sideshop__btn { transform: scale(1.06); filter: brightness(1.05); }
   @media (max-width: 749px) {
-    .pf-sideshop { left: 1.4rem; bottom: 1.8rem; }
+    .pf-sideshop { right: 1.4rem; bottom: 1.8rem; }
     .pf-sideshop__btn { width: 5.2rem; height: 5.2rem; font-size: 2.4rem; }
     .pf-sideshop__label { display: none; }
   }
