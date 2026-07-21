@@ -1,0 +1,38 @@
+{%- comment -%}
+  Floating vertical "Tiếp tục mua sắm" tab pinned to the right edge of the
+  screen (like a contact side button). Links to all products.
+{%- endcomment -%}
+<style>
+  .pf-sideshop {
+    position: fixed;
+    right: 0;
+    top: 62%;
+    transform: translateY(-50%);
+    z-index: 16;
+    writing-mode: vertical-rl;
+    display: inline-flex;
+    align-items: center;
+    gap: .8rem;
+    background: linear-gradient(180deg, #e8452f, #d62828);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: .03em;
+    text-decoration: none;
+    padding: 1.6rem .95rem;
+    border-radius: 14px 0 0 14px;
+    box-shadow: -5px 6px 18px rgba(180, 30, 20, .3);
+    transition: padding-right .18s ease, filter .18s ease;
+  }
+  .pf-sideshop:hover { filter: brightness(1.06); padding-right: 1.3rem; }
+  .pf-sideshop .ic { writing-mode: horizontal-tb; font-size: 1.8rem; line-height: 1; }
+  @media (max-width: 749px) {
+    .pf-sideshop { font-size: 1.25rem; padding: 1.3rem .8rem; top: 60%; }
+    .pf-sideshop .ic { font-size: 1.5rem; }
+  }
+</style>
+
+<a class="pf-sideshop" href="{{ routes.all_products_collection_url }}" aria-label="Tiếp tục mua sắm">
+  <span class="ic" aria-hidden="true">🛍️</span>
+  Tiếp tục mua sắm
+</a>
