@@ -23,6 +23,14 @@
   }
   .pf-ordercopy__btn:hover { filter: brightness(1.08); }
   .pf-ordercopy__btn.copied { background: #1e63c8; }
+  .pf-ordercopy__ship { margin: 1rem 0 0; font-size: 1.3rem; color: #7a6a4a; background: #fbf3e2; border: 1px solid #f0e2c4; border-radius: 10px; padding: .8rem 1.1rem; line-height: 1.45; }
+  .pf-ordercopy__ship b { color: #b8894b; }
+  .pf-ordercopy__wa {
+    margin-top: .9rem; width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: .7rem;
+    background: #25d366; color: #fff; text-decoration: none;
+    font-size: 1.5rem; font-weight: 800; padding: 1.2rem 1.6rem; border-radius: 12px; transition: filter .15s ease;
+  }
+  .pf-ordercopy__wa:hover { filter: brightness(1.06); }
   .pf-ordercopy__hint { margin: .9rem 0 0; font-size: 1.25rem; color: #7a7266; text-align: center; line-height: 1.5; }
   .pf-ordercopy__hint b { color: #14672f; }
   .pf-ordercopy__src { position: absolute; left: -9999px; top: 0; opacity: 0; }
@@ -60,12 +68,17 @@ TỔNG TẠM TÍNH: {{ cart.total_price | money }}
       <span>Tổng tạm tính</span>
       <span id="pf-oc-total">{{ cart.total_price | money }}</span>
     </div>
+    <p class="pf-ordercopy__ship">🚚 Giá trên <b>chưa bao gồm phí vận chuyển</b> (tính khi xác nhận đơn).</p>
 
     <textarea class="pf-ordercopy__src" id="pf-order-src" readonly aria-hidden="true">{{ pf_order_text }}</textarea>
     <button type="button" class="pf-ordercopy__btn" id="pf-order-copy-btn" data-label="📋 Copy thông tin đơn hàng">
       📋 Copy thông tin đơn hàng
     </button>
-    <p class="pf-ordercopy__hint">Muốn được <b>tư vấn kỹ hơn</b>? Hãy sao chép đơn hàng và gửi vào <b>Fanpage / Messenger của PHOMIFOOD</b> để được hỗ trợ nhanh nhất.</p>
+    <a class="pf-ordercopy__wa" id="pf-order-wa" href="https://wa.me/84938227250?text={{ pf_order_text | url_encode }}" target="_blank" rel="noopener">
+      <svg viewBox="0 0 32 32" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M16.003 3.2c-7.06 0-12.8 5.74-12.8 12.8 0 2.257.59 4.46 1.712 6.4L3.2 28.8l6.56-1.712a12.74 12.74 0 0 0 6.243 1.6h.005c7.06 0 12.8-5.74 12.8-12.8s-5.74-12.8-12.8-12.8zm0 23.36h-.004a10.55 10.55 0 0 1-5.375-1.472l-.386-.229-3.893 1.016 1.04-3.79-.251-.4a10.53 10.53 0 0 1-1.613-5.615c0-5.83 4.744-10.573 10.577-10.573 2.826 0 5.48 1.1 7.478 3.1a10.5 10.5 0 0 1 3.096 7.48c0 5.83-4.744 10.573-10.576 10.573zm5.8-7.92c-.318-.16-1.88-.928-2.172-1.034-.291-.106-.503-.16-.715.16-.212.318-.82 1.033-1.006 1.245-.185.212-.371.239-.689.08-.318-.16-1.343-.495-2.558-1.578-.945-.843-1.583-1.884-1.769-2.202-.185-.318-.02-.49.14-.649.143-.142.318-.371.477-.557.16-.185.212-.318.318-.53.106-.212.053-.398-.027-.557-.08-.16-.715-1.724-.98-2.36-.258-.62-.52-.536-.715-.546l-.61-.011c-.212 0-.557.08-.848.398-.291.318-1.113 1.087-1.113 2.651s1.14 3.075 1.298 3.287c.16.212 2.242 3.423 5.431 4.8.759.328 1.351.524 1.813.67.762.242 1.455.208 2.003.126.611-.091 1.88-.769 2.145-1.511.265-.742.265-1.378.185-1.511-.079-.133-.291-.212-.61-.371z"/></svg>
+      Gửi đơn qua WhatsApp
+    </a>
+    <p class="pf-ordercopy__hint">Hoặc <b>copy đơn</b> rồi gửi vào <b>Fanpage / Messenger của PHOMIFOOD</b> để được tư vấn kỹ hơn.</p>
   </div>
 </div>
 
@@ -110,6 +123,8 @@ TỔNG TẠM TÍNH: {{ cart.total_price | money }}
           if (list) list.innerHTML = rows;
           if (totalEl) totalEl.textContent = money(cart.total_price, cur, loc);
           if (src) src.value = text;
+          var wa = document.getElementById('pf-order-wa');
+          if (wa) wa.href = 'https://wa.me/84938227250?text=' + encodeURIComponent(text);
         })
         .catch(function () {});
     }
