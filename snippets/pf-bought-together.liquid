@@ -6,7 +6,8 @@
   Optional params: bt_handle (collection handle), bt_limit (max products).
 {%- endcomment -%}
 {%- assign bt_handle = bt_handle | default: 'ban-chay-nhat' -%}
-{%- assign bt_limit = bt_limit | default: 4 -%}
+{%- assign bt_initial = bt_initial | default: 4 -%}
+{%- assign bt_limit = bt_limit | default: 12 -%}
 {%- assign bt_coll = collections[bt_handle] -%}
 {%- if bt_coll != empty and bt_coll.products_count > 0 -%}
   {%- assign bt_shown = 0 -%}
@@ -42,6 +43,14 @@
     .pf-bt__price { margin-bottom: 1rem; }
     .pf-bt__price .now { color: #1e63c8; font-weight: 800; font-size: 1.7rem; }
     .pf-bt__price .was { color: #9a9184; text-decoration: line-through; font-size: 1.35rem; margin-left: .6rem; }
+    .pf-bt__card.is-hidden { display: none; }
+    .pf-bt__morewrap { text-align: center; margin-top: 2.6rem; }
+    .pf-bt__more {
+      display: inline-flex; align-items: center; gap: .6rem; cursor: pointer;
+      background: #fff; color: #1e63c8; border: 2px solid #1e63c8; font-weight: 800; font-size: 1.45rem;
+      padding: 1rem 2.4rem; border-radius: 999px; transition: all .18s ease;
+    }
+    .pf-bt__more:hover { background: #1e63c8; color: #fff; }
     @media (max-width: 989px) { .pf-bt__grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 499px) { .pf-bt__grid { grid-template-columns: 1fr; } }
   </style>
@@ -53,7 +62,7 @@
     <div class="pf-bt__grid">
       {%- for p in bt_coll.products -%}
         {%- if p.id != product.id and bt_shown < bt_limit -%}
-          <div class="pf-bt__card">
+          <div class="pf-bt__card{% if bt_shown >= bt_initial %} is-hidden{% endif %}">
             <a class="pf-bt__media" href="{{ p.url }}">
               {%- if p.compare_at_price > p.price -%}
                 <span class="pf-bt__sale">-{{ p.compare_at_price | minus: p.price | times: 100.0 | divided_by: p.compare_at_price | round }}%</span>
@@ -75,5 +84,27 @@
         {%- endif -%}
       {%- endfor -%}
     </div>
+
+    {%- if bt_shown > bt_initial -%}
+      <div class="pf-bt__morewrap">
+        <button type="button" class="pf-bt__more" id="pf-bt-more">Xem thêm <span aria-hidden="true">▾</span></button>
+      </div>
+    {%- endif -%}
   </div>
+
+  <script>
+    (function () {
+      var btn = document.getElementById('pf-bt-more');
+      if (!btn || btn.dataset.pfBound) return;
+      btn.dataset.pfBound = '1';
+      btn.addEventListener('click', function () {
+        var box = btn.closest('.pf-bt');
+        if (box) {
+          box.querySelectorAll('.pf-bt__card.is-hidden').forEach(function (c) { c.classList.remove('is-hidden'); });
+        }
+        var wrap = btn.closest('.pf-bt__morewrap');
+        if (wrap) wrap.style.display = 'none';
+      });
+    })();
+  </script>
 {%- endif -%}
