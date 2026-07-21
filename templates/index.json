@@ -69,12 +69,34 @@
             "price_text": "",
             "badge_color": ""
           }
+        },
+        "cat3": {
+          "type": "category",
+          "settings": {
+            "collection": "ca-phe",
+            "label": "Đồ uống",
+            "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/d_u_ng.png?v=1784600461",
+            "price_text": "",
+            "badge_color": ""
+          }
+        },
+        "cat5": {
+          "type": "category",
+          "settings": {
+            "collection": "dồ-an-vặt-sữa",
+            "label": "Đồ Ăn Vặt",
+            "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/d_an_v_t.png?v=1784600461",
+            "price_text": "",
+            "badge_color": ""
+          }
         }
       },
       "block_order": [
         "cat1",
         "cat2",
-        "cat4"
+        "cat4",
+        "cat3",
+        "cat5"
       ],
       "settings": {
         "heading": "Danh Mục Sản Phẩm",
