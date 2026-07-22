@@ -55,6 +55,15 @@
       <div class="cart__items" id="main-cart-items" data-id="{{ section.id }}">
         <div class="js-contents">
           {%- if cart != empty -%}
+            <div class="pf-cartbulk">
+              <label class="pf-cartbulk__all">
+                <input type="checkbox" id="pf-cart-selectall">
+                <span>Chọn tất cả</span>
+              </label>
+              <button type="button" class="pf-cartbulk__del" id="pf-cart-delsel" disabled>
+                🗑️ Xóa mục đã chọn (<span id="pf-cart-selcount">0</span>)
+              </button>
+            </div>
             <table class="cart-items">
               <caption class="visually-hidden">
                 {{ 'sections.cart.title' | t }}
@@ -90,6 +99,7 @@
                     {% endif %}
                   >
                     <td class="cart-item__media">
+                      <input type="checkbox" class="pf-cart-check" data-key="{{ item.key }}" aria-label="Chọn {{ item.product.title | escape }}">
                       {% if item.image %}
                         {% comment %} Leave empty space due to a:empty CSS display: none rule {% endcomment %}
                         <a href="{{ item.url }}" class="cart-item__link" aria-hidden="true" tabindex="-1"> </a>
@@ -467,6 +477,52 @@
     </form>
   </div>
 </cart-items>
+
+<script>
+  (function () {
+    if (window.__pfCartBulk) return;
+    window.__pfCartBulk = true;
+
+    function root() { return (window.Shopify && Shopify.routes ? Shopify.routes.root : '/'); }
+    function updateCount() {
+      var sel = document.querySelectorAll('.pf-cart-check:checked');
+      var cnt = document.getElementById('pf-cart-selcount');
+      var btn = document.getElementById('pf-cart-delsel');
+      var all = document.getElementById('pf-cart-selectall');
+      var boxes = document.querySelectorAll('.pf-cart-check');
+      if (cnt) cnt.textContent = sel.length;
+      if (btn) btn.disabled = sel.length === 0;
+      if (all) all.checked = boxes.length > 0 && sel.length === boxes.length;
+    }
+
+    document.addEventListener('change', function (e) {
+      if (e.target && e.target.id === 'pf-cart-selectall') {
+        document.querySelectorAll('.pf-cart-check').forEach(function (c) { c.checked = e.target.checked; });
+        updateCount();
+      } else if (e.target && e.target.classList && e.target.classList.contains('pf-cart-check')) {
+        updateCount();
+      }
+    });
+
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest ? e.target.closest('#pf-cart-delsel') : null;
+      if (!btn) return;
+      var sel = document.querySelectorAll('.pf-cart-check:checked');
+      if (!sel.length) return;
+      if (!window.confirm('Xóa ' + sel.length + ' sản phẩm đã chọn khỏi giỏ hàng?')) return;
+      var updates = {};
+      sel.forEach(function (c) { updates[c.getAttribute('data-key')] = 0; });
+      btn.disabled = true;
+      btn.textContent = 'Đang xóa…';
+      fetch(root() + 'cart/update.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ updates: updates })
+      }).then(function () { window.location.reload(); })
+        .catch(function () { window.location.reload(); });
+    });
+  })();
+</script>
 
 {% schema %}
 {
