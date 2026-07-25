@@ -1,0 +1,23 @@
+{%- comment -%}
+  A single "Ưu đãi tuần" product card. Params: p (product), section_id.
+{%- endcomment -%}
+{%- assign v = p.selected_or_first_available_variant -%}
+{%- assign price = v.price -%}
+{%- assign cmp = v.compare_at_price -%}
+<div class="pf-wd-card">
+  <a class="pf-wd-card__media" href="{{ p.url }}">
+    {%- if cmp > price -%}
+      {%- assign pct = cmp | minus: price | times: 100 | divided_by: cmp -%}
+      <span class="pf-wd-card__badge">-{{ pct }}%</span>
+    {%- endif -%}
+    {%- if p.featured_image -%}
+      <img src="{{ p.featured_image | image_url: width: 400 }}" alt="{{ p.title | escape }}" loading="lazy" width="200" height="200">
+    {%- endif -%}
+  </a>
+  <a class="pf-wd-card__title" href="{{ p.url }}">{{ p.title }}</a>
+  <div class="pf-wd-card__price">
+    <span class="pf-wd-card__now">{{ price | money }}</span>
+    {%- if cmp > price -%}<span class="pf-wd-card__old">{{ cmp | money }}</span>{%- endif -%}
+  </div>
+  {%- render 'pf-card-buttons', product: p, section_id: section_id -%}
+</div>
