@@ -29,9 +29,58 @@
         "padding_top": 8,
         "padding_bottom": 8
       }
+    },
+    "pf_hero_slideshow_UijQAg": {
+      "type": "pf-hero-slideshow",
+      "blocks": {
+        "slide_9ib79B": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/bannerr.png",
+            "title": "",
+            "text": "",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "slide_ep7U8J": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_Jul_19_2026_08_09_34_AM.png",
+            "title": "",
+            "text": "",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "slide_h7RtgL": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/22c3451f-f90b-4da1-b524-6950890b84aa_1.png",
+            "title": "",
+            "text": "",
+            "button_label": "",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_9ib79B",
+        "slide_ep7U8J",
+        "slide_h7RtgL"
+      ],
+      "name": "Hero Slideshow",
+      "settings": {
+        "autoplay_interval": 5,
+        "height_desktop": 500,
+        "height_mobile": 300,
+        "text_align": "left",
+        "fallback_asset": "pf-hero.jpg"
+      }
     }
   },
   "order": [
-    "header"
+    "header",
+    "pf_hero_slideshow_UijQAg"
   ]
 }
