@@ -92,7 +92,7 @@
       "settings": {
         "heading": "🔥 Ưu đãi tuần này",
         "subheading": "Giá tốt nhất trong tuần — số lượng có hạn!",
-        "show_view_all": true,
+        "show_view_all": false,
         "view_all_label": "Xem tất cả sản phẩm",
         "padding_top": 40,
         "padding_bottom": 40
