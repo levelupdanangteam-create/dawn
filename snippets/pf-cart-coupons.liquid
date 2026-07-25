@@ -1,0 +1,172 @@
+{%- comment -%}
+  Available discount codes shown on the cart page to nudge checkout.
+  Each code has a copy button and an "apply now" link (/discount/CODE)
+  that pre-applies the code and sends the customer to checkout.
+  A live progress bar shows how much more is needed to reach the
+  code's minimum-spend threshold. Codes are configured below.
+{%- endcomment -%}
+
+{%- comment -%} rows: CODE|min_in_cents|description {%- endcomment -%}
+{%- assign pf_cpn_rows = "BANMOI|25000|Giảm 3% toàn đơn · áp dụng cho đơn từ 250€;;FREESHIP150|15000|Miễn phí vận chuyển · đơn từ 150€ · mọi quốc gia" | split: ";;" -%}
+
+<div class="pf-cpns" data-currency="{{ cart.currency.iso_code }}">
+  <div class="pf-cpns__head">🎁 Mã giảm giá đang có — dùng ngay để tiết kiệm!</div>
+
+  {%- for row in pf_cpn_rows -%}
+    {%- assign parts = row | split: '|' -%}
+    {%- assign code = parts[0] -%}
+    {%- assign minp = parts[1] | plus: 0 -%}
+    {%- assign desc = parts[2] -%}
+
+    {%- assign tot = cart.total_price -%}
+    {%- assign rem = minp | minus: tot -%}
+    {%- assign pct = tot | times: 100 | divided_by: minp -%}
+    {%- if pct > 100 -%}{%- assign pct = 100 -%}{%- endif -%}
+
+    <div class="pf-cpn" data-code="{{ code }}" data-min="{{ minp }}">
+      <div class="pf-cpn__left">
+        <div class="pf-cpn__code">{{ code }}</div>
+      </div>
+      <div class="pf-cpn__body">
+        <div class="pf-cpn__desc">{{ desc }}</div>
+        <div class="pf-cpn__bar"><span class="pf-cpn__bar-fill" style="width: {{ pct }}%;"></span></div>
+        <div class="pf-cpn__hint">
+          {%- if rem > 0 -%}
+            Mua thêm <strong>{{ rem | money }}</strong> để dùng mã này
+          {%- else -%}
+            ✅ Đơn của bạn đã đủ điều kiện!
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="pf-cpn__actions">
+        <button type="button" class="pf-cpn__copy" data-copy="{{ code }}">
+          <span class="pf-cpn__copy-txt">Sao chép</span>
+        </button>
+        <a class="pf-cpn__apply" href="/discount/{{ code }}?redirect=/checkout">Áp dụng ngay</a>
+      </div>
+    </div>
+  {%- endfor -%}
+</div>
+
+<style>
+  .pf-cpns {
+    margin: 0 0 1.6rem; padding: 1.6rem; border-radius: 14px;
+    background: linear-gradient(180deg, #fff8ec 0%, #fffdf8 100%);
+    border: 1px dashed #e0b84e;
+  }
+  .pf-cpns__head { font-size: 1.5rem; font-weight: 800; color: #b8791a; margin-bottom: 1.2rem; }
+  .pf-cpn {
+    display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1.2rem 1.4rem;
+    padding: 1.2rem 0; border-top: 1px solid #f0e2c2;
+  }
+  .pf-cpn:first-of-type { border-top: 0; }
+  .pf-cpn__code {
+    font-size: 1.5rem; font-weight: 800; letter-spacing: .5px; color: #14672f;
+    background: #eafaef; border: 1px dashed #2ea45a; border-radius: 8px;
+    padding: .7rem 1.1rem; white-space: nowrap;
+  }
+  .pf-cpn__body { min-width: 0; }
+  .pf-cpn__desc { font-size: 1.35rem; color: #5a5346; margin-bottom: .6rem; }
+  .pf-cpn__bar { height: 7px; border-radius: 999px; background: #efe4cb; overflow: hidden; }
+  .pf-cpn__bar-fill {
+    display: block; height: 100%; border-radius: 999px;
+    background: linear-gradient(90deg, #f2c14e, #1e8541); transition: width .4s ease;
+  }
+  .pf-cpn__hint { font-size: 1.25rem; color: #8a7a52; margin-top: .5rem; }
+  .pf-cpn__hint strong { color: #d62828; }
+  .pf-cpn__actions { display: flex; flex-direction: column; gap: .6rem; }
+  .pf-cpn__copy, .pf-cpn__apply {
+    text-align: center; font-weight: 700; font-size: 1.3rem; border-radius: 999px;
+    padding: .8rem 1.4rem; cursor: pointer; text-decoration: none; white-space: nowrap;
+    transition: filter .15s ease, background .15s ease, color .15s ease;
+  }
+  .pf-cpn__copy { background: #fff; color: #14672f; border: 1.5px solid #2ea45a; }
+  .pf-cpn__copy:hover { background: #eafaef; }
+  .pf-cpn__copy.is-done { background: #2ea45a; color: #fff; border-color: #2ea45a; }
+  .pf-cpn__apply { background: linear-gradient(180deg, #e8452f, #d62828); color: #fff; border: 0; box-shadow: 0 4px 12px rgba(214, 40, 40, .28); }
+  .pf-cpn__apply:hover { filter: brightness(1.06); }
+  @media (max-width: 599px) {
+    .pf-cpn { grid-template-columns: 1fr; gap: .9rem; }
+    .pf-cpn__actions { flex-direction: row; }
+    .pf-cpn__copy, .pf-cpn__apply { flex: 1; }
+  }
+</style>
+
+<script>
+  (function () {
+    if (window.__pfCoupons) return;
+    window.__pfCoupons = true;
+
+    function root() { return (window.Shopify && Shopify.routes ? Shopify.routes.root : '/'); }
+
+    function fmt(cents, cur) {
+      try { return new Intl.NumberFormat('de-DE', { style: 'currency', currency: cur || 'EUR' }).format(cents / 100); }
+      catch (e) { return (cents / 100).toFixed(2) + ' ' + (cur || 'EUR'); }
+    }
+
+    function update() {
+      var box = document.querySelector('.pf-cpns');
+      if (!box) return;
+      var cur = box.getAttribute('data-currency') || 'EUR';
+      fetch(root() + 'cart.js', { headers: { Accept: 'application/json' } })
+        .then(function (r) { return r.json(); })
+        .then(function (cart) {
+          var total = cart.total_price || 0;
+          box.querySelectorAll('.pf-cpn').forEach(function (el) {
+            var min = parseInt(el.getAttribute('data-min') || '0', 10);
+            var rem = min - total;
+            var pct = min > 0 ? Math.min(100, Math.round((total / min) * 100)) : 100;
+            var fill = el.querySelector('.pf-cpn__bar-fill');
+            var hint = el.querySelector('.pf-cpn__hint');
+            if (fill) fill.style.width = pct + '%';
+            if (hint) {
+              hint.innerHTML = rem > 0
+                ? 'Mua thêm <strong>' + fmt(rem, cur) + '</strong> để dùng mã này'
+                : '✅ Đơn của bạn đã đủ điều kiện!';
+            }
+          });
+        })
+        .catch(function () {});
+    }
+
+    // Copy code to clipboard.
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest ? e.target.closest('.pf-cpn__copy') : null;
+      if (!btn) return;
+      var code = btn.getAttribute('data-copy') || '';
+      var done = function () {
+        var t = btn.querySelector('.pf-cpn__copy-txt');
+        if (t) t.textContent = 'Đã chép ✓';
+        btn.classList.add('is-done');
+        setTimeout(function () { if (t) t.textContent = 'Sao chép'; btn.classList.remove('is-done'); }, 1800);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code).then(done).catch(done);
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = code; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch (err) {}
+        document.body.removeChild(ta); done();
+      }
+    });
+
+    // Refresh progress whenever the cart changes (add / update / change).
+    var origFetch = window.fetch;
+    window.fetch = function (input) {
+      var p = origFetch.apply(this, arguments);
+      try {
+        var url = (typeof input === 'string') ? input : (input && input.url) || '';
+        if (url.indexOf('/cart/change') > -1 || url.indexOf('/cart/update') > -1 || url.indexOf('/cart/add') > -1) {
+          p.then(function () { setTimeout(update, 150); });
+        }
+      } catch (e) {}
+      return p;
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', update);
+    } else {
+      update();
+    }
+  })();
+</script>

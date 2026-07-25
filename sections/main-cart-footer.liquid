@@ -104,6 +104,7 @@
                 </small>
               </div>
             {%- else -%}
+              {% render 'pf-cart-coupons' %}
               <div class="cart__ctas" {{ block.shopify_attributes }}>
                 <button
                   type="submit"
