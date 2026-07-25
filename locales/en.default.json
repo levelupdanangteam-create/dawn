@@ -381,9 +381,9 @@
       "remove_all_items_confirmation": "Remove all {{ quantity }} items from your cart?",
       "remove_all": "Remove all",
       "cancel": "Cancel",
-      "min_error": "This item has a minimum of {{ min }}",
-      "max_error": "This item has a maximum of {{ max }}",
-      "step_error": "You can only add this item in increments of {{ step }}"
+      "min_error": "Sản phẩm này có số lượng đặt tối thiểu là {{ min }}",
+      "max_error": "Sản phẩm này có số lượng đặt tối đa là {{ max }}",
+      "step_error": "Sản phẩm này chỉ đặt được theo bội số của {{ step }}"
     }
   },
   "localization": {
