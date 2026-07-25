@@ -1,0 +1,134 @@
+{%- comment -%}
+  PHOMIFOOD promotional popups:
+    1. Free-ship popup  — shows 10s after a visitor lands (first page of the session).
+    2. New-customer voucher — shows on the next page the visitor opens (2nd pageview).
+  Each shows at most once per browsing session and is fully dismissible.
+{%- endcomment -%}
+
+{%- assign pf_pop_link = routes.all_products_collection_url -%}
+
+<div class="pf-pop" id="pf-pop-freeship" hidden aria-hidden="true">
+  <div class="pf-pop__backdrop" data-pf-pop-close></div>
+  <div class="pf-pop__box" role="dialog" aria-modal="true" aria-label="Ưu đãi miễn phí vận chuyển">
+    <button type="button" class="pf-pop__x" data-pf-pop-close aria-label="Đóng">&times;</button>
+    <a class="pf-pop__imglink" href="{{ pf_pop_link }}">
+      <img class="pf-pop__img" src="https://cdn.shopify.com/s/files/1/0749/9353/3018/files/free_ship.png?v=1784962829" alt="Miễn phí vận chuyển" width="440" height="440" loading="lazy">
+    </a>
+  </div>
+</div>
+
+<div class="pf-pop" id="pf-pop-voucher" hidden aria-hidden="true">
+  <div class="pf-pop__backdrop" data-pf-pop-close></div>
+  <div class="pf-pop__box" role="dialog" aria-modal="true" aria-label="Voucher dành cho bạn mới">
+    <button type="button" class="pf-pop__x" data-pf-pop-close aria-label="Đóng">&times;</button>
+    <a class="pf-pop__imglink" href="{{ pf_pop_link }}">
+      <img class="pf-pop__img" src="https://cdn.shopify.com/s/files/1/0749/9353/3018/files/banmoi.png?v=1784962829" alt="Voucher bạn mới" width="440" height="440" loading="lazy">
+    </a>
+  </div>
+</div>
+
+<style>
+  .pf-pop {
+    position: fixed; inset: 0; z-index: 9999;
+    display: none; align-items: center; justify-content: center; padding: 2rem;
+  }
+  .pf-pop.is-open { display: flex; }
+  .pf-pop__backdrop {
+    position: absolute; inset: 0; background: rgba(0, 0, 0, .62);
+    backdrop-filter: blur(2px); animation: pf-pop-fade .25s ease;
+  }
+  .pf-pop__box {
+    position: relative; width: min(90vw, 440px);
+    animation: pf-pop-in .32s cubic-bezier(.2, .9, .3, 1.2);
+  }
+  .pf-pop__imglink { display: block; }
+  .pf-pop__img {
+    display: block; width: 100%; height: auto; border-radius: 16px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .45);
+  }
+  .pf-pop__x {
+    position: absolute; top: -1.4rem; right: -1.4rem; z-index: 2;
+    width: 3.8rem; height: 3.8rem; border-radius: 50%;
+    background: #ffffff; color: #333; border: 0; cursor: pointer;
+    font-size: 2.4rem; line-height: 1; font-weight: 400;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, .3); transition: transform .15s ease, background .15s ease;
+  }
+  .pf-pop__x:hover { transform: scale(1.08); background: #f3f3f3; }
+  @keyframes pf-pop-fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pf-pop-in { from { opacity: 0; transform: translateY(18px) scale(.94); } to { opacity: 1; transform: none; } }
+  @media (max-width: 599px) {
+    .pf-pop { padding: 1.6rem; }
+    .pf-pop__box { width: min(92vw, 400px); }
+    .pf-pop__x { top: -1rem; right: -1rem; width: 3.4rem; height: 3.4rem; font-size: 2.1rem; }
+  }
+</style>
+
+<script>
+  (function () {
+    if (window.__pfPopups) return;
+    window.__pfPopups = true;
+
+    var FREESHIP_DELAY = 10000; // 10s after landing
+    var VOUCHER_DELAY = 1500;   // shortly after opening the next page
+
+    function ss(key, val) {
+      try {
+        if (val === undefined) return sessionStorage.getItem(key);
+        sessionStorage.setItem(key, val);
+      } catch (e) { return null; }
+    }
+    function anyOpen() { return !!document.querySelector('.pf-pop.is-open'); }
+
+    function open(id) {
+      var el = document.getElementById(id);
+      if (!el || anyOpen()) return;
+      el.hidden = false;
+      el.setAttribute('aria-hidden', 'false');
+      el.classList.add('is-open');
+      document.documentElement.style.overflow = 'hidden';
+    }
+    function close(el) {
+      if (!el) return;
+      el.classList.remove('is-open');
+      el.setAttribute('aria-hidden', 'true');
+      el.hidden = true;
+      document.documentElement.style.overflow = '';
+    }
+
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      if (t && t.closest && t.closest('[data-pf-pop-close]')) {
+        e.preventDefault();
+        close(t.closest('.pf-pop'));
+      }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { close(document.querySelector('.pf-pop.is-open')); }
+    });
+
+    // Count pageviews within this browsing session.
+    var pv = parseInt(ss('pf_pv') || '0', 10) + 1;
+    ss('pf_pv', pv);
+
+    if (pv <= 1) {
+      // First page of the visit → free-ship popup after 10s.
+      if (!ss('pf_fs_shown')) {
+        setTimeout(function () {
+          if (ss('pf_fs_shown')) return;
+          ss('pf_fs_shown', '1');
+          open('pf-pop-freeship');
+        }, FREESHIP_DELAY);
+      }
+    } else {
+      // Any later page → new-customer voucher (once per session).
+      if (!ss('pf_vc_shown')) {
+        setTimeout(function () {
+          if (ss('pf_vc_shown')) return;
+          ss('pf_vc_shown', '1');
+          open('pf-pop-voucher');
+        }, VOUCHER_DELAY);
+      }
+    }
+  })();
+</script>
