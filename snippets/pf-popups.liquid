@@ -1,11 +1,53 @@
 {%- comment -%}
-  PHOMIFOOD promotional popups:
-    1. Free-ship popup  — shows 10s after a visitor lands (first page of the session).
-    2. New-customer voucher — shows on the next page the visitor opens (2nd pageview).
-  Each shows at most once per browsing session and is fully dismissible.
+  PHOMIFOOD promotional popups (one per pageview, each once per session):
+    Pageview 1 → "Ưu đãi tuần" featured-products popup.
+    Pageview 2 → Free-ship popup.
+    Pageview 3+ → New-customer voucher popup.
+  All are dismissible (X, backdrop, Esc).
 {%- endcomment -%}
 
 {%- assign pf_pop_link = routes.all_products_collection_url -%}
+{%- assign pf_deal_handles = "gia-bao-bun-hoa-hong-1mm-500gx20-goi,chinsu-pho-story-truyen-thong-nuoc-trong,nuoc-mam-chinsu-ca-hoi-500ml-15chai,hat-nem-knor-900g-x-10,tufoco-banh-trang-cuon-tron-size-22-340g-x-44-goi" | split: "," -%}
+
+<div class="pf-pop" id="pf-pop-deals" hidden aria-hidden="true">
+  <div class="pf-pop__backdrop" data-pf-pop-close></div>
+  <div class="pf-pop__box pf-pop__box--deals" role="dialog" aria-modal="true" aria-label="Ưu đãi tuần này">
+    <button type="button" class="pf-pop__x" data-pf-pop-close aria-label="Đóng">&times;</button>
+    <div class="pf-deals">
+      <div class="pf-deals__head">
+        <div class="pf-deals__title">🔥 ƯU ĐÃI TUẦN NÀY</div>
+        <div class="pf-deals__sub">Giá tốt nhất trong tuần — số lượng có hạn!</div>
+      </div>
+      <div class="pf-deals__grid">
+        {%- for h in pf_deal_handles -%}
+          {%- assign p = all_products[h] -%}
+          {%- if p.id -%}
+            {%- assign v = p.selected_or_first_available_variant -%}
+            {%- assign price = v.price -%}
+            {%- assign cmp = v.compare_at_price -%}
+            <a class="pf-deal" href="{{ p.url }}">
+              <div class="pf-deal__media">
+                {%- if cmp > price -%}
+                  {%- assign pct = cmp | minus: price | times: 100 | divided_by: cmp -%}
+                  <span class="pf-deal__badge">-{{ pct }}%</span>
+                {%- endif -%}
+                {%- if p.featured_image -%}
+                  <img src="{{ p.featured_image | image_url: width: 260 }}" alt="{{ p.title | escape }}" loading="lazy" width="130" height="130">
+                {%- endif -%}
+              </div>
+              <div class="pf-deal__title">{{ p.title }}</div>
+              <div class="pf-deal__price">
+                <span class="pf-deal__now">{{ price | money }}</span>
+                {%- if cmp > price -%}<span class="pf-deal__old">{{ cmp | money }}</span>{%- endif -%}
+              </div>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <a class="pf-deals__cta" href="{{ pf_pop_link }}">Xem tất cả sản phẩm →</a>
+    </div>
+  </div>
+</div>
 
 <div class="pf-pop" id="pf-pop-freeship" hidden aria-hidden="true">
   <div class="pf-pop__backdrop" data-pf-pop-close></div>
@@ -55,12 +97,67 @@
     box-shadow: 0 4px 14px rgba(0, 0, 0, .3); transition: transform .15s ease, background .15s ease;
   }
   .pf-pop__x:hover { transform: scale(1.08); background: #f3f3f3; }
+
+  /* Weekly-deals popup */
+  .pf-pop__box--deals { width: min(94vw, 780px); }
+  .pf-deals {
+    background: #fffdf8; border-radius: 18px; overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .45); max-height: 88vh; display: flex; flex-direction: column;
+  }
+  .pf-deals__head {
+    background: linear-gradient(180deg, #e8452f, #d62828); color: #fff;
+    padding: 1.8rem 2rem 1.6rem; text-align: center;
+  }
+  .pf-deals__title { font-size: 2.2rem; font-weight: 800; letter-spacing: .5px; }
+  .pf-deals__sub { font-size: 1.35rem; margin-top: .4rem; opacity: .95; }
+  .pf-deals__grid {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;
+    padding: 1.8rem; overflow-y: auto;
+  }
+  .pf-deal {
+    display: flex; flex-direction: column; text-decoration: none;
+    background: #fff; border: 1px solid #eee3cc; border-radius: 12px; padding: .8rem;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .pf-deal:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(0, 0, 0, .12); }
+  .pf-deal__media {
+    position: relative; aspect-ratio: 1 / 1; border-radius: 8px; overflow: hidden;
+    background: #f6f1e6; margin-bottom: .7rem;
+  }
+  .pf-deal__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pf-deal__badge {
+    position: absolute; top: .5rem; left: .5rem; z-index: 1;
+    background: #d62828; color: #fff; font-size: 1.1rem; font-weight: 800;
+    padding: .25rem .6rem; border-radius: 999px;
+  }
+  .pf-deal__title {
+    font-size: 1.22rem; line-height: 1.3; color: #3d3a33; font-weight: 600;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    min-height: 3.2rem;
+  }
+  .pf-deal__price { margin-top: .5rem; display: flex; align-items: baseline; gap: .5rem; flex-wrap: wrap; }
+  .pf-deal__now { font-size: 1.4rem; font-weight: 800; color: #d62828; }
+  .pf-deal__old { font-size: 1.15rem; color: #9a9384; text-decoration: line-through; }
+  .pf-deals__cta {
+    display: block; margin: 0 1.8rem 1.8rem; text-align: center; text-decoration: none;
+    background: linear-gradient(180deg, #1e8541, #14672f); color: #fff;
+    font-size: 1.5rem; font-weight: 800; padding: 1.1rem; border-radius: 999px;
+    box-shadow: 0 6px 16px rgba(20, 103, 47, .3); transition: filter .15s ease;
+  }
+  .pf-deals__cta:hover { filter: brightness(1.07); }
+
   @keyframes pf-pop-fade { from { opacity: 0; } to { opacity: 1; } }
   @keyframes pf-pop-in { from { opacity: 0; transform: translateY(18px) scale(.94); } to { opacity: 1; transform: none; } }
+  @media (max-width: 749px) {
+    .pf-deals__grid { grid-template-columns: repeat(2, 1fr); }
+  }
   @media (max-width: 599px) {
     .pf-pop { padding: 1.6rem; }
     .pf-pop__box { width: min(92vw, 400px); }
+    .pf-pop__box--deals { width: 94vw; }
     .pf-pop__x { top: -1rem; right: -1rem; width: 3.4rem; height: 3.4rem; font-size: 2.1rem; }
+    .pf-deals__title { font-size: 1.9rem; }
+    .pf-deals__grid { padding: 1.4rem; gap: .8rem; }
   }
 </style>
 
@@ -69,8 +166,9 @@
     if (window.__pfPopups) return;
     window.__pfPopups = true;
 
-    var FREESHIP_DELAY = 10000; // 10s after landing
-    var VOUCHER_DELAY = 1500;   // shortly after opening the next page
+    var DEALS_DELAY = 2500;     // just after landing on the first page
+    var FREESHIP_DELAY = 2000;  // shortly after opening the 2nd page
+    var VOUCHER_DELAY = 1500;   // shortly after opening a later page
 
     function ss(key, val) {
       try {
@@ -95,6 +193,14 @@
       el.hidden = true;
       document.documentElement.style.overflow = '';
     }
+    function schedule(flag, id, delay) {
+      if (ss(flag)) return;
+      setTimeout(function () {
+        if (ss(flag)) return;
+        ss(flag, '1');
+        open(id);
+      }, delay);
+    }
 
     document.addEventListener('click', function (e) {
       var t = e.target;
@@ -107,28 +213,16 @@
       if (e.key === 'Escape') { close(document.querySelector('.pf-pop.is-open')); }
     });
 
-    // Count pageviews within this browsing session.
+    // Count pageviews within this browsing session, show one popup per page.
     var pv = parseInt(ss('pf_pv') || '0', 10) + 1;
     ss('pf_pv', pv);
 
     if (pv <= 1) {
-      // First page of the visit → free-ship popup after 10s.
-      if (!ss('pf_fs_shown')) {
-        setTimeout(function () {
-          if (ss('pf_fs_shown')) return;
-          ss('pf_fs_shown', '1');
-          open('pf-pop-freeship');
-        }, FREESHIP_DELAY);
-      }
+      schedule('pf_dl_shown', 'pf-pop-deals', DEALS_DELAY);
+    } else if (pv === 2) {
+      schedule('pf_fs_shown', 'pf-pop-freeship', FREESHIP_DELAY);
     } else {
-      // Any later page → new-customer voucher (once per session).
-      if (!ss('pf_vc_shown')) {
-        setTimeout(function () {
-          if (ss('pf_vc_shown')) return;
-          ss('pf_vc_shown', '1');
-          open('pf-pop-voucher');
-        }, VOUCHER_DELAY);
-      }
+      schedule('pf_vc_shown', 'pf-pop-voucher', VOUCHER_DELAY);
     }
   })();
 </script>
