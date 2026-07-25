@@ -278,6 +278,24 @@ body.gradient {
 .footer .footer__list-social .list-social__link:hover .icon {
   color: #f2c14e;
 }
+/* Business Information accordion in footer (click to expand) */
+.footer .pf-biz-acc { border-top: 1px solid rgba(255, 255, 255, .18); }
+.footer .pf-biz-acc__sum {
+  list-style: none; cursor: pointer; user-select: none;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 1.2rem 0; margin: 0;
+  font-size: 1.6rem !important; font-weight: 800; color: #f2c14e !important;
+  letter-spacing: .01em;
+}
+.footer .pf-biz-acc__sum::-webkit-details-marker { display: none; }
+.footer .pf-biz-acc__sum::after {
+  content: "\203A"; /* › */
+  font-size: 2.2rem; line-height: 1; color: #f2c14e;
+  transform: rotate(90deg); transition: transform .2s ease;
+}
+.footer .pf-biz-acc[open] .pf-biz-acc__sum::after { transform: rotate(-90deg); }
+.footer .pf-biz-acc__body { padding: .2rem 0 1.2rem; }
+.footer .pf-biz-acc__body p { margin: 0 0 .6rem; }
 /* Newsletter field on the dark background */
 .footer .newsletter-form__field-wrapper .field__input {
   background: rgba(255, 255, 255, .1) !important;

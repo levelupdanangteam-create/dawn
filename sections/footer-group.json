@@ -24,14 +24,14 @@
           "type": "text",
           "settings": {
             "heading": "Chính sách & Hỗ trợ",
-            "subtext": "<p><a href=\"/pages/chinh-sach-mua-sam\">Chính sách mua sắm & vận chuyển</a></p><p><a href=\"/pages/contact\">Liên hệ</a></p>"
+            "subtext": "<p><a href=\"/pages/chinh-sach-mua-sam\">Chính sách mua sắm &amp; vận chuyển</a></p><p><a href=\"/pages/thong-tin-doanh-nghiep\">Thông tin doanh nghiệp</a></p><p><a href=\"/pages/contact\">Liên hệ</a></p>"
           }
         },
         "business_info": {
           "type": "text",
           "settings": {
-            "heading": "Business Information",
-            "subtext": "<p><strong>LEVELUPVN LIMITED</strong></p><p>Business Reg. No.: 77795525-000-03-26-8</p><p>Unit E01, 10/F, Wong King Industrial Building, 2-4 Tai Yau Street, San Po Kong, Hong Kong</p><p><a href=\"mailto:nhatngo@levelupvn.com\">nhatngo@levelupvn.com</a></p><p><a href=\"tel:+84988818036\">+84 988 818 036</a></p>"
+            "heading": "",
+            "subtext": "<details class=\"pf-biz-acc\"><summary class=\"pf-biz-acc__sum\">Business Information</summary><div class=\"pf-biz-acc__body rte\"><p><strong>LEVELUPVN LIMITED</strong></p><p>Business Reg. No.: 77795525-000-03-26-8</p><p>Unit E01, 10/F, Wong King Industrial Building, 2-4 Tai Yau Street, San Po Kong, Hong Kong</p><p><a href=\"mailto:nhatngo@levelupvn.com\">nhatngo@levelupvn.com</a></p><p><a href=\"tel:+84988818036\">+84 988 818 036</a></p></div></details>"
           }
         }
       },
