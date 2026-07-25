@@ -7,7 +7,7 @@
 {%- endcomment -%}
 
 {%- comment -%} rows: CODE|min_in_cents|description {%- endcomment -%}
-{%- assign pf_cpn_rows = "BANMOI|25000|Giảm 3% toàn đơn · áp dụng cho đơn từ 250€;;FREESHIP150|15000|Miễn phí vận chuyển · đơn từ 150€ · mọi quốc gia" | split: ";;" -%}
+{%- assign pf_cpn_rows = "BANMOI|25000|Giảm 3% toàn đơn · đơn từ 250€;;FREESHIP150|15000|Freeship toàn châu Âu · đơn từ 150€" | split: ";;" -%}
 
 <div class="pf-cpns" data-currency="{{ cart.currency.iso_code }}">
   <div class="pf-cpns__head">🎁 Mã giảm giá đang có — dùng ngay để tiết kiệm!</div>
@@ -24,19 +24,17 @@
     {%- if pct > 100 -%}{%- assign pct = 100 -%}{%- endif -%}
 
     <div class="pf-cpn" data-code="{{ code }}" data-min="{{ minp }}">
-      <div class="pf-cpn__left">
-        <div class="pf-cpn__code">{{ code }}</div>
+      <div class="pf-cpn__top">
+        <span class="pf-cpn__code">{{ code }}</span>
+        <span class="pf-cpn__desc">{{ desc }}</span>
       </div>
-      <div class="pf-cpn__body">
-        <div class="pf-cpn__desc">{{ desc }}</div>
-        <div class="pf-cpn__bar"><span class="pf-cpn__bar-fill" style="width: {{ pct }}%;"></span></div>
-        <div class="pf-cpn__hint">
-          {%- if rem > 0 -%}
-            Mua thêm <strong>{{ rem | money }}</strong> để dùng mã này
-          {%- else -%}
-            ✅ Đơn của bạn đã đủ điều kiện!
-          {%- endif -%}
-        </div>
+      <div class="pf-cpn__bar"><span class="pf-cpn__bar-fill" style="width: {{ pct }}%;"></span></div>
+      <div class="pf-cpn__hint">
+        {%- if rem > 0 -%}
+          Mua thêm <strong>{{ rem | money }}</strong> để mở khoá mã này
+        {%- else -%}
+          ✅ Đơn đã đủ điều kiện — áp dụng ngay!
+        {%- endif -%}
       </div>
       <div class="pf-cpn__actions">
         <button type="button" class="pf-cpn__copy" data-copy="{{ code }}">
@@ -50,46 +48,45 @@
 
 <style>
   .pf-cpns {
-    margin: 0 0 1.6rem; padding: 1.6rem; border-radius: 14px;
-    background: linear-gradient(180deg, #fff8ec 0%, #fffdf8 100%);
-    border: 1px dashed #e0b84e;
+    margin: 0 0 1.4rem; padding: 1.2rem; border-radius: 14px;
+    background: linear-gradient(180deg, #fff8ec 0%, #fffdf9 100%);
+    border: 1px solid #edd39a; display: grid; gap: 1rem;
   }
-  .pf-cpns__head { font-size: 1.5rem; font-weight: 800; color: #b8791a; margin-bottom: 1.2rem; }
+  .pf-cpns__head { font-size: 1.4rem; font-weight: 800; color: #b8791a; line-height: 1.35; }
   .pf-cpn {
-    display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1.2rem 1.4rem;
-    padding: 1.2rem 0; border-top: 1px solid #f0e2c2;
+    background: #fff; border: 1px solid #efe0be; border-radius: 12px;
+    padding: 1.1rem 1.2rem; display: grid; gap: .75rem;
+    position: relative; overflow: hidden;
   }
-  .pf-cpn:first-of-type { border-top: 0; }
+  .pf-cpn::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    background: linear-gradient(180deg, #f2c14e, #1e8541);
+  }
+  .pf-cpn__top { display: flex; align-items: center; gap: .8rem; }
   .pf-cpn__code {
-    font-size: 1.5rem; font-weight: 800; letter-spacing: .5px; color: #14672f;
-    background: #eafaef; border: 1px dashed #2ea45a; border-radius: 8px;
-    padding: .7rem 1.1rem; white-space: nowrap;
+    flex: none; font-size: 1.35rem; font-weight: 800; letter-spacing: .4px; color: #14672f;
+    background: #eafaef; border: 1px dashed #2ea45a; border-radius: 7px;
+    padding: .5rem .9rem; white-space: nowrap;
   }
-  .pf-cpn__body { min-width: 0; }
-  .pf-cpn__desc { font-size: 1.35rem; color: #5a5346; margin-bottom: .6rem; }
-  .pf-cpn__bar { height: 7px; border-radius: 999px; background: #efe4cb; overflow: hidden; }
+  .pf-cpn__desc { font-size: 1.3rem; color: #5a5346; line-height: 1.35; min-width: 0; }
+  .pf-cpn__bar { height: 6px; border-radius: 999px; background: #eee2c6; overflow: hidden; }
   .pf-cpn__bar-fill {
     display: block; height: 100%; border-radius: 999px;
     background: linear-gradient(90deg, #f2c14e, #1e8541); transition: width .4s ease;
   }
-  .pf-cpn__hint { font-size: 1.25rem; color: #8a7a52; margin-top: .5rem; }
+  .pf-cpn__hint { font-size: 1.2rem; color: #8a7a52; margin-top: -.15rem; }
   .pf-cpn__hint strong { color: #d62828; }
-  .pf-cpn__actions { display: flex; flex-direction: column; gap: .6rem; }
+  .pf-cpn__actions { display: grid; grid-template-columns: 1fr 1.35fr; gap: .7rem; }
   .pf-cpn__copy, .pf-cpn__apply {
-    text-align: center; font-weight: 700; font-size: 1.3rem; border-radius: 999px;
-    padding: .8rem 1.4rem; cursor: pointer; text-decoration: none; white-space: nowrap;
+    text-align: center; font-weight: 700; font-size: 1.28rem; border-radius: 999px;
+    padding: .78rem .6rem; cursor: pointer; text-decoration: none; white-space: nowrap;
     transition: filter .15s ease, background .15s ease, color .15s ease;
   }
   .pf-cpn__copy { background: #fff; color: #14672f; border: 1.5px solid #2ea45a; }
   .pf-cpn__copy:hover { background: #eafaef; }
   .pf-cpn__copy.is-done { background: #2ea45a; color: #fff; border-color: #2ea45a; }
-  .pf-cpn__apply { background: linear-gradient(180deg, #e8452f, #d62828); color: #fff; border: 0; box-shadow: 0 4px 12px rgba(214, 40, 40, .28); }
+  .pf-cpn__apply { background: linear-gradient(180deg, #e8452f, #d62828); color: #fff; border: 0; box-shadow: 0 3px 10px rgba(214, 40, 40, .26); }
   .pf-cpn__apply:hover { filter: brightness(1.06); }
-  @media (max-width: 599px) {
-    .pf-cpn { grid-template-columns: 1fr; gap: .9rem; }
-    .pf-cpn__actions { flex-direction: row; }
-    .pf-cpn__copy, .pf-cpn__apply { flex: 1; }
-  }
 </style>
 
 <script>
