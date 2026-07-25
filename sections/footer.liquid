@@ -75,7 +75,18 @@
                   style="--animation-order: {{ forloop.index }};"
                 {% endif %}
               >
-                {%- if block.settings.heading != blank -%}
+                {%- comment -%}
+                  PHOMIFOOD: turn the "Business Information" text block into a
+                  click-to-expand accordion, and make sure the company info page
+                  link is present in the policies list — independent of the
+                  editor-managed footer-group.json.
+                {%- endcomment -%}
+                {%- assign pf_is_biz = false -%}
+                {%- if block.type == 'text' and block.settings.subtext contains 'Business Reg' -%}
+                  {%- assign pf_is_biz = true -%}
+                {%- endif -%}
+
+                {%- if block.settings.heading != blank and pf_is_biz == false -%}
                   <h2 class="footer-block__heading inline-richtext">{{- block.settings.heading -}}</h2>
                 {%- endif -%}
 
@@ -83,9 +94,27 @@
                   {%- when '@app' -%}
                     {% render block %}
                   {%- when 'text' -%}
-                    <div class="footer-block__details-content rte">
-                      {{ block.settings.subtext }}
-                    </div>
+                    {%- if pf_is_biz -%}
+                      {%- if block.settings.subtext contains '<details' -%}
+                        <div class="footer-block__details-content rte">{{ block.settings.subtext }}</div>
+                      {%- else -%}
+                        <details class="pf-biz-acc">
+                          <summary class="pf-biz-acc__sum">Business Information</summary>
+                          <div class="pf-biz-acc__body footer-block__details-content rte">{{ block.settings.subtext }}</div>
+                        </details>
+                      {%- endif -%}
+                    {%- else -%}
+                      {%- assign pf_has_biz_link = false -%}
+                      {%- if block.settings.subtext contains 'thong-tin-doanh-nghiep' -%}
+                        {%- assign pf_has_biz_link = true -%}
+                      {%- endif -%}
+                      <div class="footer-block__details-content rte">
+                        {{ block.settings.subtext }}
+                        {%- if block.settings.heading contains 'Chính sách' and pf_has_biz_link == false -%}
+                          <p><a href="/pages/thong-tin-doanh-nghiep">Thông tin doanh nghiệp</a></p>
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
                   {%- when 'link_list' -%}
                     {%- if block.settings.menu != blank -%}
                       <ul class="footer-block__details-content list-unstyled">
