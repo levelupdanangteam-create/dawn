@@ -1,0 +1,55 @@
+{%- comment -%}
+  Hide third-party widgets the store doesn't want (e.g. the injected
+  "Shop with AI" pill). Matches by visible text so it works regardless
+  of the app's markup, and keeps watching for late/async injection.
+{%- endcomment -%}
+<script>
+  (function () {
+    if (window.__pfHideWidgets) return;
+    window.__pfHideWidgets = true;
+
+    var TARGETS = ['shop with ai'];
+
+    function killOnce() {
+      var nodes = document.querySelectorAll('button, a, [role="button"], div, span');
+      for (var i = 0; i < nodes.length; i++) {
+        var el = nodes[i];
+        if (el.__pfHidden) continue;
+        var txt = (el.textContent || '').trim().toLowerCase();
+        if (TARGETS.indexOf(txt) === -1) continue;
+        if (el.children.length > 5) continue; // skip large containers
+        // Climb to the outermost element that still holds only this text (the whole pill).
+        var target = el;
+        while (
+          target.parentElement &&
+          (target.parentElement.textContent || '').trim().toLowerCase() === txt
+        ) {
+          target = target.parentElement;
+        }
+        target.style.setProperty('display', 'none', 'important');
+        target.__pfHidden = true;
+      }
+    }
+
+    function run() {
+      killOnce();
+      // A few retries in case the widget is injected asynchronously.
+      var tries = 0;
+      var timer = setInterval(function () {
+        killOnce();
+        if (++tries >= 10) clearInterval(timer);
+      }, 800);
+
+      if (window.MutationObserver) {
+        var obs = new MutationObserver(function () { killOnce(); });
+        obs.observe(document.body, { childList: true, subtree: true });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', run);
+    } else {
+      run();
+    }
+  })();
+</script>
