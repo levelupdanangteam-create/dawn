@@ -1,46 +1,39 @@
 {%- comment -%}
-  Available discount codes shown on the cart page to nudge checkout.
-  Each code has a copy button and an "apply now" link (/discount/CODE)
-  that pre-applies the code and sends the customer to checkout.
-  A live progress bar shows how much more is needed to reach the
-  code's minimum-spend threshold. Codes are configured below.
+  Auto-applied discounts on the cart page. When the cart reaches a code's
+  minimum spend, the code is silently applied via /discount/CODE (so it is
+  already active at checkout) — no copy/apply buttons needed. A progress
+  bar nudges the customer toward each threshold.
+  rows: CODE|min_in_cents|description|short_label
 {%- endcomment -%}
-
-{%- comment -%} rows: CODE|min_in_cents|description {%- endcomment -%}
-{%- assign pf_cpn_rows = "BANMOI|25000|Giảm 3% toàn đơn · đơn từ 250€;;FREESHIP150|15000|Freeship toàn châu Âu · đơn từ 150€" | split: ";;" -%}
+{%- assign pf_cpn_rows = "FREESHIP150|15000|Miễn phí vận chuyển toàn châu Âu · đơn từ 150€|🚚 Free ship;;BANMOI|25000|Giảm 3% tổng đơn hàng · đơn từ 250€|🏷️ Giảm 3%" | split: ";;" -%}
 
 <div class="pf-cpns" data-currency="{{ cart.currency.iso_code }}">
-  <div class="pf-cpns__head">🎁 Mã giảm giá đang có — dùng ngay để tiết kiệm!</div>
+  <div class="pf-cpns__head">🎁 Ưu đãi tự động — mua đủ ngưỡng là được giảm ngay khi thanh toán!</div>
 
   {%- for row in pf_cpn_rows -%}
     {%- assign parts = row | split: '|' -%}
     {%- assign code = parts[0] -%}
     {%- assign minp = parts[1] | plus: 0 -%}
     {%- assign desc = parts[2] -%}
+    {%- assign label = parts[3] -%}
 
     {%- assign tot = cart.total_price -%}
     {%- assign rem = minp | minus: tot -%}
     {%- assign pct = tot | times: 100 | divided_by: minp -%}
     {%- if pct > 100 -%}{%- assign pct = 100 -%}{%- endif -%}
 
-    <div class="pf-cpn" data-code="{{ code }}" data-min="{{ minp }}">
+    <div class="pf-cpn{% if rem <= 0 %} is-eligible{% endif %}" data-code="{{ code }}" data-min="{{ minp }}">
       <div class="pf-cpn__top">
-        <span class="pf-cpn__code">{{ code }}</span>
+        <span class="pf-cpn__label">{{ label }}</span>
         <span class="pf-cpn__desc">{{ desc }}</span>
       </div>
       <div class="pf-cpn__bar"><span class="pf-cpn__bar-fill" style="width: {{ pct }}%;"></span></div>
       <div class="pf-cpn__hint">
         {%- if rem > 0 -%}
-          Mua thêm <strong>{{ rem | money }}</strong> để mở khoá mã này
+          Mua thêm <strong>{{ rem | money }}</strong> để mở khoá ưu đãi này
         {%- else -%}
-          ✅ Đơn đã đủ điều kiện — áp dụng ngay!
+          ✅ Đã đủ điều kiện — tự động áp dụng khi thanh toán!
         {%- endif -%}
-      </div>
-      <div class="pf-cpn__actions">
-        <button type="button" class="pf-cpn__copy" data-copy="{{ code }}">
-          <span class="pf-cpn__copy-txt">Sao chép</span>
-        </button>
-        <a class="pf-cpn__apply" href="/discount/{{ code }}?redirect=/checkout">Áp dụng ngay</a>
       </div>
     </div>
   {%- endfor -%}
@@ -62,10 +55,11 @@
     content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
     background: linear-gradient(180deg, #f2c14e, #1e8541);
   }
+  .pf-cpn.is-eligible { border-color: #2ea45a; background: #f4fdf7; }
   .pf-cpn__top { display: flex; align-items: center; gap: .8rem; }
-  .pf-cpn__code {
-    flex: none; font-size: 1.35rem; font-weight: 800; letter-spacing: .4px; color: #14672f;
-    background: #eafaef; border: 1px dashed #2ea45a; border-radius: 7px;
+  .pf-cpn__label {
+    flex: none; font-size: 1.28rem; font-weight: 800; color: #14672f;
+    background: #eafaef; border: 1px solid #bfe6cc; border-radius: 7px;
     padding: .5rem .9rem; white-space: nowrap;
   }
   .pf-cpn__desc { font-size: 1.3rem; color: #5a5346; line-height: 1.35; min-width: 0; }
@@ -74,19 +68,10 @@
     display: block; height: 100%; border-radius: 999px;
     background: linear-gradient(90deg, #f2c14e, #1e8541); transition: width .4s ease;
   }
-  .pf-cpn__hint { font-size: 1.2rem; color: #8a7a52; margin-top: -.15rem; }
+  .pf-cpn.is-eligible .pf-cpn__bar-fill { background: #2ea45a; }
+  .pf-cpn__hint { font-size: 1.2rem; color: #8a7a52; }
   .pf-cpn__hint strong { color: #d62828; }
-  .pf-cpn__actions { display: grid; grid-template-columns: 1fr 1.35fr; gap: .7rem; }
-  .pf-cpn__copy, .pf-cpn__apply {
-    text-align: center; font-weight: 700; font-size: 1.28rem; border-radius: 999px;
-    padding: .78rem .6rem; cursor: pointer; text-decoration: none; white-space: nowrap;
-    transition: filter .15s ease, background .15s ease, color .15s ease;
-  }
-  .pf-cpn__copy { background: #fff; color: #14672f; border: 1.5px solid #2ea45a; }
-  .pf-cpn__copy:hover { background: #eafaef; }
-  .pf-cpn__copy.is-done { background: #2ea45a; color: #fff; border-color: #2ea45a; }
-  .pf-cpn__apply { background: linear-gradient(180deg, #e8452f, #d62828); color: #fff; border: 0; box-shadow: 0 3px 10px rgba(214, 40, 40, .26); }
-  .pf-cpn__apply:hover { filter: brightness(1.06); }
+  .pf-cpn.is-eligible .pf-cpn__hint { color: #1c7a3f; font-weight: 700; }
 </style>
 
 <script>
@@ -101,6 +86,20 @@
       catch (e) { return (cents / 100).toFixed(2) + ' ' + (cur || 'EUR'); }
     }
 
+    function ss(key, val) {
+      try {
+        if (val === undefined) return sessionStorage.getItem(key);
+        sessionStorage.setItem(key, val);
+      } catch (e) { return null; }
+    }
+
+    // Silently apply a discount code so it's already active at checkout.
+    function autoApply(code) {
+      if (!code || ss('pf_ap_' + code)) return;
+      ss('pf_ap_' + code, '1');
+      fetch(root() + 'discount/' + encodeURIComponent(code), { method: 'GET' }).catch(function () {});
+    }
+
     function update() {
       var box = document.querySelector('.pf-cpns');
       if (!box) return;
@@ -111,43 +110,26 @@
           var total = cart.total_price || 0;
           box.querySelectorAll('.pf-cpn').forEach(function (el) {
             var min = parseInt(el.getAttribute('data-min') || '0', 10);
+            var code = el.getAttribute('data-code');
             var rem = min - total;
             var pct = min > 0 ? Math.min(100, Math.round((total / min) * 100)) : 100;
             var fill = el.querySelector('.pf-cpn__bar-fill');
             var hint = el.querySelector('.pf-cpn__hint');
             if (fill) fill.style.width = pct + '%';
-            if (hint) {
-              hint.innerHTML = rem > 0
-                ? 'Mua thêm <strong>' + fmt(rem, cur) + '</strong> để dùng mã này'
-                : '✅ Đơn của bạn đã đủ điều kiện!';
+            if (rem > 0) {
+              el.classList.remove('is-eligible');
+              if (hint) hint.innerHTML = 'Mua thêm <strong>' + fmt(rem, cur) + '</strong> để mở khoá ưu đãi này';
+            } else {
+              el.classList.add('is-eligible');
+              if (hint) hint.textContent = '✅ Đã đủ điều kiện — tự động áp dụng khi thanh toán!';
+              autoApply(code);
             }
           });
         })
         .catch(function () {});
     }
 
-    // Copy code to clipboard.
-    document.addEventListener('click', function (e) {
-      var btn = e.target.closest ? e.target.closest('.pf-cpn__copy') : null;
-      if (!btn) return;
-      var code = btn.getAttribute('data-copy') || '';
-      var done = function () {
-        var t = btn.querySelector('.pf-cpn__copy-txt');
-        if (t) t.textContent = 'Đã chép ✓';
-        btn.classList.add('is-done');
-        setTimeout(function () { if (t) t.textContent = 'Sao chép'; btn.classList.remove('is-done'); }, 1800);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(code).then(done).catch(done);
-      } else {
-        var ta = document.createElement('textarea');
-        ta.value = code; document.body.appendChild(ta); ta.select();
-        try { document.execCommand('copy'); } catch (err) {}
-        document.body.removeChild(ta); done();
-      }
-    });
-
-    // Refresh progress whenever the cart changes (add / update / change).
+    // Refresh + auto-apply whenever the cart changes.
     var origFetch = window.fetch;
     window.fetch = function (input) {
       var p = origFetch.apply(this, arguments);
