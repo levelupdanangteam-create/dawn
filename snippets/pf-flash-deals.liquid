@@ -46,6 +46,9 @@
           assign pf_v = product.selected_or_first_available_variant
           assign pf_price = pf_v.price
           assign pf_cmp = pf_v.compare_at_price
+          if pf_cmp == blank or pf_cmp <= pf_price
+            assign pf_cmp = product.compare_at_price_max
+          endif
           assign on_sale = false
           if pf_cmp > pf_price
             assign on_sale = true
