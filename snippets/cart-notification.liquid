@@ -48,9 +48,18 @@
             {{ 'sections.cart.checkout' | t }}
           </button>
         </form>
-        <button type="button" class="link button-label">{{ 'general.continue_shopping' | t }}</button>
+        <button type="button" class="button-label pf-notif-continue">{{ 'general.continue_shopping' | t }}</button>
       </div>
     </div>
+<style>
+  .cart-notification__links .pf-notif-continue {
+    display: block; width: 100%; margin-top: .4rem; cursor: pointer; text-align: center;
+    background: #fff; color: #d62828; border: 2px solid #d62828; border-radius: 999px;
+    font-weight: 800; font-size: 1.6rem; padding: 1.4rem 1.6rem; min-height: 5.2rem;
+    transition: background .18s ease, color .18s ease;
+  }
+  .cart-notification__links .pf-notif-continue:hover { background: #d62828; color: #fff; }
+</style>
   </div>
 </cart-notification>
 {% style %}

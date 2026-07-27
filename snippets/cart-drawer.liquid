@@ -15,13 +15,20 @@
   .drawer {
     visibility: hidden;
   }
+  .cart__ctas { display: grid; gap: 1rem; }
   .cart-drawer__continue {
-    display: block; width: 100%; margin-top: 1rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: .6rem;
+    width: 100%; cursor: pointer;
     background: #fff; color: #d62828; border: 2px solid #d62828; border-radius: 999px;
-    font-weight: 800; font-size: 1.5rem; padding: 1.2rem 1.6rem;
+    font-weight: 800; font-size: 1.6rem; padding: 1.5rem 1.6rem; min-height: 5.2rem;
     transition: background .18s ease, color .18s ease;
   }
+  .cart-drawer__continue svg { flex: none; }
   .cart-drawer__continue:hover { background: #d62828; color: #fff; }
+  @media screen and (max-width: 749px) {
+    #CartDrawer .cart__checkout-button { font-size: 1.7rem; min-height: 5.6rem; }
+    .cart-drawer__continue { font-size: 1.65rem; min-height: 5.6rem; }
+  }
 </style>
 
 <cart-drawer class="drawer{% if cart == empty %} is-empty{% endif %}">
@@ -599,6 +606,7 @@
             class="cart-drawer__continue"
             onclick="this.closest('cart-drawer').close()"
           >
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg>
             {{ 'general.continue_shopping' | t }}
           </button>
         </div>
