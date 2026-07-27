@@ -334,7 +334,9 @@
 
     {% sections 'header-group' %}
 
-    {% render 'pf-store-notice' %}
+    {%- unless request.page_type == 'cart' -%}
+      {% render 'pf-store-notice' %}
+    {%- endunless -%}
 
     <main
       id="MainContent"
