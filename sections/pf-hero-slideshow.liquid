@@ -1,11 +1,21 @@
+{%- liquid
+  assign pf_hero_first = section.blocks.first.settings.image
+  assign pf_hero_ratio = 3.2
+  if pf_hero_first != blank and pf_hero_first.aspect_ratio != blank
+    assign pf_hero_ratio = pf_hero_first.aspect_ratio
+  endif
+-%}
+{%- comment -%} Hide the hero banner on product detail pages. {%- endcomment -%}
+{%- unless request.page_type == 'product' -%}
 <style>
   #pf-slideshow-{{ section.id }} {
     position: relative;
     background: #eef3ea;
-    --pf-ss-h-desktop: {{ section.settings.height_desktop }}px;
-    --pf-ss-h-mobile: {{ section.settings.height_mobile }}px;
+    --pf-ss-ratio: {{ pf_hero_ratio }};
   }
-  #pf-slideshow-{{ section.id }} .pf-ss-viewport { position: relative; height: var(--pf-ss-h-desktop); overflow: hidden; }
+  /* Height follows the banner's real aspect ratio so nothing is cropped */
+  #pf-slideshow-{{ section.id }} .pf-ss-viewport { position: relative; width: 100%; aspect-ratio: var(--pf-ss-ratio); overflow: hidden; }
+  #pf-slideshow-{{ section.id }} .pf-ss-slide { background-size: cover; }
   #pf-slideshow-{{ section.id }} .pf-ss-slide {
     position: absolute; inset: 0; opacity: 0; visibility: hidden;
     transition: opacity .6s ease; display: flex; align-items: center;
@@ -47,8 +57,8 @@
   #pf-slideshow-{{ section.id }} .pf-ss-dot.is-active { background: #fff; width: 2.8rem; border-radius: 999px; }
 
   @media screen and (max-width: 749px) {
-    #pf-slideshow-{{ section.id }} .pf-ss-viewport { height: var(--pf-ss-h-mobile); }
     #pf-slideshow-{{ section.id }} .pf-ss-arrow { width: 3.6rem; height: 3.6rem; }
+    #pf-slideshow-{{ section.id }} .pf-ss-dots { bottom: .8rem; }
   }
   @media (prefers-reduced-motion: reduce) {
     #pf-slideshow-{{ section.id }} .pf-ss-slide { transition: none; }
@@ -138,6 +148,7 @@
     start();
   })();
 </script>
+{%- endunless -%}
 
 {% schema %}
 {
