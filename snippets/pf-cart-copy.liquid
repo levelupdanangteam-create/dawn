@@ -5,6 +5,9 @@
 {%- unless cart == empty -%}
 <style>
   .pf-ordercopy { margin: 0; background: transparent; }
+  .pf-ordercopy__banner { display: block; margin: 0 0 1.2rem; transition: transform .15s ease; }
+  .pf-ordercopy__banner:hover { transform: translateY(-2px); }
+  .pf-ordercopy__banner img { display: block; width: 100%; height: auto; border-radius: 12px; }
   .pf-ordercopy__head { display: flex; align-items: center; gap: .8rem; padding: 1.2rem 1.6rem; background: linear-gradient(90deg, #1e8541, #14672f); color: #fff; border-radius: 12px; }
   .pf-ordercopy__head h3 { margin: 0; font-size: 1.6rem; font-weight: 800; color: #fff; }
   .pf-ordercopy__body { padding: 1.4rem .2rem 0; }
@@ -49,10 +52,9 @@ TỔNG TẠM TÍNH: {{ cart.total_price | money }}
 {%- endcapture -%}
 
 <div class="pf-ordercopy" id="pf-ordercopy" data-currency="{{ cart.currency.iso_code }}" data-locale="{{ request.locale.iso_code | default: 'vi' }}">
-  <div class="pf-ordercopy__head">
-    <span aria-hidden="true">📩</span>
-    <h3>Gửi đơn hàng để được tư vấn</h3>
-  </div>
+  <a class="pf-ordercopy__banner" href="https://m.me/phomifoodstore" target="_blank" rel="noopener" aria-label="Liên hệ tư vấn qua Messenger">
+    <img src="https://cdn.shopify.com/s/files/1/0749/9353/3018/files/t_v_n.png?v=1785144732" alt="Liên hệ tư vấn PHOMIFOOD" loading="lazy">
+  </a>
   <div class="pf-ordercopy__body">
     <textarea class="pf-ordercopy__src" id="pf-order-src" readonly aria-hidden="true">{{ pf_order_text }}</textarea>
     <button type="button" class="pf-ordercopy__mess" id="pf-order-mess">
