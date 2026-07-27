@@ -412,10 +412,6 @@
       {% render 'pf-sticky-cart' %}
     {%- endunless -%}
 
-    {%- if request.page_type == 'cart' -%}
-      {% render 'pf-side-shop' %}
-    {%- endif -%}
-
     {% render 'pf-popups' %}
     {% render 'pf-hide-widgets' %}
   </body>
