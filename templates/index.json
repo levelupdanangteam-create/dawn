@@ -102,7 +102,7 @@
       "type": "pf-flash-sale",
       "settings": {
         "heading": "Sản phẩm giảm giá – Ưu đãi hôm nay",
-        "collection": "asset-pack-77889830914-example-products",
+        "collection": "giam-gia-hom-nay",
         "show_all": true,
         "products_to_show": 5,
         "initial_count": 10,
