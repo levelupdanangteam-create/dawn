@@ -105,18 +105,22 @@
               </div>
             {%- else -%}
               {% render 'pf-cart-coupons' %}
+              <div class="pf-cart-urgency">
+                <span class="pf-cart-urgency__icon">⏰</span>
+                <span>Ưu đãi và giá tốt trong giỏ có thể thay đổi hoặc hết hàng nếu bạn rời khỏi — hãy hoàn tất đặt hàng ngay để giữ ưu đãi nhé!</span>
+              </div>
               <div class="cart__ctas" {{ block.shopify_attributes }}>
                 <button
                   type="submit"
                   id="checkout"
-                  class="cart__checkout-button button"
+                  class="cart__checkout-button button pf-checkout-btn"
                   name="checkout"
                   {% if cart == empty %}
                     disabled
                   {% endif %}
                   form="cart"
                 >
-                  {{ 'sections.cart.checkout' | t }}
+                  🔒 {{ 'sections.cart.checkout' | t }}
                 </button>
               </div>
 
