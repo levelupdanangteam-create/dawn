@@ -670,6 +670,18 @@ body.gradient {
   #MainContent[data-template='cart'] .cart__checkout-button.pf-checkout-btn { animation: none; }
 }
 
+/* Applied-discount highlight (cart page + drawer) */
+.pf-applied {
+  background: linear-gradient(180deg, #eafaef, #dbf3e3);
+  border: 1px solid #9bd8ae; border-radius: 12px;
+  padding: 1rem 1.2rem; margin: 0 0 1.2rem;
+}
+.pf-applied__head { font-size: 1.35rem; font-weight: 800; color: #14672f; margin-bottom: .5rem; }
+.pf-applied__list { margin: 0; display: grid; gap: .4rem; }
+.pf-applied__item { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.pf-applied__code { font-size: 1.35rem; font-weight: 700; color: #1c7a3f; }
+.pf-applied__amount { font-size: 1.45rem; font-weight: 800; color: #d62828; white-space: nowrap; }
+
 /* ---- Boxed content sections (white card on the beige page) ------ */
 .pf-boxed-section { background: transparent !important; }
 .pf-boxed-section .pf-wrap {
