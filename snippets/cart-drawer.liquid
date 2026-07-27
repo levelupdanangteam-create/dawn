@@ -15,6 +15,13 @@
   .drawer {
     visibility: hidden;
   }
+  .cart-drawer__continue {
+    display: block; width: 100%; margin-top: 1rem; cursor: pointer;
+    background: #fff; color: #d62828; border: 2px solid #d62828; border-radius: 999px;
+    font-weight: 800; font-size: 1.5rem; padding: 1.2rem 1.6rem;
+    transition: background .18s ease, color .18s ease;
+  }
+  .cart-drawer__continue:hover { background: #d62828; color: #fff; }
 </style>
 
 <cart-drawer class="drawer{% if cart == empty %} is-empty{% endif %}">
@@ -586,6 +593,13 @@
             {% endif %}
           >
             {{ 'sections.cart.checkout' | t }}
+          </button>
+          <button
+            type="button"
+            class="cart-drawer__continue"
+            onclick="this.closest('cart-drawer').close()"
+          >
+            {{ 'general.continue_shopping' | t }}
           </button>
         </div>
       </div>
