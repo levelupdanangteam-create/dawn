@@ -43,10 +43,13 @@
     {%- if col != blank and col.products_count > 0 -%}
       {%- for product in col.products limit: lim -%}
         {%- liquid
+          assign pf_v = product.selected_or_first_available_variant
+          assign pf_price = pf_v.price
+          assign pf_cmp = pf_v.compare_at_price
           assign on_sale = false
-          if product.compare_at_price > product.price
+          if pf_cmp > pf_price
             assign on_sale = true
-            assign disc = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round
+            assign disc = pf_cmp | minus: pf_price | times: 100.0 | divided_by: pf_cmp | round
           endif
         -%}
         <div class="pf-flash__card{% if init > 0 and forloop.index > init %} is-hidden{% endif %}">
@@ -62,8 +65,8 @@
           <div class="pf-flash__info">
             <h3 class="pf-flash__nm"><a href="{{ product.url }}">{{ product.title }}</a></h3>
             <div class="pf-flash__price">
-              <span class="now">{{ product.price | money }}</span>
-              {%- if on_sale -%}<span class="was">{{ product.compare_at_price | money }}</span>{%- endif -%}
+              <span class="now">{{ pf_price | money }}</span>
+              {%- if on_sale -%}<span class="was">{{ pf_cmp | money }}</span>{%- endif -%}
             </div>
             <span class="pf-flash__tag">Best Seller</span>
             {% render 'pf-card-buttons', product: product, section_id: uid %}

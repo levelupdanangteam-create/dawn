@@ -68,11 +68,14 @@
         {%- if col != blank and col.products_count > 0 -%}
           {%- for product in col.products limit: section.settings.products_to_show -%}
             {%- assign rank = forloop.index -%}
+            {%- assign pf_v = product.selected_or_first_available_variant -%}
+            {%- assign pf_price = pf_v.price -%}
+            {%- assign pf_cmp = pf_v.compare_at_price -%}
             <div class="pf-bs__card{% if forloop.index > initial %} is-hidden{% endif %}">
               <div class="pf-bs__rank r{{ rank }}">{{ rank }}</div>
               <a class="pf-bs__media" href="{{ product.url }}">
-                {%- if product.compare_at_price > product.price -%}
-                  <span class="pf-bs__sale">-{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}%</span>
+                {%- if pf_cmp > pf_price -%}
+                  <span class="pf-bs__sale">-{{ pf_cmp | minus: pf_price | times: 100.0 | divided_by: pf_cmp | round }}%</span>
                 {%- endif -%}
                 {%- if product.featured_image -%}
                   <img src="{{ product.featured_image | image_url: width: 500 }}" alt="{{ product.title | escape }}" loading="lazy" width="500" height="500">
@@ -84,8 +87,8 @@
                 <span class="pf-bs__tag">🔥 Bán chạy</span>
                 <h3 class="pf-bs__nm"><a href="{{ product.url }}">{{ product.title }}</a></h3>
                 <div class="pf-bs__price">
-                  <span class="now">{{ product.price | money }}</span>
-                  {%- if product.compare_at_price > product.price -%}<span class="was">{{ product.compare_at_price | money }}</span>{%- endif -%}
+                  <span class="now">{{ pf_price | money }}</span>
+                  {%- if pf_cmp > pf_price -%}<span class="was">{{ pf_cmp | money }}</span>{%- endif -%}
                 </div>
                 {%- assign pf_sold = product.metafields.custom.sold_count -%}
                 {%- if pf_sold != blank and pf_sold.value != blank -%}
