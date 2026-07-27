@@ -1,0 +1,62 @@
+{%- comment -%}
+  Store-wide notice bar (shown on every page, below the header).
+  Tells customers only part of the catalog is online and to message the
+  Fanpage for anything they can't find. Dismissible per browsing session.
+  Set pf_fanpage_url to the real Facebook Fanpage link.
+{%- endcomment -%}
+{%- assign pf_fanpage_url = '/pages/contact' -%}
+
+<div class="pf-notice" id="pf-store-notice" hidden>
+  <div class="pf-notice__inner">
+    <span class="pf-notice__icon">📦</span>
+    <p class="pf-notice__text">
+      Kho hàng Phomifood có <strong>hơn 600 mã sản phẩm</strong>. Website chỉ hiển thị một phần —
+      nếu chưa thấy sản phẩm bạn cần, hãy nhắn
+      <a class="pf-notice__link" href="{{ pf_fanpage_url }}" target="_blank" rel="noopener">Fanpage</a>
+      để được tư vấn chi tiết nhé!
+    </p>
+    <button type="button" class="pf-notice__close" id="pf-store-notice-close" aria-label="Đóng thông báo">&times;</button>
+  </div>
+</div>
+
+<style>
+  .pf-notice {
+    background: linear-gradient(90deg, #f2c14e, #e0a93a);
+    color: #3a2f12; border-bottom: 1px solid #d09e2f;
+  }
+  .pf-notice__inner {
+    max-width: var(--page-width, 120rem); margin: 0 auto;
+    display: flex; align-items: center; gap: 1rem;
+    padding: .9rem clamp(1.5rem, 4vw, 5rem);
+  }
+  .pf-notice__icon { flex: none; font-size: 1.8rem; line-height: 1; }
+  .pf-notice__text { margin: 0; font-size: 1.35rem; line-height: 1.4; font-weight: 600; flex: 1 1 auto; }
+  .pf-notice__link { color: #14672f; font-weight: 800; text-decoration: underline; text-underline-offset: 2px; }
+  .pf-notice__link:hover { color: #0d4f23; }
+  .pf-notice__close {
+    flex: none; width: 3rem; height: 3rem; border: 0; cursor: pointer; border-radius: 50%;
+    background: rgba(0,0,0,.08); color: #3a2f12; font-size: 2rem; line-height: 1;
+    display: flex; align-items: center; justify-content: center; transition: background .15s ease;
+  }
+  .pf-notice__close:hover { background: rgba(0,0,0,.16); }
+  @media (max-width: 749px) {
+    .pf-notice__text { font-size: 1.25rem; }
+    .pf-notice__icon { font-size: 1.6rem; }
+  }
+</style>
+
+<script>
+  (function () {
+    var el = document.getElementById('pf-store-notice');
+    if (!el) return;
+    var KEY = 'pf_notice_closed';
+    var closed = false;
+    try { closed = sessionStorage.getItem(KEY) === '1'; } catch (e) {}
+    if (!closed) el.hidden = false;
+    var btn = document.getElementById('pf-store-notice-close');
+    if (btn) btn.addEventListener('click', function () {
+      el.hidden = true;
+      try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+    });
+  })();
+</script>
