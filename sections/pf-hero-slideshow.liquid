@@ -5,8 +5,8 @@
     assign pf_hero_ratio = pf_hero_first.aspect_ratio
   endif
 -%}
-{%- comment -%} Hide the hero banner on product detail pages. {%- endcomment -%}
-{%- unless request.page_type == 'product' -%}
+{%- comment -%} Hide the hero banner on product detail pages and the cart page. {%- endcomment -%}
+{%- unless request.page_type == 'product' or request.page_type == 'cart' -%}
 <style>
   #pf-slideshow-{{ section.id }} {
     position: relative;
