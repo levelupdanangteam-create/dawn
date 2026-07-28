@@ -82,6 +82,20 @@
     "pf_deal_hook": {
       "type": "pf-deal-hook",
       "blocks": {
+        "product_q9ztm8": {
+          "type": "product",
+          "settings": {
+            "product": "acecook-mi-tom-hao-hao-vi-tom-chua-cay-75g-x-30-goi",
+            "deal_price": "0"
+          }
+        },
+        "product_YMtWhe": {
+          "type": "product",
+          "settings": {
+            "product": "gia-bao-bun-bo-hue-1-5mm-500g-x-20",
+            "deal_price": "0,9"
+          }
+        },
         "product_kPhpjw": {
           "type": "product",
           "settings": {
@@ -91,11 +105,13 @@
         }
       },
       "block_order": [
+        "product_q9ztm8",
+        "product_YMtWhe",
         "product_kPhpjw"
       ],
       "settings": {
-        "heading": "🔥 DEAL SỐC — Giá mồi cực rẻ",
-        "subheading": "Số lượng có hạn · mỗi khách chỉ mua 1 sản phẩm mỗi loại!",
+        "heading": "🔥 DEAL SỐC 0€",
+        "subheading": "Số lượng có hạn! Thêm vào giỏ hàng ngay.",
         "padding_top": 40,
         "padding_bottom": 40
       }
