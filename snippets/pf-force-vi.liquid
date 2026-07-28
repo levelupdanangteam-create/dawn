@@ -1,0 +1,43 @@
+{%- comment -%}
+  Make Vietnamese the default experience for first-time visitors, while
+  respecting a manual language choice afterward. Shopify's primary
+  language is English (locked), so a first visit that isn't Vietnamese is
+  redirected to Vietnamese once; once the visitor picks a language via the
+  selector, we never override it again.
+{%- endcomment -%}
+<script>
+  (function () {
+    try {
+      // Record a manual language choice from any language selector form,
+      // but ignore our own forced switch (data-pf-force).
+      document.addEventListener('submit', function (e) {
+        var f = e.target;
+        if (!f || (f.getAttribute && f.getAttribute('data-pf-force') === '1')) return;
+        if (f.querySelector && f.querySelector('[name="locale_code"]')) {
+          try { localStorage.setItem('pf_lang_chosen', '1'); } catch (_) {}
+        }
+      }, true);
+
+      if (localStorage.getItem('pf_lang_chosen')) return;      // respect their pick
+      var lang = (document.documentElement.lang || '').toLowerCase();
+      if (lang.indexOf('vi') === 0) return;                    // already Vietnamese
+      if (sessionStorage.getItem('pf_lang_forced')) return;    // don't loop this session
+      sessionStorage.setItem('pf_lang_forced', '1');
+
+      var root = (window.Shopify && Shopify.routes ? Shopify.routes.root : '/');
+      var frm = document.createElement('form');
+      frm.method = 'post';
+      frm.action = root + 'localization';
+      frm.acceptCharset = 'UTF-8';
+      frm.setAttribute('data-pf-force', '1');
+      function add(n, v) { var i = document.createElement('input'); i.type = 'hidden'; i.name = n; i.value = v; frm.appendChild(i); }
+      add('form_type', 'localization');
+      add('utf8', '✓');
+      add('_method', 'put');
+      add('locale_code', 'vi');
+      add('return_to', window.location.pathname + window.location.search);
+      document.body.appendChild(frm);
+      frm.submit();
+    } catch (e) {}
+  })();
+</script>
