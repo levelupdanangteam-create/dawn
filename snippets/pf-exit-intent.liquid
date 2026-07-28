@@ -92,10 +92,10 @@
 
     var shown = false, armed = false;
 
-    // Respect the shared popup coordinator (defined in pf-popups) so this never
-    // overlaps the free-ship / voucher popups or fires right after one closes.
+    // Only yield when another popup is literally open right now. We intentionally
+    // ignore the shared cooldown: this is the last-chance popup, so it must still
+    // fire at the real leave moment even shortly after a promo closed.
     function busy() {
-      if (window.PFPopups && typeof window.PFPopups.busy === 'function') return window.PFPopups.busy();
       return !!document.querySelector('.pf-pop.is-open');
     }
 
@@ -119,30 +119,41 @@
     });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !el.hidden) close(); });
 
-    // Arm only after the visitor has been on the page a few seconds (avoid
-    // firing on an accidental early mouse-out).
-    setTimeout(function () { armed = true; }, 4000);
+    // Arm quickly, but not instantly (avoid firing before the page settles).
+    setTimeout(function () { armed = true; }, 2000);
 
     var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
 
-    // Shared across desktop + mobile: switching tab / app or locking the screen
-    // is a strong "leaving" signal. Showing the popup now means it greets the
-    // visitor the moment they come back.
-    document.addEventListener('visibilitychange', function () {
-      if (document.visibilityState === 'hidden' && armed) show();
-    });
-    window.addEventListener('blur', function () { if (armed) show(); });
-
     if (!isTouch) {
-      // Desktop: mouse leaves the viewport toward the top.
+      // ---- Desktop: mouse heads out of the top of the window ----
       document.addEventListener('mouseout', function (e) {
         if (!armed || shown) return;
         if (e.clientY <= 0 && !e.relatedTarget) show();
       });
+      document.addEventListener('mouseleave', function (e) {
+        if (!armed || shown) return;
+        if (e.clientY <= 0) show();
+      });
     } else {
-      // ---- Mobile: many leave signals ----
+      // ---- Mobile: genuine leave signals only ----
 
-      // 1) Fast upward swipe back near the top after having scrolled down.
+      // 1) Back button — the clearest "I'm leaving this page" action on mobile.
+      //    Intercept the first back-press to show the offer (also covers leaving
+      //    the cart page, a product page, etc.).
+      try {
+        history.pushState(null, '', location.href);
+        window.addEventListener('popstate', function () {
+          if (!shown) { history.pushState(null, '', location.href); show(); }
+        });
+      } catch (e) {}
+
+      // 2) Switching app / locking screen / closing the tab. The popup is shown
+      //    while hidden so it greets the visitor if/when they return.
+      document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'hidden' && armed) show();
+      });
+
+      // 3) Fast upward swipe back toward the address bar after browsing down.
       var lastY = window.pageYOffset, wentDown = false;
       window.addEventListener('scroll', function () {
         var y = window.pageYOffset;
@@ -151,27 +162,6 @@
         if (lastY - y > 60 && y < 250) show();
         lastY = y;
       }, { passive: true });
-
-      // 2) Back button: intercept the first back-press to show the offer
-      //    (covers leaving the cart page, a product, etc. via Back).
-      try {
-        history.pushState(null, '', location.href);
-        window.addEventListener('popstate', function () {
-          if (!shown) { history.pushState(null, '', location.href); if (armed) show(); }
-        });
-      } catch (e) {}
-
-      // 3) Idle: no touch/scroll/tap for a while → likely disengaging.
-      var idleTimer;
-      function resetIdle() {
-        clearTimeout(idleTimer);
-        if (shown) return;
-        idleTimer = setTimeout(function () { if (armed && !shown) show(); }, 40000);
-      }
-      ['touchstart', 'touchmove', 'scroll', 'click', 'keydown'].forEach(function (ev) {
-        document.addEventListener(ev, resetIdle, { passive: true });
-      });
-      resetIdle();
     }
   })();
 </script>
