@@ -1,0 +1,37 @@
+{%- comment -%}
+  On a deal product's detail page, show a notice that adding it to the
+  cart unlocks the deal price. Map: handle||deal_price (rows split by ;;).
+  Keep these in sync with the Automatic discounts + Deal Sốc section.
+{%- endcomment -%}
+{%- assign pf_deal_rows = "acecook-mi-tom-hao-hao-vi-tom-chua-cay-75g-x-30-goi||0€;;gia-bao-bun-bo-hue-1-5mm-500g-x-20||0,9€;;ngoc-lien-ca-phao-trang-365g-x-24-lo||1,9€" | split: ";;" -%}
+{%- assign pf_deal_price = "" -%}
+{%- for row in pf_deal_rows -%}
+  {%- assign parts = row | split: "||" -%}
+  {%- if parts[0] == product.handle -%}{%- assign pf_deal_price = parts[1] -%}{%- endif -%}
+{%- endfor -%}
+
+{%- if pf_deal_price != "" -%}
+  <div class="pf-deal-pb">
+    <span class="pf-deal-pb__badge">🔥 DEAL</span>
+    <p class="pf-deal-pb__txt">
+      Thêm sản phẩm này vào giỏ hàng để được hưởng <b>mức giá deal chỉ {{ pf_deal_price }}</b>!
+      <span class="pf-deal-pb__note">(ưu đãi áp dụng cho 1 sản phẩm)</span>
+    </p>
+  </div>
+
+  <style>
+    .pf-deal-pb {
+      display: flex; align-items: center; gap: 1rem; margin: 1.6rem 0;
+      background: linear-gradient(90deg, #fff1e0, #ffe6e6);
+      border: 1px solid #f2b8a0; border-left: 5px solid #d62828;
+      border-radius: 12px; padding: 1.2rem 1.4rem;
+    }
+    .pf-deal-pb__badge {
+      flex: none; background: #d62828; color: #fff; font-weight: 800; font-size: 1.25rem;
+      letter-spacing: .5px; padding: .5rem .9rem; border-radius: 999px; white-space: nowrap;
+    }
+    .pf-deal-pb__txt { margin: 0; font-size: 1.4rem; line-height: 1.45; color: #7a2f1a; font-weight: 600; }
+    .pf-deal-pb__txt b { color: #d62828; }
+    .pf-deal-pb__note { display: block; font-size: 1.2rem; font-weight: 500; color: #a86a4a; margin-top: .2rem; }
+  </style>
+{%- endif -%}

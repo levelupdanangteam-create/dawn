@@ -492,6 +492,7 @@
                     product_form_id: product_form_id
                   %}
                 {%- when 'buy_buttons' -%}
+                  {% render 'pf-deal-product-banner' %}
                   {%- render 'buy-buttons',
                     block: block,
                     product: product,
