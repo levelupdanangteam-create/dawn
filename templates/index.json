@@ -79,6 +79,17 @@
         "padding_bottom": 40
       }
     },
+    "pf_deal_hook": {
+      "type": "pf-deal-hook",
+      "blocks": {},
+      "block_order": [],
+      "settings": {
+        "heading": "🔥 DEAL SỐC — Giá mồi cực rẻ",
+        "subheading": "Số lượng có hạn · mỗi khách chỉ mua 1 sản phẩm mỗi loại!",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
     "pf_weekly_deals": {
       "type": "pf-weekly-deals",
       "blocks": {
@@ -253,6 +264,7 @@
   },
   "order": [
     "pf_category_grid",
+    "pf_deal_hook",
     "pf_weekly_deals",
     "pf_flash_sale",
     "pf_bestsellers",
