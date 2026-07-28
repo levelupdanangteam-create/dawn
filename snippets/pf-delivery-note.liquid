@@ -1,0 +1,17 @@
+{%- comment -%}
+  Delivery-time note shown on product detail pages and the cart page.
+{%- endcomment -%}
+<div class="pf-delivery">
+  <span class="pf-delivery__ic" aria-hidden="true">🚚</span>
+  <span class="pf-delivery__tx">Giao hàng nhanh <b>2–5 ngày làm việc</b> — khắp châu Âu</span>
+</div>
+<style>
+  .pf-delivery {
+    display: flex; align-items: center; gap: .8rem; margin: 1.4rem 0;
+    background: #eef7f0; border: 1px solid #bfe3ca; border-left: 4px solid #1e8541;
+    border-radius: 10px; padding: 1rem 1.3rem;
+    font-size: 1.4rem; line-height: 1.4; color: #14672f; font-weight: 600;
+  }
+  .pf-delivery__ic { flex: none; font-size: 1.9rem; line-height: 1; }
+  .pf-delivery b { color: #0e4a24; }
+</style>
