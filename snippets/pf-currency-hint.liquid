@@ -76,17 +76,29 @@
         .catch(function () { cb(''); });
     }
 
+    // Approximate EUR-based fallback rates so the hint still works even if the
+    // live rate API is blocked (e.g. by an ad-blocker). "≈" makes clear these
+    // are reference values only.
+    var FALLBACK = {
+      PLN: 4.30, CZK: 25.0, SEK: 11.3, DKK: 7.46, HUF: 395, RON: 4.97,
+      BGN: 1.96, GBP: 0.84, CHF: 0.95, NOK: 11.7, ISK: 150,
+      USD: 1.08, CAD: 1.47, AUD: 1.63
+    };
+
     function getRate(cur, cb) {
       var key = 'pf_rate_' + cur, cached = ssGet(key);
       if (cached) return cb(parseFloat(cached));
+      var done = false;
+      var t = setTimeout(function () { if (!done) { done = true; cb(FALLBACK[cur] || null); } }, 2500);
       fetch('https://open.er-api.com/v6/latest/EUR')
         .then(function (r) { return r.json(); })
         .then(function (d) {
-          var rt = d && d.rates && d.rates[cur];
+          if (done) return; done = true; clearTimeout(t);
+          var rt = (d && d.rates && d.rates[cur]) || FALLBACK[cur];
           if (rt) ssSet(key, String(rt));
           cb(rt || null);
         })
-        .catch(function () { cb(null); });
+        .catch(function () { if (done) return; done = true; clearTimeout(t); cb(FALLBACK[cur] || null); });
     }
 
     function run(cc) {
