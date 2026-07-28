@@ -41,17 +41,29 @@
       HU: { c: 'HUF', l: 'hu-HU' }, RO: { c: 'RON', l: 'ro-RO' },
       BG: { c: 'BGN', l: 'bg-BG' }, GB: { c: 'GBP', l: 'en-GB' },
       CH: { c: 'CHF', l: 'de-CH' }, NO: { c: 'NOK', l: 'nb-NO' },
-      IS: { c: 'ISK', l: 'is-IS' }
+      IS: { c: 'ISK', l: 'is-IS' }, US: { c: 'USD', l: 'en-US' },
+      CA: { c: 'CAD', l: 'en-CA' }, AU: { c: 'AUD', l: 'en-AU' }
     };
     var NAME = {
       PL: 'Ba Lan', CZ: 'Séc', SE: 'Thụy Điển', DK: 'Đan Mạch', HU: 'Hungary',
-      RO: 'Romania', BG: 'Bulgaria', GB: 'Anh', CH: 'Thụy Sĩ', NO: 'Na Uy', IS: 'Iceland'
+      RO: 'Romania', BG: 'Bulgaria', GB: 'Anh', CH: 'Thụy Sĩ', NO: 'Na Uy',
+      IS: 'Iceland', US: 'Mỹ', CA: 'Canada', AU: 'Úc'
     };
 
     function ssGet(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
     function ssSet(k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} }
 
+    // ?pf_cur=GB  forces a country (for testing without a VPN).
+    function forced() {
+      try {
+        var m = location.search.match(/[?&]pf_cur=([a-zA-Z]{2})/);
+        return m ? m[1].toUpperCase() : null;
+      } catch (e) { return null; }
+    }
+
     function getCountry(cb) {
+      var f = forced();
+      if (f) return cb(f);
       var c = ssGet('pf_cc');
       if (c) return cb(c === 'XX' ? '' : c);
       fetch('https://get.geojs.io/v1/ip/country.json')
