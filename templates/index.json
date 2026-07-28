@@ -81,8 +81,18 @@
     },
     "pf_deal_hook": {
       "type": "pf-deal-hook",
-      "blocks": {},
-      "block_order": [],
+      "blocks": {
+        "product_kPhpjw": {
+          "type": "product",
+          "settings": {
+            "product": "ngoc-lien-ca-phao-trang-365g-x-24-lo",
+            "deal_price": "1,9"
+          }
+        }
+      },
+      "block_order": [
+        "product_kPhpjw"
+      ],
       "settings": {
         "heading": "🔥 DEAL SỐC — Giá mồi cực rẻ",
         "subheading": "Số lượng có hạn · mỗi khách chỉ mua 1 sản phẩm mỗi loại!",
@@ -93,18 +103,50 @@
     "pf_weekly_deals": {
       "type": "pf-weekly-deals",
       "blocks": {
-        "p1": { "type": "product", "settings": { "product": "gia-bao-bun-hoa-hong-1mm-500gx20-goi" } },
-        "p2": { "type": "product", "settings": { "product": "chinsu-pho-story-truyen-thong-nuoc-trong" } },
-        "p3": { "type": "product", "settings": { "product": "nuoc-mam-chinsu-ca-hoi-500ml-15chai" } },
-        "p4": { "type": "product", "settings": { "product": "hat-nem-knor-900g-x-10" } },
-        "p5": { "type": "product", "settings": { "product": "tufoco-banh-trang-cuon-tron-size-22-340g-x-44-goi" } }
+        "p1": {
+          "type": "product",
+          "settings": {
+            "product": "gia-bao-bun-hoa-hong-1mm-500gx20-goi"
+          }
+        },
+        "p2": {
+          "type": "product",
+          "settings": {
+            "product": "chinsu-pho-story-truyen-thong-nuoc-trong"
+          }
+        },
+        "p3": {
+          "type": "product",
+          "settings": {
+            "product": "nuoc-mam-chinsu-ca-hoi-500ml-15chai"
+          }
+        },
+        "p4": {
+          "type": "product",
+          "settings": {
+            "product": "hat-nem-knor-900g-x-10"
+          }
+        },
+        "p5": {
+          "type": "product",
+          "settings": {
+            "product": "tufoco-banh-trang-cuon-tron-size-22-340g-x-44-goi"
+          }
+        }
       },
-      "block_order": ["p1", "p2", "p3", "p4", "p5"],
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
       "settings": {
         "heading": "🔥 Ưu đãi tuần này",
         "subheading": "Giá tốt nhất trong tuần — số lượng có hạn!",
         "show_view_all": false,
         "view_all_label": "Xem tất cả sản phẩm",
+        "view_all_link": "",
         "padding_top": 40,
         "padding_bottom": 40
       }
