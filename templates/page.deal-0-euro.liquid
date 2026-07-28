@@ -1,0 +1,119 @@
+{%- comment -%}
+  Standalone shareable "Deal 0 Đồng" page — the 3 loss-leader deal
+  products with their deal prices + add-to-cart. Assign this template to
+  a page (e.g. handle "deal-0-dong") in Admin.
+  rows: handle||deal_price_text
+{%- endcomment -%}
+{%- assign pf_rows = "acecook-mi-tom-hao-hao-vi-tom-chua-cay-75g-x-30-goi||0€;;gia-bao-bun-bo-hue-1-5mm-500g-x-20||0,9€;;ngoc-lien-ca-phao-trang-365g-x-24-lo||1,9€" | split: ";;" -%}
+
+<div class="pf-d0 color-scheme-1">
+  <div class="pf-d0__hero">
+    <div class="pf-d0__hero-in">
+      <span class="pf-d0__flame">🔥</span>
+      <h1 class="pf-d0__title">DEAL 0 ĐỒNG</h1>
+      <p class="pf-d0__sub">Ưu đãi cực sốc — số lượng có hạn! Mỗi khách chỉ mua 1 sản phẩm mỗi loại.</p>
+    </div>
+  </div>
+
+  <div class="pf-d0__wrap page-width">
+    <div class="pf-d0__grid">
+      {%- for row in pf_rows -%}
+        {%- assign parts = row | split: '||' -%}
+        {%- assign p = all_products[parts[0]] -%}
+        {%- if p != blank and p.id -%}
+          {%- assign v = p.selected_or_first_available_variant -%}
+          <div class="pf-d0__card">
+            <div class="pf-d0__ribbon">DEAL</div>
+            <a class="pf-d0__media" href="{{ p.url }}">
+              {%- if p.featured_image -%}
+                <img src="{{ p.featured_image | image_url: width: 500 }}" alt="{{ p.title | escape }}" loading="lazy" width="250" height="250">
+              {%- endif -%}
+            </a>
+            <a class="pf-d0__name" href="{{ p.url }}">{{ p.title }}</a>
+            <div class="pf-d0__price">
+              <span class="pf-d0__now">{{ parts[1] }}</span>
+              <span class="pf-d0__was">{{ v.price | money }}</span>
+            </div>
+            <div class="pf-d0__limit">⚠️ Ưu đãi chỉ áp dụng cho 1 sản phẩm — giá có thể thay đổi khi mua nhiều hơn</div>
+            {%- render 'pf-card-buttons', product: p, section_id: 'deal0' -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="pf-d0__cross">
+      <p class="pf-d0__cross-note">🛒 Mua kèm thêm sản phẩm khác để tiết kiệm phí ship và đủ điều kiện <strong>Freeship / giảm giá</strong>!</p>
+      <a class="pf-d0__cross-btn" href="{{ routes.all_products_collection_url }}">
+        Mua kèm sản phẩm khác
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+      </a>
+    </div>
+
+    {%- if page.content != blank -%}
+      <div class="pf-d0__rte rte">{{ page.content }}</div>
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  .pf-d0 { padding-bottom: 5rem; }
+  .pf-d0__hero {
+    background: linear-gradient(135deg, #e8452f 0%, #d62828 60%, #a81f1f 100%);
+    color: #fff; text-align: center; padding: 4.4rem 1.5rem;
+  }
+  .pf-d0__hero-in { max-width: 72rem; margin: 0 auto; }
+  .pf-d0__flame { font-size: 3.6rem; }
+  .pf-d0__title { margin: .6rem 0 0; font-size: clamp(3.2rem, 7vw, 5.2rem); font-weight: 900; letter-spacing: 1px; color: #fff; text-shadow: 0 3px 12px rgba(0,0,0,.25); }
+  .pf-d0__sub { margin: 1rem 0 0; font-size: 1.6rem; line-height: 1.5; opacity: .96; }
+  .pf-d0__wrap { padding-top: 3.4rem; }
+  .pf-d0__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .pf-d0__card {
+    position: relative; display: flex; flex-direction: column; background: #fff;
+    border: 2px solid #f2c14e; border-radius: 18px; padding: 1.4rem; overflow: hidden;
+    box-shadow: 0 10px 26px rgba(214, 40, 40, .1);
+    min-width: 0;
+  }
+  .pf-d0__ribbon {
+    position: absolute; top: 1.3rem; left: -3.6rem; z-index: 2;
+    background: #d62828; color: #fff; font-size: 1.2rem; font-weight: 800; letter-spacing: 1px;
+    padding: .5rem 4.2rem; transform: rotate(-45deg); box-shadow: 0 2px 6px rgba(0,0,0,.2);
+  }
+  .pf-d0__media { display: block; aspect-ratio: 1/1; border-radius: 12px; overflow: hidden; background: #f6f1e6; margin-bottom: 1.1rem; }
+  .pf-d0__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pf-d0__name {
+    font-size: 1.55rem; line-height: 1.35; color: #3d3a33; font-weight: 700; text-decoration: none;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 4.2rem;
+  }
+  .pf-d0__name:hover { color: #14672f; }
+  .pf-d0__price { margin: .6rem 0 .2rem; display: flex; align-items: baseline; gap: .8rem; flex-wrap: wrap; }
+  .pf-d0__now { font-size: 2.8rem; font-weight: 900; color: #d62828; }
+  .pf-d0__was { font-size: 1.5rem; color: #9a9384; text-decoration: line-through; }
+  .pf-d0__limit {
+    font-size: 1.25rem; font-weight: 700; color: #b8791a; background: #fff6e2;
+    border: 1px solid #f0d99a; border-radius: 8px; padding: .6rem .8rem; margin: .6rem 0 1.1rem;
+  }
+  .pf-d0__card .pf-card-actions { margin-top: auto; }
+  .pf-d0__cross { margin: 3.4rem auto 0; max-width: 60rem; text-align: center; }
+  .pf-d0__cross-note { font-size: 1.5rem; line-height: 1.5; color: #5a5346; margin: 0 0 1.4rem; }
+  .pf-d0__cross-note strong { color: #14672f; }
+  .pf-d0__cross-btn {
+    display: inline-flex; align-items: center; gap: .8rem;
+    background: linear-gradient(135deg, #1e8541 0%, #14672f 100%); color: #fff;
+    font-size: 1.7rem; font-weight: 800; text-decoration: none;
+    padding: 1.3rem 2.8rem; border-radius: 999px;
+    box-shadow: 0 8px 20px rgba(20, 103, 47, .28); transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .pf-d0__cross-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(20, 103, 47, .36); color: #fff; }
+  .pf-d0__rte { max-width: 72rem; margin: 3rem auto 0; }
+  @media (max-width: 749px) {
+    /* Mobile: horizontal swipe */
+    .pf-d0__grid {
+      display: flex; grid-template-columns: none;
+      gap: 1.2rem; overflow-x: auto; scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch; padding-bottom: 1rem;
+      scrollbar-width: none;
+    }
+    .pf-d0__grid::-webkit-scrollbar { display: none; }
+    .pf-d0__card { flex: 0 0 76vw; max-width: 76vw; scroll-snap-align: start; }
+  }
+</style>
