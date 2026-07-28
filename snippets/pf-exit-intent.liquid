@@ -92,8 +92,15 @@
 
     var shown = false, armed = false;
 
+    // Respect the shared popup coordinator (defined in pf-popups) so this never
+    // overlaps the free-ship / voucher popups or fires right after one closes.
+    function busy() {
+      if (window.PFPopups && typeof window.PFPopups.busy === 'function') return window.PFPopups.busy();
+      return !!document.querySelector('.pf-pop.is-open');
+    }
+
     function show() {
-      if (shown) return;
+      if (shown || busy()) return;
       shown = true;
       try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
       el.hidden = false;
@@ -104,6 +111,7 @@
       el.hidden = true;
       el.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
+      if (window.PFPopups && typeof window.PFPopups.markClosed === 'function') window.PFPopups.markClosed();
     }
 
     el.querySelectorAll('[data-pf-ei-close]').forEach(function (b) {

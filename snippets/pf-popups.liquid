@@ -79,11 +79,26 @@
         sessionStorage.setItem(key, val);
       } catch (e) { return null; }
     }
-    function anyOpen() { return !!document.querySelector('.pf-pop.is-open'); }
+
+    // Shared coordinator so the free-ship, voucher and exit-intent popups never
+    // overlap and never fire back-to-back.
+    window.PFPopups = window.PFPopups || {};
+    window.PFPopups.COOLDOWN = 15000; // ms between two popups
+    window.PFPopups.busy = function () {
+      if (document.querySelector('.pf-pop.is-open, #pf-exit-intent:not([hidden])')) return true;
+      try {
+        var l = parseInt(sessionStorage.getItem('pf_pop_closed_at') || '0', 10);
+        if (l && (Date.now() - l) < window.PFPopups.COOLDOWN) return true;
+      } catch (e) {}
+      return false;
+    };
+    window.PFPopups.markClosed = function () {
+      try { sessionStorage.setItem('pf_pop_closed_at', String(Date.now())); } catch (e) {}
+    };
 
     function open(id) {
       var el = document.getElementById(id);
-      if (!el || anyOpen()) return;
+      if (!el || window.PFPopups.busy()) return;
       el.hidden = false;
       el.setAttribute('aria-hidden', 'false');
       el.classList.add('is-open');
@@ -95,11 +110,13 @@
       el.setAttribute('aria-hidden', 'true');
       el.hidden = true;
       document.documentElement.style.overflow = '';
+      window.PFPopups.markClosed();
     }
     function schedule(flag, id, delay) {
       if (ss(flag)) return;
-      setTimeout(function () {
+      setTimeout(function tryOpen() {
         if (ss(flag)) return;
+        if (window.PFPopups.busy()) { setTimeout(tryOpen, 3000); return; } // wait, don't waste the turn
         ss(flag, '1');
         open(id);
       }, delay);
