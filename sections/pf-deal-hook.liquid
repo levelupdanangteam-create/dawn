@@ -48,9 +48,17 @@
   .pf-deal__head { text-align: center; margin-bottom: 2.4rem; }
   .pf-deal__title { margin: 0; font-size: 2.8rem; font-weight: 800; color: #d62828; letter-spacing: .3px; }
   .pf-deal__sub { margin: .6rem 0 0; font-size: 1.5rem; color: #6a6255; }
-  .pf-deal__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
+  .pf-deal__grid {
+    display: flex; gap: 1.6rem; overflow-x: auto; scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch; padding: .4rem .2rem 1.4rem; scroll-padding-left: .2rem;
+    scrollbar-width: thin; scrollbar-color: #e0c98e transparent;
+  }
+  .pf-deal__grid::-webkit-scrollbar { height: 8px; }
+  .pf-deal__grid::-webkit-scrollbar-thumb { background: #e0c98e; border-radius: 999px; }
+  .pf-deal__grid::-webkit-scrollbar-track { background: transparent; }
   .pf-deal__card {
-    position: relative; display: flex; flex-direction: column; background: #fff;
+    position: relative; flex: 0 0 24rem; scroll-snap-align: start;
+    display: flex; flex-direction: column; background: #fff;
     border: 2px solid #f2c14e; border-radius: 16px; padding: 1.2rem; overflow: hidden;
     box-shadow: 0 6px 18px rgba(214, 40, 40, .08);
   }
@@ -79,7 +87,7 @@
   }
   .pf-deal__card .pf-card-actions { margin-top: auto; }
   @media (max-width: 749px) {
-    .pf-deal__grid { grid-template-columns: 1fr; }
+    .pf-deal__card { flex-basis: 74vw; max-width: 30rem; }
     .pf-deal__title { font-size: 2.3rem; }
   }
 </style>
