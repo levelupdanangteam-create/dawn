@@ -1,0 +1,147 @@
+{%- comment -%}
+  PHOMIFOOD — Exit-intent popup.
+  When a visitor looks about to leave (desktop: mouse leaves toward the top;
+  mobile: fast scroll back to top / back button), show a last-chance offer that
+  points them to the "Deal 0 Đồng" page. Shows once per browsing session and
+  never on the deal page itself.
+{%- endcomment -%}
+
+{%- assign pf_deal_url = '/pages/deal-0-euro' -%}
+{%- assign pf_ei_rows = "acecook-mi-tom-hao-hao-vi-tom-chua-cay-75g-x-30-goi||0€;;gia-bao-bun-bo-hue-1-5mm-500g-x-20||0,9€;;ngoc-lien-ca-phao-trang-365g-x-24-lo||1,9€" | split: ";;" -%}
+
+{%- unless page.handle contains 'deal-0' -%}
+<div class="pf-ei" id="pf-exit-intent" hidden aria-hidden="true">
+  <div class="pf-ei__overlay" data-pf-ei-close></div>
+  <div class="pf-ei__card" role="dialog" aria-modal="true" aria-label="Ưu đãi Deal 0 Đồng">
+    <button type="button" class="pf-ei__x" data-pf-ei-close aria-label="Đóng">&times;</button>
+    <div class="pf-ei__flame">🔥</div>
+    <h2 class="pf-ei__title">KHOAN ĐÃ — ĐỪNG BỎ LỠ!</h2>
+    <p class="pf-ei__sub">Hôm nay đang có <strong>Deal 0 Đồng</strong> — số lượng cực kỳ có hạn. Xem ngay trước khi hết!</p>
+
+    <div class="pf-ei__products">
+      {%- for row in pf_ei_rows -%}
+        {%- assign parts = row | split: '||' -%}
+        {%- assign p = all_products[parts[0]] -%}
+        {%- if p != blank and p.id -%}
+          <a class="pf-ei__prod" href="{{ pf_deal_url }}">
+            {%- if p.featured_image -%}
+              <img src="{{ p.featured_image | image_url: width: 200 }}" alt="{{ p.title | escape }}" loading="lazy" width="90" height="90">
+            {%- endif -%}
+            <span class="pf-ei__price">{{ parts[1] }}</span>
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <a class="pf-ei__cta" href="{{ pf_deal_url }}">🔥 Xem Deal 0 Đồng ngay</a>
+    <button type="button" class="pf-ei__no" data-pf-ei-close>Không, cảm ơn</button>
+  </div>
+</div>
+
+<style>
+  .pf-ei { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+  .pf-ei[hidden] { display: none; }
+  .pf-ei__overlay { position: absolute; inset: 0; background: rgba(20, 15, 10, .62); backdrop-filter: blur(2px); }
+  .pf-ei__card {
+    position: relative; z-index: 1; width: 100%; max-width: 44rem;
+    background: #fff; border-radius: 20px; padding: 2.6rem 2rem 2rem; text-align: center;
+    box-shadow: 0 24px 60px rgba(0,0,0,.35); border: 3px solid #f2c14e;
+    animation: pf-ei-pop .32s cubic-bezier(.2,.9,.3,1.2) both;
+  }
+  @keyframes pf-ei-pop { from { transform: translateY(24px) scale(.94); opacity: 0; } to { transform: none; opacity: 1; } }
+  .pf-ei__x {
+    position: absolute; top: 1rem; right: 1.1rem; border: 0; background: transparent; cursor: pointer;
+    font-size: 2.6rem; line-height: 1; color: #b6ac97; padding: .2rem .6rem;
+  }
+  .pf-ei__x:hover { color: #6b6350; }
+  .pf-ei__flame { font-size: 3.4rem; line-height: 1; }
+  .pf-ei__title { margin: .5rem 0 0; font-size: clamp(2.2rem, 6vw, 2.8rem); font-weight: 900; color: #d62828; letter-spacing: .3px; }
+  .pf-ei__sub { margin: .8rem 0 1.4rem; font-size: 1.5rem; line-height: 1.5; color: #5a5346; }
+  .pf-ei__sub strong { color: #14672f; }
+  .pf-ei__products { display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.8rem; }
+  .pf-ei__prod { position: relative; display: block; width: 30%; max-width: 11rem; text-decoration: none; }
+  .pf-ei__prod img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 12px; background: #f6f1e6; display: block; }
+  .pf-ei__price {
+    position: absolute; left: 50%; bottom: -.9rem; transform: translateX(-50%);
+    background: #d62828; color: #fff; font-size: 1.35rem; font-weight: 900;
+    padding: .3rem .9rem; border-radius: 999px; white-space: nowrap; box-shadow: 0 3px 8px rgba(214,40,40,.35);
+  }
+  .pf-ei__cta {
+    display: block; width: 100%; background: linear-gradient(135deg, #e8452f 0%, #d62828 60%, #a81f1f 100%);
+    color: #fff; font-size: 1.8rem; font-weight: 800; text-decoration: none;
+    padding: 1.4rem 1.5rem; border-radius: 999px; box-shadow: 0 8px 20px rgba(214,40,40,.35);
+    transition: transform .15s ease;
+  }
+  .pf-ei__cta:hover { transform: translateY(-2px); color: #fff; }
+  .pf-ei__no { display: block; margin: 1rem auto 0; border: 0; background: transparent; cursor: pointer; color: #9a9384; font-size: 1.35rem; text-decoration: underline; }
+  @media (max-width: 749px) {
+    .pf-ei__card { padding: 2.2rem 1.4rem 1.6rem; }
+    .pf-ei__products { gap: .7rem; }
+  }
+</style>
+
+<script>
+  (function () {
+    if (window.__pfExit) return;
+    window.__pfExit = true;
+
+    var KEY = 'pf_exit_shown';
+    var el = document.getElementById('pf-exit-intent');
+    if (!el) return;
+    try { if (sessionStorage.getItem(KEY) === '1') return; } catch (e) {}
+
+    var shown = false, armed = false;
+
+    function show() {
+      if (shown) return;
+      shown = true;
+      try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+      el.hidden = false;
+      el.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    function close() {
+      el.hidden = true;
+      el.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    el.querySelectorAll('[data-pf-ei-close]').forEach(function (b) {
+      b.addEventListener('click', close);
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !el.hidden) close(); });
+
+    // Arm only after the visitor has been on the page a few seconds (avoid
+    // firing on an accidental early mouse-out).
+    setTimeout(function () { armed = true; }, 4000);
+
+    var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+
+    if (!isTouch) {
+      // Desktop: mouse leaves the viewport toward the top.
+      document.addEventListener('mouseout', function (e) {
+        if (!armed || shown) return;
+        if (e.clientY <= 0 && !e.relatedTarget) show();
+      });
+    } else {
+      // Mobile: fast upward scroll back near the top after having scrolled down.
+      var lastY = window.pageYOffset, wentDown = false;
+      window.addEventListener('scroll', function () {
+        var y = window.pageYOffset;
+        if (y > 500) wentDown = true;
+        if (!armed || shown || !wentDown) { lastY = y; return; }
+        if (lastY - y > 60 && y < 250) show(); // quick swipe up near top
+        lastY = y;
+      }, { passive: true });
+
+      // Mobile back button: intercept the first back-press to show the offer.
+      try {
+        history.pushState(null, '', location.href);
+        window.addEventListener('popstate', function () {
+          if (!shown) { history.pushState(null, '', location.href); if (armed) show(); }
+        });
+      } catch (e) {}
+    }
+  })();
+</script>
+{%- endunless -%}
