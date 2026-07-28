@@ -1,0 +1,136 @@
+{%- comment -%}
+  PHOMIFOOD — Display-only local-currency hint.
+  Detects the visitor's country by IP (GeoJS, free, client-side) and, for
+  non-EUR countries, shows an approximate converted price under each EUR price
+  (rates from open.er-api.com, free). EUR stays the source of truth — the real
+  price the customer pays at checkout — so there is no checkout mismatch.
+  Visitors in the euro zone (or when detection fails) see nothing extra.
+{%- endcomment -%}
+<style>
+  .pf-cur-hint {
+    display: block; font-size: 1.15rem; color: #8a8272; font-weight: 600;
+    margin-top: .2rem; line-height: 1.2; white-space: nowrap;
+  }
+  .price--sold-out .pf-cur-hint { display: none; }
+  #pf-cur-note {
+    position: fixed; left: 1.2rem; bottom: 1.2rem; z-index: 60; max-width: 30rem;
+    display: flex; align-items: flex-start; gap: .8rem;
+    background: #fff; border: 1px solid #e3d9bf; border-left: 4px solid #1e8541;
+    border-radius: 12px; padding: 1rem 1.1rem; box-shadow: 0 8px 22px rgba(0,0,0,.14);
+    font-size: 1.25rem; line-height: 1.45; color: #4a4534;
+  }
+  #pf-cur-note strong { color: #14672f; }
+  #pf-cur-note button {
+    flex: none; border: 0; background: transparent; cursor: pointer;
+    font-size: 1.8rem; line-height: 1; color: #9a9384; padding: 0 .2rem;
+  }
+  @media (max-width: 749px) {
+    #pf-cur-note { left: .8rem; right: .8rem; bottom: .8rem; max-width: none; font-size: 1.2rem; }
+  }
+</style>
+<script>
+  (function () {
+    if (window.__pfCur) return;
+    window.__pfCur = true;
+
+    // Country -> { c: ISO currency, l: Intl locale }. EUR countries are omitted
+    // on purpose (nothing shown for them).
+    var MAP = {
+      PL: { c: 'PLN', l: 'pl-PL' }, CZ: { c: 'CZK', l: 'cs-CZ' },
+      SE: { c: 'SEK', l: 'sv-SE' }, DK: { c: 'DKK', l: 'da-DK' },
+      HU: { c: 'HUF', l: 'hu-HU' }, RO: { c: 'RON', l: 'ro-RO' },
+      BG: { c: 'BGN', l: 'bg-BG' }, GB: { c: 'GBP', l: 'en-GB' },
+      CH: { c: 'CHF', l: 'de-CH' }, NO: { c: 'NOK', l: 'nb-NO' },
+      IS: { c: 'ISK', l: 'is-IS' }
+    };
+    var NAME = {
+      PL: 'Ba Lan', CZ: 'Séc', SE: 'Thụy Điển', DK: 'Đan Mạch', HU: 'Hungary',
+      RO: 'Romania', BG: 'Bulgaria', GB: 'Anh', CH: 'Thụy Sĩ', NO: 'Na Uy', IS: 'Iceland'
+    };
+
+    function ssGet(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
+    function ssSet(k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} }
+
+    function getCountry(cb) {
+      var c = ssGet('pf_cc');
+      if (c) return cb(c === 'XX' ? '' : c);
+      fetch('https://get.geojs.io/v1/ip/country.json')
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          var cc = ((d && (d.country || d.country_code)) || '').toUpperCase();
+          ssSet('pf_cc', cc || 'XX');
+          cb(cc);
+        })
+        .catch(function () { cb(''); });
+    }
+
+    function getRate(cur, cb) {
+      var key = 'pf_rate_' + cur, cached = ssGet(key);
+      if (cached) return cb(parseFloat(cached));
+      fetch('https://open.er-api.com/v6/latest/EUR')
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          var rt = d && d.rates && d.rates[cur];
+          if (rt) ssSet(key, String(rt));
+          cb(rt || null);
+        })
+        .catch(function () { cb(null); });
+    }
+
+    function run(cc) {
+      if (!cc || !MAP[cc]) return; // euro zone or unknown -> do nothing
+      var m = MAP[cc];
+      getRate(m.c, function (rate) {
+        if (!rate) return;
+        var fmt;
+        try { fmt = new Intl.NumberFormat(m.l, { style: 'currency', currency: m.c }); }
+        catch (e) { fmt = { format: function (n) { return Math.round(n) + ' ' + m.c; } }; }
+
+        function convert() {
+          var els = document.querySelectorAll('[data-pf-eur]:not(.pf-cur-added)');
+          for (var i = 0; i < els.length; i++) {
+            var el = els[i];
+            el.classList.add('pf-cur-added');
+            var cents = parseInt(el.getAttribute('data-pf-eur'), 10);
+            if (!cents || cents <= 0) continue;
+            var loc = (cents / 100) * rate;
+            var span = document.createElement('span');
+            span.className = 'pf-cur-hint';
+            span.textContent = '≈ ' + fmt.format(loc);
+            (el.querySelector('.price__container') || el).appendChild(span);
+          }
+        }
+
+        convert();
+
+        var pending = false;
+        function schedule() {
+          if (pending) return;
+          pending = true;
+          setTimeout(function () { pending = false; convert(); }, 150);
+        }
+        if (window.MutationObserver) {
+          new MutationObserver(schedule).observe(document.body, { childList: true, subtree: true });
+        }
+
+        note(cc);
+      });
+    }
+
+    function note(cc) {
+      if (ssGet('pf_cur_note') === '1') return;
+      var bar = document.createElement('div');
+      bar.id = 'pf-cur-note';
+      bar.innerHTML =
+        '<span>💱 Bạn đang ở <strong>' + (NAME[cc] || '') + '</strong>. Giá kèm nội tệ chỉ để ' +
+        '<strong>tham khảo</strong> — đơn hàng thanh toán bằng <strong>EUR</strong>.</span>' +
+        '<button type="button" aria-label="Đóng">&times;</button>';
+      document.body.appendChild(bar);
+      var close = function () { if (bar.parentNode) bar.parentNode.removeChild(bar); ssSet('pf_cur_note', '1'); };
+      bar.querySelector('button').addEventListener('click', close);
+      setTimeout(function () { if (bar.parentNode) bar.parentNode.removeChild(bar); }, 9000);
+    }
+
+    getCountry(run);
+  })();
+</script>
