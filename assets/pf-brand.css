@@ -757,3 +757,12 @@ body.gradient {
 }
 .menu-drawer .menu-drawer__menu-item .svg-wrapper,
 .menu-drawer summary .svg-wrapper { color: #1a1a1a; }
+
+/* Hide slideshow/slider prev-next arrows while the mobile menu drawer is open
+   (they have a high z-index and otherwise float on top of the open menu). */
+body:has(.menu-drawer-container[open]) .slider-button,
+body:has(.menu-drawer-container[open]) .slideshow__control {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
