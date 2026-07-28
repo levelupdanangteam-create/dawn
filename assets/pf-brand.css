@@ -743,3 +743,17 @@ body.gradient {
   cursor: pointer; transition: background 0.15s ease, color 0.15s ease;
 }
 .pf-flash__more-btn:hover { background: #d62828; color: #fff; }
+
+/* Mobile menu drawer: all text black */
+.menu-drawer,
+.menu-drawer a,
+.menu-drawer summary,
+.menu-drawer .menu-drawer__menu-item,
+.menu-drawer__menu-item,
+.menu-drawer__submenu .menu-drawer__menu-item,
+.menu-drawer .menu-drawer__menu-item:hover,
+.menu-drawer .menu-drawer__menu-item--active {
+  color: #1a1a1a !important;
+}
+.menu-drawer .menu-drawer__menu-item .svg-wrapper,
+.menu-drawer summary .svg-wrapper { color: #1a1a1a; }
