@@ -27,7 +27,14 @@
               {%- endif -%}
             </a>
             <a class="pf-deal__name" href="{{ p.url }}">{{ p.title }}</a>
-            <div class="pf-deal__price">{{ v.price | money }}</div>
+            <div class="pf-deal__price">
+              {%- if block.settings.deal_price != blank -%}
+                <span class="pf-deal__now">{{ block.settings.deal_price }}</span>
+                <span class="pf-deal__was">{{ v.price | money }}</span>
+              {%- else -%}
+                <span class="pf-deal__now">{{ v.price | money }}</span>
+              {%- endif -%}
+            </div>
             <div class="pf-deal__limit">⚠️ Chỉ mua 1 sản phẩm / đơn</div>
             {%- render 'pf-card-buttons', product: p, section_id: section.id -%}
           </div>
@@ -63,7 +70,9 @@
     min-height: 3.8rem;
   }
   .pf-deal__name:hover { color: #14672f; }
-  .pf-deal__price { margin: .5rem 0 .2rem; font-size: 2.4rem; font-weight: 800; color: #d62828; }
+  .pf-deal__price { margin: .5rem 0 .2rem; display: flex; align-items: baseline; gap: .7rem; flex-wrap: wrap; }
+  .pf-deal__now { font-size: 2.4rem; font-weight: 800; color: #d62828; }
+  .pf-deal__was { font-size: 1.4rem; color: #9a9384; text-decoration: line-through; }
   .pf-deal__limit {
     font-size: 1.2rem; font-weight: 700; color: #b8791a; background: #fff6e2;
     border: 1px solid #f0d99a; border-radius: 8px; padding: .5rem .7rem; margin-bottom: 1rem;
@@ -91,7 +100,8 @@
       "type": "product",
       "name": "Sản phẩm deal",
       "settings": [
-        { "type": "product", "id": "product", "label": "Chọn sản phẩm (bản Lẻ)" }
+        { "type": "product", "id": "product", "label": "Chọn sản phẩm (bản Lẻ)" },
+        { "type": "text", "id": "deal_price", "label": "Giá deal hiển thị", "info": "Nhập giá sau giảm để hiện to, vd: €1,90. Để trống sẽ hiện giá gốc." }
       ]
     }
   ],
