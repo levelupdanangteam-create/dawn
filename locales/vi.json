@@ -41,7 +41,7 @@
     },
     "cart": {
       "view": "Xem giỏ hàng ({{ count }})",
-      "item_added": "Mặt hàng đã thêm vào giỏ hàng",
+      "item_added": "Đã thêm vào giỏ hàng",
       "view_empty_cart": "Xem giỏ hàng"
     },
     "share": {
@@ -106,35 +106,35 @@
   },
   "products": {
     "product": {
-      "add_to_cart": "Thêm vào giỏ hàng",
+      "add_to_cart": "Thêm vào giỏ",
       "description": "Mô tả",
       "on_sale": "Giảm giá",
-      "product_variants": "Mẫu mã sản phẩm",
+      "product_variants": "Phiên bản sản phẩm",
       "quantity": {
         "label": "Số lượng",
-        "input_label": "Số lượng của {{ product }}",
-        "increase": "Tăng số lượng của {{ product }}",
-        "decrease": "Giảm số lượng của {{ product }}",
+        "input_label": "Số lượng cho {{ product }}",
+        "increase": "Tăng số lượng {{ product }}",
+        "decrease": "Giảm số lượng {{ product }}",
         "minimum_of": "Tối thiểu {{ quantity }}",
         "maximum_of": "Tối đa {{ quantity }}",
-        "multiples_of": "Số lượng gia tăng {{ quantity }}",
-        "in_cart_html": "<span class=\"quantity-cart\">{{ quantity }}</span> trong giỏ hàng",
-        "note": "Xem quy tắc số lượng",
+        "multiples_of": "Bội số của {{ quantity }}",
+        "in_cart_html": "<span class=\"quantity-cart\">{{ quantity }}</span> trong giỏ",
+        "note": "Xem quy định số lượng",
         "min_of": "Tối thiểu {{ quantity }}",
         "max_of": "Tối đa {{ quantity }}",
-        "in_cart_aria_label": "Số lượng ({{ quantity }} trong giỏ hàng)"
+        "in_cart_aria_label": "Số lượng ({{ quantity }} trong giỏ)"
       },
       "price": {
         "from_price_html": "Từ {{ price }}",
-        "regular_price": "Giá thông thường",
-        "sale_price": "Giá ưu đãi",
+        "regular_price": "Giá gốc",
+        "sale_price": "Giá khuyến mãi",
         "unit_price": "Đơn giá"
       },
       "share": "Chia sẻ sản phẩm này",
-      "sold_out": "Đã bán hết",
+      "sold_out": "Hết hàng",
       "unavailable": "Không có sẵn",
       "vendor": "Nhà cung cấp",
-      "video_exit_message": "{{ title }} mở video toàn màn hình ở cùng một cửa sổ.",
+      "video_exit_message": "{{ title }} mở video toàn màn hình trong cùng cửa sổ.",
       "xr_button": "Xem tại không gian của bạn",
       "xr_button_label": "Xem tại không gian của bạn, tải mặt hàng trong cửa sổ thực tế ảo tăng cường",
       "pickup_availability": {
@@ -157,16 +157,16 @@
         "image_available": "Hình ảnh {{ index }} hiện đã có trong chế độ xem thư viện"
       },
       "nested_label": "{{ title }} cho {{ parent_title }}",
-      "view_full_details": "Xem toàn bộ chi tiết",
-      "shipping_policy_html": "<a href=\"{{ link }}\">Phí vận chuyển</a> được tính khi thanh toán.",
-      "choose_options": "Chọn các tùy chọn",
+      "view_full_details": "Xem chi tiết đầy đủ",
+      "shipping_policy_html": "Phí <a href=\"{{ link }}\">vận chuyển</a> được tính khi thanh toán.",
+      "choose_options": "Chọn tùy chọn",
       "choose_product_options": "Chọn tùy chọn cho {{ product_name }}",
-      "value_unavailable": "{{ option_value }} - Không khả dụng",
-      "variant_sold_out_or_unavailable": "Mẫu mã đã bán hết hoặc không còn hàng",
+      "value_unavailable": "{{ option_value }} - Không có sẵn",
+      "variant_sold_out_or_unavailable": "Phiên bản đã hết hàng hoặc không có sẵn",
       "inventory_in_stock": "Còn hàng",
-      "inventory_in_stock_show_count": "Còn {{ quantity }} hàng lưu kho",
+      "inventory_in_stock_show_count": "Còn {{ quantity }} sản phẩm",
       "inventory_low_stock": "Sắp hết hàng",
-      "inventory_low_stock_show_count": "Sắp hết hàng: Còn {{ quantity }}",
+      "inventory_low_stock_show_count": "Sắp hết hàng: còn {{ quantity }}",
       "inventory_out_of_stock": "Hết hàng",
       "inventory_out_of_stock_continue_selling": "Còn hàng",
       "sku": "SKU",
@@ -189,17 +189,17 @@
       "clear": "Xóa",
       "clear_all": "Xóa tất cả",
       "from": "Từ",
-      "filter_and_sort": "Lọc và sắp xếp",
-      "filter_by_label": "Bộ lọc:",
-      "filter_button": "Bộ lọc",
+      "filter_and_sort": "Lọc & sắp xếp",
+      "filter_by_label": "Lọc:",
+      "filter_button": "Lọc",
       "filters_selected": {
-        "one": "Đã chọn {{ count }}",
-        "other": "Đã chọn {{ count }}"
+        "one": "{{ count }} đã chọn",
+        "other": "{{ count }} đã chọn"
       },
       "max_price": "Giá cao nhất là {{ price }}",
       "product_count": {
-        "one": "{{ product_count }}/{{ count }} sản phẩm",
-        "other": "{{ product_count }}/{{ count }} sản phẩm"
+        "one": "{{ product_count }} / {{ count }} sản phẩm",
+        "other": "{{ product_count }} / {{ count }} sản phẩm"
       },
       "product_count_simple": {
         "one": "{{ count }} sản phẩm",
@@ -209,11 +209,11 @@
       "sort_button": "Sắp xếp",
       "sort_by_label": "Sắp xếp theo:",
       "to": "Đến",
-      "clear_filter": "Xóa bộ lọc",
-      "filter_selected_accessibility": "{{ type }} (Đã chọn {{ count }} bộ lọc)",
-      "show_more": "Hiển thị thêm",
-      "show_less": "Rút gọn",
-      "filter_and_operator_subtitle": "Phù hợp với tất cả"
+      "clear_filter": "Bỏ lọc",
+      "filter_selected_accessibility": "{{ type }} ({{ count }} bộ lọc đã chọn)",
+      "show_more": "Xem thêm",
+      "show_less": "Thu gọn",
+      "filter_and_operator_subtitle": "Khớp tất cả"
     }
   },
   "templates": {
@@ -277,37 +277,37 @@
     },
     "cart": {
       "title": "Giỏ hàng của bạn",
-      "caption": "Các mặt hàng trong giỏ hàng",
+      "caption": "Sản phẩm trong giỏ",
       "remove_title": "Xóa {{ title }}",
-      "note": "Hướng dẫn đặc biệt của đơn hàng",
+      "note": "Ghi chú cho đơn hàng",
       "checkout": "Thanh toán",
       "empty": "Giỏ hàng của bạn đang trống",
-      "product_disclosure": "Thông tin công bố sản phẩm",
-      "product_disclosures": "Thông tin công bố sản phẩm",
+      "product_disclosure": "Thông tin sản phẩm",
+      "product_disclosures": "Thông tin sản phẩm",
       "cart_error": "Đã xảy ra lỗi khi cập nhật giỏ hàng. Vui lòng thử lại.",
-      "cart_quantity_error_html": "Bạn chỉ có thể thêm {{ quantity }} mặt hàng này vào giỏ hàng.",
+      "cart_quantity_error_html": "Bạn chỉ có thể thêm tối đa {{ quantity }} sản phẩm này vào giỏ hàng.",
       "headings": {
         "product": "Sản phẩm",
         "price": "Giá",
-        "total": "Tổng",
+        "total": "Thành tiền",
         "quantity": "Số lượng",
-        "image": "Hình ảnh sản phẩm"
+        "image": "Ảnh sản phẩm"
       },
       "update": "Cập nhật",
       "login": {
-        "title": "Bạn đã có tài khoản?",
+        "title": "Đã có tài khoản?",
         "paragraph_html": "<a href=\"{{ link }}\" class=\"link underlined-link\">Đăng nhập</a> để thanh toán nhanh hơn."
       },
-      "estimated_total": "Tổng số tiền ước tính",
-      "new_estimated_total": "Tổng số tiền ước tính mới",
-      "duties_and_taxes_included_shipping_at_checkout_with_policy_html": "Đã bao gồm thuế và thuế nhập khẩu. Ưu đãi giảm giá và <a href=\"{{ link }}\">phí vận chuyển</a> được tính khi thanh toán.",
-      "duties_and_taxes_included_shipping_at_checkout_without_policy": "Đã bao gồm thuế và thuế nhập khẩu. Ưu đãi giảm giá và phí vận chuyển được tính khi thanh toán.",
-      "taxes_included_shipping_at_checkout_with_policy_html": "Đã bao gồm thuế. Ưu đãi giảm giá và <a href=\"{{ link }}\">phí vận chuyển</a> được tính khi thanh toán.",
-      "taxes_included_shipping_at_checkout_without_policy": "Đã bao gồm thuế. Ưu đãi giảm giá và phí vận chuyển được tính khi thanh toán.",
-      "duties_included_taxes_at_checkout_shipping_at_checkout_with_policy_html": "Đã bao gồm thuế nhập khẩu. Thuế, ưu đãi giảm giá và <a href=\"{{ link }}\">phí vận chuyển</a> được tính khi thanh toán.",
-      "duties_included_taxes_at_checkout_shipping_at_checkout_without_policy": "Đã bao gồm thuế nhập khẩu. Thuế, ưu đãi giảm giá và phí vận chuyển được tính khi thanh toán.",
-      "taxes_at_checkout_shipping_at_checkout_with_policy_html": "Thuế, ưu đãi giảm giá và <a href=\"{{ link }}\">phí vận chuyển</a> được tính khi thanh toán.",
-      "taxes_at_checkout_shipping_at_checkout_without_policy": "Thuế, ưu đãi giảm giá và phí vận chuyển được tính khi thanh toán."
+      "estimated_total": "Tạm tính",
+      "new_estimated_total": "Tạm tính mới",
+      "duties_and_taxes_included_shipping_at_checkout_with_policy_html": "Đã bao gồm thuế và thuế nhập khẩu. Ưu đãi và phí <a href=\"{{ link }}\">vận chuyển</a> được tính khi thanh toán.",
+      "duties_and_taxes_included_shipping_at_checkout_without_policy": "Đã bao gồm thuế và thuế nhập khẩu. Ưu đãi và phí vận chuyển được tính khi thanh toán.",
+      "taxes_included_shipping_at_checkout_with_policy_html": "Đã bao gồm thuế. Ưu đãi và phí <a href=\"{{ link }}\">vận chuyển</a> được tính khi thanh toán.",
+      "taxes_included_shipping_at_checkout_without_policy": "Đã bao gồm thuế. Ưu đãi và phí vận chuyển được tính khi thanh toán.",
+      "duties_included_taxes_at_checkout_shipping_at_checkout_with_policy_html": "Đã bao gồm thuế nhập khẩu. Thuế, ưu đãi và phí <a href=\"{{ link }}\">vận chuyển</a> được tính khi thanh toán.",
+      "duties_included_taxes_at_checkout_shipping_at_checkout_without_policy": "Đã bao gồm thuế nhập khẩu. Thuế, ưu đãi và phí vận chuyển được tính khi thanh toán.",
+      "taxes_at_checkout_shipping_at_checkout_with_policy_html": "Thuế, ưu đãi và phí <a href=\"{{ link }}\">vận chuyển</a> được tính khi thanh toán.",
+      "taxes_at_checkout_shipping_at_checkout_without_policy": "Thuế, ưu đãi và phí vận chuyển được tính khi thanh toán."
     },
     "footer": {
       "payment": "Phương thức thanh toán"
@@ -319,15 +319,15 @@
     },
     "featured_collection": {
       "view_all": "Xem tất cả",
-      "view_all_label": "Xem toàn bộ sản phẩm trong bộ sưu tập {{ collection_name }}"
+      "view_all_label": "Xem tất cả sản phẩm trong bộ sưu tập {{ collection_name }}"
     },
     "collection_list": {
       "view_all": "Xem tất cả"
     },
     "collection_template": {
       "title": "Bộ sưu tập",
-      "empty": "Không tìm thấy sản phẩm",
-      "use_fewer_filters_html": "Sử dụng ít bộ lọc hơn hoặc <a class=\"{{ class }}\" href=\"{{ link }}\">xóa tất cả</a>"
+      "empty": "Không tìm thấy sản phẩm nào",
+      "use_fewer_filters_html": "Dùng ít bộ lọc hơn hoặc <a class=\"{{ class }}\" href=\"{{ link }}\">xóa tất cả</a>"
     },
     "video": {
       "load_video": "Tải video: {{ description }}"
@@ -352,7 +352,7 @@
       "announcement_bar": "Thanh thông báo"
     },
     "quick_order_list": {
-      "product_total": "Tổng phụ sản phẩm",
+      "product_total": "Tạm tính sản phẩm",
       "view_cart": "Xem giỏ hàng",
       "each": "{{ money }}/chiếc",
       "product": "Sản phẩm",
@@ -372,9 +372,9 @@
       "remove_all": "Xóa tất cả",
       "cancel": "Hủy",
       "remove_all_single_item_confirmation": "Xóa 1 mặt hàng khỏi giỏ hàng?",
-      "min_error": "Mặt hàng này có tối thiểu {{ min }}",
-      "max_error": "Mặt hàng này có tối đa {{ max }}",
-      "step_error": "Bạn chỉ có thể thêm mặt hàng này theo đơn vị giao dịch {{ step }}"
+      "min_error": "Sản phẩm này có số lượng đặt tối thiểu là {{ min }}",
+      "max_error": "Sản phẩm này có số lượng đặt tối đa là {{ max }}",
+      "step_error": "Sản phẩm này chỉ đặt được theo bội số của {{ step }}"
     }
   },
   "localization": {
