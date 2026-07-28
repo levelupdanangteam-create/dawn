@@ -48,22 +48,14 @@
   .pf-deal__head { text-align: center; margin-bottom: 2.4rem; }
   .pf-deal__title { margin: 0; font-size: 2.8rem; font-weight: 800; color: #d62828; letter-spacing: .3px; }
   .pf-deal__sub { margin: .6rem 0 0; font-size: 1.5rem; color: #6a6255; }
-  .pf-deal__grid {
-    display: flex; gap: 1.6rem; overflow-x: auto; scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch; padding: .4rem .2rem 1.4rem; scroll-padding-left: .2rem;
-    scrollbar-width: thin; scrollbar-color: #e0c98e transparent;
-  }
-  .pf-deal__grid::-webkit-scrollbar { height: 8px; }
-  .pf-deal__grid::-webkit-scrollbar-thumb { background: #e0c98e; border-radius: 999px; }
-  .pf-deal__grid::-webkit-scrollbar-track { background: transparent; }
-  .pf-deal__grid.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+  /* Desktop: 3 cards in a row, no scroll */
+  .pf-deal__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
   .pf-deal__card {
-    position: relative; flex: 0 0 36%; min-width: 24rem; scroll-snap-align: start;
+    position: relative;
     display: flex; flex-direction: column; background: #fff;
     border: 2px solid #f2c14e; border-radius: 16px; padding: 1.2rem; overflow: hidden;
     box-shadow: 0 6px 18px rgba(214, 40, 40, .08);
   }
-  @media (min-width: 750px) { .pf-deal__grid { cursor: grab; } }
   .pf-deal__ribbon {
     position: absolute; top: 1.1rem; left: -3.4rem; z-index: 2;
     background: #d62828; color: #fff; font-size: 1.15rem; font-weight: 800; letter-spacing: 1px;
@@ -88,47 +80,19 @@
     border: 1px solid #f0d99a; border-radius: 8px; padding: .5rem .7rem; margin-bottom: 1rem;
   }
   .pf-deal__card .pf-card-actions { margin-top: auto; }
+  /* Mobile: horizontal scroll carousel */
   @media (max-width: 749px) {
-    .pf-deal__card { flex-basis: 74vw; min-width: 0; max-width: 30rem; }
+    .pf-deal__grid {
+      display: flex; grid-template-columns: none; gap: 1.2rem; overflow-x: auto;
+      scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-bottom: 1.2rem;
+      scrollbar-width: thin; scrollbar-color: #e0c98e transparent;
+    }
+    .pf-deal__grid::-webkit-scrollbar { height: 8px; }
+    .pf-deal__grid::-webkit-scrollbar-thumb { background: #e0c98e; border-radius: 999px; }
+    .pf-deal__card { flex: 0 0 74vw; max-width: 30rem; scroll-snap-align: start; }
     .pf-deal__title { font-size: 2.3rem; }
   }
 </style>
-
-<script>
-  (function () {
-    if (window.__pfDealDrag) return;
-    window.__pfDealDrag = true;
-    function bind(el) {
-      var down = false, startX = 0, startLeft = 0, moved = false;
-      el.addEventListener('mousedown', function (e) {
-        down = true; moved = false; startX = e.pageX; startLeft = el.scrollLeft;
-        el.classList.add('is-dragging');
-      });
-      window.addEventListener('mouseup', function () {
-        down = false; el.classList.remove('is-dragging');
-      });
-      el.addEventListener('mouseleave', function () { down = false; el.classList.remove('is-dragging'); });
-      el.addEventListener('mousemove', function (e) {
-        if (!down) return;
-        var dx = e.pageX - startX;
-        if (Math.abs(dx) > 4) moved = true;
-        el.scrollLeft = startLeft - dx;
-        e.preventDefault();
-      });
-      // Prevent a drag from triggering a click on the card links.
-      el.addEventListener('click', function (e) {
-        if (moved) { e.preventDefault(); e.stopPropagation(); }
-      }, true);
-    }
-    function init() {
-      document.querySelectorAll('.pf-deal__grid').forEach(function (el) {
-        if (el.__pfBound) return; el.__pfBound = true; bind(el);
-      });
-    }
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-    else init();
-  })();
-</script>
 
 {% schema %}
 {
