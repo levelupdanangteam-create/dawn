@@ -759,7 +759,15 @@ body.gradient {
 .menu-drawer summary .svg-wrapper { color: #1a1a1a; }
 
 /* Hide slideshow/slider prev-next arrows while the mobile menu drawer is open
-   (they have a high z-index and otherwise float on top of the open menu). */
+   (they have a high z-index and otherwise float on top of the open menu).
+   The .pf-menu-open body class is toggled by JS so it works even in in-app
+   browsers that lack :has() support. */
+body.pf-menu-open .pf-ss-arrow,
+body.pf-menu-open .pf-ss-dots,
+body.pf-menu-open .slider-button,
+body.pf-menu-open .slideshow__control,
+body:has(.menu-drawer-container[open]) .pf-ss-arrow,
+body:has(.menu-drawer-container[open]) .pf-ss-dots,
 body:has(.menu-drawer-container[open]) .slider-button,
 body:has(.menu-drawer-container[open]) .slideshow__control {
   opacity: 0 !important;

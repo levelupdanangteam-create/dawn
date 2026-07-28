@@ -75,4 +75,29 @@
     run();
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
   })();
+
+  // Toggle body.pf-menu-open while the mobile menu drawer is open, so CSS can
+  // hide the slideshow arrows/dots even in in-app browsers without :has().
+  (function () {
+    if (window.__pfMenuOpen) return;
+    window.__pfMenuOpen = true;
+
+    function sync() {
+      var open = !!document.querySelector('.menu-drawer-container[open]');
+      document.body.classList.toggle('pf-menu-open', open);
+    }
+
+    function bind() {
+      sync();
+      if (window.MutationObserver) {
+        new MutationObserver(sync).observe(document.documentElement, {
+          attributes: true, attributeFilter: ['open'], subtree: true
+        });
+      }
+      document.addEventListener('click', function () { setTimeout(sync, 30); }, true);
+    }
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+    else bind();
+  })();
 </script>
