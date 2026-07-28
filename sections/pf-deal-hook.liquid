@@ -29,7 +29,7 @@
             <a class="pf-deal__name" href="{{ p.url }}">{{ p.title }}</a>
             <div class="pf-deal__price">
               {%- if block.settings.deal_price != blank -%}
-                <span class="pf-deal__now">{{ block.settings.deal_price }}</span>
+                <span class="pf-deal__now">{%- unless block.settings.deal_price contains '€' -%}€{%- endunless -%}{{ block.settings.deal_price }}</span>
                 <span class="pf-deal__was">{{ v.price | money }}</span>
               {%- else -%}
                 <span class="pf-deal__now">{{ v.price | money }}</span>
