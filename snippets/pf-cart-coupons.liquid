@@ -101,29 +101,31 @@
     }
 
     function update() {
-      var box = document.querySelector('.pf-cpns');
-      if (!box) return;
-      var cur = box.getAttribute('data-currency') || 'EUR';
+      var boxes = document.querySelectorAll('.pf-cpns');
+      if (!boxes.length) return;
       fetch(root() + 'cart.js', { headers: { Accept: 'application/json' } })
         .then(function (r) { return r.json(); })
         .then(function (cart) {
           var total = cart.total_price || 0;
-          box.querySelectorAll('.pf-cpn').forEach(function (el) {
-            var min = parseInt(el.getAttribute('data-min') || '0', 10);
-            var code = el.getAttribute('data-code');
-            var rem = min - total;
-            var pct = min > 0 ? Math.min(100, Math.round((total / min) * 100)) : 100;
-            var fill = el.querySelector('.pf-cpn__bar-fill');
-            var hint = el.querySelector('.pf-cpn__hint');
-            if (fill) fill.style.width = pct + '%';
-            if (rem > 0) {
-              el.classList.remove('is-eligible');
-              if (hint) hint.innerHTML = 'Mua thêm <strong>' + fmt(rem, cur) + '</strong> để mở khoá ưu đãi này';
-            } else {
-              el.classList.add('is-eligible');
-              if (hint) hint.textContent = '✅ Đã đủ điều kiện — tự động áp dụng khi thanh toán!';
-              autoApply(code);
-            }
+          boxes.forEach(function (box) {
+            var cur = box.getAttribute('data-currency') || 'EUR';
+            box.querySelectorAll('.pf-cpn').forEach(function (el) {
+              var min = parseInt(el.getAttribute('data-min') || '0', 10);
+              var code = el.getAttribute('data-code');
+              var rem = min - total;
+              var pct = min > 0 ? Math.min(100, Math.round((total / min) * 100)) : 100;
+              var fill = el.querySelector('.pf-cpn__bar-fill');
+              var hint = el.querySelector('.pf-cpn__hint');
+              if (fill) fill.style.width = pct + '%';
+              if (rem > 0) {
+                el.classList.remove('is-eligible');
+                if (hint) hint.innerHTML = 'Mua thêm <strong>' + fmt(rem, cur) + '</strong> để mở khoá ưu đãi này';
+              } else {
+                el.classList.add('is-eligible');
+                if (hint) hint.textContent = '✅ Đã đủ điều kiện — tự động áp dụng khi thanh toán!';
+                autoApply(code);
+              }
+            });
           });
         })
         .catch(function () {});
