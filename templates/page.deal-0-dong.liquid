@@ -63,6 +63,7 @@
     position: relative; display: flex; flex-direction: column; background: #fff;
     border: 2px solid #f2c14e; border-radius: 18px; padding: 1.4rem; overflow: hidden;
     box-shadow: 0 10px 26px rgba(214, 40, 40, .1);
+    min-width: 0;
   }
   .pf-d0__ribbon {
     position: absolute; top: 1.3rem; left: -3.6rem; z-index: 2;
@@ -86,6 +87,14 @@
   .pf-d0__card .pf-card-actions { margin-top: auto; }
   .pf-d0__rte { max-width: 72rem; margin: 3rem auto 0; }
   @media (max-width: 749px) {
-    .pf-d0__grid { grid-template-columns: 1fr; }
+    /* Mobile: horizontal swipe */
+    .pf-d0__grid {
+      display: flex; grid-template-columns: none;
+      gap: 1.2rem; overflow-x: auto; scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch; padding-bottom: 1rem;
+      scrollbar-width: none;
+    }
+    .pf-d0__grid::-webkit-scrollbar { display: none; }
+    .pf-d0__card { flex: 0 0 76vw; max-width: 76vw; scroll-snap-align: start; }
   }
 </style>
