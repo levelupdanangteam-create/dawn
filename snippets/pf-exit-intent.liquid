@@ -96,7 +96,7 @@
     // ignore the shared cooldown: this is the last-chance popup, so it must still
     // fire at the real leave moment even shortly after a promo closed.
     function busy() {
-      return !!document.querySelector('.pf-pop.is-open');
+      return !!document.querySelector('.pf-pop.is-open, #pf-lead-popup:not([hidden])');
     }
 
     function show() {

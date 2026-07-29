@@ -85,7 +85,7 @@
     window.PFPopups = window.PFPopups || {};
     window.PFPopups.COOLDOWN = 15000; // ms between two popups
     window.PFPopups.busy = function () {
-      if (document.querySelector('.pf-pop.is-open, #pf-exit-intent:not([hidden])')) return true;
+      if (document.querySelector('.pf-pop.is-open, #pf-exit-intent:not([hidden]), #pf-lead-popup:not([hidden])')) return true;
       try {
         var l = parseInt(sessionStorage.getItem('pf_pop_closed_at') || '0', 10);
         if (l && (Date.now() - l) < window.PFPopups.COOLDOWN) return true;
