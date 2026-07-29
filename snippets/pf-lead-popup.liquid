@@ -108,11 +108,13 @@
     var KEY = 'pf_lead_shown';
     var forceOpen = {% if pf_lead_ok or pf_lead_err %}true{% else %}false{% endif %};
 
-    function busy() {
-      if (window.PFPopups && typeof window.PFPopups.busy === 'function') return window.PFPopups.busy();
-      return !!document.querySelector('.pf-pop.is-open');
+    // Claim the single popup slot (see the RULE in pf-popups). ignoreCooldown
+    // lets the after-submit result show immediately.
+    function claim(ignoreCooldown) {
+      if (window.PFPopups && typeof window.PFPopups.claim === 'function') return window.PFPopups.claim(ignoreCooldown);
+      return !document.querySelector('.pf-pop.is-open, #pf-exit-intent:not([hidden])');
     }
-    function open() {
+    function show() {
       el.hidden = false;
       el.setAttribute('aria-hidden', 'false');
       document.documentElement.style.overflow = 'hidden';
@@ -126,18 +128,17 @@
     el.querySelectorAll('[data-pf-lead-close]').forEach(function (b) { b.addEventListener('click', close); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !el.hidden) close(); });
 
-    // After a submit (success or error) the page reloads — show the popup so the
-    // visitor sees the result.
-    if (forceOpen) { try { sessionStorage.setItem(KEY, '1'); } catch (e) {} open(); return; }
+    // After a submit (success or error) the page reloads — show the result.
+    if (forceOpen) { try { sessionStorage.setItem(KEY, '1'); } catch (e) {} claim(true); show(); return; }
 
-    // Otherwise: show once per session, ~7s after landing, coordinated so it
-    // never overlaps another popup.
+    // Otherwise: show once per session, ~30s after landing. The slot must be
+    // free (no other popup open, cooldown elapsed) — otherwise retry.
     try { if (sessionStorage.getItem(KEY) === '1') return; } catch (e) {}
     setTimeout(function tryOpen() {
       try { if (sessionStorage.getItem(KEY) === '1') return; } catch (e) {}
-      if (busy()) { setTimeout(tryOpen, 3000); return; }
+      if (!claim(false)) { setTimeout(tryOpen, 3000); return; }
       try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
-      open();
-    }, 7000);
+      show();
+    }, 30000);
   })();
 </script>

@@ -92,15 +92,17 @@
 
     var shown = false, armed = false;
 
-    // Only yield when another popup is literally open right now. We intentionally
-    // ignore the shared cooldown: this is the last-chance popup, so it must still
-    // fire at the real leave moment even shortly after a promo closed.
-    function busy() {
-      return !!document.querySelector('.pf-pop.is-open, #pf-lead-popup:not([hidden])');
+    // Claim the single popup slot, ignoring the cooldown: this is the last-chance
+    // popup, so it must still fire at the real leave moment even shortly after a
+    // promo closed. It still yields when another popup is actually open (RULE:
+    // no two popups on screen at once).
+    function claim() {
+      if (window.PFPopups && typeof window.PFPopups.claim === 'function') return window.PFPopups.claim(true);
+      return !document.querySelector('.pf-pop.is-open, #pf-lead-popup:not([hidden])');
     }
 
     function show() {
-      if (shown || busy()) return;
+      if (shown || !claim()) return;
       shown = true;
       try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
       el.hidden = false;

@@ -84,25 +84,47 @@
     // overlap and never fire back-to-back.
     window.PFPopups = window.PFPopups || {};
     window.PFPopups.COOLDOWN = 15000; // ms between two popups
+    if (window.PFPopups._lock === undefined) window.PFPopups._lock = false;
+
+    // RULE: at most ONE popup on screen at any time. A popup is "open" if the
+    // lock is held OR any popup element is visible in the DOM.
+    window.PFPopups.anyOpen = function () {
+      if (window.PFPopups._lock) return true;
+      return !!document.querySelector('.pf-pop.is-open, #pf-exit-intent:not([hidden]), #pf-lead-popup:not([hidden])');
+    };
     window.PFPopups.busy = function () {
-      if (document.querySelector('.pf-pop.is-open, #pf-exit-intent:not([hidden]), #pf-lead-popup:not([hidden])')) return true;
+      if (window.PFPopups.anyOpen()) return true;
       try {
         var l = parseInt(sessionStorage.getItem('pf_pop_closed_at') || '0', 10);
         if (l && (Date.now() - l) < window.PFPopups.COOLDOWN) return true;
       } catch (e) {}
       return false;
     };
+    // Claim the single slot. Returns false if another popup already holds it.
+    window.PFPopups.claim = function (ignoreCooldown) {
+      if (window.PFPopups.anyOpen()) return false;
+      if (!ignoreCooldown) {
+        try {
+          var l = parseInt(sessionStorage.getItem('pf_pop_closed_at') || '0', 10);
+          if (l && (Date.now() - l) < window.PFPopups.COOLDOWN) return false;
+        } catch (e) {}
+      }
+      window.PFPopups._lock = true;
+      return true;
+    };
     window.PFPopups.markClosed = function () {
+      window.PFPopups._lock = false;
       try { sessionStorage.setItem('pf_pop_closed_at', String(Date.now())); } catch (e) {}
     };
 
     function open(id) {
       var el = document.getElementById(id);
-      if (!el || window.PFPopups.busy()) return;
+      if (!el || !window.PFPopups.claim()) return false;
       el.hidden = false;
       el.setAttribute('aria-hidden', 'false');
       el.classList.add('is-open');
       document.documentElement.style.overflow = 'hidden';
+      return true;
     }
     function close(el) {
       if (!el) return;
@@ -116,9 +138,8 @@
       if (ss(flag)) return;
       setTimeout(function tryOpen() {
         if (ss(flag)) return;
-        if (window.PFPopups.busy()) { setTimeout(tryOpen, 3000); return; } // wait, don't waste the turn
+        if (!open(id)) { setTimeout(tryOpen, 3000); return; } // slot busy — wait, don't waste the turn
         ss(flag, '1');
-        open(id);
       }, delay);
     }
 
