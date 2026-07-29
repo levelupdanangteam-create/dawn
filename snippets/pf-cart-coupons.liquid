@@ -142,6 +142,36 @@
         .catch(function () {});
     }
 
+    // RELIABLE APPLY: discount codes only take effect at checkout, so when the
+    // customer proceeds to checkout we route them through Shopify's discount
+    // permalink(s) which apply the codes server-side, then land on checkout.
+    function eligibleCodes() {
+      var out = [];
+      document.querySelectorAll('.pf-cpn.is-eligible').forEach(function (el) {
+        var c = el.getAttribute('data-code');
+        if (c && out.indexOf(c) === -1) out.push(c);
+      });
+      return out;
+    }
+    function discountChainUrl(codes) {
+      // Chain: /discount/A?redirect=/discount/B?redirect=/checkout
+      var url = root() + 'checkout';
+      for (var i = codes.length - 1; i >= 0; i--) {
+        url = root() + 'discount/' + encodeURIComponent(codes[i]) + '?redirect=' + encodeURIComponent(url);
+      }
+      return url;
+    }
+    document.addEventListener('click', function (e) {
+      var btn = e.target && e.target.closest && e.target.closest('#checkout, [name="checkout"], .cart__checkout-button');
+      if (!btn || window.__pfRouting) return;
+      var codes = eligibleCodes();
+      if (!codes.length) return; // nothing eligible → normal checkout
+      window.__pfRouting = true;
+      e.preventDefault();
+      e.stopPropagation();
+      window.location.href = discountChainUrl(codes);
+    }, true);
+
     // Refresh + auto-apply whenever the cart changes.
     var origFetch = window.fetch;
     window.fetch = function (input) {
