@@ -15,7 +15,7 @@
   <div class="pf-lead__card" role="dialog" aria-modal="true" aria-label="Nhận Ưu đãi đặc biệt từ Phomifood">
     <button type="button" class="pf-lead__x" data-pf-lead-close aria-label="Đóng">&times;</button>
 
-    {%- form 'customer', id: 'pf-lead-form', class: 'pf-lead__form' -%}
+    {%- form 'contact', id: 'pf-lead-form', class: 'pf-lead__form' -%}
       {%- if form.posted_successfully? -%}
         {%- assign pf_lead_ok = true -%}
         <div class="pf-lead__thanks">
@@ -40,7 +40,7 @@
           <div class="pf-lead__error">{{ form.errors | default_errors }}</div>
         {%- endif -%}
 
-        <input type="hidden" name="contact[tags]" value="deal-soc-popup">
+        <input type="hidden" name="contact[body]" value="Đăng ký giữ Ưu đãi đặc biệt từ popup website.">
         <div class="pf-lead__field">
           <input type="text" name="contact[first_name]" placeholder="Họ tên của bạn" autocomplete="name">
         </div>
@@ -48,7 +48,7 @@
           <input type="email" name="contact[email]" placeholder="Email của bạn *" required autocomplete="email">
         </div>
         <div class="pf-lead__field">
-          <input type="tel" name="contact[phone]" placeholder="Số điện thoại (không bắt buộc)" autocomplete="tel">
+          <input type="tel" name="contact[phone]" placeholder="Số điện thoại *" required autocomplete="tel" pattern="[0-9+\s().-]{6,}">
         </div>
 
         <button type="submit" class="pf-lead__cta">🎁 Giữ Ưu đãi đặc biệt cho tôi</button>
