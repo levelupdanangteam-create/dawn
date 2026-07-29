@@ -12,7 +12,7 @@
 
 <div class="pf-lead" id="pf-lead-popup" hidden aria-hidden="true">
   <div class="pf-lead__overlay" data-pf-lead-close></div>
-  <div class="pf-lead__card" role="dialog" aria-modal="true" aria-label="Nhận Deal Sốc từ Phomifood">
+  <div class="pf-lead__card" role="dialog" aria-modal="true" aria-label="Nhận Ưu đãi đặc biệt từ Phomifood">
     <button type="button" class="pf-lead__x" data-pf-lead-close aria-label="Đóng">&times;</button>
 
     {%- form 'customer', id: 'pf-lead-form', class: 'pf-lead__form' -%}
@@ -22,17 +22,17 @@
           <div class="pf-lead__flame">🎉</div>
           <h2 class="pf-lead__title">Cảm ơn bạn!</h2>
           <p class="pf-lead__sub">
-            Phomifood đã <strong>giữ Deal Sốc</strong> cho bạn. Chúng tôi sẽ gửi ưu đãi này và các ưu đãi
+            Phomifood đã <strong>giữ Ưu đãi đặc biệt</strong> cho bạn. Chúng tôi sẽ gửi ưu đãi này và các ưu đãi
             hấp dẫn sau này qua thông tin bạn để lại. Hẹn gặp lại bạn nhé!
           </p>
-          <a class="pf-lead__cta" href="/pages/deal-0-euro">🔥 Xem Deal Sốc ngay</a>
+          <a class="pf-lead__cta" href="/pages/deal-0-euro">🔥 Xem Ưu đãi đặc biệt ngay</a>
         </div>
       {%- else -%}
         <div class="pf-lead__flame">🔥</div>
-        <h2 class="pf-lead__title">Giữ Deal Sốc cho bạn!</h2>
+        <h2 class="pf-lead__title">Giữ Ưu đãi đặc biệt cho bạn!</h2>
         <p class="pf-lead__sub">
-          Để giữ lại ưu đãi <strong>Deal Sốc</strong>, hãy cho Phomifood biết thông tin của bạn.
-          Chúng tôi sẽ gửi tặng bạn deal sốc này khi mua hàng, kèm các ưu đãi hấp dẫn sau này!
+          Để giữ lại <strong>Ưu đãi đặc biệt</strong>, hãy cho Phomifood biết thông tin của bạn.
+          Chúng tôi sẽ gửi tặng bạn ưu đãi này khi mua hàng, kèm các ưu đãi hấp dẫn sau này!
         </p>
 
         {%- if form.errors -%}
@@ -51,7 +51,7 @@
           <input type="tel" name="contact[phone]" placeholder="Số điện thoại (không bắt buộc)" autocomplete="tel">
         </div>
 
-        <button type="submit" class="pf-lead__cta">🎁 Giữ Deal Sốc cho tôi</button>
+        <button type="submit" class="pf-lead__cta">🎁 Giữ Ưu đãi đặc biệt cho tôi</button>
         <button type="button" class="pf-lead__no" data-pf-lead-close>Để sau</button>
       {%- endif -%}
     {%- endform -%}
