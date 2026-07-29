@@ -105,13 +105,20 @@
                       {%- endif -%}
                     {%- else -%}
                       {%- assign pf_has_biz_link = false -%}
+                      {%- assign pf_has_tos_link = false -%}
                       {%- if block.settings.subtext contains 'thong-tin-doanh-nghiep' -%}
                         {%- assign pf_has_biz_link = true -%}
+                      {%- endif -%}
+                      {%- if block.settings.subtext contains 'dieu-khoan-dich-vu' -%}
+                        {%- assign pf_has_tos_link = true -%}
                       {%- endif -%}
                       <div class="footer-block__details-content rte">
                         {{ block.settings.subtext }}
                         {%- if block.settings.heading contains 'Chính sách' and pf_has_biz_link == false -%}
                           <p><a href="/pages/thong-tin-doanh-nghiep">Thông tin doanh nghiệp</a></p>
+                        {%- endif -%}
+                        {%- if block.settings.heading contains 'Chính sách' and pf_has_tos_link == false -%}
+                          <p><a href="/pages/dieu-khoan-dich-vu">Điều khoản dịch vụ</a></p>
                         {%- endif -%}
                       </div>
                     {%- endif -%}
