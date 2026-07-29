@@ -1,0 +1,111 @@
+{%- comment -%}
+  PHOMIFOOD — "Deal add-on" rule.
+  The loss-leader deal products may only be checked out when the cart ALSO
+  contains at least one non-deal product. If the cart holds only deal products,
+  the checkout + express-checkout buttons are blocked and a message is shown.
+  On a deal product's own page the "Buy it now" (dynamic checkout) button is
+  hidden so a lone deal item can't skip the cart.
+  Keep the handle list in sync with the Deal / Deal 0 Đồng sections.
+{%- endcomment -%}
+{%- assign pf_deal_handles = "acecook-mi-tom-hao-hao-vi-tom-chua-cay-75g-x-30-goi,gia-bao-bun-bo-hue-1-5mm-500g-x-20,ngoc-lien-ca-phao-trang-365g-x-24-lo" -%}
+
+<script>
+  (function () {
+    if (window.__pfDealRule) return;
+    window.__pfDealRule = true;
+
+    var DEAL = "{{ pf_deal_handles }}".split(',');
+    var CUR = "{{ product.handle }}";
+    var MSG = 'Sản phẩm ưu đãi chỉ được mua KÈM — vui lòng thêm ít nhất 1 sản phẩm khác vào giỏ để thanh toán.';
+
+    function root() { return (window.Shopify && Shopify.routes ? Shopify.routes.root : '/'); }
+    function isDeal(h) { return h && DEAL.indexOf(h) > -1; }
+
+    // Express-checkout containers that live in the cart page / cart drawer.
+    var CART_EXPRESS = '.cart__dynamic-checkout-buttons, [data-shopify="dynamic-checkout-cart"]';
+
+    function setBlocked(blocked) {
+      document.querySelectorAll('#checkout, [name="checkout"], .cart__checkout-button').forEach(function (b) {
+        if (blocked) { b.setAttribute('disabled', 'disabled'); b.classList.add('pf-deal-blocked'); }
+        else if (b.classList.contains('pf-deal-blocked')) { b.removeAttribute('disabled'); b.classList.remove('pf-deal-blocked'); }
+      });
+      document.querySelectorAll(CART_EXPRESS).forEach(function (el) {
+        el.style.display = blocked ? 'none' : '';
+      });
+      var existing = document.querySelectorAll('.pf-deal-rule-msg');
+      if (blocked) {
+        if (!existing.length) {
+          document.querySelectorAll('#checkout, [name="checkout"]').forEach(function (b) {
+            var m = document.createElement('div');
+            m.className = 'pf-deal-rule-msg';
+            m.textContent = '⚠️ ' + MSG;
+            b.parentNode.insertBefore(m, b);
+          });
+        }
+      } else {
+        existing.forEach(function (n) { if (n.parentNode) n.parentNode.removeChild(n); });
+      }
+    }
+
+    function check() {
+      fetch(root() + 'cart.js', { headers: { Accept: 'application/json' } })
+        .then(function (r) { return r.json(); })
+        .then(function (cart) {
+          var items = cart.items || [];
+          var hasDeal = false, hasOther = false;
+          items.forEach(function (i) { if (isDeal(i.handle)) hasDeal = true; else hasOther = true; });
+          setBlocked(hasDeal && !hasOther);
+        })
+        .catch(function () {});
+    }
+
+    // Re-check whenever the cart changes.
+    var origFetch = window.fetch;
+    window.fetch = function (input) {
+      var p = origFetch.apply(this, arguments);
+      try {
+        var u = (typeof input === 'string') ? input : (input && input.url) || '';
+        if (u.indexOf('/cart/change') > -1 || u.indexOf('/cart/update') > -1 || u.indexOf('/cart/add') > -1) {
+          p.then(function () { setTimeout(check, 200); });
+        }
+      } catch (e) {}
+      return p;
+    };
+
+    // On a deal product's own page: hide "Buy it now" so a lone deal item can't
+    // skip the cart, and add a hint.
+    function pdpGuard() {
+      if (!isDeal(CUR)) return;
+      document.querySelectorAll('.shopify-payment-button, [data-shopify="payment-button"]').forEach(function (el) {
+        el.style.display = 'none';
+      });
+      var forms = document.querySelectorAll('.product-form__buttons');
+      forms.forEach(function (f) {
+        if (f.querySelector('.pf-deal-pdp-note')) return;
+        var n = document.createElement('div');
+        n.className = 'pf-deal-pdp-note';
+        n.textContent = '🛒 Sản phẩm ưu đãi: thêm vào giỏ và mua kèm ít nhất 1 sản phẩm khác để được giá này.';
+        f.appendChild(n);
+      });
+    }
+
+    function run() { check(); pdpGuard(); }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+    else run();
+    // Re-guard PDP after a short delay (dynamic checkout buttons load async).
+    setTimeout(pdpGuard, 800);
+    setTimeout(pdpGuard, 2000);
+  })();
+</script>
+
+<style>
+  .pf-deal-rule-msg {
+    background: #fdeaea; border: 1px solid #f3c2c2; color: #c0392b; border-radius: 10px;
+    padding: 1rem 1.1rem; font-size: 1.3rem; font-weight: 700; line-height: 1.4; margin: 0 0 1rem;
+  }
+  .pf-deal-blocked { opacity: .5; cursor: not-allowed !important; filter: grayscale(.3); }
+  .pf-deal-pdp-note {
+    margin-top: 1rem; background: #fff6e2; border: 1px solid #f0d99a; color: #b8791a;
+    border-radius: 10px; padding: .9rem 1rem; font-size: 1.3rem; font-weight: 700; line-height: 1.4;
+  }
+</style>
