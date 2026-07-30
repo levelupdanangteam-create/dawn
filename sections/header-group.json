@@ -33,10 +33,10 @@
     "pf_hero_slideshow_UijQAg": {
       "type": "pf-hero-slideshow",
       "blocks": {
-        "slide_JdBVVX": {
+        "slide_ECJQFW": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/bannerr.png",
+            "image": "shopify://shop_images/banner.png",
             "title": "",
             "text": "",
             "button_label": "",
@@ -65,7 +65,7 @@
         }
       },
       "block_order": [
-        "slide_JdBVVX",
+        "slide_ECJQFW",
         "slide_ep7U8J",
         "slide_h7RtgL"
       ],
