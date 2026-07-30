@@ -61,7 +61,7 @@
       "name": "Hero Slideshow",
       "settings": {
         "autoplay_interval": 5,
-        "height_desktop": 500,
+        "height_desktop": 300,
         "height_mobile": 300,
         "text_align": "left",
         "fallback_asset": "pf-hero.jpg"
