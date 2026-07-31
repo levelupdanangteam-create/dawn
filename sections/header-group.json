@@ -62,22 +62,12 @@
             "button_label": "",
             "button_link": ""
           }
-        },
-        "slide_kUjfXd": {
-          "type": "slide",
-          "settings": {
-            "title": "",
-            "text": "",
-            "button_label": "",
-            "button_link": ""
-          }
         }
       },
       "block_order": [
         "slide_ECJQFW",
         "slide_h7RtgL",
-        "slide_yfNzfF",
-        "slide_kUjfXd"
+        "slide_yfNzfF"
       ],
       "name": "Hero Slideshow",
       "settings": {
