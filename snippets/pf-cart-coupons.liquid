@@ -84,20 +84,12 @@
   .drawer__footer .pf-cpn__bar { height: 4px; }
   .drawer__footer .pf-cpn__hint { font-size: 1.1rem; }
 
-  /* Desktop (cart page): show the three offers side by side. */
-  @media (min-width: 990px) {
-    .pf-cpns { grid-template-columns: repeat(3, 1fr); align-items: start; }
-    .pf-cpns__head { grid-column: 1 / -1; }
-    .pf-cpn__top { flex-direction: column; align-items: flex-start; gap: .5rem; }
-    /* Keep the cart drawer stacked & compact regardless of viewport width. */
-    .drawer__footer .pf-cpns { grid-template-columns: 1fr; }
-    .drawer__footer .pf-cpn__top { flex-direction: row; align-items: center; gap: .5rem; }
-  }
-  /* Small phones: keep the label pill + text tidy, no overflow. */
+  /* Always stacked (1 column) — clean and readable at every width. Allow the
+     label + description to wrap so nothing is clipped in narrow containers. */
+  .pf-cpn__top { flex-wrap: wrap; gap: .5rem .8rem; }
   @media (max-width: 480px) {
     .pf-cpns { padding: 1rem; }
     .pf-cpn { padding: .9rem 1rem; }
-    .pf-cpn__top { flex-wrap: wrap; gap: .45rem .7rem; }
     .pf-cpn__label { font-size: 1.18rem; padding: .4rem .75rem; }
     .pf-cpn__desc { font-size: 1.25rem; }
   }
