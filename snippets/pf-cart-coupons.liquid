@@ -30,9 +30,9 @@
       <div class="pf-cpn__bar"><span class="pf-cpn__bar-fill" style="width: {{ pct }}%;"></span></div>
       <div class="pf-cpn__hint">
         {%- if rem > 0 -%}
-          Mua thêm <strong>{{ rem | money }}</strong> để mở khoá ưu đãi này
+          Mua thêm <strong>{{ rem | money }}</strong> nữa là đủ
         {%- else -%}
-          ✅ Đã đủ điều kiện — tự động áp dụng khi thanh toán!
+          ✅ Đã đủ điều kiện!
         {%- endif -%}
       </div>
     </div>
@@ -73,24 +73,17 @@
   .pf-cpn__hint strong { color: #d62828; }
   .pf-cpn.is-eligible .pf-cpn__hint { color: #1c7a3f; font-weight: 700; }
 
-  /* Cart drawer: ultra-compact chip row so the cart items stay visible.
-     (Full offers with progress bars remain on the cart page.) */
-  .drawer__footer .pf-cpns {
-    display: flex; flex-wrap: wrap; gap: .45rem;
-    padding: .6rem; margin: 0 0 .9rem; border-radius: 10px;
-  }
+  /* Cart drawer: 3 small stacked rows — compact, but still show how much more
+     the customer needs to add. (Full version lives on the cart page.) */
+  .drawer__footer .pf-cpns { display: grid; gap: .4rem; padding: .65rem .75rem; margin: 0 0 .9rem; border-radius: 10px; }
   .drawer__footer .pf-cpns__head { display: none; }
-  .drawer__footer .pf-cpn {
-    flex: 1 1 auto; padding: .45rem .3rem; gap: 0; border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .drawer__footer .pf-cpn::before { display: none; }
-  .drawer__footer .pf-cpn__top { display: block; margin: 0; }
-  .drawer__footer .pf-cpn__label { font-size: 1.05rem; padding: .3rem .55rem; white-space: nowrap; }
-  .drawer__footer .pf-cpn__desc,
-  .drawer__footer .pf-cpn__bar,
-  .drawer__footer .pf-cpn__hint { display: none; }
-  .drawer__footer .pf-cpn.is-eligible .pf-cpn__label { background: #dff6e6; border-color: #7fd39c; }
+  .drawer__footer .pf-cpn { padding: .45rem .6rem .5rem; gap: .28rem; border-radius: 8px; }
+  .drawer__footer .pf-cpn::before { width: 3px; }
+  .drawer__footer .pf-cpn__top { gap: .5rem; align-items: center; }
+  .drawer__footer .pf-cpn__label { font-size: 1rem; padding: .18rem .5rem; }
+  .drawer__footer .pf-cpn__desc { display: none; }
+  .drawer__footer .pf-cpn__bar { height: 3px; }
+  .drawer__footer .pf-cpn__hint { font-size: 1.05rem; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   /* Always stacked (1 column) — clean and readable at every width. Allow the
      label + description to wrap so nothing is clipped in narrow containers. */
@@ -148,10 +141,10 @@
               if (fill) fill.style.width = pct + '%';
               if (rem > 0) {
                 el.classList.remove('is-eligible');
-                if (hint) hint.innerHTML = 'Mua thêm <strong>' + fmt(rem, cur) + '</strong> để mở khoá ưu đãi này';
+                if (hint) hint.innerHTML = 'Mua thêm <strong>' + fmt(rem, cur) + '</strong> nữa là đủ';
               } else {
                 el.classList.add('is-eligible');
-                if (hint) hint.textContent = '✅ Đã đủ điều kiện — tự động áp dụng khi thanh toán!';
+                if (hint) hint.textContent = '✅ Đã đủ điều kiện!';
                 autoApply(code);
               }
             });
