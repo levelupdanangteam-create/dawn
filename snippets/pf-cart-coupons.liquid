@@ -73,16 +73,24 @@
   .pf-cpn__hint strong { color: #d62828; }
   .pf-cpn.is-eligible .pf-cpn__hint { color: #1c7a3f; font-weight: 700; }
 
-  /* Compact layout inside the cart drawer (leave room for the items) */
-  .drawer__footer .pf-cpns { padding: .7rem .8rem; gap: .5rem; margin: 0 0 1rem; border-radius: 10px; }
+  /* Cart drawer: ultra-compact chip row so the cart items stay visible.
+     (Full offers with progress bars remain on the cart page.) */
+  .drawer__footer .pf-cpns {
+    display: flex; flex-wrap: wrap; gap: .45rem;
+    padding: .6rem; margin: 0 0 .9rem; border-radius: 10px;
+  }
   .drawer__footer .pf-cpns__head { display: none; }
-  .drawer__footer .pf-cpn { padding: .55rem .75rem; gap: .35rem; border-radius: 8px; }
-  .drawer__footer .pf-cpn::before { width: 3px; }
-  .drawer__footer .pf-cpn__top { gap: .5rem; }
-  .drawer__footer .pf-cpn__label { font-size: 1.05rem; padding: .2rem .55rem; }
-  .drawer__footer .pf-cpn__desc { display: none; }
-  .drawer__footer .pf-cpn__bar { height: 4px; }
-  .drawer__footer .pf-cpn__hint { font-size: 1.1rem; }
+  .drawer__footer .pf-cpn {
+    flex: 1 1 auto; padding: .45rem .3rem; gap: 0; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .drawer__footer .pf-cpn::before { display: none; }
+  .drawer__footer .pf-cpn__top { display: block; margin: 0; }
+  .drawer__footer .pf-cpn__label { font-size: 1.05rem; padding: .3rem .55rem; white-space: nowrap; }
+  .drawer__footer .pf-cpn__desc,
+  .drawer__footer .pf-cpn__bar,
+  .drawer__footer .pf-cpn__hint { display: none; }
+  .drawer__footer .pf-cpn.is-eligible .pf-cpn__label { background: #dff6e6; border-color: #7fd39c; }
 
   /* Always stacked (1 column) — clean and readable at every width. Allow the
      label + description to wrap so nothing is clipped in narrow containers. */
