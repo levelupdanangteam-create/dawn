@@ -5,7 +5,7 @@
   bar nudges the customer toward each threshold.
   rows: CODE|min_in_cents|description|short_label
 {%- endcomment -%}
-{%- assign pf_cpn_rows = "GIAM2%|10000|Giảm 2% khi thanh toán online · đơn từ 100€|🎁 Giảm 2%;;FREESHIP150|15000|Miễn phí vận chuyển toàn châu Âu · đơn từ 150€|🚚 Free ship;;BANMOI|25000|Giảm 3% tổng đơn hàng · đơn từ 250€|🏷️ Giảm 3%" | split: ";;" -%}
+{%- assign pf_cpn_rows = "FREESHIP150|15000|Miễn phí vận chuyển toàn châu Âu · đơn từ 150€|🚚 Free ship;;GIAM2%|20000|Giảm 2% khi thanh toán online · đơn từ 200€|🎁 Giảm 2%;;BANMOI|25000|Giảm 3% tổng đơn hàng · đơn từ 250€|🏷️ Giảm 3%" | split: ";;" -%}
 
 <div class="pf-cpns" data-currency="{{ cart.currency.iso_code }}">
   <div class="pf-cpns__head">🎁 Ưu đãi tự động — mua đủ ngưỡng là được giảm ngay khi thanh toán!</div>
