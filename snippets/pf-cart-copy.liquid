@@ -135,24 +135,28 @@ TỔNG TẠM TÍNH: {{ cart.total_price | money }}
       var src = document.getElementById('pf-order-src');
       var text = src ? src.value : '';
       var label = btn.querySelector('.pf-mess-label');
-      // Open Messenger inside the click gesture so it isn't popup-blocked.
-      window.open('https://m.me/phomifoodstore', '_blank', 'noopener');
-      function done() {
-        btn.classList.add('copied');
-        if (label) label.textContent = '✅ Đã copy — dán vào Messenger nhé!';
-        setTimeout(function () {
-          btn.classList.remove('copied');
-          if (label) label.textContent = 'Gửi đơn qua Messenger';
-        }, 2600);
-      }
+
+      // 1) Copy the order text FIRST, while the page still has focus. If we open
+      //    Messenger first, the new tab steals focus and the copy fails — the
+      //    customer would land in Messenger with nothing to paste.
+      var copied = false;
+      try {
+        if (src) { src.focus(); src.select(); src.setSelectionRange(0, 999999); copied = document.execCommand('copy'); }
+      } catch (err) {}
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(done).catch(function () {
-          if (src) { src.select(); document.execCommand('copy'); } done();
-        });
-      } else {
-        if (src) { src.select(); document.execCommand('copy'); }
-        done();
+        try { navigator.clipboard.writeText(text); copied = true; } catch (err) {}
       }
+
+      // 2) Then open Messenger (still inside the click gesture, so not blocked).
+      window.open('https://m.me/phomifoodstore', '_blank', 'noopener');
+
+      // 3) Feedback
+      btn.classList.add('copied');
+      if (label) label.textContent = '✅ Đã copy — dán vào Messenger nhé!';
+      setTimeout(function () {
+        btn.classList.remove('copied');
+        if (label) label.textContent = 'Gửi đơn qua Messenger';
+      }, 2600);
     });
   })();
 </script>
