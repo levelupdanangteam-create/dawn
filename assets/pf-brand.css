@@ -84,11 +84,17 @@ body.gradient {
   padding: .3rem .9rem !important;
   box-shadow: 0 4px 14px rgba(0, 0, 0, .14);
 }
-/* Keep the logo compact so the header stays slim */
+/* Logo size — keep aspect ratio, comfortably visible (not squished) */
 .header__heading-link img,
 .header__heading-logo {
-  max-height: 5.2rem;
+  height: 7rem;
   width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+@media screen and (max-width: 749px) {
+  .header__heading-link img,
+  .header__heading-logo { height: 5.6rem; }
 }
 /* Animated white underline under each top-level menu label */
 .header__inline-menu .header__menu-item span {
