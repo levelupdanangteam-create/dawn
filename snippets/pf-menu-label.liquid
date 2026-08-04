@@ -1,0 +1,43 @@
+{%- comment -%}
+  Outputs a menu link label, translated to English when the visitor is not on
+  the Vietnamese locale. Unmapped titles fall back to the original (brand /
+  category proper nouns stay as-is). Usage: {% render 'pf-menu-label', title: link.title %}
+{%- endcomment -%}
+{%- liquid
+  assign t = title
+  if request.locale.iso_code != 'vi'
+    case title
+      when 'Home'
+        assign t = 'Home'
+      when 'Sản phẩm'
+        assign t = 'Products'
+      when 'Ưu đãi sản phẩm 0€'
+        assign t = '0€ Deals'
+      when 'Sản phẩm giảm giá'
+        assign t = 'On Sale'
+      when 'Chính sách'
+        assign t = 'Policies'
+      when 'Liên hệ'
+        assign t = 'Contact'
+      when 'Tất cả sản phẩm'
+        assign t = 'All Products'
+      when 'Chính sách giao hàng'
+        assign t = 'Shipping Policy'
+      when 'Chính sách đổi trả'
+        assign t = 'Return Policy'
+      when 'Chính sách bảo mật thông tin'
+        assign t = 'Privacy Policy'
+      when 'Chính sách bảo mật thanh toán'
+        assign t = 'Payment Security'
+      when 'Chính sách mua sắm'
+        assign t = 'Shopping Policy'
+      when 'Hướng dẫn mua hàng'
+        assign t = 'How to Order'
+      when 'Thông tin doanh nghiệp'
+        assign t = 'Business Info'
+      when 'Điều khoản dịch vụ'
+        assign t = 'Terms of Service'
+    endcase
+  endif
+  echo t | escape
+-%}
