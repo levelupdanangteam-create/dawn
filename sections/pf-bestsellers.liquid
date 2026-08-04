@@ -58,8 +58,8 @@
     <div class="pf-bs">
       <div class="pf-bs__head">
         <span class="pf-bs__eyebrow">{% if request.locale.iso_code == "vi" %}🔥 Được mua nhiều nhất{% else %}🔥 Best sellers{% endif %}</span>
-        <h2 class="pf-bs__title">{{ section.settings.heading }}</h2>
-        {%- if section.settings.subheading != blank -%}<p class="pf-bs__sub">{{ section.settings.subheading }}</p>{%- endif -%}
+        <h2 class="pf-bs__title">{% render 'pf-tr', s: section.settings.heading %}</h2>
+        {%- if section.settings.subheading != blank -%}<p class="pf-bs__sub">{% render 'pf-tr', s: section.settings.subheading %}</p>{%- endif -%}
       </div>
 
       <div class="pf-bs__grid">

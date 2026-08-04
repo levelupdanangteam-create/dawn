@@ -29,7 +29,7 @@
 
 <div id="pf-regions-{{ section.id }}" class="pf-boxed-section">
   <div class="pf-wrap">
-    <h2 class="pf-title">{{ section.settings.heading }}</h2>
+    <h2 class="pf-title">{% render 'pf-tr', s: section.settings.heading %}</h2>
     <div class="pf-cols">
       {%- for block in section.blocks -%}
         {%- assign col = block.settings.collection -%}

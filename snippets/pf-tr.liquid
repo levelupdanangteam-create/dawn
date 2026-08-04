@@ -1,0 +1,59 @@
+{%- comment -%}
+  General VN→EN translator for custom PHOMIFOOD strings. Returns the English
+  version when the visitor is not on the Vietnamese locale; otherwise returns
+  the original. Usage: {% render 'pf-tr', s: section.settings.heading %}
+  Unmapped strings fall back to the original text.
+{%- endcomment -%}
+{%- liquid
+  assign t = s
+  if request.locale.iso_code != 'vi'
+    case s
+      # Section headings
+      when 'Danh Mục Sản Phẩm'
+        assign t = 'Product Categories'
+      when '🔥 ƯU ĐÃI ĐẶC BIỆT 0€'
+        assign t = '🔥 SPECIAL 0€ DEALS'
+      when '🔥 ƯU ĐÃI ĐẶC BIỆT — Giá cực rẻ'
+        assign t = '🔥 SPECIAL DEALS — Rock-bottom prices'
+      when '🔥 Ưu đãi tuần này'
+        assign t = '🔥 This week’s deals'
+      when 'Sản phẩm giảm giá – Ưu đãi hôm nay'
+        assign t = 'On Sale – Today’s offers'
+      when 'Sản phẩm bán chạy nhất'
+        assign t = 'Best-selling products'
+      when '🆕 Hàng mới về'
+        assign t = '🆕 New arrivals'
+      when 'Đặc Sản 3 Miền'
+        assign t = 'Specialties of 3 Regions'
+      when 'Mua Hàng Dễ Dàng'
+        assign t = 'Easy Shopping'
+      # Subheadings
+      when 'Số lượng có hạn! Thêm vào giỏ hàng ngay.'
+        assign t = 'Limited stock! Add to cart now.'
+      when 'Giá tốt nhất trong tuần — số lượng có hạn!'
+        assign t = 'Best prices this week — limited stock!'
+      when 'Những sản phẩm được khách hàng yêu thích và đặt mua nhiều nhất'
+        assign t = 'The products our customers love and buy the most'
+      when 'Những sản phẩm vừa cập bến — nhanh tay đặt mua!'
+        assign t = 'Freshly arrived products — order now!'
+      when 'Số lượng có hạn · mỗi khách chỉ mua 1 sản phẩm mỗi loại!'
+        assign t = 'Limited stock · 1 item per type per customer!'
+      # Common buttons / labels
+      when 'Xem thêm'
+        assign t = 'See more'
+      when 'Xem tất cả'
+        assign t = 'View all'
+      when 'Xem tất cả sản phẩm'
+        assign t = 'View all products'
+      when 'Thêm vào giỏ'
+        assign t = 'Add to cart'
+      when 'Xem sản phẩm'
+        assign t = 'View product'
+      when 'Xem chi tiết'
+        assign t = 'View details'
+      when 'Tìm'
+        assign t = 'Search'
+    endcase
+  endif
+  echo t
+-%}

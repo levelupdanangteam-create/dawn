@@ -58,7 +58,7 @@
         <span class="line"></span>
       </div>
       <div class="pf-titlerow">
-        <h2 class="pf-title">{{ section.settings.heading }}</h2>
+        <h2 class="pf-title">{% render 'pf-tr', s: section.settings.heading %}</h2>
         {%- if section.settings.show_all_button -%}
           <a class="pf-all-link" href="{{ section.settings.all_button_link | default: routes.collections_url }}">
             {{ section.settings.all_button_label | default: 'Xem tất cả danh mục' }}

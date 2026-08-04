@@ -8,9 +8,9 @@
 <div class="pf-deal color-scheme-1" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
   <div class="page-width">
     <div class="pf-deal__head">
-      <h2 class="pf-deal__title">{{ section.settings.heading }}</h2>
+      <h2 class="pf-deal__title">{% render 'pf-tr', s: section.settings.heading %}</h2>
       {%- if section.settings.subheading != blank -%}
-        <p class="pf-deal__sub">{{ section.settings.subheading }}</p>
+        <p class="pf-deal__sub">{% render 'pf-tr', s: section.settings.subheading %}</p>
       {%- endif -%}
     </div>
 

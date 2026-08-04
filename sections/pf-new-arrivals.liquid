@@ -45,8 +45,8 @@
     <div class="pf-na">
       <div class="pf-na__head">
         <span class="pf-na__eyebrow">{% if request.locale.iso_code == "vi" %}🆕 Vừa lên kệ{% else %}🆕 Just arrived{% endif %}</span>
-        <h2 class="pf-na__title">{{ section.settings.heading }}</h2>
-        {%- if section.settings.subheading != blank -%}<p class="pf-na__sub">{{ section.settings.subheading }}</p>{%- endif -%}
+        <h2 class="pf-na__title">{% render 'pf-tr', s: section.settings.heading %}</h2>
+        {%- if section.settings.subheading != blank -%}<p class="pf-na__sub">{% render 'pf-tr', s: section.settings.subheading %}</p>{%- endif -%}
       </div>
 
       <div class="pf-na__grid">
