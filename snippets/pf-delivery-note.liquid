@@ -3,7 +3,11 @@
 {%- endcomment -%}
 <div class="pf-delivery">
   <span class="pf-delivery__ic" aria-hidden="true">🚚</span>
-  <span class="pf-delivery__tx">Giao hàng nhanh <b>2–5 ngày làm việc</b> — khắp châu Âu</span>
+  {%- if request.locale.iso_code == 'vi' -%}
+    <span class="pf-delivery__tx">Giao hàng nhanh <b>2–5 ngày làm việc</b> — khắp châu Âu</span>
+  {%- else -%}
+    <span class="pf-delivery__tx">Fast delivery in <b>2–5 business days</b> — across Europe</span>
+  {%- endif -%}
 </div>
 <style>
   .pf-delivery {
