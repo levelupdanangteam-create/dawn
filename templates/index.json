@@ -82,17 +82,17 @@
     "pf_deal_hook": {
       "type": "pf-deal-hook",
       "blocks": {
-        "product_q9ztm8": {
+        "product_aJXdhD": {
           "type": "product",
           "settings": {
-            "product": "acecook-mi-tom-hao-hao-vi-tom-chua-cay-75g-x-30-goi",
+            "product": "mi-tom-omachi-tom-chua-cay",
             "deal_price": "0"
           }
         },
         "product_YMtWhe": {
           "type": "product",
           "settings": {
-            "product": "gia-bao-bun-bo-hue-1-5mm-500g-x-20",
+            "product": "banh-da-nem-totaco-250g-x-80-goi",
             "deal_price": "0,9"
           }
         },
@@ -105,7 +105,7 @@
         }
       },
       "block_order": [
-        "product_q9ztm8",
+        "product_aJXdhD",
         "product_YMtWhe",
         "product_kPhpjw"
       ],
