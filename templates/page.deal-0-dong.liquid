@@ -10,8 +10,8 @@
   <div class="pf-d0__hero">
     <div class="pf-d0__hero-in">
       <span class="pf-d0__flame">🔥</span>
-      <h1 class="pf-d0__title">DEAL 0 ĐỒNG</h1>
-      <p class="pf-d0__sub">Ưu đãi đặc biệt — số lượng có hạn! Mỗi khách chỉ mua 1 sản phẩm mỗi loại.</p>
+      <h1 class="pf-d0__title">{% if request.locale.iso_code == 'vi' %}DEAL 0 ĐỒNG{% else %}0€ DEALS{% endif %}</h1>
+      <p class="pf-d0__sub">{% if request.locale.iso_code == 'vi' %}Ưu đãi đặc biệt — số lượng có hạn! Mỗi khách chỉ mua 1 sản phẩm mỗi loại.{% else %}Special deals — limited stock! Each customer may buy 1 item per type.{% endif %}</p>
     </div>
   </div>
 
@@ -42,9 +42,9 @@
     </div>
 
     <div class="pf-d0__cross">
-      <p class="pf-d0__cross-note">🛒 Mua kèm thêm sản phẩm khác để tiết kiệm phí ship và đủ điều kiện <strong>Freeship / giảm giá</strong>!</p>
+      <p class="pf-d0__cross-note">{% if request.locale.iso_code == 'vi' %}🛒 Mua kèm thêm sản phẩm khác để tiết kiệm phí ship và đủ điều kiện <strong>Freeship / giảm giá</strong>!{% else %}🛒 Add other products too to save on shipping and qualify for <strong>Free shipping / discounts</strong>!{% endif %}</p>
       <a class="pf-d0__cross-btn" href="{{ routes.all_products_collection_url }}">
-        Mua kèm sản phẩm khác
+        {% if request.locale.iso_code == 'vi' %}Mua kèm sản phẩm khác{% else %}Shop more products{% endif %}
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
       </a>
     </div>

@@ -14,8 +14,8 @@
   <div class="pf-deal-pb">
     <span class="pf-deal-pb__badge">🔥 DEAL</span>
     <p class="pf-deal-pb__txt">
-      🛒 Thêm vào giỏ hàng để hưởng ưu đãi — <b>giá chỉ {{ pf_deal_price }}</b>!
-      <span class="pf-deal-pb__note">(ưu đãi áp dụng cho 1 sản phẩm)</span>
+      {% if request.locale.iso_code == 'vi' %}🛒 Thêm vào giỏ hàng để hưởng ưu đãi — <b>giá chỉ {{ pf_deal_price }}</b>!{% else %}🛒 Add to cart to get the deal — <b>only {{ pf_deal_price }}</b>!{% endif %}
+      <span class="pf-deal-pb__note">{% if request.locale.iso_code == 'vi' %}(ưu đãi áp dụng cho 1 sản phẩm){% else %}(offer applies to 1 item){% endif %}</span>
     </p>
   </div>
 
