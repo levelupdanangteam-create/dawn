@@ -12,11 +12,11 @@
 {%- unless page.handle contains 'deal-0' -%}
 <div class="pf-ei" id="pf-exit-intent" hidden aria-hidden="true">
   <div class="pf-ei__overlay" data-pf-ei-close></div>
-  <div class="pf-ei__card" role="dialog" aria-modal="true" aria-label="Ưu đãi Deal 0 Đồng">
+  <div class="pf-ei__card" role="dialog" aria-modal="true" aria-label="0€ Deal offer">
     <button type="button" class="pf-ei__x" data-pf-ei-close aria-label="Đóng">&times;</button>
     <div class="pf-ei__flame">🔥</div>
-    <h2 class="pf-ei__title">KHOAN ĐÃ — ĐỪNG BỎ LỠ!</h2>
-    <p class="pf-ei__sub">Hôm nay đang có <strong>Deal 0 Đồng</strong> — số lượng cực kỳ có hạn. Xem ngay trước khi hết!</p>
+    <h2 class="pf-ei__title">{% if request.locale.iso_code == 'vi' %}KHOAN ĐÃ — ĐỪNG BỎ LỠ!{% else %}WAIT — DON'T MISS OUT!{% endif %}</h2>
+    <p class="pf-ei__sub">{% if request.locale.iso_code == 'vi' %}Hôm nay đang có <strong>Deal 0 Đồng</strong> — số lượng cực kỳ có hạn. Xem ngay trước khi hết!{% else %}Today we have <strong>0€ Deals</strong> — very limited stock. Grab them before they're gone!{% endif %}</p>
 
     <div class="pf-ei__products">
       {%- for row in pf_ei_rows -%}
@@ -33,8 +33,8 @@
       {%- endfor -%}
     </div>
 
-    <a class="pf-ei__cta" href="{{ pf_deal_url }}">🔥 Xem Deal 0 Đồng ngay</a>
-    <button type="button" class="pf-ei__no" data-pf-ei-close>Không, cảm ơn</button>
+    <a class="pf-ei__cta" href="{{ pf_deal_url }}">{% if request.locale.iso_code == 'vi' %}🔥 Xem Deal 0 Đồng ngay{% else %}🔥 See the 0€ Deals now{% endif %}</a>
+    <button type="button" class="pf-ei__no" data-pf-ei-close>{% if request.locale.iso_code == 'vi' %}Không, cảm ơn{% else %}No, thanks{% endif %}</button>
   </div>
 </div>
 

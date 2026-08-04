@@ -12,7 +12,7 @@
 
 <div class="pf-lead" id="pf-lead-popup" hidden aria-hidden="true">
   <div class="pf-lead__overlay" data-pf-lead-close></div>
-  <div class="pf-lead__card" role="dialog" aria-modal="true" aria-label="Nhận Ưu đãi đặc biệt từ Phomifood">
+  <div class="pf-lead__card" role="dialog" aria-modal="true" aria-label="Special Deal from Phomifood">
     <button type="button" class="pf-lead__x" data-pf-lead-close aria-label="Đóng">&times;</button>
 
     {%- form 'contact', id: 'pf-lead-form', class: 'pf-lead__form' -%}
@@ -20,20 +20,14 @@
         {%- assign pf_lead_ok = true -%}
         <div class="pf-lead__thanks">
           <div class="pf-lead__flame">🎉</div>
-          <h2 class="pf-lead__title">Cảm ơn bạn!</h2>
-          <p class="pf-lead__sub">
-            Phomifood đã <strong>giữ Ưu đãi đặc biệt</strong> cho bạn. Chúng tôi sẽ gửi ưu đãi này và các ưu đãi
-            hấp dẫn sau này qua thông tin bạn để lại. Hẹn gặp lại bạn nhé!
-          </p>
-          <a class="pf-lead__cta" href="/pages/deal-0-euro">🔥 Xem Ưu đãi đặc biệt ngay</a>
+          <h2 class="pf-lead__title">{% if request.locale.iso_code == 'vi' %}Cảm ơn bạn!{% else %}Thank you!{% endif %}</h2>
+          <p class="pf-lead__sub">{% if request.locale.iso_code == 'vi' %}Phomifood đã <strong>giữ Ưu đãi đặc biệt</strong> cho bạn. Chúng tôi sẽ gửi ưu đãi này và các ưu đãi hấp dẫn sau này qua thông tin bạn để lại. Hẹn gặp lại bạn nhé!{% else %}Phomifood has <strong>reserved the Special Deal</strong> for you. We'll send it — plus future offers — to the details you left. See you soon!{% endif %}</p>
+          <a class="pf-lead__cta" href="/pages/deal-0-euro">{% if request.locale.iso_code == 'vi' %}🔥 Xem Ưu đãi đặc biệt ngay{% else %}🔥 View the Special Deal{% endif %}</a>
         </div>
       {%- else -%}
         <div class="pf-lead__flame">🔥</div>
-        <h2 class="pf-lead__title">Giữ Ưu đãi đặc biệt cho bạn!</h2>
-        <p class="pf-lead__sub">
-          Để giữ lại <strong>Ưu đãi đặc biệt</strong>, hãy cho Phomifood biết thông tin của bạn.
-          Chúng tôi sẽ gửi tặng bạn ưu đãi này khi mua hàng, kèm các ưu đãi hấp dẫn sau này!
-        </p>
+        <h2 class="pf-lead__title">{% if request.locale.iso_code == 'vi' %}Giữ Ưu đãi đặc biệt cho bạn!{% else %}Save the Special Deal for you!{% endif %}</h2>
+        <p class="pf-lead__sub">{% if request.locale.iso_code == 'vi' %}Để giữ lại <strong>Ưu đãi đặc biệt</strong>, hãy cho Phomifood biết thông tin của bạn. Chúng tôi sẽ gửi tặng bạn ưu đãi này khi mua hàng, kèm các ưu đãi hấp dẫn sau này!{% else %}To save the <strong>Special Deal</strong>, leave your details with Phomifood. We'll give you this deal when you shop, plus more great offers later!{% endif %}</p>
 
         {%- if form.errors -%}
           {%- assign pf_lead_err = true -%}
@@ -42,17 +36,17 @@
 
         <input type="hidden" name="contact[body]" value="Đăng ký giữ Ưu đãi đặc biệt từ popup website.">
         <div class="pf-lead__field">
-          <input type="text" name="contact[first_name]" placeholder="Họ tên của bạn" autocomplete="name">
+          <input type="text" name="contact[first_name]" placeholder="{% if request.locale.iso_code == 'vi' %}Họ tên của bạn{% else %}Your name{% endif %}" autocomplete="name">
         </div>
         <div class="pf-lead__field">
-          <input type="email" name="contact[email]" placeholder="Email của bạn *" required autocomplete="email">
+          <input type="email" name="contact[email]" placeholder="{% if request.locale.iso_code == 'vi' %}Email của bạn *{% else %}Your email *{% endif %}" required autocomplete="email">
         </div>
         <div class="pf-lead__field">
-          <input type="tel" name="contact[phone]" placeholder="Số điện thoại *" required autocomplete="tel" pattern="[0-9+\s().-]{6,}">
+          <input type="tel" name="contact[phone]" placeholder="{% if request.locale.iso_code == 'vi' %}Số điện thoại *{% else %}Phone number *{% endif %}" required autocomplete="tel" pattern="[0-9+\s().-]{6,}">
         </div>
 
-        <button type="submit" class="pf-lead__cta">🎁 Giữ Ưu đãi đặc biệt cho tôi</button>
-        <button type="button" class="pf-lead__no" data-pf-lead-close>Để sau</button>
+        <button type="submit" class="pf-lead__cta">{% if request.locale.iso_code == 'vi' %}🎁 Giữ Ưu đãi đặc biệt cho tôi{% else %}🎁 Save the deal for me{% endif %}</button>
+        <button type="button" class="pf-lead__no" data-pf-lead-close>{% if request.locale.iso_code == 'vi' %}Để sau{% else %}Later{% endif %}</button>
       {%- endif -%}
     {%- endform -%}
   </div>
