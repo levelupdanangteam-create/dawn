@@ -81,34 +81,8 @@
     },
     "pf_deal_hook": {
       "type": "pf-deal-hook",
-      "blocks": {
-        "product_aJXdhD": {
-          "type": "product",
-          "settings": {
-            "product": "mi-tom-omachi-tom-chua-cay",
-            "deal_price": "0"
-          }
-        },
-        "product_YMtWhe": {
-          "type": "product",
-          "settings": {
-            "product": "banh-da-nem-totaco-250g-x-80-goi",
-            "deal_price": "0,9"
-          }
-        },
-        "product_kPhpjw": {
-          "type": "product",
-          "settings": {
-            "product": "ngoc-lien-ca-phao-trang-365g-x-24-lo",
-            "deal_price": "1,9"
-          }
-        }
-      },
-      "block_order": [
-        "product_aJXdhD",
-        "product_YMtWhe",
-        "product_kPhpjw"
-      ],
+      "blocks": {},
+      "block_order": [],
       "settings": {
         "heading": "🔥 ƯU ĐÃI ĐẶC BIỆT 0€",
         "subheading": "Số lượng có hạn! Thêm vào giỏ hàng ngay.",

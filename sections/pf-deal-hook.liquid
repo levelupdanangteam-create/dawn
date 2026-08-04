@@ -15,11 +15,14 @@
     </div>
 
     <div class="pf-deal__grid">
-      {%- for block in section.blocks -%}
-        {%- assign p = block.settings.product -%}
+      {%- comment -%}Single source: Theme settings → pf_deal_rows (handle||giá).{%- endcomment -%}
+      {%- assign pf_dh_rows = settings.pf_deal_rows | split: ';;' -%}
+      {%- for row in pf_dh_rows -%}
+        {%- assign parts = row | split: '||' -%}
+        {%- assign p = all_products[parts[0]] -%}
         {%- if p != blank and p.id -%}
           {%- assign v = p.selected_or_first_available_variant -%}
-          <div class="pf-deal__card" {{ block.shopify_attributes }}>
+          <div class="pf-deal__card">
             <div class="pf-deal__ribbon">DEAL</div>
             <a class="pf-deal__media" href="{{ p.url }}">
               {%- if p.featured_image -%}
@@ -28,8 +31,8 @@
             </a>
             <a class="pf-deal__name" href="{{ p.url }}">{{ p.title }}</a>
             <div class="pf-deal__price">
-              {%- if block.settings.deal_price != blank -%}
-                <span class="pf-deal__now">{%- unless block.settings.deal_price contains '€' -%}€{%- endunless -%}{{ block.settings.deal_price }}</span>
+              {%- if parts[1] != blank -%}
+                <span class="pf-deal__now">{%- unless parts[1] contains '€' -%}€{%- endunless -%}{{ parts[1] }}</span>
                 <span class="pf-deal__was">{{ v.price | money }}</span>
               {%- else -%}
                 <span class="pf-deal__now">{{ v.price | money }}</span>
@@ -100,22 +103,12 @@
   "tag": "section",
   "class": "section",
   "settings": [
+    { "type": "paragraph", "content": "Sản phẩm deal quản lý tại: Theme settings → 🔥 Ưu đãi đặc biệt (Deal). Sửa 1 chỗ là cập nhật khắp nơi." },
     { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "🔥 ƯU ĐÃI ĐẶC BIỆT — Giá cực rẻ" },
     { "type": "text", "id": "subheading", "label": "Mô tả ngắn", "default": "Số lượng có hạn · mỗi khách chỉ mua 1 sản phẩm mỗi loại!" },
     { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 40 },
     { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 40 }
   ],
-  "blocks": [
-    {
-      "type": "product",
-      "name": "Sản phẩm deal",
-      "settings": [
-        { "type": "product", "id": "product", "label": "Chọn sản phẩm (bản Lẻ)" },
-        { "type": "text", "id": "deal_price", "label": "Giá deal hiển thị", "info": "Nhập giá sau giảm để hiện to, vd: €1,90. Để trống sẽ hiện giá gốc." }
-      ]
-    }
-  ],
-  "max_blocks": 6,
   "presets": [ { "name": "Ưu đãi đặc biệt" } ]
 }
 {% endschema %}

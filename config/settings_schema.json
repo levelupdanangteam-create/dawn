@@ -8,6 +8,22 @@
     "theme_support_url": "https://support.shopify.com/"
   },
   {
+    "name": "🔥 Ưu đãi đặc biệt (Deal)",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Danh sách sản phẩm deal — NGUỒN DUY NHẤT. Sửa ở đây là tự cập nhật khắp nơi: section trang chủ, trang danh mục, banner trang sản phẩm, luật giỏ hàng, trang Deal, popup rời trang."
+      },
+      {
+        "type": "textarea",
+        "id": "pf_deal_rows",
+        "label": "Sản phẩm deal (mỗi dòng: handle||giá)",
+        "info": "Định dạng: handle-san-pham||giá, phân tách bằng ;; — ví dụ: mi-tom-omachi-tom-chua-cay||0€;;banh-da-nem-totaco-250g-x-80-goi||0,9€",
+        "default": "mi-tom-omachi-tom-chua-cay||0€;;banh-da-nem-totaco-250g-x-80-goi||0,9€;;ngoc-lien-ca-phao-trang-365g-x-24-lo||1,9€"
+      }
+    ]
+  },
+  {
     "name": "t:settings_schema.logo.name",
     "settings": [
       {

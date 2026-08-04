@@ -7,7 +7,14 @@
   hidden so a lone deal item can't skip the cart.
   Keep the handle list in sync with the Deal / Deal 0 Đồng sections.
 {%- endcomment -%}
-{%- assign pf_deal_handles = "acecook-mi-tom-hao-hao-vi-tom-chua-cay-75g-x-30-goi,gia-bao-bun-bo-hue-1-5mm-500g-x-20,ngoc-lien-ca-phao-trang-365g-x-24-lo" -%}
+{%- comment -%}Handles derived from the single source: Theme settings → pf_deal_rows.{%- endcomment -%}
+{%- assign pf_deal_handles = "" -%}
+{%- assign pf_dr_rows = settings.pf_deal_rows | split: ";;" -%}
+{%- for row in pf_dr_rows -%}
+  {%- assign pf_dr_parts = row | split: "||" -%}
+  {%- if forloop.first -%}{%- assign pf_deal_handles = pf_dr_parts[0] -%}
+  {%- else -%}{%- assign pf_deal_handles = pf_deal_handles | append: "," | append: pf_dr_parts[0] -%}{%- endif -%}
+{%- endfor -%}
 
 <script>
   (function () {

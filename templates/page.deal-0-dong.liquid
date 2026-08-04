@@ -4,7 +4,7 @@
   a page (e.g. handle "deal-0-dong") in Admin.
   rows: handle||deal_price_text
 {%- endcomment -%}
-{%- assign pf_rows = "acecook-mi-tom-hao-hao-vi-tom-chua-cay-75g-x-30-goi||0€;;gia-bao-bun-bo-hue-1-5mm-500g-x-20||0,9€;;ngoc-lien-ca-phao-trang-365g-x-24-lo||1,9€" | split: ";;" -%}
+{%- assign pf_rows = settings.pf_deal_rows | split: ";;" -%}
 
 <div class="pf-d0 color-scheme-1">
   <div class="pf-d0__hero">

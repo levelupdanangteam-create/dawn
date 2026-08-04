@@ -1,9 +1,9 @@
 {%- comment -%}
   On a deal product's detail page, show a notice that adding it to the
-  cart unlocks the deal price. Map: handle||deal_price (rows split by ;;).
-  Keep these in sync with the Automatic discounts + Deal Sốc section.
+  cart unlocks the deal price. Single source: Theme settings → pf_deal_rows
+  (handle||deal_price, rows split by ;;).
 {%- endcomment -%}
-{%- assign pf_deal_rows = "acecook-mi-tom-hao-hao-vi-tom-chua-cay-75g-x-30-goi||0€;;gia-bao-bun-bo-hue-1-5mm-500g-x-20||0,9€;;ngoc-lien-ca-phao-trang-365g-x-24-lo||1,9€" | split: ";;" -%}
+{%- assign pf_deal_rows = settings.pf_deal_rows | split: ";;" -%}
 {%- assign pf_deal_price = "" -%}
 {%- for row in pf_deal_rows -%}
   {%- assign parts = row | split: "||" -%}
@@ -14,7 +14,7 @@
   <div class="pf-deal-pb">
     <span class="pf-deal-pb__badge">🔥 DEAL</span>
     <p class="pf-deal-pb__txt">
-      Thêm sản phẩm này vào giỏ hàng để được hưởng <b>mức giá deal chỉ {{ pf_deal_price }}</b>!
+      🛒 Thêm vào giỏ hàng để hưởng ưu đãi — <b>giá chỉ {{ pf_deal_price }}</b>!
       <span class="pf-deal-pb__note">(ưu đãi áp dụng cho 1 sản phẩm)</span>
     </p>
   </div>

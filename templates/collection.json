@@ -22,34 +22,8 @@
     },
     "pf_deal_hook": {
       "type": "pf-deal-hook",
-      "blocks": {
-        "product_q9ztm8": {
-          "type": "product",
-          "settings": {
-            "product": "acecook-mi-tom-hao-hao-vi-tom-chua-cay-75g-x-30-goi",
-            "deal_price": "0"
-          }
-        },
-        "product_YMtWhe": {
-          "type": "product",
-          "settings": {
-            "product": "gia-bao-bun-bo-hue-1-5mm-500g-x-20",
-            "deal_price": "0,9"
-          }
-        },
-        "product_kPhpjw": {
-          "type": "product",
-          "settings": {
-            "product": "ngoc-lien-ca-phao-trang-365g-x-24-lo",
-            "deal_price": "1,9"
-          }
-        }
-      },
-      "block_order": [
-        "product_q9ztm8",
-        "product_YMtWhe",
-        "product_kPhpjw"
-      ],
+      "blocks": {},
+      "block_order": [],
       "settings": {
         "heading": "🔥 ƯU ĐÃI ĐẶC BIỆT 0€",
         "subheading": "Số lượng có hạn! Thêm vào giỏ hàng ngay.",

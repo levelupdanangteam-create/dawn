@@ -7,7 +7,7 @@
 {%- endcomment -%}
 
 {%- assign pf_deal_url = '/pages/deal-0-euro' -%}
-{%- assign pf_ei_rows = "acecook-mi-tom-hao-hao-vi-tom-chua-cay-75g-x-30-goi||0€;;gia-bao-bun-bo-hue-1-5mm-500g-x-20||0,9€;;ngoc-lien-ca-phao-trang-365g-x-24-lo||1,9€" | split: ";;" -%}
+{%- assign pf_ei_rows = settings.pf_deal_rows | split: ";;" -%}
 
 {%- unless page.handle contains 'deal-0' -%}
 <div class="pf-ei" id="pf-exit-intent" hidden aria-hidden="true">
