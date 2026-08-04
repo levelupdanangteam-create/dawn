@@ -60,10 +60,10 @@
       {%- if cart.items.last.image %} src="{{ cart.items.last.image | image_url: width: 120 }}"{% endif -%}>
     <div class="pf-sc__text">
       <span class="pf-sc__name" id="pf-sc-name">{{ cart.items.last.product.title | default: 'Sản phẩm đã thêm vào giỏ' }}</span>
-      <span class="pf-sc__meta"><span id="pf-sc-count">{{ cart.item_count }}</span> sản phẩm · <b id="pf-sc-total">{{ cart.total_price | money }}</b></span>
+      <span class="pf-sc__meta"><span id="pf-sc-count">{{ cart.item_count }}</span> {% if request.locale.iso_code == 'vi' %}sản phẩm{% else %}item(s){% endif %} · <b id="pf-sc-total">{{ cart.total_price | money }}</b></span>
     </div>
   </div>
-  <a class="pf-sc__btn" href="{{ routes.cart_url }}">🛒 Xem giỏ hàng</a>
+  <a class="pf-sc__btn" href="{{ routes.cart_url }}">🛒 {% if request.locale.iso_code == 'vi' %}Xem giỏ hàng{% else %}View cart{% endif %}</a>
   <button type="button" class="pf-sc__close" id="pf-sc-close" aria-label="Ẩn">×</button>
 </div>
 
