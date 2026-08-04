@@ -122,19 +122,19 @@
         "p1": {
           "type": "product",
           "settings": {
-            "product": "gia-bao-bun-hoa-hong-1mm-500gx20-goi"
+            "product": "acecook-mi-tom-hao-hao-vi-tom-chua-cay-75g-x-30-goi"
           }
         },
         "p2": {
           "type": "product",
           "settings": {
-            "product": "chinsu-pho-story-truyen-thong-nuoc-trong"
+            "product": "nuoc-tuong-chinsu-toi-ot-330ml-x-24"
           }
         },
         "p3": {
           "type": "product",
           "settings": {
-            "product": "nuoc-mam-chinsu-ca-hoi-500ml-15chai"
+            "product": "ngọc-lien-dưa-mon"
           }
         },
         "p4": {
@@ -146,7 +146,7 @@
         "p5": {
           "type": "product",
           "settings": {
-            "product": "tufoco-banh-trang-cuon-tron-size-22-340g-x-44-goi"
+            "product": "van-an-mang-la-tuoi"
           }
         }
       },
