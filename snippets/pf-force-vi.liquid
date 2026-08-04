@@ -8,15 +8,29 @@
 <script>
   (function () {
     try {
+      function remember() { try { localStorage.setItem('pf_lang_chosen', '1'); } catch (_) {} }
+
       // Record a manual language choice from any language selector form,
       // but ignore our own forced switch (data-pf-force).
       document.addEventListener('submit', function (e) {
         var f = e.target;
         if (!f || (f.getAttribute && f.getAttribute('data-pf-force') === '1')) return;
-        if (f.querySelector && f.querySelector('[name="locale_code"]')) {
-          try { localStorage.setItem('pf_lang_chosen', '1'); } catch (_) {}
+        if (f.querySelector && f.querySelector('[name="locale_code"]')) remember();
+      }, true);
+
+      // Some selectors switch language without a full form submit — also record
+      // the choice on any click inside a localization selector.
+      document.addEventListener('click', function (e) {
+        var t = e.target;
+        if (t && t.closest && t.closest('localization-form, .localization-form, [name="locale_code"], .disclosure--language')) {
+          remember();
         }
       }, true);
+
+      // If we're already on a non-default locale the visitor reached deliberately
+      // (a /xx/ path prefix), treat it as their choice and never force.
+      var path = location.pathname || '';
+      if (/^\/(en|de)(\/|$)/i.test(path)) remember();
 
       if (localStorage.getItem('pf_lang_chosen')) return;      // respect their pick
       var lang = (document.documentElement.lang || '').toLowerCase();
