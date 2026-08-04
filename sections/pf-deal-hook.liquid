@@ -38,7 +38,7 @@
                 <span class="pf-deal__now">{{ v.price | money }}</span>
               {%- endif -%}
             </div>
-            <div class="pf-deal__limit">⚠️ Ưu đãi chỉ áp dụng cho 1 sản phẩm — giá có thể thay đổi khi mua nhiều hơn</div>
+            <div class="pf-deal__limit">{% if request.locale.iso_code == "vi" %}⚠️ Ưu đãi chỉ áp dụng cho 1 sản phẩm — giá có thể thay đổi khi mua nhiều hơn{% else %}⚠️ Offer applies to 1 item only — price may change for larger quantities{% endif %}</div>
             {%- render 'pf-card-buttons', product: p, section_id: section.id -%}
           </div>
         {%- endif -%}

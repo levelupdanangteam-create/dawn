@@ -44,7 +44,7 @@
   <div class="pf-wrap">
     <div class="pf-na">
       <div class="pf-na__head">
-        <span class="pf-na__eyebrow">🆕 Vừa lên kệ</span>
+        <span class="pf-na__eyebrow">{% if request.locale.iso_code == "vi" %}🆕 Vừa lên kệ{% else %}🆕 Just arrived{% endif %}</span>
         <h2 class="pf-na__title">{{ section.settings.heading }}</h2>
         {%- if section.settings.subheading != blank -%}<p class="pf-na__sub">{{ section.settings.subheading }}</p>{%- endif -%}
       </div>
@@ -58,7 +58,7 @@
             {%- assign pf_cmp = pf_v.compare_at_price -%}
             {%- if pf_cmp == blank or pf_cmp <= pf_price -%}{%- assign pf_cmp = product.compare_at_price_max -%}{%- endif -%}
             <div class="pf-na__card" {{ block.shopify_attributes }}>
-              <span class="pf-na__new">🆕 Mới về</span>
+              <span class="pf-na__new">{% if request.locale.iso_code == "vi" %}🆕 Mới về{% else %}🆕 New{% endif %}</span>
               <a class="pf-na__media" href="{{ product.url }}">
                 {%- if pf_cmp > pf_price -%}
                   <span class="pf-na__sale">-{{ pf_cmp | minus: pf_price | times: 100.0 | divided_by: pf_cmp | round }}%</span>
@@ -82,7 +82,7 @@
         {%- else -%}
           {%- for i in (1..5) -%}
             <div class="pf-na__card">
-              <span class="pf-na__new">🆕 Mới về</span>
+              <span class="pf-na__new">{% if request.locale.iso_code == "vi" %}🆕 Mới về{% else %}🆕 New{% endif %}</span>
               <div class="pf-na__media">{{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}</div>
               <div class="pf-na__info">
                 <h3 class="pf-na__nm">Chọn sản phẩm</h3>
