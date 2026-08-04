@@ -1,0 +1,133 @@
+<style>
+  #pf-na-{{ section.id }} { padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px; }
+  #pf-na-{{ section.id }} .pf-wrap { max-width: var(--page-width, 120rem); margin-inline: auto; padding-inline: clamp(1.6rem, 3vw, 3rem); }
+  #pf-na-{{ section.id }} .pf-na { --cols: {{ section.settings.columns_desktop }}; }
+  #pf-na-{{ section.id }} .pf-na__head { text-align: center; margin-bottom: 2.8rem; }
+  #pf-na-{{ section.id }} .pf-na__eyebrow { display: inline-block; font-size: 1.2rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: #1e8541; margin-bottom: 0.8rem; }
+  #pf-na-{{ section.id }} .pf-na__title { font-family: var(--font-heading-family, sans-serif); font-weight: 800; font-size: clamp(2.2rem, 3.4vw, 3.2rem); color: #2a2622; margin: 0; line-height: 1.15; }
+  #pf-na-{{ section.id }} .pf-na__title::after { content: ""; display: block; width: 6rem; height: 4px; border-radius: 4px; margin: 1.2rem auto 0; background: linear-gradient(90deg, #1e8541, #63c98a); }
+  #pf-na-{{ section.id }} .pf-na__sub { margin: 1rem auto 0; max-width: 52ch; color: #6b6357; font-size: 1.45rem; }
+
+  #pf-na-{{ section.id }} .pf-na__grid { display: grid; grid-template-columns: repeat(var(--cols), 1fr); gap: 1.8rem; }
+  #pf-na-{{ section.id }} .pf-na__card {
+    position: relative; background: #fff; border: 1px solid #ece4d8; border-radius: 16px; overflow: hidden;
+    display: flex; flex-direction: column; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  #pf-na-{{ section.id }} .pf-na__card:hover { transform: translateY(-5px); box-shadow: 0 16px 36px rgba(20,103,47,.14); border-color: #bfe6cc; }
+
+  #pf-na-{{ section.id }} .pf-na__new {
+    position: absolute; top: 0; left: 0; z-index: 3;
+    display: inline-flex; align-items: center; gap: .3rem; font-weight: 800; font-size: 1.1rem; color: #fff;
+    background: linear-gradient(135deg, #1e8541, #14672f); padding: .45rem .9rem; border-radius: 16px 0 16px 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,.15);
+  }
+
+  #pf-na-{{ section.id }} .pf-na__media { position: relative; aspect-ratio: 1; background: #f7f1e9; display: grid; place-items: center; overflow: hidden; }
+  #pf-na-{{ section.id }} .pf-na__media img, #pf-na-{{ section.id }} .pf-na__media svg { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
+  #pf-na-{{ section.id }} .pf-na__card:hover .pf-na__media img { transform: scale(1.06); }
+  #pf-na-{{ section.id }} .pf-na__sale { position: absolute; top: 1rem; right: 1rem; background: #d62828; color: #fff; font-size: 1.1rem; font-weight: 800; padding: .35rem .8rem; border-radius: 7px; }
+
+  #pf-na-{{ section.id }} .pf-na__info { padding: 1.3rem 1.4rem 1.6rem; display: flex; flex-direction: column; gap: .6rem; flex: 1; }
+  #pf-na-{{ section.id }} .pf-na__info .pf-card-actions { margin-top: auto; }
+  #pf-na-{{ section.id }} .pf-na__nm { margin: 0; font-size: 1.4rem; font-weight: 600; line-height: 1.35; color: #2a2622; }
+  #pf-na-{{ section.id }} .pf-na__nm a { color: inherit; text-decoration: none; }
+  #pf-na-{{ section.id }} .pf-na__nm a:hover { color: #1e8541; }
+  #pf-na-{{ section.id }} .pf-na__price { display: flex; align-items: baseline; gap: .8rem; font-variant-numeric: tabular-nums; }
+  #pf-na-{{ section.id }} .pf-na__price .now { font-size: 1.65rem; font-weight: 800; color: #1e8541; }
+  #pf-na-{{ section.id }} .pf-na__price .was { font-size: 1.2rem; color: #a79c8e; text-decoration: line-through; }
+
+  @media (max-width: 989px) { #pf-na-{{ section.id }} .pf-na__grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 599px) { #pf-na-{{ section.id }} .pf-na__grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; } }
+</style>
+
+<div id="pf-na-{{ section.id }}" class="pf-boxed-section">
+  <div class="pf-wrap">
+    <div class="pf-na">
+      <div class="pf-na__head">
+        <span class="pf-na__eyebrow">🆕 Vừa lên kệ</span>
+        <h2 class="pf-na__title">{{ section.settings.heading }}</h2>
+        {%- if section.settings.subheading != blank -%}<p class="pf-na__sub">{{ section.settings.subheading }}</p>{%- endif -%}
+      </div>
+
+      <div class="pf-na__grid">
+        {%- for block in section.blocks -%}
+          {%- assign product = block.settings.product -%}
+          {%- if product != blank and product.id -%}
+            {%- assign pf_v = product.selected_or_first_available_variant -%}
+            {%- assign pf_price = pf_v.price -%}
+            {%- assign pf_cmp = pf_v.compare_at_price -%}
+            {%- if pf_cmp == blank or pf_cmp <= pf_price -%}{%- assign pf_cmp = product.compare_at_price_max -%}{%- endif -%}
+            <div class="pf-na__card" {{ block.shopify_attributes }}>
+              <span class="pf-na__new">🆕 Mới về</span>
+              <a class="pf-na__media" href="{{ product.url }}">
+                {%- if pf_cmp > pf_price -%}
+                  <span class="pf-na__sale">-{{ pf_cmp | minus: pf_price | times: 100.0 | divided_by: pf_cmp | round }}%</span>
+                {%- endif -%}
+                {%- if product.featured_image -%}
+                  <img src="{{ product.featured_image | image_url: width: 500 }}" alt="{{ product.title | escape }}" loading="lazy" width="500" height="500">
+                {%- else -%}
+                  {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+              </a>
+              <div class="pf-na__info">
+                <h3 class="pf-na__nm"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+                <div class="pf-na__price">
+                  <span class="now">{{ pf_price | money }}</span>
+                  {%- if pf_cmp > pf_price -%}<span class="was">{{ pf_cmp | money }}</span>{%- endif -%}
+                </div>
+                {% render 'pf-card-buttons', product: product, section_id: section.id %}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- else -%}
+          {%- for i in (1..5) -%}
+            <div class="pf-na__card">
+              <span class="pf-na__new">🆕 Mới về</span>
+              <div class="pf-na__media">{{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+              <div class="pf-na__info">
+                <h3 class="pf-na__nm">Chọn sản phẩm</h3>
+                <div class="pf-na__price"><span class="now">0&nbsp;€</span></div>
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hàng mới về",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "🆕 Hàng mới về" },
+    { "type": "text", "id": "subheading", "label": "Phụ đề", "default": "Những sản phẩm vừa cập bến — nhanh tay đặt mua!" },
+    { "type": "range", "id": "columns_desktop", "min": 3, "max": 6, "step": 1, "label": "Số cột (desktop)", "default": 5 },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Sản phẩm",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Chọn sản phẩm" }
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [
+    {
+      "name": "Hàng mới về",
+      "blocks": [
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" }
+      ]
+    }
+  ]
+}
+{% endschema %}
