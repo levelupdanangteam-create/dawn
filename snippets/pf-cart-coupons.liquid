@@ -5,10 +5,14 @@
   bar nudges the customer toward each threshold.
   rows: CODE|min_in_cents|description|short_label
 {%- endcomment -%}
-{%- assign pf_cpn_rows = "FREESHIP150|15000|Miễn phí vận chuyển toàn châu Âu · đơn từ 150€|🚚 Free ship;;GIAM2%|20000|Giảm 2% khi thanh toán online · đơn từ 200€|🎁 Giảm 2%;;BANMOI|25000|Giảm 3% tổng đơn hàng · đơn từ 250€|🏷️ Giảm 3%" | split: ";;" -%}
+{%- if request.locale.iso_code == 'vi' -%}
+  {%- assign pf_cpn_rows = "FREESHIP150|15000|Miễn phí vận chuyển toàn châu Âu · đơn từ 150€|🚚 Free ship;;GIAM2%|20000|Giảm 2% khi thanh toán online · đơn từ 200€|🎁 Giảm 2%;;BANMOI|25000|Giảm 3% tổng đơn hàng · đơn từ 250€|🏷️ Giảm 3%" | split: ";;" -%}
+{%- else -%}
+  {%- assign pf_cpn_rows = "FREESHIP150|15000|Free shipping across Europe · orders from 150€|🚚 Free ship;;GIAM2%|20000|2% off when paying online · orders from 200€|🎁 2% off;;BANMOI|25000|3% off your order · orders from 250€|🏷️ 3% off" | split: ";;" -%}
+{%- endif -%}
 
 <div class="pf-cpns" data-currency="{{ cart.currency.iso_code }}">
-  <div class="pf-cpns__head">🎁 Ưu đãi tự động — mua đủ ngưỡng là được giảm ngay khi thanh toán!</div>
+  <div class="pf-cpns__head">{% if request.locale.iso_code == 'vi' %}🎁 Ưu đãi tự động — mua đủ ngưỡng là được giảm ngay khi thanh toán!{% else %}🎁 Automatic offers — reach the threshold and save at checkout!{% endif %}</div>
 
   {%- for row in pf_cpn_rows -%}
     {%- assign parts = row | split: '|' -%}
@@ -30,9 +34,9 @@
       <div class="pf-cpn__bar"><span class="pf-cpn__bar-fill" style="width: {{ pct }}%;"></span></div>
       <div class="pf-cpn__hint">
         {%- if rem > 0 -%}
-          Mua thêm <strong>{{ rem | money }}</strong> nữa là đủ
+          {% if request.locale.iso_code == 'vi' %}Mua thêm <strong>{{ rem | money }}</strong> nữa là đủ{% else %}Add <strong>{{ rem | money }}</strong> more to unlock{% endif %}
         {%- else -%}
-          ✅ Đã đủ điều kiện!
+          {% if request.locale.iso_code == 'vi' %}✅ Đã đủ điều kiện!{% else %}✅ Unlocked!{% endif %}
         {%- endif -%}
       </div>
     </div>
@@ -99,6 +103,7 @@
 <script>
   (function () {
     if (window.__pfCoupons) return;
+    var PFLANG = '{{ request.locale.iso_code }}';
     window.__pfCoupons = true;
 
     function root() { return (window.Shopify && Shopify.routes ? Shopify.routes.root : '/'); }
@@ -141,10 +146,10 @@
               if (fill) fill.style.width = pct + '%';
               if (rem > 0) {
                 el.classList.remove('is-eligible');
-                if (hint) hint.innerHTML = 'Mua thêm <strong>' + fmt(rem, cur) + '</strong> nữa là đủ';
+                if (hint) hint.innerHTML = (PFLANG === 'vi' ? 'Mua thêm <strong>' + fmt(rem, cur) + '</strong> nữa là đủ' : 'Add <strong>' + fmt(rem, cur) + '</strong> more to unlock');
               } else {
                 el.classList.add('is-eligible');
-                if (hint) hint.textContent = '✅ Đã đủ điều kiện!';
+                if (hint) hint.textContent = '{% if request.locale.iso_code == 'vi' %}✅ Đã đủ điều kiện!{% else %}✅ Unlocked!{% endif %}';
                 autoApply(code);
               }
             });

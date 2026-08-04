@@ -47,7 +47,7 @@
                 <div>
                   {%- if cart.cart_level_discount_applications.size > 0 -%}
                     <div class="pf-applied">
-                      <div class="pf-applied__head">🎉 Ưu đãi đã được áp dụng!</div>
+                      <div class="pf-applied__head">{% if request.locale.iso_code == 'vi' %}🎉 Ưu đãi đã được áp dụng!{% else %}🎉 Offers applied!{% endif %}</div>
                       <ul class="pf-applied__list list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
                         {%- for discount in cart.cart_level_discount_applications -%}
                           <li class="pf-applied__item">
@@ -110,7 +110,7 @@
               {% render 'pf-cart-coupons' %}
               <div class="pf-cart-urgency">
                 <span class="pf-cart-urgency__icon">⏰</span>
-                <span>Ưu đãi trong giỏ hàng có thể thay đổi hoặc kết thúc bất cứ lúc nào. Hoàn tất đơn hàng ngay để giữ mức giá ưu đãi của bạn!</span>
+                <span>{% if request.locale.iso_code == 'vi' %}Ưu đãi trong giỏ hàng có thể thay đổi hoặc kết thúc bất cứ lúc nào. Hoàn tất đơn hàng ngay để giữ mức giá ưu đãi của bạn!{% else %}Cart offers may change or end at any time. Complete your order now to lock in your deal price!{% endif %}</span>
               </div>
               <div class="cart__ctas" {{ block.shopify_attributes }}>
                 <button
