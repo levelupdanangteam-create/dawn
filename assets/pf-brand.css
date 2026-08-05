@@ -820,3 +820,10 @@ body:has(.menu-drawer-container[open]) .slideshow__control {
   cursor: pointer;
 }
 .header__inline-menu summary .pf-parent-link span { color: inherit; }
+
+/* ===== PHOMIFOOD: "View all" link at top of mobile drawer submenus ===== */
+.menu-drawer__submenu .pf-drawer-viewall {
+  font-weight: 800 !important;
+  color: #1e8541 !important;
+}
+.menu-drawer__submenu .pf-drawer-viewall:active { color: #14672f !important; }

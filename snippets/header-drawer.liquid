@@ -50,6 +50,16 @@
                             {% render "pf-menu-label", title: link.title %}
                           </button>
                           <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
+                            {%- if link.url != blank and link.url != '#' -%}
+                              <li>
+                                <a
+                                  href="{{ link.url }}"
+                                  class="menu-drawer__menu-item link link--text list-menu__item focus-inset pf-drawer-viewall"
+                                >
+                                  {% if request.locale.iso_code == 'vi' %}→ Xem tất cả{% else %}→ View all{% endif %}
+                                </a>
+                              </li>
+                            {%- endif -%}
                             {%- for childlink in link.links -%}
                               <li>
                                 {%- if childlink.links == blank -%}
