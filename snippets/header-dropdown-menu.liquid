@@ -31,6 +31,16 @@
                 role="list"
                 tabindex="-1"
               >
+                {%- if link.url != blank and link.url != '#' -%}
+                  <li>
+                    <a
+                      href="{{ link.url }}"
+                      class="header__menu-item list-menu__item link link--text focus-inset caption-large pf-menu-viewall"
+                    >
+                      {% if request.locale.iso_code == 'vi' %}→ Xem tất cả{% else %}→ View all{% endif %}
+                    </a>
+                  </li>
+                {%- endif -%}
                 {%- for childlink in link.links -%}
                   <li>
                     {%- if childlink.links == blank -%}

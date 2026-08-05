@@ -808,3 +808,12 @@ body:has(.menu-drawer-container[open]) .slideshow__control {
 .js .menu-drawer .menu-drawer__menu-item .icon-caret { display: inline-block; }
 .menu-drawer .menu-drawer__menu-item > .svg-wrapper .icon-caret { transition: transform .2s ease; }
 .menu-drawer details[open] > summary.menu-drawer__menu-item .icon-caret { transform: rotate(180deg); }
+
+/* ===== PHOMIFOOD: "View all" link at top of desktop dropdown menus ===== */
+.header__submenu .pf-menu-viewall {
+  font-weight: 800 !important;
+  color: #1e8541 !important;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  margin-bottom: .4rem;
+}
+.header__submenu .pf-menu-viewall:hover { color: #14672f !important; }
