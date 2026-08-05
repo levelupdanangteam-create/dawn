@@ -16,13 +16,25 @@
                 id="HeaderMenu-{{ link.handle }}"
                 class="header__menu-item list-menu__item link focus-inset"
               >
-                <span
-                  {%- if link.child_active %}
-                    class="header__active-menu-item"
-                  {% endif %}
-                >
-                  {% render "pf-menu-label", title: link.title %}
-                </span>
+                {%- if link.url != blank and link.url != '#' -%}
+                  <a href="{{ link.url }}" class="pf-parent-link"{% if link.current %} aria-current="page"{% endif %}>
+                    <span
+                      {%- if link.child_active or link.current %}
+                        class="header__active-menu-item"
+                      {% endif %}
+                    >
+                      {% render "pf-menu-label", title: link.title %}
+                    </span>
+                  </a>
+                {%- else -%}
+                  <span
+                    {%- if link.child_active %}
+                      class="header__active-menu-item"
+                    {% endif %}
+                  >
+                    {% render "pf-menu-label", title: link.title %}
+                  </span>
+                {%- endif -%}
                 {{- 'icon-caret.svg' | inline_asset_content -}}
               </summary>
               <ul
@@ -31,16 +43,6 @@
                 role="list"
                 tabindex="-1"
               >
-                {%- if link.url != blank and link.url != '#' -%}
-                  <li>
-                    <a
-                      href="{{ link.url }}"
-                      class="header__menu-item list-menu__item link link--text focus-inset caption-large pf-menu-viewall"
-                    >
-                      {% if request.locale.iso_code == 'vi' %}→ Xem tất cả{% else %}→ View all{% endif %}
-                    </a>
-                  </li>
-                {%- endif -%}
                 {%- for childlink in link.links -%}
                   <li>
                     {%- if childlink.links == blank -%}
@@ -111,3 +113,28 @@
     {%- endfor -%}
   </ul>
 </nav>
+
+<script>
+  /* PHOMIFOOD: on desktop, open each top-level dropdown on HOVER so the parent
+     item ("Sản phẩm") stays a real link — hover to preview, click to open the
+     full products page. */
+  (function () {
+    if (window.__pfMenuHover) return;
+    window.__pfMenuHover = true;
+    var MQ = window.matchMedia('(min-width: 990px)');
+    document.querySelectorAll('.header__inline-menu header-menu').forEach(function (hm) {
+      var details = hm.querySelector('details');
+      if (!details) return;
+      var timer;
+      hm.addEventListener('mouseenter', function () {
+        if (!MQ.matches) return;
+        clearTimeout(timer);
+        details.setAttribute('open', '');
+      });
+      hm.addEventListener('mouseleave', function () {
+        if (!MQ.matches) return;
+        timer = setTimeout(function () { details.removeAttribute('open'); }, 140);
+      });
+    });
+  })();
+</script>

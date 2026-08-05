@@ -809,11 +809,14 @@ body:has(.menu-drawer-container[open]) .slideshow__control {
 .menu-drawer .menu-drawer__menu-item > .svg-wrapper .icon-caret { transition: transform .2s ease; }
 .menu-drawer details[open] > summary.menu-drawer__menu-item .icon-caret { transform: rotate(180deg); }
 
-/* ===== PHOMIFOOD: "View all" link at top of desktop dropdown menus ===== */
-.header__submenu .pf-menu-viewall {
-  font-weight: 800 !important;
-  color: #1e8541 !important;
-  border-bottom: 1px solid rgba(0,0,0,.08);
-  margin-bottom: .4rem;
+/* ===== PHOMIFOOD: clickable parent menu item (goes to its collection) =====
+   The parent ("Sản phẩm") is a real link: hover opens the dropdown, click
+   navigates to the general products page. */
+.header__inline-menu summary .pf-parent-link {
+  color: inherit !important;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
 }
-.header__submenu .pf-menu-viewall:hover { color: #14672f !important; }
+.header__inline-menu summary .pf-parent-link span { color: inherit; }
