@@ -4,6 +4,8 @@
   price and a "1 per order" note. Actual price + the 1-per-order limit
   are controlled in Shopify (variant price + quantity rule Max = 1).
 {%- endcomment -%}
+{%- assign pf_dh_rows = settings.pf_deal_rows | split: ';;' -%}
+{%- assign pf_dh_count = pf_dh_rows.size -%}
 
 <div class="pf-deal color-scheme-1" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
   <div class="page-width">
@@ -51,8 +53,8 @@
   .pf-deal__head { text-align: center; margin-bottom: 2.4rem; }
   .pf-deal__title { margin: 0; font-size: 2.8rem; font-weight: 800; color: #d62828; letter-spacing: .3px; }
   .pf-deal__sub { margin: .6rem 0 0; font-size: 1.5rem; color: #6a6255; }
-  /* Desktop: 3 cards in a row, no scroll */
-  .pf-deal__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
+  /* Desktop: all deal cards on one row, no scroll */
+  .pf-deal__grid { display: grid; grid-template-columns: repeat({{ pf_dh_count }}, 1fr); gap: 1.6rem; }
   .pf-deal__card {
     position: relative;
     display: flex; flex-direction: column; background: #fff;
