@@ -22,8 +22,14 @@
   #pf-catgrid-{{ section.id }} .pf-all-link .arw { transition: transform .18s ease; }
   #pf-catgrid-{{ section.id }} .pf-all-link:hover .arw { transform: translateX(4px); }
 
-  #pf-catgrid-{{ section.id }} .pf-grid2 { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.3rem; max-width: 116rem; margin-inline: auto; }
-  #pf-catgrid-{{ section.id }} .pf-cat2 { flex: 0 0 calc((100% - 2.6rem) / 3); }
+  #pf-catgrid-{{ section.id }} .pf-grid2 {
+    display: flex; flex-wrap: nowrap; gap: 1.3rem; max-width: 116rem; margin-inline: auto;
+    overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+    padding-bottom: 1.2rem; scrollbar-width: thin; scrollbar-color: #d9cdb6 transparent;
+  }
+  #pf-catgrid-{{ section.id }} .pf-grid2::-webkit-scrollbar { height: 8px; }
+  #pf-catgrid-{{ section.id }} .pf-grid2::-webkit-scrollbar-thumb { background: #d9cdb6; border-radius: 999px; }
+  #pf-catgrid-{{ section.id }} .pf-cat2 { flex: 0 0 calc((100% - 3.9rem) / 4); scroll-snap-align: start; }
   #pf-catgrid-{{ section.id }} .pf-cat2 {
     display: flex; align-items: center; justify-content: space-between; gap: .8rem;
     background: #f3f1ec; border: 1px solid #ece7dd; border-radius: 14px; padding: 1.1rem 1.4rem;
@@ -41,9 +47,9 @@
   #pf-catgrid-{{ section.id }} .pf-cat2__img img { width: 100%; height: 6.8rem; object-fit: contain; transition: transform .3s ease; }
   #pf-catgrid-{{ section.id }} .pf-cat2:hover .pf-cat2__img img { transform: scale(1.06); }
 
-  @media (max-width: 989px) { #pf-catgrid-{{ section.id }} .pf-cat2 { flex: 0 0 calc((100% - 1.3rem) / 2); } }
+  @media (max-width: 989px) { #pf-catgrid-{{ section.id }} .pf-cat2 { flex: 0 0 calc((100% - 1.3rem) / 2.4); } }
   @media (max-width: 599px) {
-    #pf-catgrid-{{ section.id }} .pf-cat2 { flex: 0 0 100%; }
+    #pf-catgrid-{{ section.id }} .pf-cat2 { flex: 0 0 78%; }
     #pf-catgrid-{{ section.id }} .pf-titlerow { flex-direction: column; }
     #pf-catgrid-{{ section.id }} .pf-all-link { position: static; transform: none; margin-top: .8rem; }
   }
