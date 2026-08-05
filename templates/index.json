@@ -12,12 +12,53 @@
     "pf_category_grid": {
       "type": "pf-category-grid",
       "blocks": {
-        "cat1": {
+        "category_MTQ6Hj": {
+          "type": "category",
+          "settings": {
+            "collection": "dồ-uống",
+            "label": "Đồ uống",
+            "image_url": "",
+            "price_text": "",
+            "badge_color": ""
+          }
+        },
+        "category_9T6JEJ": {
           "type": "category",
           "settings": {
             "collection": "bột-gia-vị",
-            "label": "Gia Vị",
-            "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/gia_v.png?v=1784600459",
+            "label": "Gia vị và bột",
+            "image": "shopify://shop_images/nuoc-mam-hieu-ca-muc-squid-300ml-thai-lan-03.jpg",
+            "image_url": "",
+            "price_text": "",
+            "badge_color": ""
+          }
+        },
+        "category_Epjgx6": {
+          "type": "category",
+          "settings": {
+            "collection": "thực-phẩm-chế-biến-sẵn",
+            "label": "Thực phẩm chế biến sẵn",
+            "image_url": "",
+            "price_text": "",
+            "badge_color": ""
+          }
+        },
+        "category_y8g6ky": {
+          "type": "category",
+          "settings": {
+            "collection": "banh-kẹo-dồ-an-vặt",
+            "label": "Bánh, kẹo và đồ ăn vặt",
+            "image_url": "",
+            "price_text": "",
+            "badge_color": ""
+          }
+        },
+        "cat1": {
+          "type": "category",
+          "settings": {
+            "collection": "gạo-nếp-cac-loại",
+            "label": "Gạo, nếp các loại",
+            "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/z6922210164962-fd56bef27dd6da270d1ab5bed8b608d220250819121050.jpg?v=1784472229",
             "price_text": "Giá chỉ từ 1,3€",
             "badge_color": ""
           }
@@ -25,9 +66,10 @@
         "cat2": {
           "type": "category",
           "settings": {
-            "collection": "gạo-banh-gạo",
-            "label": "Gạo, các loại bột",
-            "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/g_o_2.png?v=1784600460",
+            "collection": "mi-an-liền",
+            "label": "Mì ăn liền",
+            "image": "shopify://shop_images/747613366_122098487565396579_1473846482251679537_n.jpg",
+            "image_url": "",
             "price_text": "",
             "badge_color": ""
           }
@@ -35,9 +77,10 @@
         "cat4": {
           "type": "category",
           "settings": {
-            "collection": "bun-phở",
-            "label": "Bún & Phở",
-            "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/bun_ph.png?v=1784600460",
+            "collection": "banh-trang-cac-loại",
+            "label": "Bánh tráng",
+            "image": "shopify://shop_images/banh-da-nem-totaco.webp",
+            "image_url": "",
             "price_text": "",
             "badge_color": ""
           }
@@ -45,9 +88,10 @@
         "cat3": {
           "type": "category",
           "settings": {
-            "collection": "ca-phe",
-            "label": "Đồ uống",
-            "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/d_u_ng.png?v=1784600461",
+            "collection": "sữa-cac-loại",
+            "label": "Sữa",
+            "image": "shopify://shop_images/sua-tuoi-th-true-milk-it-duong-hop-180ml-a1.jpg",
+            "image_url": "",
             "price_text": "",
             "badge_color": ""
           }
@@ -55,15 +99,20 @@
         "cat5": {
           "type": "category",
           "settings": {
-            "collection": "dồ-an-vặt-sữa",
-            "label": "Đồ Ăn Vặt",
-            "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/d_an_v_t.png?v=1784600461",
+            "collection": "bun-phở-kho",
+            "label": "Bún, phở",
+            "image": "shopify://shop_images/bun_ph.png",
+            "image_url": "",
             "price_text": "",
             "badge_color": ""
           }
         }
       },
       "block_order": [
+        "category_MTQ6Hj",
+        "category_9T6JEJ",
+        "category_Epjgx6",
+        "category_y8g6ky",
         "cat1",
         "cat2",
         "cat4",
