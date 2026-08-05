@@ -50,6 +50,11 @@
       }
       #pf-cbox-{{ section.id }} .collection.page-width,
       #pf-cbox-{{ section.id }} .collection--empty.page-width { max-width: 100%; padding-inline: 0; }
+      /* Native filter + sort bar aligns flush inside the white card */
+      #pf-cbox-{{ section.id }} .facets.page-width,
+      #pf-cbox-{{ section.id }} #main-collection-filters.page-width,
+      #pf-cbox-{{ section.id }} .product-count.page-width { max-width: 100%; padding-inline: 0; margin-inline: 0; }
+      #pf-cbox-{{ section.id }} .facets-container { margin-bottom: 1.6rem; }
       #pf-cbox-{{ section.id }} .pf-ctbar {
         display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.4rem;
         margin-bottom: 2rem; padding-bottom: 1.6rem; border-bottom: 1px solid #f0e8db;
@@ -62,6 +67,7 @@
       }
       #pf-cbox-{{ section.id }} .pf-chip:hover { background: #eaf3ec; border-color: #bfe0c7; color: #14672f; transform: translateY(-2px); }
       #pf-cbox-{{ section.id }} .pf-chip.is-active { background: linear-gradient(90deg,#1e8541,#14672f); border-color: #14672f; color: #fff; box-shadow: 0 6px 14px rgba(20,90,45,.28); }
+      #pf-cbox-{{ section.id }} .pf-ctbar__hint { font-size: 1.4rem; font-weight: 700; color: #6a6255; }
       #pf-cbox-{{ section.id }} .pf-search { display: flex; align-items: stretch; min-width: 22rem; flex: 0 1 30rem; }
       #pf-cbox-{{ section.id }} .pf-search input {
         flex: 1; min-width: 0; border: 1px solid #e0d6c4; border-right: none; border-radius: 999px 0 0 999px;
@@ -85,23 +91,12 @@
     {%- endstyle -%}
 
     <div id="pf-cbox-{{ section.id }}">
-      {%- assign pf_cats = 'bột-gia-vị,gạo-banh-gạo,ca-phe,bun-phở,dồ-an-vặt-sữa' | split: ',' -%}
-      {%- assign pf_labels = 'Gia Vị,Bột gạo nếp,Cà phê,Bún & Phở,Đồ ăn vặt' | split: ',' -%}
-      {%- assign pf_icons = '🧂,🌾,☕,🍜,🍬' | split: ',' -%}
       <div class="pf-ctbar">
-        <div class="pf-chips">
-          <a class="pf-chip{% if collection.handle == 'all' %} is-active{% endif %}" href="/collections/all">🍜 Tất cả</a>
-          {%- for h in pf_cats -%}
-            {%- assign pf_col = collections[h] -%}
-            {%- if pf_col != empty -%}
-              <a class="pf-chip{% if collection.handle == pf_col.handle %} is-active{% endif %}" href="{{ pf_col.url }}">{{ pf_icons[forloop.index0] }} {{ pf_labels[forloop.index0] }}</a>
-            {%- endif -%}
-          {%- endfor -%}
-        </div>
+        <span class="pf-ctbar__hint">{% if request.locale.iso_code == 'vi' %}Lọc &amp; sắp xếp sản phẩm bên dưới{% else %}Filter &amp; sort products below{% endif %}</span>
         <form class="pf-search" action="{{ routes.search_url }}" method="get" role="search">
           <input type="hidden" name="type" value="product">
-          <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Tìm sản phẩm..." aria-label="Tìm kiếm sản phẩm">
-          <button type="submit" aria-label="Tìm kiếm">🔍 Tìm</button>
+          <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{% if request.locale.iso_code == 'vi' %}Tìm sản phẩm...{% else %}Search products...{% endif %}" aria-label="Tìm kiếm sản phẩm">
+          <button type="submit" aria-label="Tìm kiếm">🔍 {% if request.locale.iso_code == 'vi' %}Tìm{% else %}Search{% endif %}</button>
         </form>
       </div>
     {%- paginate collection.products by section.settings.products_per_page -%}

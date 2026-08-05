@@ -22,13 +22,8 @@ body.gradient {
 #MainContent[data-template='collection'] collection-component > .gradient {
   background: transparent !important;
 }
-/* Hide Dawn's default Availability/Price/Sort bar on collections
-   (replaced by the PHOMIFOOD category chips + search toolbar) */
-#MainContent[data-template='collection'] #main-collection-filters,
-#MainContent[data-template='collection'] .facets-container,
-#MainContent[data-template='collection'] facet-filters-form {
-  display: none !important;
-}
+/* Dawn's native filter + sort bar (price, category, sort) is used on
+   collections. Keep it visible; the PHOMIFOOD search box sits above it. */
 
 /* ---- Header: blue brand background -------------------------------- */
 .header-wrapper,
