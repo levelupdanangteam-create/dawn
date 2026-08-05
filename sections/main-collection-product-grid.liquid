@@ -126,10 +126,15 @@
                 <option value="{{ clink.url }}"{% if clink.current or clink.child_active %} selected{% endif %}>{% render 'pf-menu-label', title: clink.title %}</option>
               {%- endfor -%}
             {%- else -%}
-              {%- for col in collections -%}
-                {%- unless col.handle == 'all' or col.handle == 'frontpage' -%}
-                  <option value="{{ col.url }}"{% if collection.handle == col.handle %} selected{% endif %}>{{ col.title }}</option>
-                {%- endunless -%}
+              {%- comment -%} Same 9 categories shown on the homepage grid {%- endcomment -%}
+              {%- assign pf_home_cats = 'dồ-uống||Đồ uống;;bột-gia-vị||Gia vị và bột;;thực-phẩm-chế-biến-sẵn||Thực phẩm chế biến sẵn;;banh-kẹo-dồ-an-vặt||Bánh, kẹo và đồ ăn vặt;;gạo-nếp-cac-loại||Gạo, nếp các loại;;mi-an-liền||Mì ăn liền;;banh-trang-cac-loại||Bánh tráng;;sữa-cac-loại||Sữa;;bun-phở-kho||Bún, phở' | split: ';;' -%}
+              {%- for pair in pf_home_cats -%}
+                {%- assign hp = pair | split: '||' -%}
+                {%- assign chandle = hp[0] -%}
+                {%- assign ccol = collections[chandle] -%}
+                {%- if ccol != empty and ccol.url -%}
+                  <option value="{{ ccol.url }}"{% if collection.handle == chandle %} selected{% endif %}>{{ hp[1] }}</option>
+                {%- endif -%}
               {%- endfor -%}
             {%- endif -%}
           </select>
