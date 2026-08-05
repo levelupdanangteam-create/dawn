@@ -116,7 +116,7 @@
             onchange="if(this.value){window.location.href=this.value;}"
           >
             <option value="" disabled selected hidden>
-              {% if request.locale.iso_code == 'vi' %}Chọn danh mục{% else %}Choose category{% endif %}
+              {% if request.locale.iso_code == 'vi' %}Chọn danh mục sản phẩm{% else %}Choose a product category{% endif %}
             </option>
             <option value="/collections/all">
               {% if request.locale.iso_code == 'vi' %}Tất cả sản phẩm{% else %}All products{% endif %}
