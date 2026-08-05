@@ -71,6 +71,17 @@
       #pf-cbox-{{ section.id }} .pf-chip:hover { background: #eaf3ec; border-color: #bfe0c7; color: #14672f; transform: translateY(-2px); }
       #pf-cbox-{{ section.id }} .pf-chip.is-active { background: linear-gradient(90deg,#1e8541,#14672f); border-color: #14672f; color: #fff; box-shadow: 0 6px 14px rgba(20,90,45,.28); }
       #pf-cbox-{{ section.id }} .pf-ctbar__hint { font-size: 1.4rem; font-weight: 700; color: #6a6255; }
+      #pf-cbox-{{ section.id }} .pf-catselect-wrap { position: relative; display: inline-flex; align-items: center; }
+      #pf-cbox-{{ section.id }} .pf-catselect-ic { position: absolute; left: 1.3rem; font-size: 1.6rem; pointer-events: none; }
+      #pf-cbox-{{ section.id }} .pf-catselect {
+        appearance: none; -webkit-appearance: none; cursor: pointer;
+        border: 1px solid #e0d6c4; border-radius: 999px; background: #fbf8f2;
+        padding: 1rem 4rem 1rem 4rem; font-size: 1.45rem; font-weight: 700; color: #2a2622;
+        min-width: 22rem; line-height: 1.2;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23146' d='M1 1l5 5 5-5' stroke='%231e8541' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat; background-position: right 1.5rem center;
+      }
+      #pf-cbox-{{ section.id }} .pf-catselect:focus { outline: none; border-color: #1e8541; box-shadow: 0 0 0 2px rgba(30,133,65,.2); }
       #pf-cbox-{{ section.id }} .pf-search { display: flex; align-items: stretch; min-width: 22rem; flex: 0 1 30rem; }
       #pf-cbox-{{ section.id }} .pf-search input {
         flex: 1; min-width: 0; border: 1px solid #e0d6c4; border-right: none; border-radius: 999px 0 0 999px;
@@ -87,6 +98,8 @@
         #pf-cbox-{{ section.id }} { border-radius: 16px; padding: 1.4rem 1.2rem 1.8rem; }
         #pf-cbox-{{ section.id }} .pf-ctbar { flex-direction: column; align-items: stretch; }
         #pf-cbox-{{ section.id }} .pf-chips { justify-content: center; }
+        #pf-cbox-{{ section.id }} .pf-catselect-wrap { width: 100%; }
+        #pf-cbox-{{ section.id }} .pf-catselect { width: 100%; min-width: 0; }
         #pf-cbox-{{ section.id }} .pf-search { flex: 0 0 auto; width: 100%; min-width: 0; }
         #pf-cbox-{{ section.id }} .pf-search input,
         #pf-cbox-{{ section.id }} .pf-search button { height: 4.8rem; }
@@ -94,28 +107,30 @@
     {%- endstyle -%}
 
     <div id="pf-cbox-{{ section.id }}">
-      {%- if section.settings.pf_show_quickfilter -%}
-        <div class="pf-chips">
-          {%- if section.settings.pf_show_all_chip -%}
-            <a class="pf-chip{% if collection.handle == 'all' %} is-active{% endif %}" href="/collections/all">🍜 {% if request.locale.iso_code == 'vi' %}Tất cả{% else %}All{% endif %}</a>
-          {%- endif -%}
-          {%- if section.settings.pf_category_menu != blank -%}
-            {%- for clink in section.settings.pf_category_menu.links -%}
-              <a class="pf-chip{% if clink.current or clink.child_active %} is-active{% endif %}" href="{{ clink.url }}">{% render 'pf-menu-label', title: clink.title %}</a>
-            {%- endfor -%}
-          {%- endif -%}
-          {%- if section.settings.pf_show_sale_chip -%}
-            {%- if section.settings.pf_sale_collection != blank -%}
-              {%- assign pf_sale_col = section.settings.pf_sale_collection -%}
-              <a class="pf-chip pf-chip--sale{% if collection.handle == pf_sale_col.handle %} is-active{% endif %}" href="{{ pf_sale_col.url }}">🔥 {% if request.locale.iso_code == 'vi' %}Đang giảm giá{% else %}On sale{% endif %}</a>
-            {%- else -%}
-              <button type="button" class="pf-chip pf-chip--sale" data-pf-sale-toggle aria-pressed="false">🔥 {% if request.locale.iso_code == 'vi' %}Đang giảm giá{% else %}On sale{% endif %}</button>
-            {%- endif -%}
-          {%- endif -%}
-        </div>
-      {%- endif -%}
       <div class="pf-ctbar">
-        <span class="pf-ctbar__hint">{% if request.locale.iso_code == 'vi' %}Lọc &amp; sắp xếp sản phẩm bên dưới{% else %}Filter &amp; sort products below{% endif %}</span>
+        <div class="pf-catselect-wrap">
+          <span class="pf-catselect-ic" aria-hidden="true">📂</span>
+          <select
+            class="pf-catselect"
+            aria-label="{% if request.locale.iso_code == 'vi' %}Chọn danh mục{% else %}Choose category{% endif %}"
+            onchange="if(this.value){window.location.href=this.value;}"
+          >
+            <option value="/collections/all"{% if collection.handle == 'all' or collection.handle == blank %} selected{% endif %}>
+              {% if request.locale.iso_code == 'vi' %}Tất cả sản phẩm{% else %}All products{% endif %}
+            </option>
+            {%- if section.settings.pf_category_menu != blank -%}
+              {%- for clink in section.settings.pf_category_menu.links -%}
+                <option value="{{ clink.url }}"{% if clink.current or clink.child_active %} selected{% endif %}>{% render 'pf-menu-label', title: clink.title %}</option>
+              {%- endfor -%}
+            {%- else -%}
+              {%- for col in collections -%}
+                {%- unless col.handle == 'all' or col.handle == 'frontpage' -%}
+                  <option value="{{ col.url }}"{% if collection.handle == col.handle %} selected{% endif %}>{{ col.title }}</option>
+                {%- endunless -%}
+              {%- endfor -%}
+            {%- endif -%}
+          </select>
+        </div>
         <form class="pf-search" action="{{ routes.search_url }}" method="get" role="search">
           <input type="hidden" name="type" value="product">
           <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{% if request.locale.iso_code == 'vi' %}Tìm sản phẩm...{% else %}Search products...{% endif %}" aria-label="Tìm kiếm sản phẩm">
