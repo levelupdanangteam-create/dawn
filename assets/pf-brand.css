@@ -781,3 +781,30 @@ body:has(.menu-drawer-container[open]) .slideshow__control {
   visibility: hidden !important;
   pointer-events: none !important;
 }
+
+/* ===== PHOMIFOOD: mobile menu — inline accordion (dropdown) submenus =====
+   Dawn's default drawer slides parent items ("Sản phẩm") into a separate
+   panel. This turns them into a dropdown that expands in place instead.
+   Selectors are extra-specific because component-menu-drawer.css loads after
+   this file and would otherwise win the tie. */
+.js .menu-drawer .menu-drawer__submenu {
+  position: static;
+  transform: none;
+  visibility: visible;
+  height: auto;
+  bottom: auto;
+  z-index: auto;
+  background-color: transparent;
+}
+/* keep the main menu list visible while a submenu is open (accordion, not slide) */
+.js .menu-drawer .menu-drawer__navigation .submenu-open { visibility: visible; }
+/* the sliding-panel "back" button isn't needed in an accordion */
+.menu-drawer .menu-drawer__submenu .menu-drawer__close-button { display: none; }
+/* indent child links so the hierarchy reads clearly */
+.menu-drawer .menu-drawer__submenu .menu-drawer__menu-item { padding-left: 4.6rem; }
+.menu-drawer .menu-drawer__submenu .menu-drawer__submenu .menu-drawer__menu-item { padding-left: 6.2rem; }
+/* swap the right-arrow (→) for a down-caret (▾) that rotates when open */
+.menu-drawer .menu-drawer__menu-item > .svg-wrapper .icon-arrow { display: none; }
+.js .menu-drawer .menu-drawer__menu-item .icon-caret { display: inline-block; }
+.menu-drawer .menu-drawer__menu-item > .svg-wrapper .icon-caret { transition: transform .2s ease; }
+.menu-drawer details[open] > summary.menu-drawer__menu-item .icon-caret { transform: rotate(180deg); }
