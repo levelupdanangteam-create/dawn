@@ -59,7 +59,10 @@
         display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.4rem;
         margin-bottom: 2rem; padding-bottom: 1.6rem; border-bottom: 1px solid #f0e8db;
       }
-      #pf-cbox-{{ section.id }} .pf-chips { display: flex; flex-wrap: wrap; gap: .8rem; }
+      #pf-cbox-{{ section.id }} .pf-chips { display: flex; flex-wrap: wrap; gap: .8rem; margin-bottom: 1.6rem; }
+      #pf-cbox-{{ section.id }} .pf-chip--sale { background: #fdecec; border-color: #f3c0c0; color: #d62828; }
+      #pf-cbox-{{ section.id }} .pf-chip--sale:hover { background: #fbdada; border-color: #e89a9a; color: #b81f1f; }
+      #pf-cbox-{{ section.id }} .pf-chip--sale.is-active { background: linear-gradient(90deg,#e8452f,#d62828); border-color: #d62828; color: #fff; box-shadow: 0 6px 14px rgba(214,40,40,.28); }
       #pf-cbox-{{ section.id }} .pf-chip {
         display: inline-flex; align-items: center; gap: .4rem; padding: .7rem 1.4rem; border-radius: 999px;
         font-size: 1.35rem; font-weight: 700; text-decoration: none; color: #2a2622;
@@ -91,6 +94,22 @@
     {%- endstyle -%}
 
     <div id="pf-cbox-{{ section.id }}">
+      {%- if section.settings.pf_show_quickfilter -%}
+        <div class="pf-chips">
+          {%- if section.settings.pf_show_all_chip -%}
+            <a class="pf-chip{% if collection.handle == 'all' %} is-active{% endif %}" href="/collections/all">🍜 {% if request.locale.iso_code == 'vi' %}Tất cả{% else %}All{% endif %}</a>
+          {%- endif -%}
+          {%- if section.settings.pf_category_menu != blank -%}
+            {%- for clink in section.settings.pf_category_menu.links -%}
+              <a class="pf-chip{% if clink.current or clink.child_active %} is-active{% endif %}" href="{{ clink.url }}">{% render 'pf-menu-label', title: clink.title %}</a>
+            {%- endfor -%}
+          {%- endif -%}
+          {%- if section.settings.pf_show_sale_chip and section.settings.pf_sale_collection != blank -%}
+            {%- assign pf_sale_col = section.settings.pf_sale_collection -%}
+            <a class="pf-chip pf-chip--sale{% if collection.handle == pf_sale_col.handle %} is-active{% endif %}" href="{{ pf_sale_col.url }}">🔥 {% if request.locale.iso_code == 'vi' %}Đang giảm giá{% else %}On sale{% endif %}</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
       <div class="pf-ctbar">
         <span class="pf-ctbar__hint">{% if request.locale.iso_code == 'vi' %}Lọc &amp; sắp xếp sản phẩm bên dưới{% else %}Filter &amp; sort products below{% endif %}</span>
         <form class="pf-search" action="{{ routes.search_url }}" method="get" role="search">
@@ -445,6 +464,40 @@
       "id": "enable_sorting",
       "default": true,
       "label": "t:sections.main-collection-product-grid.settings.enable_sorting.label"
+    },
+    {
+      "type": "header",
+      "content": "🔎 Chip lọc nhanh (PHOMIFOOD)"
+    },
+    {
+      "type": "checkbox",
+      "id": "pf_show_quickfilter",
+      "label": "Hiện hàng chip lọc nhanh (danh mục + giảm giá)",
+      "default": true
+    },
+    {
+      "type": "link_list",
+      "id": "pf_category_menu",
+      "label": "Menu danh mục cho chip",
+      "info": "Chọn menu chứa các danh mục (VD menu con của \"Sản phẩm\"). Mỗi mục thành 1 chip."
+    },
+    {
+      "type": "checkbox",
+      "id": "pf_show_all_chip",
+      "label": "Hiện chip \"Tất cả\"",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "pf_show_sale_chip",
+      "label": "Hiện chip \"Đang giảm giá\"",
+      "default": true
+    },
+    {
+      "type": "collection",
+      "id": "pf_sale_collection",
+      "label": "Bộ sưu tập hàng giảm giá",
+      "info": "Tạo Automated collection với điều kiện \"Compare at price > 0\" rồi chọn ở đây. Chip giảm giá sẽ dẫn tới đó."
     },
     {
       "type": "header",
