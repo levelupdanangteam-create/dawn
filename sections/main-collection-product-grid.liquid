@@ -104,9 +104,13 @@
               <a class="pf-chip{% if clink.current or clink.child_active %} is-active{% endif %}" href="{{ clink.url }}">{% render 'pf-menu-label', title: clink.title %}</a>
             {%- endfor -%}
           {%- endif -%}
-          {%- if section.settings.pf_show_sale_chip and section.settings.pf_sale_collection != blank -%}
-            {%- assign pf_sale_col = section.settings.pf_sale_collection -%}
-            <a class="pf-chip pf-chip--sale{% if collection.handle == pf_sale_col.handle %} is-active{% endif %}" href="{{ pf_sale_col.url }}">🔥 {% if request.locale.iso_code == 'vi' %}Đang giảm giá{% else %}On sale{% endif %}</a>
+          {%- if section.settings.pf_show_sale_chip -%}
+            {%- if section.settings.pf_sale_collection != blank -%}
+              {%- assign pf_sale_col = section.settings.pf_sale_collection -%}
+              <a class="pf-chip pf-chip--sale{% if collection.handle == pf_sale_col.handle %} is-active{% endif %}" href="{{ pf_sale_col.url }}">🔥 {% if request.locale.iso_code == 'vi' %}Đang giảm giá{% else %}On sale{% endif %}</a>
+            {%- else -%}
+              <button type="button" class="pf-chip pf-chip--sale" data-pf-sale-toggle aria-pressed="false">🔥 {% if request.locale.iso_code == 'vi' %}Đang giảm giá{% else %}On sale{% endif %}</button>
+            {%- endif -%}
           {%- endif -%}
         </div>
       {%- endif -%}
@@ -278,6 +282,57 @@
     </div>
   </div>
 </collection-component>
+
+<script>
+  /* PHOMIFOOD: client-side "Đang giảm giá" chip — shows only on-sale product
+     cards on the current view. Works with no collection setup; re-applies
+     after Dawn's AJAX filters re-render the grid. */
+  (function () {
+    var box = document.getElementById('pf-cbox-{{ section.id }}');
+    if (!box) return;
+    var btn = box.querySelector('[data-pf-sale-toggle]');
+    if (!btn) return;
+    var active = false;
+
+    function apply() {
+      var grid = document.getElementById('product-grid');
+      if (!grid) return;
+      var items = grid.querySelectorAll('.grid__item');
+      var shown = 0;
+      items.forEach(function (it) {
+        var onSale = !!it.querySelector('.price--on-sale');
+        if (active && !onSale) { it.style.display = 'none'; }
+        else { it.style.display = ''; if (onSale) shown++; }
+      });
+      var empty = box.querySelector('.pf-sale-empty');
+      if (active && shown === 0) {
+        if (!empty) {
+          empty = document.createElement('p');
+          empty.className = 'pf-sale-empty';
+          empty.style.cssText = 'text-align:center;color:#6a6255;font-size:1.5rem;padding:2rem 0;';
+          empty.textContent = '{% if request.locale.iso_code == "vi" %}Không có sản phẩm giảm giá ở trang này. Thử trang tiếp theo hoặc danh mục khác.{% else %}No discounted products on this page. Try the next page or another category.{% endif %}';
+          grid.parentNode.insertBefore(empty, grid.nextSibling);
+        }
+      } else if (empty) {
+        empty.remove();
+      }
+    }
+
+    btn.addEventListener('click', function () {
+      active = !active;
+      btn.classList.toggle('is-active', active);
+      btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+      apply();
+    });
+
+    // Re-apply the filter after Dawn's facets replace the product grid.
+    var container = document.getElementById('ProductGridContainer');
+    if (container && window.MutationObserver) {
+      new MutationObserver(function () { if (active) apply(); })
+        .observe(container, { childList: true, subtree: true });
+    }
+  })();
+</script>
 
 {% schema %}
 {
