@@ -5,6 +5,7 @@
   rows: handle||deal_price_text
 {%- endcomment -%}
 {%- assign pf_rows = settings.pf_deal_rows | split: ";;" -%}
+{%- assign pf_d0_count = pf_rows.size -%}
 
 <div class="pf-d0 color-scheme-1">
   <div class="pf-d0__hero">
@@ -66,7 +67,7 @@
   .pf-d0__title { margin: .6rem 0 0; font-size: clamp(3.2rem, 7vw, 5.2rem); font-weight: 900; letter-spacing: 1px; color: #fff; text-shadow: 0 3px 12px rgba(0,0,0,.25); }
   .pf-d0__sub { margin: 1rem 0 0; font-size: 1.6rem; line-height: 1.5; opacity: .96; }
   .pf-d0__wrap { padding-top: 3.4rem; }
-  .pf-d0__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .pf-d0__grid { display: grid; grid-template-columns: repeat({{ pf_d0_count }}, 1fr); gap: 2rem; }
   .pf-d0__card {
     position: relative; display: flex; flex-direction: column; background: #fff;
     border: 2px solid #f2c14e; border-radius: 18px; padding: 1.4rem; overflow: hidden;
