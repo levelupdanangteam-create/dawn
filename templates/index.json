@@ -140,6 +140,18 @@
     "pf_weekly_deals": {
       "type": "pf-weekly-deals",
       "blocks": {
+        "product_ntYrrY": {
+          "type": "product",
+          "settings": {
+            "product": "van-an-mang-la-tuoi"
+          }
+        },
+        "product_yj3Vtz": {
+          "type": "product",
+          "settings": {
+            "product": "farmer-pho-3mm-400g-x-34-goi"
+          }
+        },
         "product_Qha83N": {
           "type": "product",
           "settings": {
@@ -190,6 +202,8 @@
         }
       },
       "block_order": [
+        "product_ntYrrY",
+        "product_yj3Vtz",
         "product_Qha83N",
         "product_ffaC6g",
         "product_rikHgy",
