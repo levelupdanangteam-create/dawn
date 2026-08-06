@@ -146,12 +146,6 @@
             "product": "farmer-pho-co-gai-5mm-400g-x-34-goi"
           }
         },
-        "product_BhzfMY": {
-          "type": "product",
-          "settings": {
-            "product": "farmer-pho-3mm-400g-x-34-goi"
-          }
-        },
         "product_ffaC6g": {
           "type": "product",
           "settings": {
@@ -193,25 +187,17 @@
           "settings": {
             "product": "hat-nem-knor-900g-x-8-goi"
           }
-        },
-        "p5": {
-          "type": "product",
-          "settings": {
-            "product": "van-an-mang-la-tuoi"
-          }
         }
       },
       "block_order": [
         "product_Qha83N",
-        "product_BhzfMY",
         "product_ffaC6g",
         "product_rikHgy",
         "product_R3NNi4",
         "p1",
         "p2",
         "p3",
-        "p4",
-        "p5"
+        "p4"
       ],
       "settings": {
         "heading": "🔥 Ưu đãi tuần này, duy nhất 5 -9/8",
