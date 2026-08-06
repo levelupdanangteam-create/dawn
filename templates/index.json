@@ -140,6 +140,36 @@
     "pf_weekly_deals": {
       "type": "pf-weekly-deals",
       "blocks": {
+        "product_Qha83N": {
+          "type": "product",
+          "settings": {
+            "product": "farmer-pho-co-gai-5mm-400g-x-34-goi"
+          }
+        },
+        "product_BhzfMY": {
+          "type": "product",
+          "settings": {
+            "product": "farmer-pho-3mm-400g-x-34-goi"
+          }
+        },
+        "product_ffaC6g": {
+          "type": "product",
+          "settings": {
+            "product": "gia-bao-bun-hoa-hong-1-2mm-400gx20-goi"
+          }
+        },
+        "product_rikHgy": {
+          "type": "product",
+          "settings": {
+            "product": "gia-bao-bun-hoa-hong-1mm-500gx20-goi"
+          }
+        },
+        "product_R3NNi4": {
+          "type": "product",
+          "settings": {
+            "product": "gia-bao-bun-bo-hue-1-5mm-500g-x-20"
+          }
+        },
         "p1": {
           "type": "product",
           "settings": {
@@ -172,6 +202,11 @@
         }
       },
       "block_order": [
+        "product_Qha83N",
+        "product_BhzfMY",
+        "product_ffaC6g",
+        "product_rikHgy",
+        "product_R3NNi4",
         "p1",
         "p2",
         "p3",
