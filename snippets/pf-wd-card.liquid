@@ -15,7 +15,7 @@
     {%- assign pf_pub_ts = p.published_at | date: '%s' | plus: 0 -%}
     {%- assign pf_age_days = pf_now_ts | minus: pf_pub_ts | divided_by: 86400 -%}
     {%- if p.published_at and pf_age_days <= 120 -%}
-      <span class="pf-wd-card__new">🆕 Mới về</span>
+      <span class="pf-wd-card__new">🆕 {% if request.locale.iso_code == 'vi' %}Mới về{% else %}New{% endif %}</span>
     {%- endif -%}
     {%- if p.featured_image -%}
       <img src="{{ p.featured_image | image_url: width: 400 }}" alt="{{ p.title | escape }}" loading="lazy" width="200" height="200">

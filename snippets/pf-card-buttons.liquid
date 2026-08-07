@@ -5,14 +5,14 @@
   Params: product (required), section_id (required)
 {%- endcomment -%}
 <div class="pf-card-actions">
-  <a href="{{ product.url }}" class="pf-btn-view">Xem sản phẩm</a>
+  <a href="{{ product.url }}" class="pf-btn-view">{% if request.locale.iso_code == 'vi' %}Xem sản phẩm{% else %}View product{% endif %}</a>
   {%- if product.available -%}
     {%- assign pf_add_id = 'pf-add-' | append: section_id | append: '-' | append: product.id -%}
     {%- form 'product', product, id: pf_add_id, class: 'pf-card-actions__form' -%}
       <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-      <button type="submit" class="pf-btn-cart">Thêm vào giỏ</button>
+      <button type="submit" class="pf-btn-cart">{% if request.locale.iso_code == 'vi' %}Thêm vào giỏ{% else %}Add to cart{% endif %}</button>
     {%- endform -%}
   {%- else -%}
-    <button type="button" class="pf-btn-cart" disabled>Hết hàng</button>
+    <button type="button" class="pf-btn-cart" disabled>{% if request.locale.iso_code == 'vi' %}Hết hàng{% else %}Sold out{% endif %}</button>
   {%- endif -%}
 </div>
