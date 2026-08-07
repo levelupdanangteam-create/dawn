@@ -23,7 +23,10 @@
 
     var DEAL = "{{ pf_deal_handles }}".split(',');
     var CUR = "{{ product.handle }}";
-    var MSG = 'Sản phẩm ưu đãi chỉ được mua KÈM — vui lòng thêm ít nhất 1 sản phẩm khác vào giỏ để thanh toán.';
+    var PFLANG = '{{ request.locale.iso_code }}';
+    var MSG = (PFLANG === 'vi')
+      ? 'Sản phẩm ưu đãi chỉ được mua KÈM — vui lòng thêm ít nhất 1 sản phẩm khác vào giỏ để thanh toán.'
+      : 'Deal products can only be bought WITH others — please add at least 1 more product to your cart to check out.';
 
     function root() { return (window.Shopify && Shopify.routes ? Shopify.routes.root : '/'); }
     function isDeal(h) { return h && DEAL.indexOf(h) > -1; }
@@ -91,7 +94,9 @@
         if (f.querySelector('.pf-deal-pdp-note')) return;
         var n = document.createElement('div');
         n.className = 'pf-deal-pdp-note';
-        n.textContent = '🛒 Sản phẩm ưu đãi: thêm vào giỏ và mua kèm ít nhất 1 sản phẩm khác để được giá này.';
+        n.textContent = (PFLANG === 'vi')
+          ? '🛒 Sản phẩm ưu đãi: thêm vào giỏ và mua kèm ít nhất 1 sản phẩm khác để được giá này.'
+          : '🛒 Deal product: add to cart and buy it with at least 1 other product to get this price.';
         f.appendChild(n);
       });
     }
