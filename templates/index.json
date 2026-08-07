@@ -16,7 +16,7 @@
           "type": "category",
           "settings": {
             "collection": "dồ-uống",
-            "label": "Đồ uống",
+            "label": "Drink",
             "image_url": "",
             "price_text": "",
             "badge_color": ""
@@ -214,7 +214,7 @@
         "p4"
       ],
       "settings": {
-        "heading": "🔥 Ưu đãi tuần này, duy nhất 5 -9/8",
+        "heading": "🔥 This week's offer, exclusive to August 5–9.",
         "subheading": "Giá tốt nhất trong tuần — số lượng có hạn!",
         "show_view_all": false,
         "view_all_label": "Xem tất cả sản phẩm",
