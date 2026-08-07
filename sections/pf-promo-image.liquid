@@ -27,7 +27,7 @@
       {%- endif -%}
     {%- else -%}
       <div style="padding:4rem;text-align:center;color:#999;border:1px dashed #ccc;border-radius:12px;">
-        Thêm ảnh trong Theme Editor
+        {% if request.locale.iso_code == 'vi' %}Thêm ảnh trong Theme Editor{% else %}Add an image in the Theme Editor{% endif %}
       </div>
     {%- endif -%}
   </div>

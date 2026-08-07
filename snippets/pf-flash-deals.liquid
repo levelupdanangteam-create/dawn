@@ -24,16 +24,16 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>
         FLASH SALE
       </span>
-      <span class="pf-flash__name">{{ heading | default: 'Ưu đãi hôm nay' }}</span>
+      <span class="pf-flash__name">{%- if heading != blank -%}{{ heading }}{%- elsif request.locale.iso_code == 'vi' -%}Ưu đãi hôm nay{%- else -%}Today's deals{%- endif -%}</span>
     </div>
     <div class="pf-flash__count">
-      <span class="pf-flash__count-label">Kết thúc sau</span>
-      <span class="pf-flash__timer" data-hours="{{ hrs }}" role="timer" aria-label="Đếm ngược ưu đãi">
+      <span class="pf-flash__count-label">{% if request.locale.iso_code == 'vi' %}Kết thúc sau{% else %}Ends in{% endif %}</span>
+      <span class="pf-flash__timer" data-hours="{{ hrs }}" role="timer" aria-label="{% if request.locale.iso_code == 'vi' %}Đếm ngược ưu đãi{% else %}Deal countdown{% endif %}">
         <span class="pf-u hh">00</span><i>:</i><span class="pf-u mm">00</span><i>:</i><span class="pf-u ss">00</span>
       </span>
     </div>
     {%- if col != blank and show_all != true -%}
-      <a class="pf-flash__more" href="{{ col.url }}">Xem tất cả
+      <a class="pf-flash__more" href="{{ col.url }}">{% if request.locale.iso_code == 'vi' %}Xem tất cả{% else %}View all{% endif %}
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
       </a>
     {%- endif -%}
@@ -85,7 +85,7 @@
             {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
           </div>
           <div class="pf-flash__info">
-            <h3 class="pf-flash__nm">Tên sản phẩm</h3>
+            <h3 class="pf-flash__nm">{% if request.locale.iso_code == 'vi' %}Tên sản phẩm{% else %}Product name{% endif %}</h3>
             <div class="pf-flash__price"><span class="now">0&nbsp;€</span></div>
             <span class="pf-flash__tag">Best Seller</span>
           </div>
@@ -97,7 +97,7 @@
   {%- if init > 0 and rendered > init -%}
     <div class="pf-flash__morewrap">
       <button type="button" class="pf-flash__more-btn">
-        Xem thêm
+        {% if request.locale.iso_code == 'vi' %}Xem thêm{% else %}View more{% endif %}
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
       </button>
     </div>

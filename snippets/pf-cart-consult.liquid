@@ -2,8 +2,8 @@
   Consultation banner on the cart page. Clicking opens Messenger.
 {%- endcomment -%}
 {%- unless cart == empty -%}
-<a class="pf-consult" href="https://m.me/phomifoodstore" target="_blank" rel="noopener" aria-label="Liên hệ tư vấn qua Messenger">
-  <img src="https://cdn.shopify.com/s/files/1/0749/9353/3018/files/t_v_n.png?v=1785144732" alt="Liên hệ tư vấn PHOMIFOOD" loading="lazy">
+<a class="pf-consult" href="https://m.me/phomifoodstore" target="_blank" rel="noopener" aria-label="{% if request.locale.iso_code == 'vi' %}Liên hệ tư vấn qua Messenger{% else %}Contact us for advice via Messenger{% endif %}">
+  <img src="https://cdn.shopify.com/s/files/1/0749/9353/3018/files/t_v_n.png?v=1785144732" alt="{% if request.locale.iso_code == 'vi' %}Liên hệ tư vấn PHOMIFOOD{% else %}Contact PHOMIFOOD for advice{% endif %}" loading="lazy">
 </a>
 <style>
   .pf-consult { display: block; margin: .4rem 0 1.4rem; transition: transform .15s ease; }

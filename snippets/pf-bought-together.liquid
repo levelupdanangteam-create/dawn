@@ -8,7 +8,7 @@
 {%- assign bt_handle = bt_handle | default: 'ban-chay-nhat' -%}
 {%- assign bt_initial = bt_initial | default: 4 -%}
 {%- assign bt_limit = bt_limit | default: 12 -%}
-{%- assign bt_heading = bt_heading | default: '🛒 Thường được mua kèm' -%}
+{%- unless bt_heading -%}{%- if request.locale.iso_code == 'vi' -%}{%- assign bt_heading = '🛒 Thường được mua kèm' -%}{%- else -%}{%- assign bt_heading = '🛒 Frequently bought together' -%}{%- endif -%}{%- endunless -%}
 {%- assign bt_coll = collections[bt_handle] -%}
 {%- if bt_coll != empty and bt_coll.products_count > 0 -%}
   {%- assign bt_shown = 0 -%}
@@ -88,7 +88,7 @@
 
     {%- if bt_shown > bt_initial -%}
       <div class="pf-bt__morewrap">
-        <button type="button" class="pf-bt__more" id="pf-bt-more">Xem thêm <span aria-hidden="true">▾</span></button>
+        <button type="button" class="pf-bt__more" id="pf-bt-more">{% if request.locale.iso_code == 'vi' %}Xem thêm{% else %}View more{% endif %} <span aria-hidden="true">▾</span></button>
       </div>
     {%- endif -%}
   </div>

@@ -16,8 +16,8 @@
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v8H3z"/><path d="M14 10h4l3 3v2h-7z"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
     </span>
     <div>
-      <p class="pf-ptrust__t">Miễn phí giao hàng trên 25 nước Châu Âu</p>
-      <p class="pf-ptrust__d">Áp dụng với đơn hàng &gt; 150€.</p>
+      <p class="pf-ptrust__t">{% if request.locale.iso_code == 'vi' %}Miễn phí giao hàng trên 25 nước Châu Âu{% else %}Free shipping to over 25 European countries{% endif %}</p>
+      <p class="pf-ptrust__d">{% if request.locale.iso_code == 'vi' %}Áp dụng với đơn hàng &gt; 150€.{% else %}Applies to orders &gt; 150€.{% endif %}</p>
     </div>
   </div>
   <div class="pf-ptrust__row gold">
@@ -25,8 +25,8 @@
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 1 1-4.9-7.7"/><path d="M21 4v4h-4"/></svg>
     </span>
     <div>
-      <p class="pf-ptrust__t">Đổi trả dễ dàng</p>
-      <p class="pf-ptrust__d">Sản phẩm bị lỗi khi giao nhận: hoàn lại tiền <strong>100%</strong>. Nếu khách hàng phát hiện hàng giả: hoàn <strong>120%</strong> giá trị sản phẩm.</p>
+      <p class="pf-ptrust__t">{% if request.locale.iso_code == 'vi' %}Đổi trả dễ dàng{% else %}Easy returns{% endif %}</p>
+      <p class="pf-ptrust__d">{% if request.locale.iso_code == 'vi' %}Sản phẩm bị lỗi khi giao nhận: hoàn lại tiền <strong>100%</strong>. Nếu khách hàng phát hiện hàng giả: hoàn <strong>120%</strong> giá trị sản phẩm.{% else %}Damaged on delivery: <strong>100%</strong> refund. If you find a counterfeit item: refund of <strong>120%</strong> of the product value.{% endif %}</p>
     </div>
   </div>
 </div>

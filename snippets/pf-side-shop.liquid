@@ -60,7 +60,7 @@
   }
 </style>
 
-<a class="pf-sideshop" href="{{ routes.all_products_collection_url }}" aria-label="Tiếp tục mua sắm">
+<a class="pf-sideshop" href="{{ routes.all_products_collection_url }}" aria-label="{% if request.locale.iso_code == 'vi' %}Tiếp tục mua sắm{% else %}Continue shopping{% endif %}">
   <span class="pf-sideshop__btn" aria-hidden="true">🛍️</span>
-  <span class="pf-sideshop__label">Tiếp tục mua sắm</span>
+  <span class="pf-sideshop__label">{% if request.locale.iso_code == 'vi' %}Tiếp tục mua sắm{% else %}Continue shopping{% endif %}</span>
 </a>
