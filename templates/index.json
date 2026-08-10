@@ -253,6 +253,30 @@
     "pf_new_arrivals": {
       "type": "pf-new-arrivals",
       "blocks": {
+        "product_LrVacf": {
+          "type": "product",
+          "settings": {
+            "product": ""
+          }
+        },
+        "product_jJJpke": {
+          "type": "product",
+          "settings": {
+            "product": "com-chay-vip1"
+          }
+        },
+        "product_kT6BiU": {
+          "type": "product",
+          "settings": {
+            "product": "bia-sai-gon-special-24-chai"
+          }
+        },
+        "product_VdmUWE": {
+          "type": "product",
+          "settings": {
+            "product": "ca-phe-muối-chu-long"
+          }
+        },
         "product_mzeaY9": {
           "type": "product",
           "settings": {
@@ -280,11 +304,15 @@
         "product_KY6bhH": {
           "type": "product",
           "settings": {
-            "product": "tam-cay-2"
+            "product": "tam-cay-1"
           }
         }
       },
       "block_order": [
+        "product_LrVacf",
+        "product_jJJpke",
+        "product_kT6BiU",
+        "product_VdmUWE",
         "product_mzeaY9",
         "product_VDxC8J",
         "product_CyWbRq",
