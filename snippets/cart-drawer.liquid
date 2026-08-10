@@ -502,6 +502,9 @@
         </form>
       </cart-drawer-items>
       <div class="drawer__footer">
+        {%- unless cart == empty -%}
+          {% render 'pf-cart-shipbar' %}
+        {%- endunless -%}
         {%- if settings.show_cart_note -%}
           <details id="Details-CartDrawer">
             <summary>

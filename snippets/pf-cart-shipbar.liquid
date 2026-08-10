@@ -1,0 +1,61 @@
+{%- comment -%}
+  Cart shipping-fee reward progress. Shows how much more the customer must
+  spend to unlock the −10€ (from 169€) and −15€ (from 269€) shipping discounts.
+  Re-evaluates automatically because Dawn re-renders the cart sections on change.
+{%- endcomment -%}
+{%- unless cart == empty -%}
+  {%- assign pf_t1 = 16900 -%}{%- comment -%}169€{%- endcomment -%}
+  {%- assign pf_t2 = 26900 -%}{%- comment -%}269€{%- endcomment -%}
+  {%- assign pf_sub = cart.total_price -%}
+
+  {%- assign pf_pct1 = 100 -%}
+  {%- if pf_sub < pf_t1 -%}{%- assign pf_pct1 = pf_sub | times: 100 | divided_by: pf_t1 -%}{%- endif -%}
+  {%- assign pf_pct2 = 100 -%}
+  {%- if pf_sub < pf_t2 -%}{%- assign pf_pct2 = pf_sub | times: 100 | divided_by: pf_t2 -%}{%- endif -%}
+  {%- assign pf_rem1 = pf_t1 | minus: pf_sub -%}
+  {%- assign pf_rem2 = pf_t2 | minus: pf_sub -%}
+
+  <div class="pf-shipbar">
+    <p class="pf-shipbar__head">🚚 {% if request.locale.iso_code == 'vi' %}Ưu đãi phí vận chuyển{% else %}Shipping fee rewards{% endif %}</p>
+
+    {%- comment -%} Tier 1: −10€ from 169€ {%- endcomment -%}
+    <div class="pf-shipbar__row{% if pf_sub >= pf_t1 %} is-done{% endif %}">
+      <div class="pf-shipbar__top">
+        <span class="pf-shipbar__label">{% if request.locale.iso_code == 'vi' %}Giảm 10€ phí ship{% else %}−10€ shipping{% endif %} <em>({% if request.locale.iso_code == 'vi' %}đơn từ{% else %}from{% endif %} 169€)</em></span>
+        <span class="pf-shipbar__status">
+          {%- if pf_sub >= pf_t1 -%}✅ {% if request.locale.iso_code == 'vi' %}Đã đủ điều kiện!{% else %}Unlocked!{% endif %}
+          {%- else -%}{% if request.locale.iso_code == 'vi' %}Mua thêm{% else %}Add{% endif %} <b>{{ pf_rem1 | money }}</b> {% if request.locale.iso_code == 'vi' %}nữa{% else %}more{% endif %}{%- endif -%}
+        </span>
+      </div>
+      <div class="pf-shipbar__track"><div class="pf-shipbar__fill" style="width: {{ pf_pct1 }}%;"></div></div>
+    </div>
+
+    {%- comment -%} Tier 2: −15€ from 269€ {%- endcomment -%}
+    <div class="pf-shipbar__row{% if pf_sub >= pf_t2 %} is-done{% endif %}">
+      <div class="pf-shipbar__top">
+        <span class="pf-shipbar__label">{% if request.locale.iso_code == 'vi' %}Giảm 15€ phí ship{% else %}−15€ shipping{% endif %} <em>({% if request.locale.iso_code == 'vi' %}đơn từ{% else %}from{% endif %} 269€)</em></span>
+        <span class="pf-shipbar__status">
+          {%- if pf_sub >= pf_t2 -%}✅ {% if request.locale.iso_code == 'vi' %}Đã đủ điều kiện!{% else %}Unlocked!{% endif %}
+          {%- else -%}{% if request.locale.iso_code == 'vi' %}Mua thêm{% else %}Add{% endif %} <b>{{ pf_rem2 | money }}</b> {% if request.locale.iso_code == 'vi' %}nữa{% else %}more{% endif %}{%- endif -%}
+        </span>
+      </div>
+      <div class="pf-shipbar__track"><div class="pf-shipbar__fill" style="width: {{ pf_pct2 }}%;"></div></div>
+    </div>
+  </div>
+
+  <style>
+    .pf-shipbar { background: #fbf7ee; border: 1px solid #ecdfc4; border-radius: 14px; padding: 1.3rem 1.4rem; margin: 1.2rem 0; }
+    .pf-shipbar__head { margin: 0 0 1rem; font-size: 1.45rem; font-weight: 800; color: #b8791a; }
+    .pf-shipbar__row { margin-top: 1rem; }
+    .pf-shipbar__row:first-of-type { margin-top: 0; }
+    .pf-shipbar__top { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: .5rem; }
+    .pf-shipbar__label { font-size: 1.3rem; font-weight: 700; color: #4a453c; }
+    .pf-shipbar__label em { font-style: normal; font-weight: 600; color: #9a8f7a; font-size: 1.15rem; }
+    .pf-shipbar__status { font-size: 1.25rem; font-weight: 700; color: #6a6255; white-space: nowrap; text-align: right; }
+    .pf-shipbar__status b { color: #d62828; }
+    .pf-shipbar__track { height: 8px; border-radius: 999px; background: #ece3d0; overflow: hidden; }
+    .pf-shipbar__fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #1e8541, #63c98a); transition: width .35s ease; }
+    .pf-shipbar__row.is-done .pf-shipbar__status { color: #14672f; }
+    .pf-shipbar__row.is-done .pf-shipbar__fill { background: linear-gradient(90deg, #1e8541, #14672f); }
+  </style>
+{%- endunless -%}
