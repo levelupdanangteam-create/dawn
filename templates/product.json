@@ -121,16 +121,49 @@
         "r3": {
           "type": "review",
           "settings": {
-            "author": "Phạm Lan",
+            "author": "Phạm Thị Lan",
             "location": "Paris, Pháp",
             "rating": 4,
             "date": "20/07/2026",
             "verified": true,
             "body": "Sản phẩm ngon, freeship đơn lớn rất tiện. Sẽ ủng hộ shop tiếp."
           }
+        },
+        "r4": {
+          "type": "review",
+          "settings": {
+            "author": "Lê Hoàng Nam",
+            "location": "Warszawa, Ba Lan",
+            "rating": 5,
+            "date": "15/07/2026",
+            "verified": true,
+            "body": "Hàng Việt xa xứ mà chất lượng như ở nhà. Đóng thùng chắc chắn, không móp méo gì cả. Cảm ơn shop!"
+          }
+        },
+        "r5": {
+          "type": "review",
+          "settings": {
+            "author": "Vũ Thị Mai",
+            "location": "Amsterdam, Hà Lan",
+            "rating": 5,
+            "date": "08/07/2026",
+            "verified": true,
+            "body": "Lần đầu đặt hơi lo, nhưng nhận hàng xong yên tâm hẳn. Đồ tươi, hạn dùng còn dài, giá hợp lý."
+          }
+        },
+        "r6": {
+          "type": "review",
+          "settings": {
+            "author": "Đặng Quốc Việt",
+            "location": "Bruxelles, Bỉ",
+            "rating": 5,
+            "date": "30/06/2026",
+            "verified": true,
+            "body": "Mình mở quán ăn nên hay lấy sỉ ở đây. Giá tốt, giao đều đặn, có gì shop hỗ trợ rất nhanh."
+          }
         }
       },
-      "block_order": ["r1", "r2", "r3"],
+      "block_order": ["r1", "r2", "r3", "r4", "r5", "r6"],
       "settings": {
         "heading": "Khách hàng nói gì về sản phẩm",
         "subheading": "Đánh giá thật từ khách hàng PHOMIFOOD",
