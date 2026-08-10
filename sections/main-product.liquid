@@ -757,7 +757,8 @@
     </div>
   </product-component>
 
-  {% render 'pf-bought-together' %}
+  {%- comment -%} "Thường được mua kèm" now renders as its own section AFTER the
+      reviews section (see sections/pf-frequently-bought.liquid + product.json). {%- endcomment -%}
 
   {%- if settings.pf_deal_collection != blank -%}
     <div class="pf-section" style="padding: 3rem 0 1rem;">

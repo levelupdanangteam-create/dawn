@@ -1,0 +1,18 @@
+{%- comment -%}
+  Section wrapper for the "Thường được mua kèm" (frequently bought together)
+  block, so it can be ordered on the product template AFTER the reviews section.
+  The actual markup lives in snippets/pf-bought-together.liquid.
+{%- endcomment -%}
+{% render 'pf-bought-together' %}
+
+{% schema %}
+{
+  "name": "Thường được mua kèm",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "paragraph", "content": "Hiển thị sản phẩm từ bộ sưu tập bán chạy (ban-chay-nhat), trừ sản phẩm đang xem. Đặt section này ngay dưới mục Đánh giá trên trang sản phẩm." }
+  ],
+  "presets": [ { "name": "Thường được mua kèm" } ]
+}
+{% endschema %}

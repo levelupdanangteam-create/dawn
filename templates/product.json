@@ -172,6 +172,10 @@
         "padding_bottom": 40
       }
     },
+    "pf_frequently_bought": {
+      "type": "pf-frequently-bought",
+      "settings": {}
+    },
     "related-products": {
       "type": "related-products",
       "disabled": true,
@@ -194,8 +198,9 @@
   },
   "order": [
     "main",
-    "disclosures",
     "pf_reviews",
+    "pf_frequently_bought",
+    "disclosures",
     "related-products"
   ]
 }
