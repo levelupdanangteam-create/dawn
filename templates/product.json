@@ -93,6 +93,52 @@
         "padding_bottom": 0
       }
     },
+    "pf_reviews": {
+      "type": "pf-product-reviews",
+      "blocks": {
+        "r1": {
+          "type": "review",
+          "settings": {
+            "author": "Nguyễn Thị Hương",
+            "location": "Praha, CH Séc",
+            "rating": 5,
+            "date": "05/08/2026",
+            "verified": true,
+            "body": "Đồ ăn đúng vị Việt Nam, đóng gói kỹ, giao tới Séc nhanh hơn mình nghĩ. Rất hài lòng!"
+          }
+        },
+        "r2": {
+          "type": "review",
+          "settings": {
+            "author": "Trần Minh",
+            "location": "Berlin, Đức",
+            "rating": 5,
+            "date": "28/07/2026",
+            "verified": true,
+            "body": "Giá tốt, hàng chuẩn, shop tư vấn nhiệt tình. Đặt sỉ cho quán cũng được giá đẹp."
+          }
+        },
+        "r3": {
+          "type": "review",
+          "settings": {
+            "author": "Phạm Lan",
+            "location": "Paris, Pháp",
+            "rating": 4,
+            "date": "20/07/2026",
+            "verified": true,
+            "body": "Sản phẩm ngon, freeship đơn lớn rất tiện. Sẽ ủng hộ shop tiếp."
+          }
+        }
+      },
+      "block_order": ["r1", "r2", "r3"],
+      "settings": {
+        "heading": "Khách hàng nói gì về sản phẩm",
+        "subheading": "Đánh giá thật từ khách hàng PHOMIFOOD",
+        "show_summary": true,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
     "related-products": {
       "type": "related-products",
       "disabled": true,
@@ -116,6 +162,7 @@
   "order": [
     "main",
     "disclosures",
+    "pf_reviews",
     "related-products"
   ]
 }

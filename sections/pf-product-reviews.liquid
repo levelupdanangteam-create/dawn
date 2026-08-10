@@ -1,0 +1,161 @@
+{%- comment -%}
+  PHOMIFOOD "curated reviews" section for product pages.
+  Reviews are entered by the merchant via Theme editor blocks (name, rating,
+  text, photo). The overall score + count are computed from the blocks.
+{%- endcomment -%}
+
+{%- liquid
+  assign pf_total = 0
+  assign pf_count = 0
+  for block in section.blocks
+    assign r = block.settings.rating | plus: 0
+    assign pf_total = pf_total | plus: r
+    assign pf_count = pf_count | plus: 1
+  endfor
+  assign pf_avg = 5
+  if pf_count > 0
+    assign pf_avg = pf_total | times: 1.0 | divided_by: pf_count
+  endif
+  assign pf_avg_round = pf_avg | round
+-%}
+
+<div id="pf-rv-{{ section.id }}" class="pf-rv color-scheme-1" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    <div class="pf-rv__head">
+      <h2 class="pf-rv__title">{{ section.settings.heading }}</h2>
+      {%- if section.settings.subheading != blank -%}
+        <p class="pf-rv__sub">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_summary and pf_count > 0 -%}
+      <div class="pf-rv__summary">
+        <div class="pf-rv__avg">
+          <span class="pf-rv__avg-num">{{ pf_avg | round: 1 }}</span>
+          <span class="pf-rv__stars pf-rv__stars--lg" aria-hidden="true">
+            {%- for i in (1..5) -%}<span class="pf-rv__star{% if i <= pf_avg_round %} is-on{% endif %}">★</span>{%- endfor -%}
+          </span>
+          <span class="pf-rv__avg-count">
+            {%- if request.locale.iso_code == 'vi' -%}{{ pf_count }} đánh giá{%- else -%}{{ pf_count }} review{% if pf_count != 1 %}s{% endif %}{%- endif -%}
+          </span>
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if pf_count > 0 -%}
+      <div class="pf-rv__grid">
+        {%- for block in section.blocks -%}
+          {%- assign b = block.settings -%}
+          <div class="pf-rv__card" {{ block.shopify_attributes }}>
+            <div class="pf-rv__card-top">
+              <div class="pf-rv__avatar">
+                {%- if b.avatar != blank -%}
+                  <img src="{{ b.avatar | image_url: width: 96 }}" alt="{{ b.author | escape }}" loading="lazy" width="48" height="48">
+                {%- else -%}
+                  <span class="pf-rv__avatar-ini">{{ b.author | slice: 0 | upcase | default: '★' }}</span>
+                {%- endif -%}
+              </div>
+              <div class="pf-rv__meta">
+                <span class="pf-rv__name">{{ b.author | default: 'Khách hàng' }}</span>
+                {%- if b.location != blank -%}<span class="pf-rv__loc">{{ b.location }}</span>{%- endif -%}
+              </div>
+              {%- if b.verified -%}
+                <span class="pf-rv__verified">✓ {% if request.locale.iso_code == 'vi' %}Đã mua{% else %}Verified{% endif %}</span>
+              {%- endif -%}
+            </div>
+
+            <div class="pf-rv__row">
+              <span class="pf-rv__stars" aria-label="{{ b.rating }}/5">
+                {%- for i in (1..5) -%}<span class="pf-rv__star{% if i <= b.rating %} is-on{% endif %}">★</span>{%- endfor -%}
+              </span>
+              {%- if b.date != blank -%}<span class="pf-rv__date">{{ b.date }}</span>{%- endif -%}
+            </div>
+
+            {%- if b.body != blank -%}<p class="pf-rv__text">{{ b.body }}</p>{%- endif -%}
+
+            {%- if b.photo != blank -%}
+              <a class="pf-rv__photo" href="{{ b.photo | image_url: width: 1200 }}" target="_blank" rel="noopener">
+                <img src="{{ b.photo | image_url: width: 400 }}" alt="{{ b.author | escape }}" loading="lazy">
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <p class="pf-rv__empty">{% if request.locale.iso_code == 'vi' %}Thêm đánh giá trong Theme editor → khối "Đánh giá".{% else %}Add reviews in the Theme editor → "Review" block.{% endif %}</p>
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  #pf-rv-{{ section.id }} .pf-rv__head { text-align: center; margin-bottom: 2.2rem; }
+  #pf-rv-{{ section.id }} .pf-rv__title { margin: 0; font-size: clamp(2.2rem, 3.4vw, 3rem); font-weight: 800; color: #14672f; }
+  #pf-rv-{{ section.id }} .pf-rv__sub { margin: .6rem 0 0; font-size: 1.5rem; color: #6a6255; }
+
+  #pf-rv-{{ section.id }} .pf-rv__summary { display: flex; justify-content: center; margin-bottom: 2.4rem; }
+  #pf-rv-{{ section.id }} .pf-rv__avg { display: inline-flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; justify-content: center; background: #fff; border: 1px solid #ece3d4; border-radius: 16px; padding: 1.2rem 2rem; box-shadow: 0 8px 22px rgba(120,100,70,.08); }
+  #pf-rv-{{ section.id }} .pf-rv__avg-num { font-size: 3.2rem; font-weight: 900; color: #d62828; line-height: 1; }
+  #pf-rv-{{ section.id }} .pf-rv__avg-count { font-size: 1.45rem; font-weight: 700; color: #6a6255; }
+
+  #pf-rv-{{ section.id }} .pf-rv__stars { display: inline-flex; letter-spacing: 1px; font-size: 1.6rem; }
+  #pf-rv-{{ section.id }} .pf-rv__stars--lg { font-size: 2.1rem; }
+  #pf-rv-{{ section.id }} .pf-rv__star { color: #e0d6c4; }
+  #pf-rv-{{ section.id }} .pf-rv__star.is-on { color: #f2b705; }
+
+  #pf-rv-{{ section.id }} .pf-rv__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
+  #pf-rv-{{ section.id }} .pf-rv__card { display: flex; flex-direction: column; gap: .9rem; background: #fff; border: 1px solid #ece3d4; border-radius: 16px; padding: 1.6rem; box-shadow: 0 6px 18px rgba(120,100,70,.07); }
+  #pf-rv-{{ section.id }} .pf-rv__card-top { display: flex; align-items: center; gap: 1rem; }
+  #pf-rv-{{ section.id }} .pf-rv__avatar { flex: none; width: 4.4rem; height: 4.4rem; border-radius: 50%; overflow: hidden; background: linear-gradient(135deg, #1e8541, #14672f); display: grid; place-items: center; }
+  #pf-rv-{{ section.id }} .pf-rv__avatar img { width: 100%; height: 100%; object-fit: cover; }
+  #pf-rv-{{ section.id }} .pf-rv__avatar-ini { color: #fff; font-weight: 800; font-size: 1.8rem; }
+  #pf-rv-{{ section.id }} .pf-rv__meta { display: flex; flex-direction: column; min-width: 0; margin-right: auto; }
+  #pf-rv-{{ section.id }} .pf-rv__name { font-size: 1.5rem; font-weight: 800; color: #2a2622; line-height: 1.2; }
+  #pf-rv-{{ section.id }} .pf-rv__loc { font-size: 1.25rem; color: #9a9080; }
+  #pf-rv-{{ section.id }} .pf-rv__verified { flex: none; font-size: 1.2rem; font-weight: 800; color: #14672f; background: #e8f5ec; border: 1px solid #bfe0c7; border-radius: 999px; padding: .3rem .8rem; white-space: nowrap; }
+  #pf-rv-{{ section.id }} .pf-rv__row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  #pf-rv-{{ section.id }} .pf-rv__date { font-size: 1.25rem; color: #9a9080; }
+  #pf-rv-{{ section.id }} .pf-rv__text { margin: 0; font-size: 1.4rem; line-height: 1.55; color: #4a453c; }
+  #pf-rv-{{ section.id }} .pf-rv__photo { display: block; border-radius: 10px; overflow: hidden; max-width: 14rem; }
+  #pf-rv-{{ section.id }} .pf-rv__photo img { display: block; width: 100%; height: auto; }
+  #pf-rv-{{ section.id }} .pf-rv__empty { text-align: center; color: #9a9080; font-size: 1.45rem; }
+
+  @media (max-width: 989px) { #pf-rv-{{ section.id }} .pf-rv__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 599px) { #pf-rv-{{ section.id }} .pf-rv__grid { grid-template-columns: 1fr; } }
+</style>
+
+{% schema %}
+{
+  "name": "Đánh giá sản phẩm",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Khách hàng nói gì về sản phẩm" },
+    { "type": "text", "id": "subheading", "label": "Mô tả ngắn", "default": "Đánh giá thật từ khách hàng PHOMIFOOD" },
+    { "type": "checkbox", "id": "show_summary", "label": "Hiện điểm trung bình + số đánh giá", "default": true },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Đánh giá",
+      "settings": [
+        { "type": "text", "id": "author", "label": "Tên khách", "default": "Nguyễn Văn A" },
+        { "type": "text", "id": "location", "label": "Nơi ở (tuỳ chọn)", "default": "Berlin, Đức" },
+        { "type": "range", "id": "rating", "min": 1, "max": 5, "step": 1, "label": "Số sao", "default": 5 },
+        { "type": "text", "id": "date", "label": "Ngày (tuỳ chọn)", "default": "10/08/2026" },
+        { "type": "checkbox", "id": "verified", "label": "Huy hiệu \"Đã mua\"", "default": true },
+        { "type": "textarea", "id": "body", "label": "Nội dung đánh giá", "default": "Sản phẩm chất lượng, giao hàng nhanh, đóng gói cẩn thận. Sẽ ủng hộ shop dài dài!" },
+        { "type": "image_picker", "id": "avatar", "label": "Ảnh đại diện (tuỳ chọn)" },
+        { "type": "image_picker", "id": "photo", "label": "Ảnh sản phẩm của khách (tuỳ chọn)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Đánh giá sản phẩm",
+      "blocks": [ { "type": "review" }, { "type": "review" }, { "type": "review" } ]
+    }
+  ]
+}
+{% endschema %}
