@@ -24,6 +24,41 @@
     ]
   },
   {
+    "name": "🎁 Quà tặng theo đơn (Gift)",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Đơn đạt mốc → tự thêm 1 sản phẩm quà vào giỏ, tụt dưới mốc → tự gỡ. LƯU Ý: quà phải MIỄN PHÍ — hoặc để sản phẩm quà giá €0, hoặc tạo Automatic discount 'Buy X get Y' (mua tối thiểu 100€ → tặng 1 sản phẩm 100% off)."
+      },
+      {
+        "type": "checkbox",
+        "id": "pf_gift_enable",
+        "label": "Bật tặng quà theo đơn",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "pf_gift_handle",
+        "label": "Handle sản phẩm quà",
+        "info": "Lấy phần cuối URL sản phẩm. VD: banh-gao-one-one-vi-ngot-150gx20-goi",
+        "default": "banh-gao-one-one-vi-ngot-150gx20-goi"
+      },
+      {
+        "type": "number",
+        "id": "pf_gift_min",
+        "label": "Mốc tặng tối thiểu (€)",
+        "default": 100
+      },
+      {
+        "type": "number",
+        "id": "pf_gift_max",
+        "label": "Mốc tối đa (€) — 0 = không giới hạn",
+        "info": "Chỉ tặng khi tổng < mốc này. VD 169 = chỉ tặng cho đơn từ 100€ đến dưới 169€. Để 0 nếu không cần trần.",
+        "default": 0
+      }
+    ]
+  },
+  {
     "name": "t:settings_schema.logo.name",
     "settings": [
       {
