@@ -82,17 +82,6 @@
         "padding_bottom": 12
       }
     },
-    "disclosures": {
-      "type": "disclosures",
-      "settings": {
-        "heading": "Disclosures",
-        "heading_size": "h2",
-        "open_by_default": false,
-        "color_scheme": "",
-        "padding_top": 36,
-        "padding_bottom": 0
-      }
-    },
     "pf_reviews": {
       "type": "pf-product-reviews",
       "blocks": {
@@ -126,7 +115,7 @@
             "rating": 4,
             "date": "20/07/2026",
             "verified": true,
-            "body": "Sản phẩm ngon, freeship đơn lớn rất tiện. Sẽ ủng hộ shop tiếp."
+            "body": "Sản phẩm chính hãng, freeship đơn lớn rất tiện. Sẽ ủng hộ shop tiếp."
           }
         },
         "r4": {
@@ -148,7 +137,7 @@
             "rating": 5,
             "date": "08/07/2026",
             "verified": true,
-            "body": "Lần đầu đặt hơi lo, nhưng nhận hàng xong yên tâm hẳn. Đồ tươi, hạn dùng còn dài, giá hợp lý."
+            "body": "Lần đầu đặt hơi lo, nhưng nhận hàng xong yên tâm hẳn. Sản phẩm chất lương, hạn dùng còn dài, giá hợp lý."
           }
         },
         "r6": {
@@ -163,7 +152,14 @@
           }
         }
       },
-      "block_order": ["r1", "r2", "r3", "r4", "r5", "r6"],
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4",
+        "r5",
+        "r6"
+      ],
       "settings": {
         "heading": "Khách hàng nói gì về sản phẩm",
         "subheading": "Đánh giá thật từ khách hàng PHOMIFOOD",
@@ -175,6 +171,17 @@
     "pf_frequently_bought": {
       "type": "pf-frequently-bought",
       "settings": {}
+    },
+    "disclosures": {
+      "type": "disclosures",
+      "settings": {
+        "heading": "Disclosures",
+        "heading_size": "h2",
+        "open_by_default": false,
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 0
+      }
     },
     "related-products": {
       "type": "related-products",
