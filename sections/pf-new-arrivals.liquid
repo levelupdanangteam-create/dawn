@@ -62,15 +62,19 @@
       </div>
 
       {%- assign pf_initial = section.settings.pf_initial | default: 5 -%}
+      {%- assign pf_valid = 0 -%}
+      {%- for b in section.blocks -%}{%- if b.settings.product != blank and b.settings.product.id -%}{%- assign pf_valid = pf_valid | plus: 1 -%}{%- endif -%}{%- endfor -%}
+      {%- assign pf_shown = 0 -%}
       <div class="pf-na__grid">
         {%- for block in section.blocks -%}
           {%- assign product = block.settings.product -%}
           {%- if product != blank and product.id -%}
+            {%- assign pf_shown = pf_shown | plus: 1 -%}
             {%- assign pf_v = product.selected_or_first_available_variant -%}
             {%- assign pf_price = pf_v.price -%}
             {%- assign pf_cmp = pf_v.compare_at_price -%}
             {%- if pf_cmp == blank or pf_cmp <= pf_price -%}{%- assign pf_cmp = product.compare_at_price_max -%}{%- endif -%}
-            <div class="pf-na__card{% if forloop.index > pf_initial %} pf-na__card--hidden{% endif %}" {{ block.shopify_attributes }}>
+            <div class="pf-na__card{% if pf_shown > pf_initial %} pf-na__card--hidden{% endif %}" {{ block.shopify_attributes }}>
               <span class="pf-na__new">{% if request.locale.iso_code == "vi" %}🆕 Mới về{% else %}🆕 New{% endif %}</span>
               <a class="pf-na__media" href="{{ product.url }}">
                 {%- if pf_cmp > pf_price -%}
@@ -106,7 +110,7 @@
         {%- endfor -%}
       </div>
 
-      {%- if section.blocks.size > pf_initial -%}
+      {%- if pf_valid > pf_initial -%}
         <div class="pf-na__more-wrap">
           <button type="button" class="pf-na__more" data-pf-na-more>
             <span class="pf-na__more-txt">{% if request.locale.iso_code == "vi" %}Xem thêm{% else %}View more{% endif %}</span>
