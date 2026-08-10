@@ -214,7 +214,7 @@
         "p4"
       ],
       "settings": {
-        "heading": "🔥 Ưu đãi tuần này, duy nhất 5 -10/8",
+        "heading": "🔥 Ưu đãi tuần này, duy nhất 5 - 12/8",
         "subheading": "Giá tốt nhất trong tuần — số lượng có hạn!",
         "show_view_all": false,
         "view_all_label": "Xem tất cả sản phẩm",
@@ -259,18 +259,6 @@
             "product": ""
           }
         },
-        "product_jJJpke": {
-          "type": "product",
-          "settings": {
-            "product": "com-chay-vip1"
-          }
-        },
-        "product_kT6BiU": {
-          "type": "product",
-          "settings": {
-            "product": "bia-sai-gon-special-24-chai"
-          }
-        },
         "product_VdmUWE": {
           "type": "product",
           "settings": {
@@ -283,22 +271,34 @@
             "product": "chan-ga-ba-tuyết"
           }
         },
+        "product_jJJpke": {
+          "type": "product",
+          "settings": {
+            "product": "com-chay-vip1"
+          }
+        },
         "product_VDxC8J": {
           "type": "product",
           "settings": {
             "product": "tam-cay-4"
           }
         },
-        "product_CyWbRq": {
-          "type": "product",
-          "settings": {
-            "product": "tam-cay-3"
-          }
-        },
         "product_YVFerx": {
           "type": "product",
           "settings": {
             "product": "tam-cay-2"
+          }
+        },
+        "product_kT6BiU": {
+          "type": "product",
+          "settings": {
+            "product": "bia-sai-gon-special-24-chai"
+          }
+        },
+        "product_CyWbRq": {
+          "type": "product",
+          "settings": {
+            "product": "tam-cay-3"
           }
         },
         "product_KY6bhH": {
@@ -310,19 +310,20 @@
       },
       "block_order": [
         "product_LrVacf",
-        "product_jJJpke",
-        "product_kT6BiU",
         "product_VdmUWE",
         "product_mzeaY9",
+        "product_jJJpke",
         "product_VDxC8J",
-        "product_CyWbRq",
         "product_YVFerx",
+        "product_kT6BiU",
+        "product_CyWbRq",
         "product_KY6bhH"
       ],
       "settings": {
         "heading": "🆕 Hàng mới về",
         "subheading": "Những sản phẩm vừa cập bến — nhanh tay đặt mua!",
         "columns_desktop": 5,
+        "pf_initial": 5,
         "padding_top": 40,
         "padding_bottom": 40
       }
