@@ -36,6 +36,18 @@
   #pf-na-{{ section.id }} .pf-na__price .now { font-size: 1.65rem; font-weight: 800; color: #1e8541; }
   #pf-na-{{ section.id }} .pf-na__price .was { font-size: 1.2rem; color: #a79c8e; text-decoration: line-through; }
 
+  #pf-na-{{ section.id }} .pf-na__card--hidden { display: none; }
+  #pf-na-{{ section.id }} .pf-na.is-expanded .pf-na__card--hidden { display: flex; }
+  #pf-na-{{ section.id }} .pf-na__more-wrap { text-align: center; margin-top: 2.6rem; }
+  #pf-na-{{ section.id }} .pf-na__more {
+    display: inline-flex; align-items: center; gap: .6rem; cursor: pointer;
+    background: #fff; border: 2px solid #1e8541; color: #14672f; font-weight: 800; font-size: 1.5rem;
+    padding: 1rem 2.6rem; border-radius: 999px; transition: background .18s ease, color .18s ease;
+  }
+  #pf-na-{{ section.id }} .pf-na__more:hover { background: #1e8541; color: #fff; }
+  #pf-na-{{ section.id }} .pf-na__more .arw { transition: transform .2s ease; }
+  #pf-na-{{ section.id }} .pf-na.is-expanded .pf-na__more .arw { transform: rotate(180deg); }
+
   @media (max-width: 989px) { #pf-na-{{ section.id }} .pf-na__grid { grid-template-columns: repeat(3, 1fr); } }
   @media (max-width: 599px) { #pf-na-{{ section.id }} .pf-na__grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; } }
 </style>
@@ -49,6 +61,7 @@
         {%- if section.settings.subheading != blank -%}<p class="pf-na__sub">{% render 'pf-tr', s: section.settings.subheading %}</p>{%- endif -%}
       </div>
 
+      {%- assign pf_initial = section.settings.pf_initial | default: 5 -%}
       <div class="pf-na__grid">
         {%- for block in section.blocks -%}
           {%- assign product = block.settings.product -%}
@@ -57,7 +70,7 @@
             {%- assign pf_price = pf_v.price -%}
             {%- assign pf_cmp = pf_v.compare_at_price -%}
             {%- if pf_cmp == blank or pf_cmp <= pf_price -%}{%- assign pf_cmp = product.compare_at_price_max -%}{%- endif -%}
-            <div class="pf-na__card" {{ block.shopify_attributes }}>
+            <div class="pf-na__card{% if forloop.index > pf_initial %} pf-na__card--hidden{% endif %}" {{ block.shopify_attributes }}>
               <span class="pf-na__new">{% if request.locale.iso_code == "vi" %}🆕 Mới về{% else %}🆕 New{% endif %}</span>
               <a class="pf-na__media" href="{{ product.url }}">
                 {%- if pf_cmp > pf_price -%}
@@ -92,9 +105,34 @@
           {%- endfor -%}
         {%- endfor -%}
       </div>
+
+      {%- if section.blocks.size > pf_initial -%}
+        <div class="pf-na__more-wrap">
+          <button type="button" class="pf-na__more" data-pf-na-more>
+            <span class="pf-na__more-txt">{% if request.locale.iso_code == "vi" %}Xem thêm{% else %}View more{% endif %}</span>
+            <span class="arw" aria-hidden="true">▾</span>
+          </button>
+        </div>
+      {%- endif -%}
     </div>
   </div>
 </div>
+
+<script>
+  (function () {
+    var root = document.getElementById('pf-na-{{ section.id }}');
+    if (!root) return;
+    var na = root.querySelector('.pf-na');
+    var btn = root.querySelector('[data-pf-na-more]');
+    if (!na || !btn) return;
+    var txt = btn.querySelector('.pf-na__more-txt');
+    var vi = '{{ request.locale.iso_code }}' === 'vi';
+    btn.addEventListener('click', function () {
+      var expanded = na.classList.toggle('is-expanded');
+      if (txt) txt.textContent = expanded ? (vi ? 'Thu gọn' : 'View less') : (vi ? 'Xem thêm' : 'View more');
+    });
+  })();
+</script>
 
 {% schema %}
 {
@@ -104,6 +142,7 @@
     { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "🆕 Hàng mới về" },
     { "type": "text", "id": "subheading", "label": "Phụ đề", "default": "Những sản phẩm vừa cập bến — nhanh tay đặt mua!" },
     { "type": "range", "id": "columns_desktop", "min": 3, "max": 6, "step": 1, "label": "Số cột (desktop)", "default": 5 },
+    { "type": "range", "id": "pf_initial", "min": 3, "max": 15, "step": 1, "label": "Số sản phẩm hiện ban đầu (còn lại ẩn sau nút Xem thêm)", "default": 5 },
     { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 40 },
     { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 40 }
   ],
