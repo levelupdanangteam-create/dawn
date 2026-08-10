@@ -35,9 +35,6 @@
           <span class="pf-rv__stars pf-rv__stars--lg" aria-hidden="true">
             {%- for i in (1..5) -%}<span class="pf-rv__star{% if i <= pf_avg_round %} is-on{% endif %}">★</span>{%- endfor -%}
           </span>
-          <span class="pf-rv__avg-count">
-            {%- if request.locale.iso_code == 'vi' -%}{{ pf_count }} đánh giá{%- else -%}{{ pf_count }} review{% if pf_count != 1 %}s{% endif %}{%- endif -%}
-          </span>
         </div>
       </div>
     {%- endif -%}
@@ -102,8 +99,14 @@
   #pf-rv-{{ section.id }} .pf-rv__star { color: #e0d6c4; }
   #pf-rv-{{ section.id }} .pf-rv__star.is-on { color: #f2b705; }
 
-  #pf-rv-{{ section.id }} .pf-rv__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
-  #pf-rv-{{ section.id }} .pf-rv__card { display: flex; flex-direction: column; gap: .9rem; background: #fff; border: 1px solid #ece3d4; border-radius: 16px; padding: 1.6rem; box-shadow: 0 6px 18px rgba(120,100,70,.07); }
+  #pf-rv-{{ section.id }} .pf-rv__grid {
+    display: flex; flex-wrap: nowrap; gap: 1.6rem;
+    overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+    padding-bottom: 1.2rem; scrollbar-width: thin; scrollbar-color: #e0c98e transparent;
+  }
+  #pf-rv-{{ section.id }} .pf-rv__grid::-webkit-scrollbar { height: 8px; }
+  #pf-rv-{{ section.id }} .pf-rv__grid::-webkit-scrollbar-thumb { background: #e0c98e; border-radius: 999px; }
+  #pf-rv-{{ section.id }} .pf-rv__card { flex: 0 0 clamp(27rem, 30vw, 33rem); scroll-snap-align: start; display: flex; flex-direction: column; gap: .9rem; background: #fff; border: 1px solid #ece3d4; border-radius: 16px; padding: 1.6rem; box-shadow: 0 6px 18px rgba(120,100,70,.07); }
   #pf-rv-{{ section.id }} .pf-rv__card-top { display: flex; align-items: center; gap: 1rem; }
   #pf-rv-{{ section.id }} .pf-rv__avatar { flex: none; width: 4.4rem; height: 4.4rem; border-radius: 50%; overflow: hidden; background: linear-gradient(135deg, #1e8541, #14672f); display: grid; place-items: center; }
   #pf-rv-{{ section.id }} .pf-rv__avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -119,8 +122,7 @@
   #pf-rv-{{ section.id }} .pf-rv__photo img { display: block; width: 100%; height: auto; }
   #pf-rv-{{ section.id }} .pf-rv__empty { text-align: center; color: #9a9080; font-size: 1.45rem; }
 
-  @media (max-width: 989px) { #pf-rv-{{ section.id }} .pf-rv__grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 599px) { #pf-rv-{{ section.id }} .pf-rv__grid { grid-template-columns: 1fr; } }
+  @media (max-width: 749px) { #pf-rv-{{ section.id }} .pf-rv__card { flex: 0 0 80%; } }
 </style>
 
 {% schema %}
