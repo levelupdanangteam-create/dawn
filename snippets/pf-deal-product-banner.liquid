@@ -10,7 +10,37 @@
   {%- if parts[0] == product.handle -%}{%- assign pf_deal_price = parts[1] -%}{%- endif -%}
 {%- endfor -%}
 
-{%- if pf_deal_price != "" -%}
+{%- if settings.pf_gift_enable and settings.pf_gift_handle != blank and product.handle == settings.pf_gift_handle -%}
+  {%- assign pf_gm = settings.pf_gift_min | default: 100 -%}
+  <div class="pf-deal-pb pf-deal-pb--gift">
+    <span class="pf-deal-pb__badge pf-deal-pb__badge--gift">🎁 {% if request.locale.iso_code == 'vi' %}QUÀ TẶNG{% else %}GIFT{% endif %}</span>
+    <p class="pf-deal-pb__txt">
+      {% if request.locale.iso_code == 'vi' %}Sản phẩm này được <b>TẶNG MIỄN PHÍ</b> cho đơn hàng từ <b>{{ pf_gm }}€</b> — tự động thêm vào giỏ!{% else %}This item is a <b>FREE gift</b> on orders from <b>{{ pf_gm }}€</b> — auto-added to your cart!{% endif %}
+      <span class="pf-deal-pb__note">{% if request.locale.iso_code == 'vi' %}(mỗi đơn tặng 1 sản phẩm){% else %}(1 gift per order){% endif %}</span>
+    </p>
+  </div>
+
+  <style>
+    .pf-deal-pb--gift { background: linear-gradient(90deg, #e9f7ee, #dff3e6) !important; border-color: #a9dcb9 !important; border-left-color: #1e8541 !important; }
+    .pf-deal-pb--gift .pf-deal-pb__txt { color: #14672f; }
+    .pf-deal-pb--gift .pf-deal-pb__txt b { color: #1e8541; }
+    .pf-deal-pb--gift .pf-deal-pb__note { color: #4f8f63; }
+    .pf-deal-pb__badge--gift { background: #1e8541 !important; }
+    .pf-deal-pb {
+      display: flex; align-items: center; gap: 1rem; margin: 1.6rem 0;
+      background: linear-gradient(90deg, #fff1e0, #ffe6e6);
+      border: 1px solid #f2b8a0; border-left: 5px solid #d62828;
+      border-radius: 12px; padding: 1.2rem 1.4rem;
+    }
+    .pf-deal-pb__badge {
+      flex: none; background: #d62828; color: #fff; font-weight: 800; font-size: 1.25rem;
+      letter-spacing: .5px; padding: .5rem .9rem; border-radius: 999px; white-space: nowrap;
+    }
+    .pf-deal-pb__txt { margin: 0; font-size: 1.4rem; line-height: 1.45; color: #7a2f1a; font-weight: 600; }
+    .pf-deal-pb__txt b { color: #d62828; }
+    .pf-deal-pb__note { display: block; font-size: 1.2rem; font-weight: 500; color: #a86a4a; margin-top: .2rem; }
+  </style>
+{%- elsif pf_deal_price != "" -%}
   <div class="pf-deal-pb">
     <span class="pf-deal-pb__badge">🔥 DEAL</span>
     <p class="pf-deal-pb__txt">
