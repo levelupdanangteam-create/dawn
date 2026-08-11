@@ -20,7 +20,12 @@
     </p>
   </div>
 
+  {%- comment -%} Gift product: hide the add-to-cart / buy buttons + the deal-rule
+      note, since it's auto-added, never bought manually. {%- endcomment -%}
   <style>
+    .product-form__buttons,
+    .product-form__quantity,
+    .pf-deal-pdp-note { display: none !important; }
     .pf-deal-pb--gift { background: linear-gradient(90deg, #e9f7ee, #dff3e6) !important; border-color: #a9dcb9 !important; border-left-color: #1e8541 !important; }
     .pf-deal-pb--gift .pf-deal-pb__txt { color: #14672f; }
     .pf-deal-pb--gift .pf-deal-pb__txt b { color: #1e8541; }
