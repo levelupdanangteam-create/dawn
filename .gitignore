@@ -10,3 +10,5 @@ Thumbs.db
 .shopify
 node_modules
 *.zip
+# PHOMIFOOD: local analysis/scratch files (not part of the theme)
+scratchpad/
