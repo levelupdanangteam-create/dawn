@@ -15,17 +15,12 @@
   <div class="pf-deal-pb pf-deal-pb--gift">
     <span class="pf-deal-pb__badge pf-deal-pb__badge--gift">🎁 {% if request.locale.iso_code == 'vi' %}QUÀ TẶNG{% else %}GIFT{% endif %}</span>
     <p class="pf-deal-pb__txt">
-      {% if request.locale.iso_code == 'vi' %}Sản phẩm này được <b>TẶNG MIỄN PHÍ</b> cho đơn hàng từ <b>{{ pf_gm }}€</b> — tự động thêm vào giỏ!{% else %}This item is a <b>FREE gift</b> on orders from <b>{{ pf_gm }}€</b> — auto-added to your cart!{% endif %}
-      <span class="pf-deal-pb__note">{% if request.locale.iso_code == 'vi' %}(mỗi đơn tặng 1 sản phẩm){% else %}(1 gift per order){% endif %}</span>
+      {% if request.locale.iso_code == 'vi' %}Mua đơn hàng từ <b>{{ pf_gm }}€</b> — được <b>TẶNG 1 sản phẩm này miễn phí</b>!{% else %}Spend <b>{{ pf_gm }}€</b> or more and get <b>1 of this item FREE</b>!{% endif %}
+      <span class="pf-deal-pb__note">{% if request.locale.iso_code == 'vi' %}(mỗi đơn tặng 1 · vẫn mua thêm số lượng bình thường){% else %}(1 free per order · you can still buy more){% endif %}</span>
     </p>
   </div>
 
-  {%- comment -%} Gift product: hide the add-to-cart / buy buttons + the deal-rule
-      note, since it's auto-added, never bought manually. {%- endcomment -%}
   <style>
-    .product-form__buttons,
-    .product-form__quantity,
-    .pf-deal-pdp-note { display: none !important; }
     .pf-deal-pb--gift { background: linear-gradient(90deg, #e9f7ee, #dff3e6) !important; border-color: #a9dcb9 !important; border-left-color: #1e8541 !important; }
     .pf-deal-pb--gift .pf-deal-pb__txt { color: #14672f; }
     .pf-deal-pb--gift .pf-deal-pb__txt b { color: #1e8541; }
