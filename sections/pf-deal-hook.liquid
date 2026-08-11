@@ -37,7 +37,8 @@
             <a class="pf-deal__name" href="{{ p.url }}">{{ p.title }}</a>
             <div class="pf-deal__price">
               {%- if pf_is_gift -%}
-                <span class="pf-deal__now">{{ v.price | money }}</span>
+                <span class="pf-deal__now pf-deal__now--gift">0€</span>
+                <span class="pf-deal__was">{{ v.price | money }}</span>
               {%- elsif parts[1] != blank -%}
                 <span class="pf-deal__now">{%- unless parts[1] contains '€' -%}€{%- endunless -%}{{ parts[1] }}</span>
                 <span class="pf-deal__was">{{ v.price | money }}</span>

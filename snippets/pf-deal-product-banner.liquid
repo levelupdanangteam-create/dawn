@@ -16,7 +16,6 @@
     <span class="pf-deal-pb__badge pf-deal-pb__badge--gift">🎁 {% if request.locale.iso_code == 'vi' %}QUÀ TẶNG{% else %}GIFT{% endif %}</span>
     <p class="pf-deal-pb__txt">
       {% if request.locale.iso_code == 'vi' %}Mua đơn hàng từ <b>{{ pf_gm }}€</b> — được <b>TẶNG 1 sản phẩm này miễn phí</b>!{% else %}Spend <b>{{ pf_gm }}€</b> or more and get <b>1 of this item FREE</b>!{% endif %}
-      <span class="pf-deal-pb__note">{% if request.locale.iso_code == 'vi' %}(mỗi đơn tặng 1 · vẫn mua thêm số lượng bình thường){% else %}(1 free per order · you can still buy more){% endif %}</span>
     </p>
   </div>
 
