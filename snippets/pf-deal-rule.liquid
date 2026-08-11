@@ -12,8 +12,11 @@
 {%- assign pf_dr_rows = settings.pf_deal_rows | split: ";;" -%}
 {%- for row in pf_dr_rows -%}
   {%- assign pf_dr_parts = row | split: "||" -%}
-  {%- if forloop.first -%}{%- assign pf_deal_handles = pf_dr_parts[0] -%}
-  {%- else -%}{%- assign pf_deal_handles = pf_deal_handles | append: "," | append: pf_dr_parts[0] -%}{%- endif -%}
+  {%- comment -%}Skip the gift product — it's a normal, freely purchasable item.{%- endcomment -%}
+  {%- unless pf_dr_parts[0] == settings.pf_gift_handle -%}
+    {%- if pf_deal_handles == "" -%}{%- assign pf_deal_handles = pf_dr_parts[0] -%}
+    {%- else -%}{%- assign pf_deal_handles = pf_deal_handles | append: "," | append: pf_dr_parts[0] -%}{%- endif -%}
+  {%- endunless -%}
 {%- endfor -%}
 
 <script>
