@@ -24,8 +24,11 @@
         {%- assign p = all_products[parts[0]] -%}
         {%- if p != blank and p.id -%}
           {%- assign v = p.selected_or_first_available_variant -%}
-          <div class="pf-deal__card">
-            <div class="pf-deal__ribbon">DEAL</div>
+          {%- assign pf_is_gift = false -%}
+          {%- if settings.pf_gift_handle != blank and parts[0] == settings.pf_gift_handle -%}{%- assign pf_is_gift = true -%}{%- endif -%}
+          {%- assign pf_gm = settings.pf_gift_min | default: 100 -%}
+          <div class="pf-deal__card{% if pf_is_gift %} pf-deal__card--gift{% endif %}">
+            <div class="pf-deal__ribbon{% if pf_is_gift %} pf-deal__ribbon--gift{% endif %}">{% if pf_is_gift %}🎁 {% if request.locale.iso_code == "vi" %}QUÀ{% else %}GIFT{% endif %}{% else %}DEAL{% endif %}</div>
             <a class="pf-deal__media" href="{{ p.url }}">
               {%- if p.featured_image -%}
                 <img src="{{ p.featured_image | image_url: width: 400 }}" alt="{{ p.title | escape }}" loading="lazy" width="200" height="200">
@@ -33,15 +36,25 @@
             </a>
             <a class="pf-deal__name" href="{{ p.url }}">{{ p.title }}</a>
             <div class="pf-deal__price">
-              {%- if parts[1] != blank -%}
+              {%- if pf_is_gift -%}
+                <span class="pf-deal__now pf-deal__now--gift">{% if request.locale.iso_code == "vi" %}Miễn phí{% else %}Free{% endif %}</span>
+                <span class="pf-deal__was">{{ v.price | money }}</span>
+              {%- elsif parts[1] != blank -%}
                 <span class="pf-deal__now">{%- unless parts[1] contains '€' -%}€{%- endunless -%}{{ parts[1] }}</span>
                 <span class="pf-deal__was">{{ v.price | money }}</span>
               {%- else -%}
                 <span class="pf-deal__now">{{ v.price | money }}</span>
               {%- endif -%}
             </div>
-            <div class="pf-deal__limit">{% if request.locale.iso_code == "vi" %}⚠️ Ưu đãi chỉ áp dụng cho 1 sản phẩm — giá có thể thay đổi khi mua nhiều hơn{% else %}⚠️ Offer applies to 1 item only — price may change for larger quantities{% endif %}</div>
-            {%- render 'pf-card-buttons', product: p, section_id: section.id -%}
+            <div class="pf-deal__limit{% if pf_is_gift %} pf-deal__limit--gift{% endif %}">
+              {%- if pf_is_gift -%}🎁 {% if request.locale.iso_code == "vi" %}Tặng miễn phí cho đơn hàng từ <b>{{ pf_gm }}€</b> — tự động thêm vào giỏ{% else %}Free gift on orders from <b>{{ pf_gm }}€</b> — auto-added to cart{% endif %}
+              {%- else -%}{% if request.locale.iso_code == "vi" %}⚠️ Ưu đãi chỉ áp dụng cho 1 sản phẩm — giá có thể thay đổi khi mua nhiều hơn{% else %}⚠️ Offer applies to 1 item only — price may change for larger quantities{% endif %}{%- endif -%}
+            </div>
+            {%- if pf_is_gift -%}
+              <a class="pf-deal__giftbtn" href="{{ p.url }}">{% if request.locale.iso_code == "vi" %}Xem sản phẩm{% else %}View product{% endif %}</a>
+            {%- else -%}
+              {%- render 'pf-card-buttons', product: p, section_id: section.id -%}
+            {%- endif -%}
           </div>
         {%- endif -%}
       {%- endfor -%}
@@ -85,6 +98,19 @@
     border: 1px solid #f0d99a; border-radius: 8px; padding: .5rem .7rem; margin-bottom: 1rem;
   }
   .pf-deal__card .pf-card-actions { margin-top: auto; }
+  /* Gift card (bánh gạo — free with orders over threshold) */
+  .pf-deal__card--gift { border-color: #a9dcb9; box-shadow: 0 6px 18px rgba(20,133,65,.12); }
+  .pf-deal__ribbon--gift { background: #1e8541 !important; }
+  .pf-deal__now--gift { color: #1e8541 !important; }
+  .pf-deal__limit--gift { color: #14672f !important; background: #e9f7ee !important; border-color: #bfe0c7 !important; }
+  .pf-deal__limit--gift b { color: #1e8541; }
+  .pf-deal__giftbtn {
+    display: block; text-align: center; margin-top: auto;
+    background: linear-gradient(90deg, #1e8541, #14672f); color: #fff;
+    font-weight: 800; font-size: 1.4rem; padding: 1rem; border-radius: 10px;
+    text-decoration: none; transition: filter .15s ease;
+  }
+  .pf-deal__giftbtn:hover { filter: brightness(1.08); color: #fff; }
   /* Mobile: horizontal scroll carousel */
   @media (max-width: 749px) {
     .pf-deal__grid {
