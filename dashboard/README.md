@@ -74,13 +74,22 @@ Cấp các quyền (Configuration → Admin API scopes):
 | Scope | Dùng để |
 |---|---|
 | `read_orders` | đọc đơn hàng |
-| `write_merchant_managed_fulfillment_orders` | Mark as Fulfilled |
-| `write_fulfillments` | gắn mã vận đơn |
-| `read_products`, `read_inventory` | tồn kho, giá vốn |
-| `read_all_orders` | đọc đơn cũ hơn 60 ngày (phải xin Shopify duyệt) |
+| `read_merchant_managed_fulfillment_orders` | tìm dòng hàng cần fulfil |
+| `write_merchant_managed_fulfillment_orders` | Mark as Fulfilled + gắn mã vận đơn |
+| `read_products` | tên sản phẩm, biến thể |
+| `read_inventory` | tồn kho và giá vốn (`unitCost`) |
+| `read_all_orders` | *(tuỳ chọn)* đọc đơn cũ hơn 60 ngày — phải xin Shopify duyệt |
 
-Bấm **Install app** → copy **Admin API access token** (`shpat_…`) và **API secret key**
-(dùng làm `SHOPIFY_WEBHOOK_SECRET`).
+Kho của Phomifood là **merchant-managed location** (tự đóng gói) nên chỉ cần cặp scope
+`*_merchant_managed_fulfillment_orders`. Các scope `*_assigned_*` và `*_third_party_*`
+là dành cho bên fulfillment service, không cần.
+
+Bấm **Install app** → copy **Admin API access token** (`shpat_…`) và **client secret**
+(mục *Client credentials* — dùng làm `SHOPIFY_WEBHOOK_SECRET`).
+
+> Cột UTM (`utm_campaign`) lấy từ `customerJourneySummary` cần Shopify duyệt quyền
+> *protected customer data*. Chưa được duyệt thì code tự động bỏ qua, mọi thứ khác vẫn chạy —
+> chỉ là không ghép được đơn với chiến dịch cụ thể.
 
 ### Bước 3 — Meta Ads
 
@@ -132,13 +141,19 @@ https://opennext.js.org/cloudflare.
 
 ### Bước 7 — Webhook Shopify
 
-Trong custom app vừa tạo → **Configuration → Webhooks** (hoặc Settings → Notifications),
+Trong **chính custom app vừa tạo** → tab **Configuration → Webhook subscriptions**,
 thêm 4 webhook, format JSON, trỏ tới `https://<domain>/api/webhooks/shopify`:
 
 - `orders/create`
 - `orders/updated`
 - `orders/cancelled`
 - `fulfillments/create`
+
+> ⚠️ **Phải tạo webhook trong app, không phải ở Settings → Notifications.** Webhook tạo từ
+> trang Notifications thuộc về cửa hàng chứ không thuộc app, nên được ký bằng một secret
+> khác — dashboard sẽ trả `401 HMAC không hợp lệ` và không đơn nào vào được.
+>
+> Nếu đổi client secret của app, Shopify cần tới 1 tiếng để ký webhook bằng secret mới.
 
 ### Bước 8 — Cron
 
