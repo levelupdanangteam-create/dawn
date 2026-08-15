@@ -1,0 +1,64 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-ink: #14110f;
+  --color-muted: #6b6560;
+  --color-line: #e7e2dc;
+  --color-canvas: #faf8f5;
+  --color-card: #ffffff;
+  --color-brand: #b4491f;
+  --color-brand-soft: #fdeee8;
+  --color-good: #197a4b;
+  --color-good-soft: #e6f4ec;
+  --color-warn: #9a6b00;
+  --color-warn-soft: #fdf3dc;
+  --color-bad: #b3261e;
+  --color-bad-soft: #fdeceb;
+  --font-sans: ui-sans-serif, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+html,
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Bảng dày đặc, dễ đọc cho kho và sale */
+.table-dense th {
+  @apply px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-[var(--color-muted)];
+}
+.table-dense td {
+  @apply px-3 py-2.5 align-top text-sm;
+}
+.table-dense tbody tr {
+  @apply border-t border-[var(--color-line)];
+}
+.table-dense tbody tr:hover {
+  background: #fcfaf7;
+}
+
+.card {
+  @apply rounded-xl border border-[var(--color-line)] bg-[var(--color-card)];
+}
+
+.btn,
+.btn-primary,
+.btn-ghost {
+  @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-50;
+}
+.btn-primary {
+  @apply bg-[var(--color-brand)] text-white hover:brightness-110;
+}
+.btn-ghost {
+  @apply border border-[var(--color-line)] bg-white text-[var(--color-ink)] hover:bg-[var(--color-canvas)];
+}
+
+.input {
+  @apply w-full rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm outline-none focus:border-[var(--color-brand)];
+}
+
+.pill {
+  @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium;
+}
