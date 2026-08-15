@@ -46,14 +46,32 @@ Sheet A và Sheet B biến mất. Mã vận đơn không đi qua tay ai.
 | Thành phần | Dịch vụ | Gói miễn phí |
 |---|---|---|
 | Cơ sở dữ liệu | [Supabase](https://supabase.com) | 500 MB Postgres — đủ cho hàng trăm nghìn đơn |
-| Chạy web | [Vercel](https://vercel.com) hoặc [Cloudflare Workers](https://workers.cloudflare.com) | Hobby / Free plan |
+| Chạy web | Google Cloud Run (xem bảng dưới) | 2 triệu request/tháng |
 | Chạy nền (cron) | GitHub Actions | 2.000 phút/tháng cho repo private |
 | Nhận đơn realtime | Shopify Webhooks | miễn phí |
 
-> **Lưu ý về Vercel:** gói Hobby theo điều khoản là dành cho mục đích phi thương mại.
-> Với một dashboard nội bộ nhỏ thì thực tế vẫn chạy tốt, nhưng nếu muốn đúng điều khoản
-> mà vẫn miễn phí, dùng **Cloudflare Workers** (free plan cho phép dùng thương mại)
-> qua `@opennextjs/cloudflare`, hoặc trả ~$20/tháng cho Vercel Pro.
+### Chọn chỗ chạy web
+
+Dashboard được đóng gói bằng `Dockerfile` (Next.js standalone, ~150 MB) nên chạy
+được ở bất kỳ đâu chạy được container. **Không khoá vào nhà cung cấp nào** — đổi chỗ
+chạy chỉ là deploy lại cùng cái image đó.
+
+| Nơi chạy | Chi phí thật | Dùng thương mại | Đánh đổi |
+|---|---|---|---|
+| **Google Cloud Run** ⭐ | 0 đ ở mức dùng này | ✅ | Phải gắn thẻ để bật billing (không bị trừ tiền trong hạn mức). Request đầu sau lúc nghỉ chậm 1–2 giây. |
+| Máy văn phòng + [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/) | 0 đ hoàn toàn | ✅ | Máy phải luôn bật. Không cần thẻ tín dụng. |
+| Render free tier | 0 đ | ✅ | Ngủ sau 15 phút không ai dùng, dậy mất ~1 phút — kho đợi lâu. |
+| Cloudflare Workers | 0 đ | ✅ | Cần `@opennextjs/cloudflare`; gói free giới hạn CPU mỗi request nên SSR nặng có thể bị cắt — phải test trước. |
+| VPS [Hetzner](https://hetzner.com) CX22 | ~4 €/tháng | ✅ | Rẻ nhất trong nhóm "không phải lo giới hạn". Server đặt ở Đức/Phần Lan. |
+| Vercel Hobby | 0 đ | ⚠️ Điều khoản ghi phi thương mại | Deploy dễ nhất, nhưng dùng cho công ty là sai điều khoản. Bản Pro 20 $/tháng. |
+
+**Khuyến nghị: Google Cloud Run.** Với vài người dùng nội bộ, lượng request một tháng
+còn xa mới chạm mốc 2 triệu, nên thực tế là 0 đồng, mà điều khoản thì sạch.
+Đã có sẵn script `./deploy-cloudrun.sh`.
+
+Nếu không muốn gắn thẻ tín dụng: dùng phương án **máy văn phòng + Cloudflare Tunnel** —
+`docker run` trên một máy trong kho hoặc văn phòng, Cloudflare Tunnel cho ra một địa chỉ
+HTTPS công khai để Shopify gửi webhook vào. Miễn phí tuyệt đối, đổi lại máy phải luôn bật.
 
 ---
 
@@ -133,11 +151,48 @@ curl "http://localhost:3000/api/sync/meta?key=CRON_SECRET&days=30"
 
 ### Bước 6 — Deploy
 
-**Vercel:** import repo → **Root Directory** đặt là `dashboard` → dán toàn bộ biến môi
-trường → Deploy.
+#### Cách A — Google Cloud Run *(khuyến nghị)*
 
-**Cloudflare Workers:** `npm i -D @opennextjs/cloudflare` rồi theo hướng dẫn tại
-https://opennext.js.org/cloudflare.
+```bash
+# Cài gcloud CLI một lần: https://cloud.google.com/sdk/docs/install
+gcloud auth login
+# Tạo project ở console.cloud.google.com và bật billing, rồi:
+cd dashboard
+./deploy-cloudrun.sh <project-id>
+```
+
+Script tự bật API cần thiết, build container, đẩy toàn bộ biến từ `.env.local` lên,
+và in ra địa chỉ dashboard. Deploy lại sau này cũng chỉ chạy đúng lệnh đó.
+
+Cấu hình mặc định `--min-instances 0` nghĩa là không ai dùng thì service tắt hẳn và
+không tính tiền — đổi lại request đầu tiên sau lúc nghỉ chậm 1–2 giây.
+
+#### Cách B — Máy ở văn phòng, không cần thẻ tín dụng
+
+```bash
+cd dashboard
+docker build -t phomifood-dashboard .
+docker run -d --restart unless-stopped -p 3000:3000 \
+  --env-file .env.local --name phomifood phomifood-dashboard
+```
+
+Rồi mở ra Internet bằng Cloudflare Tunnel (miễn phí, để Shopify gửi webhook vào được):
+
+```bash
+cloudflared tunnel --url http://localhost:3000
+```
+
+Chạy thật lâu dài thì tạo named tunnel để địa chỉ cố định, xem
+https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/.
+
+#### Cách C — VPS (Hetzner, ~4 €/tháng)
+
+Cài Docker rồi chạy đúng 2 lệnh ở cách B, thêm Caddy hoặc nginx làm HTTPS.
+
+#### Cách D — Vercel
+
+Import repo → **Root Directory** đặt là `dashboard` → dán biến môi trường → Deploy.
+Nhanh nhất, nhưng gói Hobby theo điều khoản là phi thương mại (xem bảng ở mục 2).
 
 ### Bước 7 — Webhook Shopify
 
