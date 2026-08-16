@@ -85,7 +85,38 @@ HTTPS công khai để Shopify gửi webhook vào. Miễn phí tuyệt đối, �
 
 ### Bước 2 — App Shopify (custom app)
 
-Shopify Admin → **Settings → Apps and sales channels → Develop apps → Create an app**.
+⚠️ **Shopify đã ngừng cho tạo custom app mới từ trong Shopify Admin.** App cũ tạo theo
+cách đó vẫn chạy bình thường, nhưng app mới thì phải tạo từ Dev Dashboard.
+
+**Trước tiên kiểm tra:** Shopify Admin → **Settings → Apps and sales channels**. Nếu vẫn
+thấy nút **Develop apps** thì dùng đường đó cho nhanh (cửa hàng đã từng tạo custom app
+mới còn nút này). Nếu không thấy → dùng cách B.
+
+<details>
+<summary><strong>Cách A — Develop apps trong Admin (nếu còn nút)</strong></summary>
+
+**Settings → Apps and sales channels → Develop apps → Create an app** → đặt tên
+"Phomifood Dashboard".
+
+</details>
+
+<details>
+<summary><strong>Cách B — Dev Dashboard (cách chính thức hiện nay)</strong></summary>
+
+1. Vào [shopify.dev/dashboard](https://shopify.dev/dashboard) (đăng nhập bằng chính tài
+   khoản Shopify của cửa hàng) → **Create app**
+2. Vào **App distribution** → chọn **Custom distribution** → nhập
+   `phomifood.myshopify.com`
+
+   ⚠️ Chọn xong **không đổi lại được**. Phải là *Custom distribution*, không phải Public.
+3. Bấm **Generate link** → mở link đó → **Install app** vào cửa hàng
+4. Lấy **Client ID** và **Client secret** trong phần API credentials của app
+
+> Với app tạo kiểu này, token truy cập Admin API có thể được cấp qua OAuth thay vì hiện
+> sẵn một chuỗi `shpat_…` để copy. Khi làm tới bước này, nếu không thấy chỗ copy token,
+> báo tôi — cần thêm một route OAuth ngắn để lấy và lưu token, tôi làm nhanh.
+
+</details>
 
 Cấp các quyền (Configuration → Admin API scopes):
 
@@ -231,6 +262,37 @@ Workflow `.github/workflows/dashboard-sync.yml` sẽ tự chạy:
 | Kho | **Kho** | Bấm **Bắt đầu lấy hàng** → **Đã đóng xong** → **Tạo vận đơn PPL** |
 | Marketing | **Tổng quan**, **Quảng cáo**, **Tồn kho** | Xem lời gộp/ROAS thật theo nước, kiểm tra hàng còn trước khi scale |
 | Quản lý | **Tổng quan** → *Đơn kẹt quá 6 giờ* | Đúng chỗ đang mất thời gian, ai đang giữ đơn |
+
+### Đăng nhập và phân quyền — ba lựa chọn
+
+Hiện tại dùng **một mật khẩu chung** + ô "Tên của bạn" để ghi vào nhật ký. Đơn giản
+nhất, nhưng ai cũng vào được mọi màn hình và tên gõ tay thì không tin được tuyệt đối.
+
+Hai hướng nâng cấp:
+
+| | Mật khẩu chung *(hiện tại)* | Tài khoản riêng theo vai trò | Đăng nhập bằng Shopify |
+|---|---|---|---|
+| Chi phí | 0 đ | 0 đ | Mỗi người cần một **staff account** Shopify — số lượng bị giới hạn theo gói, vượt thì phải trả thêm |
+| Kho dùng điện thoại | Mở link, gõ mật khẩu | Mở link, đăng nhập | Phải vào Shopify Admin rồi mở app — nhiều bước hơn |
+| Phân quyền từng màn hình | Không | Có, tự đặt trong DB | Shopify **không** có sẵn khái niệm "chỉ xem màn hình Kho" — vẫn phải tự map staff → vai trò |
+| Nghỉ việc thì khoá thế nào | Đổi mật khẩu chung cho cả team | Xoá một tài khoản | Xoá staff account |
+| Nhật ký ghi ai làm | Tên gõ tay | Danh tính thật | Danh tính thật |
+| Công sức | đã xong | ~1 tiếng | ~1 ngày |
+
+**Về hướng "đăng nhập bằng Shopify":** làm được, nhưng phải đổi kiểu app. App tạo trong
+Shopify Admin *không* nhúng được vào Admin và không lấy được danh tính người dùng. Phải
+là app **custom distribution** (cách B ở bước 2), chạy nhúng trong Shopify Admin, xác thực
+bằng **session token** — token này Shopify ký bằng client secret, sống 60 giây, và cho biết
+staff nào đang thao tác.
+
+Vướng mắc thật với Phomifood: **kho sẽ phải có staff account Shopify**, tức là tốn ghế theo
+gói và họ cũng vào được Shopify Admin (dù có giới hạn quyền). Trong khi mục đích của
+dashboard chính là để kho *không* phải đụng vào Shopify.
+
+**Khuyến nghị: cột giữa** — tài khoản riêng theo vai trò, lưu trong Supabase. Miễn phí,
+không tốn ghế Shopify, kho vẫn mở bằng một đường link trên điện thoại, và nhật ký
+`order_events` ghi đúng người thật. Muốn làm thì thay `src/lib/auth.ts` — phần còn lại
+của hệ thống không đổi.
 
 ---
 
