@@ -92,28 +92,6 @@
     "pf_reviews": {
       "type": "pf-product-reviews",
       "blocks": {
-        "r2": {
-          "type": "review",
-          "settings": {
-            "author": "Trần Minh",
-            "location": "Berlin, Đức",
-            "rating": 5,
-            "date": "28/07/2026",
-            "verified": true,
-            "body": "Giá tốt, hàng chuẩn, shop tư vấn nhiệt tình. Đặt sỉ cho quán cũng được giá đẹp."
-          }
-        },
-        "r3": {
-          "type": "review",
-          "settings": {
-            "author": "Phạm Thị Lan",
-            "location": "Paris, Pháp",
-            "rating": 4,
-            "date": "20/07/2026",
-            "verified": true,
-            "body": "Sản phẩm chính hãng, freeship đơn lớn rất tiện. Sẽ ủng hộ shop tiếp."
-          }
-        },
         "r4": {
           "type": "review",
           "settings": {
@@ -149,8 +127,6 @@
         }
       },
       "block_order": [
-        "r2",
-        "r3",
         "r4",
         "r5",
         "r6"
