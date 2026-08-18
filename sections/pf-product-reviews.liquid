@@ -40,7 +40,9 @@
     {%- endif -%}
 
     {%- if pf_count > 0 -%}
-      <div class="pf-rv__grid">
+      <div class="pf-rv__carousel">
+        <button type="button" class="pf-rv__nav pf-rv__nav--prev" aria-label="Trước" hidden>‹</button>
+        <div class="pf-rv__grid" data-pf-rv-track>
         {%- for block in section.blocks -%}
           {%- assign b = block.settings -%}
           <div class="pf-rv__card" {{ block.shopify_attributes }}>
@@ -77,6 +79,8 @@
             {%- endif -%}
           </div>
         {%- endfor -%}
+        </div>
+        <button type="button" class="pf-rv__nav pf-rv__nav--next" aria-label="Sau" hidden>›</button>
       </div>
     {%- else -%}
       <p class="pf-rv__empty">{% if request.locale.iso_code == 'vi' %}Thêm đánh giá trong Theme editor → khối "Đánh giá".{% else %}Add reviews in the Theme editor → "Review" block.{% endif %}</p>
@@ -99,13 +103,25 @@
   #pf-rv-{{ section.id }} .pf-rv__star { color: #e0d6c4; }
   #pf-rv-{{ section.id }} .pf-rv__star.is-on { color: #f2b705; }
 
+  #pf-rv-{{ section.id }} .pf-rv__carousel { position: relative; }
   #pf-rv-{{ section.id }} .pf-rv__grid {
-    display: flex; flex-wrap: nowrap; gap: 1.6rem;
+    display: flex; flex-wrap: nowrap; gap: 1.6rem; align-items: stretch;
     overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
-    padding-bottom: 1.2rem; scrollbar-width: thin; scrollbar-color: #e0c98e transparent;
+    scroll-behavior: smooth; padding: .4rem;
+    scrollbar-width: none; -ms-overflow-style: none;
   }
-  #pf-rv-{{ section.id }} .pf-rv__grid::-webkit-scrollbar { height: 8px; }
-  #pf-rv-{{ section.id }} .pf-rv__grid::-webkit-scrollbar-thumb { background: #e0c98e; border-radius: 999px; }
+  #pf-rv-{{ section.id }} .pf-rv__grid::-webkit-scrollbar { display: none; height: 0; }
+  #pf-rv-{{ section.id }} .pf-rv__nav {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+    width: 4.4rem; height: 4.4rem; border-radius: 50%; border: 1px solid #e0d3b8;
+    background: #fff; color: #14672f; font-size: 2.6rem; line-height: 1; cursor: pointer;
+    display: grid; place-items: center; box-shadow: 0 6px 18px rgba(120,100,70,.18);
+    transition: filter .15s ease, transform .15s ease, opacity .15s ease;
+  }
+  #pf-rv-{{ section.id }} .pf-rv__nav:hover { filter: brightness(1.03); transform: translateY(-50%) scale(1.06); }
+  #pf-rv-{{ section.id }} .pf-rv__nav[hidden] { display: none; }
+  #pf-rv-{{ section.id }} .pf-rv__nav--prev { left: -1.2rem; }
+  #pf-rv-{{ section.id }} .pf-rv__nav--next { right: -1.2rem; }
   #pf-rv-{{ section.id }} .pf-rv__card { flex: 0 0 clamp(27rem, 30vw, 33rem); scroll-snap-align: start; display: flex; flex-direction: column; gap: .9rem; background: #fff; border: 1px solid #ece3d4; border-radius: 16px; padding: 1.6rem; box-shadow: 0 6px 18px rgba(120,100,70,.07); }
   #pf-rv-{{ section.id }} .pf-rv__card-top { display: flex; align-items: center; gap: 1rem; }
   #pf-rv-{{ section.id }} .pf-rv__avatar { flex: none; width: 4.4rem; height: 4.4rem; border-radius: 50%; overflow: hidden; background: linear-gradient(135deg, #1e8541, #14672f); display: grid; place-items: center; }
@@ -122,8 +138,40 @@
   #pf-rv-{{ section.id }} .pf-rv__photo img { display: block; width: 100%; height: auto; }
   #pf-rv-{{ section.id }} .pf-rv__empty { text-align: center; color: #9a9080; font-size: 1.45rem; }
 
-  @media (max-width: 749px) { #pf-rv-{{ section.id }} .pf-rv__card { flex: 0 0 80%; } }
+  @media (max-width: 749px) {
+    #pf-rv-{{ section.id }} .pf-rv__card { flex: 0 0 80%; }
+    #pf-rv-{{ section.id }} .pf-rv__nav { display: none; }
+  }
 </style>
+
+<script>
+  (function () {
+    var root = document.getElementById('pf-rv-{{ section.id }}');
+    if (!root) return;
+    var track = root.querySelector('[data-pf-rv-track]');
+    var prev = root.querySelector('.pf-rv__nav--prev');
+    var next = root.querySelector('.pf-rv__nav--next');
+    if (!track || !prev || !next) return;
+
+    function step() {
+      var card = track.querySelector('.pf-rv__card');
+      var w = card ? card.getBoundingClientRect().width : 300;
+      return w + 16; // card width + gap
+    }
+    function update() {
+      var max = track.scrollWidth - track.clientWidth - 2;
+      var overflow = track.scrollWidth > track.clientWidth + 4;
+      prev.hidden = !overflow || track.scrollLeft <= 2;
+      next.hidden = !overflow || track.scrollLeft >= max;
+    }
+    prev.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    next.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: 'smooth' }); });
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+    setTimeout(update, 300);
+  })();
+</script>
 
 {% schema %}
 {
