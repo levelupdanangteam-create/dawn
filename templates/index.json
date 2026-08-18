@@ -295,8 +295,8 @@
       "settings": {
         "heading": "🆕 Hàng mới về",
         "subheading": "Những sản phẩm vừa cập bến — nhanh tay đặt mua!",
-        "columns_desktop": 5,
-        "pf_initial": 5,
+        "columns_desktop": 4,
+        "pf_initial": 4,
         "padding_top": 40,
         "padding_bottom": 40
       }
