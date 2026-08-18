@@ -161,13 +161,7 @@
         "product_yj3Vtz": {
           "type": "product",
           "settings": {
-            "product": "farmer-pho-3mm-400g-x-34-goi"
-          }
-        },
-        "product_Qha83N": {
-          "type": "product",
-          "settings": {
-            "product": "farmer-pho-co-gai-5mm-400g-x-34-goi"
+            "product": "tufoco-banh-trang-cuon-tron-size-22-340g-x-44-goi"
           }
         },
         "product_ffaC6g": {
@@ -206,7 +200,6 @@
         "product_ntYrrY",
         "p4",
         "product_yj3Vtz",
-        "product_Qha83N",
         "product_ffaC6g",
         "product_rikHgy",
         "product_R3NNi4",
@@ -223,37 +216,21 @@
         "padding_bottom": 40
       }
     },
-    "pf_flash_sale": {
-      "type": "pf-flash-sale",
-      "disabled": true,
-      "settings": {
-        "heading": "Sản phẩm giảm giá – Ưu đãi hôm nay",
-        "collection": "asset-pack-77889830914-example-products",
-        "show_all": true,
-        "products_to_show": 5,
-        "initial_count": 10,
-        "countdown_hours": 3,
-        "padding_top": 48,
-        "padding_bottom": 48
-      }
-    },
-    "pf_bestsellers": {
-      "type": "pf-bestsellers",
-      "settings": {
-        "heading": "Sản phẩm bán chạy nhất",
-        "subheading": "Những sản phẩm được khách hàng yêu thích và đặt mua nhiều nhất",
-        "collection": "ban-chay-nhat",
-        "products_to_show": 50,
-        "initial_count": 15,
-        "show_more_label": "Xem thêm",
-        "columns_desktop": 5,
-        "padding_top": 40,
-        "padding_bottom": 40
-      }
-    },
     "pf_new_arrivals": {
       "type": "pf-new-arrivals",
       "blocks": {
+        "product_EggThH": {
+          "type": "product",
+          "settings": {
+            "product": "banh-trung-thu-kinh-do"
+          }
+        },
+        "product_mzeaY9": {
+          "type": "product",
+          "settings": {
+            "product": "chan-ga-ba-tuyết"
+          }
+        },
         "product_LrVacf": {
           "type": "product",
           "settings": {
@@ -264,12 +241,6 @@
           "type": "product",
           "settings": {
             "product": "ca-phe-muối-chu-long"
-          }
-        },
-        "product_mzeaY9": {
-          "type": "product",
-          "settings": {
-            "product": "chan-ga-ba-tuyết"
           }
         },
         "product_jJJpke": {
@@ -310,9 +281,10 @@
         }
       },
       "block_order": [
+        "product_EggThH",
+        "product_mzeaY9",
         "product_LrVacf",
         "product_VdmUWE",
-        "product_mzeaY9",
         "product_jJJpke",
         "product_VDxC8J",
         "product_YVFerx",
@@ -323,8 +295,36 @@
       "settings": {
         "heading": "🆕 Hàng mới về",
         "subheading": "Những sản phẩm vừa cập bến — nhanh tay đặt mua!",
-        "columns_desktop": 4,
-        "pf_initial": 4,
+        "columns_desktop": 5,
+        "pf_initial": 5,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "pf_flash_sale": {
+      "type": "pf-flash-sale",
+      "disabled": true,
+      "settings": {
+        "heading": "Sản phẩm giảm giá – Ưu đãi hôm nay",
+        "collection": "asset-pack-77889830914-example-products",
+        "show_all": true,
+        "products_to_show": 5,
+        "initial_count": 10,
+        "countdown_hours": 3,
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "pf_bestsellers": {
+      "type": "pf-bestsellers",
+      "settings": {
+        "heading": "Sản phẩm bán chạy nhất",
+        "subheading": "Những sản phẩm được khách hàng yêu thích và đặt mua nhiều nhất",
+        "collection": "ban-chay-nhat",
+        "products_to_show": 50,
+        "initial_count": 15,
+        "show_more_label": "Xem thêm",
+        "columns_desktop": 5,
         "padding_top": 40,
         "padding_bottom": 40
       }
