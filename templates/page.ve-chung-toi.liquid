@@ -60,6 +60,16 @@
           <p>{% if vi %}Hỗ trợ cả gia đình lẫn khách mua số lượng lớn cho nhà hàng, quán ăn, cửa hàng.{% else %}Supporting both families and bulk buyers for restaurants, eateries and shops.{% endif %}</p>
         </div>
       </div>
+
+      <p class="pfa-kho-cap">{% if vi %}📸 Một vài hình ảnh thực tế tại kho Phomifood{% else %}📸 A few real photos from the Phomifood warehouse{% endif %}</p>
+      <div class="pfa-kho-gallery">
+        {%- assign pfa_kho = "759881151_122141535231179229_3801021190243726628_n.jpg?v=1787036177,764774570_122142676821179229_5406358648784605218_n.jpg?v=1787036177,764800600_122142677025179229_3432164435546363149_n.jpg?v=1787036177,779019196_122144936703179229_7436146164322467373_n.jpg?v=1787036177,764661354_122142676899179229_3503208907088839976_n.jpg?v=1787036176,778869910_122144937135179229_2084264640343354086_n.jpg?v=1787036177" | split: "," -%}
+        {%- for f in pfa_kho -%}
+          <div class="pfa-kho-item">
+            <img src="https://cdn.shopify.com/s/files/1/0749/9353/3018/files/{{ f }}" loading="lazy" alt="{% if vi %}Kho hàng Phomifood tại Praha{% else %}Phomifood warehouse in Prague{% endif %} {{ forloop.index }}">
+          </div>
+        {%- endfor -%}
+      </div>
     </div>
   </section>
 
@@ -220,6 +230,15 @@
   .pfa-band { padding: clamp(3.6rem,6vw,6rem) 0; background: linear-gradient(135deg, var(--pf-cream) 0%, var(--pf-cream2) 100%); }
   .pfa-band--deal { background: linear-gradient(135deg, #fff1e6 0%, #ffe4e0 100%); }
   .pfa-band--deal .pfa-h2 { color: var(--pf-red); }
+
+  /* Warehouse photo gallery */
+  .pfa-kho-cap { text-align: center; margin: 3rem 0 1.6rem; font-size: 1.5rem; font-weight: 700; color: var(--pf-green-d); }
+  .pfa-kho-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+  .pfa-kho-item { border-radius: 16px; overflow: hidden; aspect-ratio: 4 / 3; background: #eef4ef;
+    box-shadow: 0 6px 18px rgba(20,103,47,.10); border: 1px solid #d8e6dc; }
+  .pfa-kho-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .3s ease; }
+  .pfa-kho-item:hover img { transform: scale(1.05); }
+  @media (max-width: 749px) { .pfa-kho-gallery { grid-template-columns: repeat(2, 1fr); gap: 1rem; } }
 
   /* GRIDS */
   .pfa-grid { display: grid; gap: 1.8rem; }
