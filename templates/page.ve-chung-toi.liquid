@@ -1,0 +1,282 @@
+{%- comment -%}
+  PHOMIFOOD — "Về chúng tôi" / About Us page template.
+  Assign this template to a Page in Shopify admin (Pages → Về chúng tôi →
+  Theme template → "ve-chung-toi"). Fully self-contained + bilingual.
+{%- endcomment -%}
+{%- assign vi = false -%}
+{%- if request.locale.iso_code == 'vi' -%}{%- assign vi = true -%}{%- endif -%}
+
+<div class="pfa color-scheme-1">
+
+  {%- comment -%}================= HERO =================={%- endcomment -%}
+  <section class="pfa-hero">
+    <div class="pfa-wrap">
+      <span class="pfa-hero__flag">🇻🇳</span>
+      <p class="pfa-hero__kicker">{% if vi %}VỀ CHÚNG TÔI{% else %}ABOUT US{% endif %}</p>
+      <h1 class="pfa-hero__title">PHOMIFOOD</h1>
+      <p class="pfa-hero__tag">{% if vi %}Hương vị quê nhà giữa lòng Châu Âu{% else %}A taste of home in the heart of Europe{% endif %}</p>
+      <p class="pfa-hero__sub">{% if vi %}Thực phẩm Việt Nam chính hãng · Giao hàng toàn Châu Âu{% else %}Authentic Vietnamese food · Delivered across Europe{% endif %}</p>
+      <p class="pfa-hero__lead">
+        {% if vi %}Dù bạn đang ở đâu tại Châu Âu, những hương vị quen thuộc của Việt Nam vẫn có thể xuất hiện trong căn bếp của bạn. <strong>Phomifood</strong> chuyên cung cấp thực phẩm Việt Nam tại Châu Âu — phục vụ khách mua lẻ, gia đình, nhà hàng, quán ăn, cửa hàng thực phẩm châu Á và khách mua số lượng lớn.{% else %}Wherever you are in Europe, the familiar flavors of Vietnam can still find their way into your kitchen. <strong>Phomifood</strong> supplies authentic Vietnamese food across Europe — for individual shoppers, families, restaurants, eateries, Asian grocery stores and wholesale buyers.{% endif %}
+      </p>
+      <div class="pfa-hero__cta">
+        <a class="pfa-btn pfa-btn--primary" href="{{ routes.all_products_collection_url }}">{% if vi %}Khám phá sản phẩm →{% else %}Explore products →{% endif %}</a>
+        <a class="pfa-btn pfa-btn--ghost" href="https://m.me/phomifoodstore" target="_blank" rel="noopener">{% if vi %}Liên hệ Phomifood →{% else %}Contact us →{% endif %}</a>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%}============ EMOTIONAL BLOCK ============{%- endcomment -%}
+  <section class="pfa-story pfa-wrap">
+    <h2 class="pfa-h2">🇻🇳 {% if vi %}Mang hương vị Việt đến gần bạn hơn{% else %}Bringing Vietnamese flavors closer to you{% endif %}</h2>
+    <p>{% if vi %}Chúng tôi hiểu rằng với những người Việt đang sinh sống tại Châu Âu, một gói bánh, chai nước mắm hay một gói mì quen thuộc đôi khi không chỉ đơn giản là một món ăn. Đó là <strong>hương vị của gia đình, của những bữa cơm và của quê nhà.</strong>{% else %}We understand that for Vietnamese people living in Europe, a pack of snacks, a bottle of fish sauce or a familiar instant noodle is often more than just food. It is <strong>the taste of family, of home-cooked meals, and of home itself.</strong>{% endif %}</p>
+    <p>{% if vi %}Vì vậy, Phomifood hướng đến việc xây dựng một nơi mua sắm thực phẩm Việt <strong>thuận tiện, đa dạng và đáng tin cậy</strong> — từ nhu cầu mua vài sản phẩm cho gia đình đến nhập hàng số lượng lớn cho nhà hàng và kinh doanh.{% else %}That is why Phomifood aims to build a <strong>convenient, diverse and trustworthy</strong> place to shop for Vietnamese food — from buying a few items for the family to ordering in bulk for restaurants and businesses.{% endif %}</p>
+  </section>
+
+  {%- comment -%}============ WAREHOUSE / LOGISTICS ============{%- endcomment -%}
+  <section class="pfa-band">
+    <div class="pfa-wrap">
+      <h2 class="pfa-h2 pfa-h2--center">📦 {% if vi %}Kho hàng tại Praha — Phục vụ toàn Châu Âu{% else %}Warehouse in Prague — Serving all of Europe{% endif %}</h2>
+      <p class="pfa-lead-center">{% if vi %}Phomifood có kho hàng tại <strong>Praha, Cộng hòa Séc</strong> — nơi tập kết và phân phối thực phẩm Việt Nam đến khách hàng tại nhiều quốc gia Châu Âu.{% else %}Phomifood operates a warehouse in <strong>Prague, Czech Republic</strong> — where Vietnamese food is stocked and distributed to customers across many European countries.{% endif %}</p>
+      <div class="pfa-grid pfa-grid--4">
+        <div class="pfa-card">
+          <span class="pfa-card__ico">🇨🇿</span>
+          <h3>{% if vi %}Kho hàng tại Praha{% else %}Warehouse in Prague{% endif %}</h3>
+          <p>{% if vi %}Vị trí ở trung tâm Châu Âu giúp xử lý và vận chuyển đơn hàng thuận tiện hơn.{% else %}A central European location makes order handling and shipping more convenient.{% endif %}</p>
+        </div>
+        <div class="pfa-card">
+          <span class="pfa-card__ico">🚚</span>
+          <h3>{% if vi %}Giao hàng toàn Châu Âu{% else %}Europe-wide delivery{% endif %}</h3>
+          <p>{% if vi %}Phomifood phục vụ khách hàng trên toàn khu vực Châu Âu.{% else %}Phomifood serves customers throughout Europe.{% endif %}</p>
+        </div>
+        <div class="pfa-card">
+          <span class="pfa-card__ico">⚡</span>
+          <h3>{% if vi %}Giao hàng nhanh{% else %}Fast shipping{% endif %}</h3>
+          <p>{% if vi %}Thời gian giao dự kiến <strong>1–3 ngày</strong> tùy quốc gia.{% else %}Estimated delivery in <strong>1–3 days</strong> depending on the country.{% endif %}</p>
+        </div>
+        <div class="pfa-card">
+          <span class="pfa-card__ico">🛒</span>
+          <h3>{% if vi %}Mua lẻ & mua sỉ{% else %}Retail & wholesale{% endif %}</h3>
+          <p>{% if vi %}Hỗ trợ cả gia đình lẫn khách mua số lượng lớn cho nhà hàng, quán ăn, cửa hàng.{% else %}Supporting both families and bulk buyers for restaurants, eateries and shops.{% endif %}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%}============ PRODUCT CATEGORIES ============{%- endcomment -%}
+  <section class="pfa-wrap pfa-cats">
+    <h2 class="pfa-h2 pfa-h2--center">🛍️ {% if vi %}Đa dạng sản phẩm Việt Nam{% else %}A wide range of Vietnamese products{% endif %}</h2>
+    <p class="pfa-lead-center">{% if vi %}Tại Phomifood, bạn có thể tìm thấy nhiều nhóm sản phẩm quen thuộc cho căn bếp Việt.{% else %}At Phomifood, you will find many familiar product groups for the Vietnamese kitchen.{% endif %}</p>
+    <div class="pfa-grid pfa-grid--3">
+      <div class="pfa-cat">
+        <h3>🍚 {% if vi %}Gạo{% else %}Rice{% endif %}</h3>
+        <p>ST25 · Jasmine · Pearl Rice · {% if vi %}Gạo thơm{% else %}Fragrant rice{% endif %}</p>
+      </div>
+      <div class="pfa-cat">
+        <h3>🍜 {% if vi %}Bún – Phở – Bánh tráng{% else %}Noodles & rice paper{% endif %}</h3>
+        <p>{% if vi %}Bún bò Huế · Bún tươi · Bún khô · Bánh phở · Bánh tráng{% else %}Bún bò Huế · Fresh & dried vermicelli · Pho noodles · Rice paper{% endif %}</p>
+      </div>
+      <div class="pfa-cat">
+        <h3>🌾 {% if vi %}Bột{% else %}Flours{% endif %}</h3>
+        <p>{% if vi %}Bột bánh xèo · Bột nếp · Bột năng · Bột gạo{% else %}Bánh xèo flour · Glutinous · Tapioca · Rice flour{% endif %}</p>
+      </div>
+      <div class="pfa-cat">
+        <h3>🧂 {% if vi %}Gia vị{% else %}Seasonings{% endif %}</h3>
+        <p>{% if vi %}Nước mắm · Nước tương · Dầu hào · Sa tế · Hạt nêm · Tương ớt · Mắm tôm{% else %}Fish sauce · Soy sauce · Oyster sauce · Saté · Bouillon · Chili sauce · Shrimp paste{% endif %}</p>
+      </div>
+      <div class="pfa-cat">
+        <h3>🍜 {% if vi %}Mì ăn liền{% else %}Instant noodles{% endif %}</h3>
+        <p>Hảo Hảo · Omachi · {% if vi %}Hoàng Gia{% else %}Hoàng Gia{% endif %} · Vifon · Kokomi</p>
+      </div>
+      <div class="pfa-cat">
+        <h3>🍬 {% if vi %}Đồ ăn vặt{% else %}Snacks{% endif %}</h3>
+        <p>{% if vi %}Bánh · Kẹo · Snack · Thạch · Socola{% else %}Cakes · Candy · Snacks · Jelly · Chocolate{% endif %}</p>
+      </div>
+      <div class="pfa-cat">
+        <h3>☕ {% if vi %}Đồ uống{% else %}Beverages{% endif %}</h3>
+        <p>{% if vi %}Cà phê G7{% else %}G7 coffee{% endif %} · Trung Nguyên · Vinacafé · Cozy · Coca-Cola · Pepsi · 7Up · Fanta · Sting · Red Bull</p>
+      </div>
+      <a class="pfa-cat pfa-cat--cta" href="{{ routes.all_products_collection_url }}">
+        <h3>{% if vi %}Khám phá tất cả sản phẩm{% else %}Explore all products{% endif %}</h3>
+        <span class="pfa-cat__arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  {%- comment -%}============ PROMOTIONS ============{%- endcomment -%}
+  <section class="pfa-band pfa-band--deal">
+    <div class="pfa-wrap">
+      <h2 class="pfa-h2 pfa-h2--center">🎁 {% if vi %}Mua càng nhiều — Ưu đãi càng lớn{% else %}Buy more — save more{% endif %}</h2>
+      <div class="pfa-grid pfa-grid--3">
+        <div class="pfa-promo">
+          <div class="pfa-promo__tier">🎁 {% if vi %}Đơn từ 100€{% else %}Orders from €100{% endif %}</div>
+          <div class="pfa-promo__big">{% if vi %}TẶNG 1 SẢN PHẨM{% else %}1 FREE GIFT{% endif %}</div>
+          <p>{% if vi %}Mua đơn từ <strong>100€</strong> và nhận ngay <strong>1 sản phẩm quà tặng</strong> theo chương trình áp dụng.{% else %}Spend <strong>€100</strong> or more and receive <strong>1 free gift product</strong> per the active program.{% endif %}</p>
+        </div>
+        <div class="pfa-promo">
+          <div class="pfa-promo__tier">🚚 {% if vi %}Đơn từ 169€{% else %}Orders from €169{% endif %}</div>
+          <div class="pfa-promo__big">{% if vi %}GIẢM TỐI ĐA 10€ PHÍ SHIP{% else %}UP TO €10 OFF SHIPPING{% endif %}</div>
+          <p>{% if vi %}Tiết kiệm thêm chi phí vận chuyển cho đơn hàng của bạn.{% else %}Save even more on shipping for your order.{% endif %}</p>
+        </div>
+        <div class="pfa-promo">
+          <div class="pfa-promo__tier">🚚 {% if vi %}Đơn từ 269€{% else %}Orders from €269{% endif %}</div>
+          <div class="pfa-promo__big">{% if vi %}GIẢM TỐI ĐA 15€ PHÍ SHIP{% else %}UP TO €15 OFF SHIPPING{% endif %}</div>
+          <p>{% if vi %}Đơn hàng càng lớn, mức tiết kiệm càng nhiều.{% else %}The larger the order, the more you save.{% endif %}</p>
+        </div>
+      </div>
+      <p class="pfa-note">{% if vi %}<strong>Lưu ý:</strong> Các chương trình ưu đãi có thể thay đổi theo từng thời điểm. Vui lòng kiểm tra thông tin ưu đãi hiện hành trên website trước khi đặt hàng.{% else %}<strong>Note:</strong> Promotions may change over time. Please check the current offers on the website before ordering.{% endif %}</p>
+    </div>
+  </section>
+
+  {%- comment -%}============ WHO WE SERVE ============{%- endcomment -%}
+  <section class="pfa-wrap pfa-serve">
+    <h2 class="pfa-h2 pfa-h2--center">🤝 {% if vi %}Không chỉ là một nơi mua thực phẩm Việt{% else %}More than just a Vietnamese grocery{% endif %}</h2>
+    <p class="pfa-lead-center">{% if vi %}Phomifood hướng đến việc trở thành <strong>người bạn đồng hành của cộng đồng người Việt tại Châu Âu</strong>.{% else %}Phomifood aims to be <strong>a companion to the Vietnamese community in Europe</strong>.{% endif %}</p>
+    <div class="pfa-grid pfa-grid--4">
+      <div class="pfa-card">
+        <span class="pfa-card__ico">👨‍👩‍👧‍👦</span>
+        <h3>{% if vi %}Gia đình Việt{% else %}Vietnamese families{% endif %}</h3>
+        <p>{% if vi %}Dễ dàng tìm mua những sản phẩm quen thuộc cho bữa cơm hàng ngày.{% else %}Easily find familiar products for everyday meals.{% endif %}</p>
+      </div>
+      <div class="pfa-card">
+        <span class="pfa-card__ico">🍜</span>
+        <h3>{% if vi %}Nhà hàng & quán ăn{% else %}Restaurants & eateries{% endif %}</h3>
+        <p>{% if vi %}Hỗ trợ nguồn thực phẩm Việt phục vụ hoạt động kinh doanh.{% else %}A reliable source of Vietnamese ingredients for your business.{% endif %}</p>
+      </div>
+      <div class="pfa-card">
+        <span class="pfa-card__ico">🏪</span>
+        <h3>{% if vi %}Cửa hàng châu Á{% else %}Asian grocery stores{% endif %}</h3>
+        <p>{% if vi %}Cung cấp đa dạng sản phẩm Việt Nam đáp ứng nhu cầu khách hàng.{% else %}A diverse Vietnamese product range to meet your customers' needs.{% endif %}</p>
+      </div>
+      <div class="pfa-card">
+        <span class="pfa-card__ico">📦</span>
+        <h3>{% if vi %}Khách mua số lượng lớn{% else %}Bulk buyers{% endif %}</h3>
+        <p>{% if vi %}Hỗ trợ khách hàng có nhu cầu nhập hàng để kinh doanh.{% else %}Supporting customers who need to stock up for business.{% endif %}</p>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%}============ WHY CHOOSE ============{%- endcomment -%}
+  <section class="pfa-band">
+    <div class="pfa-wrap">
+      <h2 class="pfa-h2 pfa-h2--center">💚 {% if vi %}Vì sao khách hàng chọn Phomifood?{% else %}Why customers choose Phomifood{% endif %}</h2>
+      <div class="pfa-grid pfa-grid--3">
+        <div class="pfa-why"><span>🇻🇳</span><h3>{% if vi %}Sản phẩm Việt Nam{% else %}Vietnamese products{% endif %}</h3><p>{% if vi %}Tập trung vào các sản phẩm và thương hiệu quen thuộc với người Việt.{% else %}Focused on brands and products familiar to Vietnamese people.{% endif %}</p></div>
+        <div class="pfa-why"><span>📦</span><h3>{% if vi %}Kho hàng tại Praha{% else %}Warehouse in Prague{% endif %}</h3><p>{% if vi %}Hàng hóa được chuẩn bị từ kho tại Cộng hòa Séc.{% else %}Orders are prepared from our warehouse in the Czech Republic.{% endif %}</p></div>
+        <div class="pfa-why"><span>🚚</span><h3>{% if vi %}Giao hàng toàn Châu Âu{% else %}Europe-wide delivery{% endif %}</h3><p>{% if vi %}Đưa thực phẩm Việt đến khách hàng tại nhiều quốc gia Châu Âu.{% else %}Bringing Vietnamese food to customers in many European countries.{% endif %}</p></div>
+        <div class="pfa-why"><span>⚡</span><h3>{% if vi %}Giao hàng nhanh{% else %}Fast shipping{% endif %}</h3><p>{% if vi %}Thời gian giao dự kiến 1–3 ngày tùy quốc gia.{% else %}Estimated delivery in 1–3 days depending on the country.{% endif %}</p></div>
+        <div class="pfa-why"><span>💰</span><h3>{% if vi %}Giá cạnh tranh{% else %}Competitive prices{% endif %}</h3><p>{% if vi %}Nhiều lựa chọn phù hợp cả mua lẻ và mua số lượng lớn.{% else %}Options suited to both retail and bulk buying.{% endif %}</p></div>
+        <div class="pfa-why"><span>🤝</span><h3>{% if vi %}Hỗ trợ bán sỉ{% else %}Wholesale support{% endif %}</h3><p>{% if vi %}Đồng hành cùng nhà hàng, cửa hàng và khách hàng kinh doanh.{% else %}Partnering with restaurants, shops and business customers.{% endif %}</p></div>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%}============ CLOSING CTA ============{%- endcomment -%}
+  <section class="pfa-closing">
+    <div class="pfa-wrap">
+      <span class="pfa-hero__flag">🇻🇳</span>
+      <h2 class="pfa-closing__title">{% if vi %}Phomifood — Cùng bạn giữ gìn hương vị quê nhà{% else %}Phomifood — keeping the taste of home alive with you{% endif %}</h2>
+      <p>{% if vi %}Từ những sản phẩm nhỏ bé trong gian bếp đến những đơn hàng lớn phục vụ kinh doanh, chúng tôi luôn mong muốn mang đến <strong>sự thuận tiện, đa dạng và trải nghiệm mua sắm tốt hơn</strong>. Dù cách Việt Nam hàng nghìn kilomet, bạn vẫn có thể thưởng thức những món ăn quen thuộc và tìm lại một chút cảm giác thân thuộc của quê nhà.{% else %}From small everyday kitchen items to large business orders, we always strive to offer <strong>convenience, variety and a better shopping experience</strong>. Even thousands of kilometers from Vietnam, you can still enjoy familiar dishes and rediscover a little feeling of home.{% endif %}</p>
+      <p class="pfa-closing__tag">{% if vi %}Phomifood – Hương vị quê nhà giữa lòng Châu Âu.{% else %}Phomifood – a taste of home in the heart of Europe.{% endif %}</p>
+      <div class="pfa-hero__cta">
+        <a class="pfa-btn pfa-btn--primary" href="{{ routes.all_products_collection_url }}">{% if vi %}Khám phá sản phẩm →{% else %}Explore products →{% endif %}</a>
+        <a class="pfa-btn pfa-btn--ghost" href="https://m.me/phomifoodstore" target="_blank" rel="noopener">{% if vi %}Liên hệ Phomifood →{% else %}Contact us →{% endif %}</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<style>
+  .pfa { --pf-green:#1e8541; --pf-green-d:#14672f; --pf-cream:#fff8e9; --pf-cream2:#fdeecb; --pf-red:#d62828; --pf-ink:#3d3a33; color: var(--pf-ink); }
+  .pfa * { box-sizing: border-box; }
+  .pfa-wrap { max-width: 108rem; margin: 0 auto; padding: 0 clamp(1.6rem, 4vw, 3rem); }
+  .pfa-h2 { font-size: clamp(2.2rem, 3.4vw, 3rem); font-weight: 800; color: var(--pf-green-d); margin: 0 0 1.4rem; line-height: 1.2; }
+  .pfa-h2--center { text-align: center; }
+  .pfa-lead-center { text-align: center; max-width: 72rem; margin: 0 auto 3rem; font-size: 1.6rem; color: #5c5747; line-height: 1.6; }
+
+  /* HERO */
+  .pfa-hero { text-align: center; padding: clamp(4rem, 8vw, 7rem) 0 clamp(3rem,5vw,5rem);
+    background: radial-gradient(120% 100% at 50% 0%, #eaf6ee 0%, var(--pf-cream) 55%, #fff 100%); }
+  .pfa-hero__flag { font-size: 3.4rem; }
+  .pfa-hero__kicker { letter-spacing: 3px; font-weight: 800; color: var(--pf-red); font-size: 1.35rem; margin: 1rem 0 .4rem; }
+  .pfa-hero__title { font-size: clamp(4rem, 8vw, 6.4rem); font-weight: 900; color: var(--pf-green-d); margin: 0; letter-spacing: 1px; }
+  .pfa-hero__tag { font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 700; color: var(--pf-green); margin: .6rem 0 0; }
+  .pfa-hero__sub { font-size: 1.5rem; color: #7a745f; margin: .8rem 0 0; font-weight: 600; }
+  .pfa-hero__lead { max-width: 74rem; margin: 2rem auto 0; font-size: 1.65rem; line-height: 1.7; color: #4b4636; }
+  .pfa-hero__cta { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; margin-top: 2.6rem; }
+
+  .pfa-btn { display: inline-flex; align-items: center; text-decoration: none; font-weight: 800; font-size: 1.5rem;
+    padding: 1.2rem 2.2rem; border-radius: 999px; transition: transform .15s ease, filter .15s ease; }
+  .pfa-btn--primary { background: linear-gradient(90deg, var(--pf-green), var(--pf-green-d)); color: #fff; box-shadow: 0 8px 22px rgba(20,103,47,.28); }
+  .pfa-btn--ghost { background: #fff; color: var(--pf-green-d); border: 2px solid var(--pf-green); }
+  .pfa-btn:hover { transform: translateY(-2px); filter: brightness(1.04); }
+
+  /* STORY */
+  .pfa-story { padding: clamp(3.4rem,6vw,5.6rem) 0; }
+  .pfa-story p { font-size: 1.65rem; line-height: 1.75; color: #4b4636; max-width: 82rem; margin: 0 auto 1.4rem; text-align: center; }
+  .pfa-story .pfa-h2 { text-align: center; }
+
+  /* BANDS */
+  .pfa-band { padding: clamp(3.6rem,6vw,6rem) 0; background: linear-gradient(135deg, var(--pf-cream) 0%, var(--pf-cream2) 100%); }
+  .pfa-band--deal { background: linear-gradient(135deg, #fff1e6 0%, #ffe4e0 100%); }
+  .pfa-band--deal .pfa-h2 { color: var(--pf-red); }
+
+  /* GRIDS */
+  .pfa-grid { display: grid; gap: 1.8rem; }
+  .pfa-grid--4 { grid-template-columns: repeat(4, 1fr); }
+  .pfa-grid--3 { grid-template-columns: repeat(3, 1fr); }
+
+  .pfa-card { background: #fff; border: 1px solid #ecdcb6; border-radius: 16px; padding: 2rem 1.8rem; text-align: center;
+    box-shadow: 0 6px 18px rgba(30,133,65,.06); transition: transform .15s ease, box-shadow .15s ease; }
+  .pfa-card:hover { transform: translateY(-4px); box-shadow: 0 12px 26px rgba(30,133,65,.12); }
+  .pfa-card__ico { font-size: 3rem; display: block; margin-bottom: .8rem; }
+  .pfa-card h3 { font-size: 1.75rem; color: var(--pf-green-d); margin: 0 0 .6rem; font-weight: 800; }
+  .pfa-card p { font-size: 1.4rem; line-height: 1.55; color: #5c5747; margin: 0; }
+
+  /* CATEGORIES */
+  .pfa-cats { padding: clamp(3.6rem,6vw,6rem) 0; }
+  .pfa-cat { background: #fff; border: 1px solid #e6dcc4; border-left: 5px solid var(--pf-green); border-radius: 14px;
+    padding: 1.6rem 1.8rem; box-shadow: 0 4px 14px rgba(0,0,0,.04); }
+  .pfa-cat h3 { font-size: 1.7rem; color: var(--pf-green-d); margin: 0 0 .5rem; font-weight: 800; }
+  .pfa-cat p { font-size: 1.42rem; line-height: 1.6; color: #57503f; margin: 0; }
+  .pfa-cat--cta { display: flex; align-items: center; justify-content: space-between; text-decoration: none;
+    background: linear-gradient(90deg, var(--pf-green), var(--pf-green-d)); border-color: transparent; }
+  .pfa-cat--cta h3 { color: #fff; margin: 0; }
+  .pfa-cat__arrow { color: #fff; font-size: 2.4rem; font-weight: 800; }
+  .pfa-cat--cta:hover { filter: brightness(1.06); }
+
+  /* PROMO */
+  .pfa-promo { background: #fff; border: 2px solid #f2b8a0; border-radius: 18px; padding: 2.2rem 1.8rem; text-align: center;
+    box-shadow: 0 8px 22px rgba(214,40,40,.08); }
+  .pfa-promo__tier { display: inline-block; background: #ffe0d6; color: #b23b1a; font-weight: 800; font-size: 1.35rem;
+    padding: .5rem 1.2rem; border-radius: 999px; margin-bottom: 1rem; }
+  .pfa-promo__big { font-size: 1.9rem; font-weight: 900; color: var(--pf-red); line-height: 1.2; margin-bottom: .8rem; }
+  .pfa-promo p { font-size: 1.4rem; line-height: 1.55; color: #6a5f52; margin: 0; }
+  .pfa-note { max-width: 74rem; margin: 2.6rem auto 0; text-align: center; font-size: 1.35rem; line-height: 1.6;
+    color: #8a6a52; background: #fff6ee; border: 1px dashed #e6b79a; border-radius: 12px; padding: 1.2rem 1.6rem; }
+
+  /* WHY */
+  .pfa-why { background: #fff; border: 1px solid #d8eadd; border-radius: 16px; padding: 2rem; text-align: center;
+    border-top: 4px solid var(--pf-green); box-shadow: 0 6px 18px rgba(20,103,47,.06); }
+  .pfa-why span { font-size: 2.8rem; display: block; margin-bottom: .6rem; }
+  .pfa-why h3 { font-size: 1.7rem; color: var(--pf-green-d); margin: 0 0 .5rem; font-weight: 800; }
+  .pfa-why p { font-size: 1.4rem; line-height: 1.55; color: #5c5747; margin: 0; }
+
+  /* CLOSING */
+  .pfa-closing { text-align: center; padding: clamp(4rem,7vw,6.4rem) 0;
+    background: radial-gradient(120% 120% at 50% 0%, #eaf6ee 0%, var(--pf-cream) 60%, #fff 100%); }
+  .pfa-closing__title { font-size: clamp(2.2rem,3.6vw,3.2rem); font-weight: 900; color: var(--pf-green-d); margin: 1rem auto; max-width: 74rem; line-height: 1.25; }
+  .pfa-closing p { font-size: 1.65rem; line-height: 1.75; color: #4b4636; max-width: 78rem; margin: 0 auto 1.4rem; }
+  .pfa-closing__tag { font-size: 2rem !important; font-weight: 800; color: var(--pf-green); }
+
+  /* RESPONSIVE */
+  @media (max-width: 990px) {
+    .pfa-grid--4 { grid-template-columns: repeat(2, 1fr); }
+    .pfa-grid--3 { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 620px) {
+    .pfa-grid--4, .pfa-grid--3 { grid-template-columns: 1fr; }
+    .pfa-hero__cta { flex-direction: column; }
+    .pfa-btn { justify-content: center; }
+  }
+</style>
