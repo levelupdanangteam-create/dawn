@@ -120,8 +120,10 @@
   }
   #pf-rv-{{ section.id }} .pf-rv__nav:hover { filter: brightness(1.03); transform: translateY(-50%) scale(1.06); }
   #pf-rv-{{ section.id }} .pf-rv__nav[hidden] { display: none; }
-  #pf-rv-{{ section.id }} .pf-rv__nav--prev { left: -1.2rem; }
-  #pf-rv-{{ section.id }} .pf-rv__nav--next { right: -1.2rem; }
+  #pf-rv-{{ section.id }} .pf-rv__nav:disabled { opacity: .32; cursor: default; box-shadow: none; }
+  #pf-rv-{{ section.id }} .pf-rv__nav:disabled:hover { transform: translateY(-50%); filter: none; }
+  #pf-rv-{{ section.id }} .pf-rv__nav--prev { left: .4rem; }
+  #pf-rv-{{ section.id }} .pf-rv__nav--next { right: .4rem; }
   #pf-rv-{{ section.id }} .pf-rv__card--last { scroll-snap-align: end; }
   #pf-rv-{{ section.id }} .pf-rv__card { flex: 0 0 clamp(27rem, 30vw, 33rem); scroll-snap-align: start; display: flex; flex-direction: column; gap: .9rem; background: #fff; border: 1px solid #ece3d4; border-radius: 16px; padding: 1.6rem; box-shadow: 0 6px 18px rgba(120,100,70,.07); }
   #pf-rv-{{ section.id }} .pf-rv__card-top { display: flex; align-items: center; gap: 1rem; }
@@ -159,13 +161,15 @@
       var w = card ? card.getBoundingClientRect().width : 300;
       return w + 16; // card width + gap
     }
-    function update() {
-      var max = track.scrollWidth - track.clientWidth - 2;
-      var overflow = track.scrollWidth > track.clientWidth + 4;
-      prev.hidden = !overflow || track.scrollLeft <= 2;
-      next.hidden = !overflow || track.scrollLeft >= max;
-    }
     function maxScroll() { return track.scrollWidth - track.clientWidth; }
+    function update() {
+      var overflow = track.scrollWidth > track.clientWidth + 4;
+      // Show both arrows whenever the list overflows; disable (dim) at each end.
+      prev.hidden = !overflow;
+      next.hidden = !overflow;
+      prev.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= maxScroll() - 2;
+    }
     prev.addEventListener('click', function () {
       var target = track.scrollLeft - step();
       track.scrollTo({ left: target < step() ? 0 : target, behavior: 'smooth' });
@@ -177,8 +181,11 @@
     });
     track.addEventListener('scroll', update, { passive: true });
     window.addEventListener('resize', update);
+    // Always start at the very beginning so the first review is never half-cut.
+    track.scrollLeft = 0;
     update();
-    setTimeout(update, 300);
+    setTimeout(function () { track.scrollLeft = 0; update(); }, 60);
+    setTimeout(update, 400);
   })();
 </script>
 
