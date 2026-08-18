@@ -201,10 +201,18 @@
         "padding_top": 36,
         "padding_bottom": 28
       }
+    },
+    "pf_review_video": {
+      "type": "pf-review-video",
+      "settings": {
+        "padding_top": 32,
+        "padding_bottom": 32
+      }
     }
   },
   "order": [
     "main",
+    "pf_review_video",
     "pf_reviews",
     "pf_frequently_bought",
     "disclosures",

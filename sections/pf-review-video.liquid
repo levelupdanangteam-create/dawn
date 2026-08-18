@@ -1,0 +1,60 @@
+{%- comment -%}
+  PHOMIFOOD — Product review video.
+  Shows a review video on a product page ONLY when that product has the
+  metafield custom.review_video_url set. To add a video to any product,
+  set that product's "Review video URL" metafield (Shopify admin → product →
+  Metafields) to a video file URL — no code change needed.
+{%- endcomment -%}
+{%- assign pf_vurl = product.metafields.custom.review_video_url -%}
+{%- if pf_vurl != blank -%}
+  {%- assign vi = false -%}
+  {%- if request.locale.iso_code == 'vi' -%}{%- assign vi = true -%}{%- endif -%}
+  <div class="pf-rv color-scheme-1" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+    <div class="page-width">
+      <div class="pf-rv__head">
+        <span class="pf-rv__badge">🎥 {% if vi %}VIDEO{% else %}VIDEO{% endif %}</span>
+        <h2 class="pf-rv__title">{% if vi %}Video đánh giá sản phẩm{% else %}Product review video{% endif %}</h2>
+        <p class="pf-rv__sub">{% if vi %}Xem cận cảnh sản phẩm trước khi đặt mua{% else %}A closer look before you order{% endif %}</p>
+      </div>
+      <div class="pf-rv__frame">
+        <video
+          class="pf-rv__video"
+          controls
+          preload="metadata"
+          playsinline
+          {% if section.settings.poster != blank %}poster="{{ section.settings.poster | image_url: width: 900 }}"{% endif %}>
+          <source src="{{ pf_vurl }}" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .pf-rv__head { text-align: center; margin-bottom: 1.8rem; }
+    .pf-rv__badge {
+      display: inline-block; background: #d62828; color: #fff; font-size: 1.15rem; font-weight: 800;
+      letter-spacing: .12em; padding: .35rem .9rem; border-radius: 999px; margin-bottom: .8rem;
+    }
+    .pf-rv__title { margin: 0; font-size: clamp(2rem, 3vw, 2.8rem); font-weight: 800; color: #14672f; }
+    .pf-rv__sub { margin: .5rem 0 0; font-size: 1.5rem; color: #6a6255; }
+    .pf-rv__frame {
+      max-width: 46rem; margin: 0 auto; border-radius: 18px; overflow: hidden;
+      background: #000; box-shadow: 0 12px 34px rgba(0,0,0,.18); border: 1px solid #e6dcc4;
+    }
+    .pf-rv__video { display: block; width: 100%; height: auto; max-height: 78vh; background: #000; }
+  </style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Video đánh giá SP",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "paragraph", "content": "Video chỉ hiển thị khi sản phẩm có metafield custom.review_video_url. Gắn link video cho từng sản phẩm ở: Sản phẩm → Metafields → Review video URL." },
+    { "type": "image_picker", "id": "poster", "label": "Ảnh bìa video (tuỳ chọn)" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 32 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 32 }
+  ]
+}
+{% endschema %}
