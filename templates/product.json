@@ -82,20 +82,16 @@
         "padding_bottom": 12
       }
     },
+    "pf_review_video": {
+      "type": "pf-review-video",
+      "settings": {
+        "padding_top": 32,
+        "padding_bottom": 32
+      }
+    },
     "pf_reviews": {
       "type": "pf-product-reviews",
       "blocks": {
-        "r1": {
-          "type": "review",
-          "settings": {
-            "author": "Nguyễn Thị Hương",
-            "location": "Praha, CH Séc",
-            "rating": 5,
-            "date": "05/08/2026",
-            "verified": true,
-            "body": "Đồ ăn đúng vị Việt Nam, đóng gói kỹ, giao tới Séc nhanh hơn mình nghĩ. Rất hài lòng!"
-          }
-        },
         "r2": {
           "type": "review",
           "settings": {
@@ -153,7 +149,6 @@
         }
       },
       "block_order": [
-        "r1",
         "r2",
         "r3",
         "r4",
@@ -200,13 +195,6 @@
         "show_rating": false,
         "padding_top": 36,
         "padding_bottom": 28
-      }
-    },
-    "pf_review_video": {
-      "type": "pf-review-video",
-      "settings": {
-        "padding_top": 32,
-        "padding_bottom": 32
       }
     }
   },
