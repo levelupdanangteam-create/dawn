@@ -31,7 +31,7 @@
 
 <style>
   .pf-pop {
-    position: fixed; left: 1.4rem; bottom: 1.4rem; z-index: 9998;
+    position: fixed; inset: auto auto 1.4rem 1.4rem; z-index: 2147483000;
     width: min(26rem, calc(100vw - 2.6rem));
     display: flex; align-items: center; gap: .85rem;
     background: #fff; border: 1px solid #e6ecdf; border-left: 4px solid #1e8541;
@@ -78,6 +78,9 @@
   (function () {
     var el = document.getElementById('pf-pop');
     if (!el) return;
+    // Re-attach to <body> so a transformed ancestor (e.g. an injected popup
+    // container) can't trap our position:fixed and float it mid-screen.
+    if (el.parentNode !== document.body) { document.body.appendChild(el); }
     var VI = {{ vi }};
 
     // ==== Editable sample orders ==================================
