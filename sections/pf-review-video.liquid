@@ -32,8 +32,11 @@
             <video
               class="pf-rv__video"
               controls
-              preload="metadata"
+              autoplay
+              muted
+              loop
               playsinline
+              preload="auto"
               {% if forloop.first and section.settings.poster != blank %}poster="{{ section.settings.poster | image_url: width: 900 }}"{% endif %}>
               <source src="{{ vurl }}" type="video/mp4">
             </video>
@@ -66,6 +69,23 @@
       .pf-rv__grid--multi { grid-template-columns: 1fr; gap: 1.2rem; }
     }
   </style>
+
+  <script>
+    (function () {
+      var vids = document.querySelectorAll('#shopify-section-{{ section.id }} .pf-rv__video');
+      vids.forEach(function (v) {
+        v.muted = true; // required for autoplay in most browsers
+        var tryPlay = function () { var p = v.play(); if (p && p.catch) p.catch(function () {}); };
+        if (v.readyState >= 2) tryPlay(); else v.addEventListener('loadeddata', tryPlay, { once: true });
+        // Play when it scrolls into view (helps browsers that defer offscreen autoplay).
+        if ('IntersectionObserver' in window) {
+          new IntersectionObserver(function (es) {
+            es.forEach(function (e) { if (e.isIntersecting) tryPlay(); });
+          }, { threshold: 0.25 }).observe(v);
+        }
+      });
+    })();
+  </script>
 {%- endif -%}
 
 {% schema %}
