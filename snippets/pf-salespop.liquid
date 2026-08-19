@@ -1,0 +1,159 @@
+{%- comment -%}
+  PHOMIFOOD — Social-proof "recent order" popup (self-contained).
+  Cycles through recent-order notifications: name • city, product, order value,
+  a blurred address line, and time-ago. Bottom-left toast, auto-dismiss,
+  closeable. Edit the pf_orders array below to change the notifications.
+{%- endcomment -%}
+{%- assign vi = false -%}
+{%- if request.locale.iso_code == 'vi' -%}{%- assign vi = true -%}{%- endif -%}
+
+<div id="pf-pop" class="pf-pop" role="status" aria-live="polite" hidden>
+  <button type="button" class="pf-pop__close" id="pf-pop-close" aria-label="{% if vi %}Đóng{% else %}Close{% endif %}">&times;</button>
+  <div class="pf-pop__check" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+  </div>
+  <div class="pf-pop__body">
+    <div class="pf-pop__line1">
+      <span class="pf-pop__name" id="pf-pop-name"></span>
+      <span class="pf-pop__city" id="pf-pop-city"></span>
+    </div>
+    <div class="pf-pop__line2">
+      <span id="pf-pop-action">{% if vi %}vừa đặt{% else %}just ordered{% endif %}</span>
+      <span class="pf-pop__prod" id="pf-pop-prod"></span>
+      <span class="pf-pop__val" id="pf-pop-val"></span>
+    </div>
+    <div class="pf-pop__addr">
+      <span class="pf-pop__pin" aria-hidden="true">📍</span>
+      <span>{% if vi %}Giao đến{% else %}Ship to{% endif %} <span class="pf-pop__blur" id="pf-pop-addr"></span>, <span id="pf-pop-addrcity"></span></span>
+    </div>
+    <div class="pf-pop__foot">
+      <span class="pf-pop__badge">✓ {% if vi %}Đơn đã đặt{% else %}Order placed{% endif %}</span>
+      <span class="pf-pop__time" id="pf-pop-time"></span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .pf-pop {
+    position: fixed; left: 1.6rem; bottom: 1.6rem; z-index: 9998;
+    width: min(34rem, calc(100vw - 3.2rem));
+    display: flex; align-items: flex-start; gap: 1.1rem;
+    background: #fff; border: 1px solid #e6ecdf; border-left: 5px solid #1e8541;
+    border-radius: 16px; padding: 1.2rem 2.4rem 1.2rem 1.3rem;
+    box-shadow: 0 14px 40px rgba(20, 60, 30, .18);
+    transform: translateY(140%); opacity: 0;
+    transition: transform .5s cubic-bezier(.2,.8,.2,1), opacity .4s ease;
+    font-family: inherit;
+  }
+  .pf-pop[hidden] { display: none; }
+  .pf-pop.is-in { transform: translateY(0); opacity: 1; }
+  .pf-pop__close {
+    position: absolute; top: .5rem; right: .6rem; width: 2.4rem; height: 2.4rem; border: 0;
+    background: transparent; color: #9a9080; font-size: 1.9rem; line-height: 1; cursor: pointer; border-radius: 50%;
+  }
+  .pf-pop__close:hover { background: #f2ede3; color: #5a5346; }
+  .pf-pop__check {
+    flex: none; width: 3.6rem; height: 3.6rem; border-radius: 50%;
+    background: linear-gradient(135deg, #23a152, #14672f); display: grid; place-items: center;
+    box-shadow: 0 4px 10px rgba(20, 103, 47, .3);
+  }
+  .pf-pop__body { min-width: 0; flex: 1; }
+  .pf-pop__line1 { display: flex; align-items: baseline; gap: .5rem; flex-wrap: wrap; }
+  .pf-pop__name { font-size: 1.5rem; font-weight: 800; color: #23201b; }
+  .pf-pop__city { font-size: 1.25rem; color: #1e8541; font-weight: 700; }
+  .pf-pop__line2 { margin-top: .2rem; font-size: 1.35rem; color: #4a453c; line-height: 1.35; }
+  .pf-pop__prod { font-weight: 700; color: #2a2622; }
+  .pf-pop__val {
+    display: inline-block; margin-left: .3rem; background: #fdeaea; color: #d62828;
+    font-weight: 800; font-size: 1.25rem; padding: .1rem .6rem; border-radius: 999px; white-space: nowrap;
+  }
+  .pf-pop__addr { margin-top: .45rem; font-size: 1.2rem; color: #8a8474; display: flex; align-items: center; gap: .3rem; }
+  .pf-pop__blur { filter: blur(3.5px); user-select: none; letter-spacing: .5px; }
+  .pf-pop__foot { margin-top: .6rem; display: flex; align-items: center; gap: .8rem; }
+  .pf-pop__badge {
+    font-size: 1.1rem; font-weight: 800; color: #14672f; background: #e8f5ec;
+    border: 1px solid #bfe0c7; border-radius: 999px; padding: .2rem .7rem;
+  }
+  .pf-pop__time { font-size: 1.15rem; color: #a49c8c; }
+  @media (max-width: 749px) {
+    .pf-pop { left: 1rem; bottom: 1rem; padding: 1.1rem 2.2rem 1.1rem 1.1rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pf-pop { transition: opacity .3s ease; transform: none; }
+  }
+</style>
+
+<script>
+  (function () {
+    var el = document.getElementById('pf-pop');
+    if (!el) return;
+    var VI = {{ vi }};
+
+    // ==== Editable sample orders ==================================
+    // name, city (hiển thị), country flag, product, value(€), street (bị làm mờ), addrCity
+    var ORDERS = [
+      ['Chị Hương', 'Praha', '🇨🇿', VI ? 'Mì Hảo Hảo & nước mắm Chinsu' : 'Hao Hao noodles & fish sauce', 142, 'Vinohradská 118', 'Praha 3'],
+      ['Anh Tuấn', 'Berlin', '🇩🇪', VI ? 'Bún, phở khô & gia vị' : 'Rice noodles & seasonings', 89, 'Karl-Marx-Str. 42', 'Berlin'],
+      ['Chị Lan', 'Paris', '🇫🇷', VI ? 'Combo gạo ST25 & cà phê G7' : 'ST25 rice & G7 coffee', 176, 'Rue de Belleville 61', 'Paris 20'],
+      ['Anh Minh', 'Warszawa', '🇵🇱', VI ? 'Thùng mì Omachi & bánh gạo' : 'Omachi noodles & rice crackers', 210, 'Marszałkowska 9', 'Warszawa'],
+      ['Chị Mai', 'Amsterdam', '🇳🇱', VI ? 'Nước mắm, mắm tôm & cà pháo' : 'Sauces & pickled eggplant', 64, 'Damstraat 7', 'Amsterdam'],
+      ['Anh Đức', 'München', '🇩🇪', VI ? 'Hạt nêm Knorr & dầu hào' : 'Knorr bouillon & oyster sauce', 118, 'Landsberger Str. 24', 'München'],
+      ['Chị Thu', 'Brno', '🇨🇿', VI ? 'Bánh đa nem & bún Gia Bảo' : 'Rice paper & vermicelli', 73, 'Cejl 55', 'Brno'],
+      ['Anh Long', 'Bruxelles', '🇧🇪', VI ? 'Combo bán sỉ nhà hàng' : 'Wholesale restaurant combo', 268, 'Chaussée de Louvain 30', 'Bruxelles'],
+      ['Chị Nga', 'Praha', '🇨🇿', VI ? 'Sữa TH, Kun & bánh Chocopie' : 'Milk & Chocopie', 96, 'Českomoravská 12', 'Praha 9'],
+      ['Anh Sơn', 'Wien', '🇦🇹', VI ? 'Phở Đệ Nhất & cà phê Trung Nguyên' : 'Pho & coffee', 131, 'Favoritenstraße 88', 'Wien']
+    ];
+    // =============================================================
+
+    var name = document.getElementById('pf-pop-name');
+    var city = document.getElementById('pf-pop-city');
+    var prod = document.getElementById('pf-pop-prod');
+    var val  = document.getElementById('pf-pop-val');
+    var addr = document.getElementById('pf-pop-addr');
+    var addrCity = document.getElementById('pf-pop-addrcity');
+    var timeEl = document.getElementById('pf-pop-time');
+
+    var i = Math.floor((new Date().getTime() / 60000) % ORDERS.length);
+    var stopped = false;
+    var hideT, nextT;
+
+    function timeAgo() {
+      var m = 2 + Math.floor(Math.random() * 22);
+      return VI ? (m + ' phút trước') : (m + ' min ago');
+    }
+    function render() {
+      var o = ORDERS[i % ORDERS.length];
+      name.textContent = o[0];
+      city.textContent = '• ' + o[1] + ' ' + o[2];
+      prod.textContent = o[3];
+      val.textContent = o[4] + '€';
+      addr.textContent = o[5];
+      addrCity.textContent = o[6];
+      timeEl.textContent = timeAgo();
+      i++;
+    }
+    function show() {
+      if (stopped) return;
+      render();
+      el.hidden = false;
+      // force reflow then animate in
+      void el.offsetWidth;
+      el.classList.add('is-in');
+      hideT = setTimeout(hide, 6500);
+    }
+    function hide() {
+      el.classList.remove('is-in');
+      setTimeout(function () { el.hidden = true; }, 500);
+      if (!stopped) nextT = setTimeout(show, 9000 + Math.random() * 7000);
+    }
+    document.getElementById('pf-pop-close').addEventListener('click', function () {
+      stopped = true;
+      clearTimeout(hideT); clearTimeout(nextT);
+      el.classList.remove('is-in');
+      setTimeout(function () { el.hidden = true; }, 400);
+    });
+
+    // First popup a few seconds after load.
+    setTimeout(show, 4000);
+  })();
+</script>
