@@ -33,6 +33,16 @@
     "pf_hero_slideshow_UijQAg": {
       "type": "pf-hero-slideshow",
       "blocks": {
+        "slide_xtWfGU": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/45f5784d-8b1b-4261-83bc-978eb2c99516.png",
+            "title": "",
+            "text": "",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
         "slide_ECJQFW": {
           "type": "slide",
           "settings": {
@@ -65,6 +75,7 @@
         }
       },
       "block_order": [
+        "slide_xtWfGU",
         "slide_ECJQFW",
         "slide_h7RtgL",
         "slide_yfNzfF"
