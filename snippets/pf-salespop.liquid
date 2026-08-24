@@ -7,30 +7,30 @@
 {%- assign vi = false -%}
 {%- if request.locale.iso_code == 'vi' -%}{%- assign vi = true -%}{%- endif -%}
 
-<div id="pf-pop" class="pf-pop" role="status" aria-live="polite" hidden>
-  <button type="button" class="pf-pop__close" id="pf-pop-close" aria-label="{% if vi %}Đóng{% else %}Close{% endif %}">&times;</button>
-  <div class="pf-pop__check" aria-hidden="true">
+<div id="pf-sp" class="pf-sp" role="status" aria-live="polite" hidden>
+  <button type="button" class="pf-sp__close" id="pf-sp-close" aria-label="{% if vi %}Đóng{% else %}Close{% endif %}">&times;</button>
+  <div class="pf-sp__check" aria-hidden="true">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
   </div>
-  <div class="pf-pop__body">
-    <div class="pf-pop__line1">
-      <span class="pf-pop__name" id="pf-pop-name"></span>
-      <span class="pf-pop__city" id="pf-pop-city"></span>
+  <div class="pf-sp__body">
+    <div class="pf-sp__line1">
+      <span class="pf-sp__name" id="pf-sp-name"></span>
+      <span class="pf-sp__city" id="pf-sp-city"></span>
     </div>
-    <div class="pf-pop__line2">
-      <span id="pf-pop-action">{% if vi %}vừa đặt{% else %}just ordered{% endif %}</span>
-      <span class="pf-pop__val" id="pf-pop-val"></span>
-      <span class="pf-pop__time" id="pf-pop-time"></span>
+    <div class="pf-sp__line2">
+      <span id="pf-sp-action">{% if vi %}vừa đặt{% else %}just ordered{% endif %}</span>
+      <span class="pf-sp__val" id="pf-sp-val"></span>
+      <span class="pf-sp__time" id="pf-sp-time"></span>
     </div>
-    <div class="pf-pop__addr">
-      <span class="pf-pop__pin" aria-hidden="true">📍</span>
-      <span class="pf-pop__blur" id="pf-pop-addr"></span><span id="pf-pop-addrcity"></span>
+    <div class="pf-sp__addr">
+      <span class="pf-sp__pin" aria-hidden="true">📍</span>
+      <span class="pf-sp__blur" id="pf-sp-addr"></span><span id="pf-sp-addrcity"></span>
     </div>
   </div>
 </div>
 
 <style>
-  .pf-pop {
+  .pf-sp {
     position: fixed; inset: auto auto 1.4rem 1.4rem; z-index: 2147483000;
     width: min(26rem, calc(100vw - 2.6rem));
     display: flex; align-items: center; gap: .85rem;
@@ -41,42 +41,42 @@
     transition: transform .5s cubic-bezier(.2,.8,.2,1), opacity .4s ease;
     font-family: inherit;
   }
-  .pf-pop[hidden] { display: none; }
-  .pf-pop.is-in { transform: translateY(0); opacity: 1; }
-  .pf-pop__close {
+  .pf-sp[hidden] { display: none; }
+  .pf-sp.is-in { transform: translateY(0); opacity: 1; }
+  .pf-sp__close {
     position: absolute; top: .3rem; right: .4rem; width: 2rem; height: 2rem; border: 0;
     background: transparent; color: #b3aa99; font-size: 1.6rem; line-height: 1; cursor: pointer; border-radius: 50%;
   }
-  .pf-pop__close:hover { background: #f2ede3; color: #5a5346; }
-  .pf-pop__check {
+  .pf-sp__close:hover { background: #f2ede3; color: #5a5346; }
+  .pf-sp__check {
     flex: none; width: 2.8rem; height: 2.8rem; border-radius: 50%;
     background: linear-gradient(135deg, #23a152, #14672f); display: grid; place-items: center;
     box-shadow: 0 3px 8px rgba(20, 103, 47, .28);
   }
-  .pf-pop__check svg { width: 16px; height: 16px; }
-  .pf-pop__body { min-width: 0; flex: 1; }
-  .pf-pop__line1 { display: flex; align-items: baseline; gap: .4rem; flex-wrap: wrap; }
-  .pf-pop__name { font-size: 1.3rem; font-weight: 800; color: #23201b; }
-  .pf-pop__city { font-size: 1.1rem; color: #1e8541; font-weight: 700; }
-  .pf-pop__line2 { margin-top: .1rem; font-size: 1.15rem; color: #6a6255; line-height: 1.3; display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; }
-  .pf-pop__val {
+  .pf-sp__check svg { width: 16px; height: 16px; }
+  .pf-sp__body { min-width: 0; flex: 1; }
+  .pf-sp__line1 { display: flex; align-items: baseline; gap: .4rem; flex-wrap: wrap; }
+  .pf-sp__name { font-size: 1.3rem; font-weight: 800; color: #23201b; }
+  .pf-sp__city { font-size: 1.1rem; color: #1e8541; font-weight: 700; }
+  .pf-sp__line2 { margin-top: .1rem; font-size: 1.15rem; color: #6a6255; line-height: 1.3; display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; }
+  .pf-sp__val {
     background: #fdeaea; color: #d62828; font-weight: 800; font-size: 1.1rem;
     padding: .05rem .5rem; border-radius: 999px; white-space: nowrap;
   }
-  .pf-pop__time { font-size: 1.05rem; color: #a49c8c; }
-  .pf-pop__addr { margin-top: .15rem; font-size: 1.05rem; color: #9a9080; display: flex; align-items: center; gap: .25rem; white-space: nowrap; overflow: hidden; }
-  .pf-pop__blur { filter: blur(3px); user-select: none; letter-spacing: .5px; }
+  .pf-sp__time { font-size: 1.05rem; color: #a49c8c; }
+  .pf-sp__addr { margin-top: .15rem; font-size: 1.05rem; color: #9a9080; display: flex; align-items: center; gap: .25rem; white-space: nowrap; overflow: hidden; }
+  .pf-sp__blur { filter: blur(3px); user-select: none; letter-spacing: .5px; }
   @media (max-width: 749px) {
-    .pf-pop { left: 1rem; bottom: 1rem; padding: 1.1rem 2.2rem 1.1rem 1.1rem; }
+    .pf-sp { left: 1rem; bottom: 1rem; padding: 1.1rem 2.2rem 1.1rem 1.1rem; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .pf-pop { transition: opacity .3s ease; transform: none; }
+    .pf-sp { transition: opacity .3s ease; transform: none; }
   }
 </style>
 
 <script>
   (function () {
-    var el = document.getElementById('pf-pop');
+    var el = document.getElementById('pf-sp');
     if (!el) return;
     // Re-attach to <body> so a transformed ancestor (e.g. an injected popup
     // container) can't trap our position:fixed and float it mid-screen.
@@ -99,12 +99,12 @@
     ];
     // =============================================================
 
-    var name = document.getElementById('pf-pop-name');
-    var city = document.getElementById('pf-pop-city');
-    var val  = document.getElementById('pf-pop-val');
-    var addr = document.getElementById('pf-pop-addr');
-    var addrCity = document.getElementById('pf-pop-addrcity');
-    var timeEl = document.getElementById('pf-pop-time');
+    var name = document.getElementById('pf-sp-name');
+    var city = document.getElementById('pf-sp-city');
+    var val  = document.getElementById('pf-sp-val');
+    var addr = document.getElementById('pf-sp-addr');
+    var addrCity = document.getElementById('pf-sp-addrcity');
+    var timeEl = document.getElementById('pf-sp-time');
 
     var i = Math.floor((new Date().getTime() / 60000) % ORDERS.length);
     var stopped = false;
@@ -138,7 +138,7 @@
       setTimeout(function () { el.hidden = true; }, 500);
       if (!stopped) nextT = setTimeout(show, 9000 + Math.random() * 7000);
     }
-    document.getElementById('pf-pop-close').addEventListener('click', function () {
+    document.getElementById('pf-sp-close').addEventListener('click', function () {
       stopped = true;
       clearTimeout(hideT); clearTimeout(nextT);
       el.classList.remove('is-in');

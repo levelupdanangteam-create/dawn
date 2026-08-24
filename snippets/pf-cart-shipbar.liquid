@@ -1,10 +1,11 @@
 {%- comment -%}
   Cart reward progress (compact — shows only the NEXT milestone).
-  Milestones: 50€ → free gift (1 sản phẩm bất kỳ), 169€ → −10€ ship, 269€ → −15€ ship.
-  Re-renders with the cart on change.
+  Milestones: 50€ → free gift (1 sản phẩm bất kỳ), 100€ → −5€ ship,
+  169€ → −10€ ship, 269€ → −15€ ship. Re-renders with the cart on change.
 {%- endcomment -%}
 {%- unless cart == empty -%}
   {%- assign pf_gift = 5000 -%}{%- comment -%}50€{%- endcomment -%}
+  {%- assign pf_t5 = 10000 -%}{%- comment -%}100€{%- endcomment -%}
   {%- assign pf_t1 = 16900 -%}{%- comment -%}169€{%- endcomment -%}
   {%- assign pf_t2 = 26900 -%}{%- comment -%}269€{%- endcomment -%}
   {%- assign pf_sub = cart.total_price -%}
@@ -15,6 +16,10 @@
     {%- assign pf_pct = pf_sub | times: 100 | divided_by: pf_gift -%}
     {%- assign pf_rem = pf_gift | minus: pf_sub -%}
     {%- assign pf_state = 'gift' -%}
+  {%- elsif pf_sub < pf_t5 -%}
+    {%- assign pf_pct = pf_sub | times: 100 | divided_by: pf_t5 -%}
+    {%- assign pf_rem = pf_t5 | minus: pf_sub -%}
+    {%- assign pf_state = 'tier5' -%}
   {%- elsif pf_sub < pf_t1 -%}
     {%- assign pf_pct = pf_sub | times: 100 | divided_by: pf_t1 -%}
     {%- assign pf_rem = pf_t1 | minus: pf_sub -%}
@@ -32,8 +37,10 @@
     <p class="pf-shipbar__line">
       {%- if pf_state == 'gift' -%}
         🎁 {% if vi %}Mua thêm <b>{{ pf_rem | money }}</b> để được <strong>TẶNG 1 sản phẩm bất kỳ</strong>!{% else %}Add <b>{{ pf_rem | money }}</b> to get <strong>1 FREE product of your choice</strong>!{% endif %}
+      {%- elsif pf_state == 'tier5' -%}
+        🎁 {% if vi %}Đã đủ điều kiện <strong>nhận quà</strong>! · thêm <b>{{ pf_rem | money }}</b> để <strong>giảm 5€ ship</strong>{% else %}<strong>Free gift</strong> unlocked! · add <b>{{ pf_rem | money }}</b> for <strong>−5€ shipping</strong>{% endif %}
       {%- elsif pf_state == 'tier1' -%}
-        🎁 {% if vi %}Đã đủ điều kiện <strong>nhận quà</strong>! · thêm <b>{{ pf_rem | money }}</b> để <strong>giảm 10€ ship</strong>{% else %}<strong>Free gift</strong> unlocked! · add <b>{{ pf_rem | money }}</b> for <strong>−10€ shipping</strong>{% endif %}
+        ✅ {% if vi %}Đã giảm 5€ ship + quà · thêm <b>{{ pf_rem | money }}</b> để <strong>giảm 10€</strong>{% else %}−5€ ship + gift · add <b>{{ pf_rem | money }}</b> for <strong>−10€</strong>{% endif %}
       {%- elsif pf_state == 'tier2' -%}
         ✅ {% if vi %}Đã giảm 10€ ship + quà · thêm <b>{{ pf_rem | money }}</b> để <strong>giảm 15€</strong>{% else %}−10€ ship + gift · add <b>{{ pf_rem | money }}</b> for <strong>−15€</strong>{% endif %}
       {%- else -%}
@@ -55,6 +62,7 @@
     .pf-shipbar--gift .pf-shipbar__line { color: #a4442a; }
     .pf-shipbar--gift .pf-shipbar__line strong { color: #d62828; }
     .pf-shipbar--gift .pf-shipbar__fill { background: linear-gradient(90deg, #e8602f, #f2a65a); }
+    .pf-shipbar--tier5 .pf-shipbar__line strong { color: #b8791a; }
     .pf-shipbar--tier1 .pf-shipbar__line strong { color: #b8791a; }
     .pf-shipbar--max { background: #eef7f0; border-color: #bfe0c7; }
     .pf-shipbar--max .pf-shipbar__line { color: #14672f; }
