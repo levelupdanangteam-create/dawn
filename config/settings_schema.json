@@ -40,8 +40,8 @@
         "type": "text",
         "id": "pf_gift_handle",
         "label": "Handle sản phẩm quà",
-        "info": "Lấy phần cuối URL sản phẩm. VD: banh-gao-one-one-vi-ngot-150gx20-goi",
-        "default": "banh-gao-one-one-vi-ngot-150gx20-goi"
+        "info": "Lấy phần cuối URL sản phẩm. VD: chip-oishi-ngo-80-goi-32g-x-80-goi-bich",
+        "default": "chip-oishi-ngo-80-goi-32g-x-80-goi-bich"
       },
       {
         "type": "number",
