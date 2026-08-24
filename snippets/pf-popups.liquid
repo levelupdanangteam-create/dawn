@@ -23,7 +23,7 @@
   <div class="pf-pop__box" role="dialog" aria-modal="true" aria-label="Voucher dành cho bạn mới">
     <button type="button" class="pf-pop__x" data-pf-pop-close aria-label="Đóng">&times;</button>
     <a class="pf-pop__imglink" href="{{ pf_pop_link }}">
-      <img class="pf-pop__img" src="https://cdn.shopify.com/s/files/1/0749/9353/3018/files/gi_m_gia_3.png?v=1785136118" alt="Ưu đãi giảm giá" width="440" height="440" loading="lazy">
+      <img class="pf-pop__img" src="https://cdn.shopify.com/s/files/1/0749/9353/3018/files/7920e81c-20ca-4dea-a294-122060f6e7e8.png?v=1787565719" alt="Ưu đãi Phomifood" width="440" height="440" loading="lazy">
     </a>
   </div>
 </div>
@@ -117,9 +117,9 @@
       try { sessionStorage.setItem('pf_pop_closed_at', String(Date.now())); } catch (e) {}
     };
 
-    function open(id) {
+    function open(id, ignoreCd) {
       var el = document.getElementById(id);
-      if (!el || !window.PFPopups.claim()) return false;
+      if (!el || !window.PFPopups.claim(ignoreCd)) return false;
       el.hidden = false;
       el.setAttribute('aria-hidden', 'false');
       el.classList.add('is-open');
@@ -134,11 +134,11 @@
       document.documentElement.style.overflow = '';
       window.PFPopups.markClosed();
     }
-    function schedule(flag, id, delay) {
+    function schedule(flag, id, delay, ignoreCd) {
       if (ss(flag)) return;
       setTimeout(function tryOpen() {
         if (ss(flag)) return;
-        if (!open(id)) { setTimeout(tryOpen, 3000); return; } // slot busy — wait, don't waste the turn
+        if (!open(id, ignoreCd)) { setTimeout(tryOpen, 3000); return; } // slot busy — wait, don't waste the turn
         ss(flag, '1');
       }, delay);
     }
@@ -154,9 +154,11 @@
       if (e.key === 'Escape') { close(document.querySelector('.pf-pop.is-open')); }
     });
 
-    // Show a SINGLE promo banner (free-ship), once for the whole session.
-    // The session flag persists across pages, so it never re-appears when the
-    // visitor navigates to another page.
+    // Popup 1: free-ship banner (10s after landing, once per session).
     schedule('pf_fs_shown', 'pf-pop-freeship', FREESHIP_DELAY);
+    // Popup 2: shown AFTER the free-ship popup. It starts trying a bit later,
+    // waits (retries) while popup 1 is open, then appears once the slot frees —
+    // ignoring the cooldown so it follows shortly after popup 1 is closed.
+    schedule('pf_vc_shown', 'pf-pop-voucher', FREESHIP_DELAY + 2000, true);
   })();
 </script>
