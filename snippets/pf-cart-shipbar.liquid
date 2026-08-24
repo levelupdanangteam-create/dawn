@@ -9,6 +9,8 @@
   {%- assign pf_g = 5000 -%}{%- assign pf_a = 10000 -%}{%- assign pf_b = 16900 -%}{%- assign pf_c = 26900 -%}
   {%- assign pf_sub = cart.total_price -%}
   {%- assign vi = false -%}{%- if request.locale.iso_code == 'vi' -%}{%- assign vi = true -%}{%- endif -%}
+  {%- comment -%}expanded:true (cart page) → always show all tiers, no toggle.{%- endcomment -%}
+  {%- assign pf_open = false -%}{%- if expanded -%}{%- assign pf_open = true -%}{%- endif -%}
 
   {%- comment -%}Highest reached tier = the one actually applied.{%- endcomment -%}
   {%- assign pf_active = 0 -%}
@@ -35,7 +37,7 @@
     {%- case pf_next -%}{%- when 5000 -%}{%- assign pf_ntx = '1 free product' -%}{%- when 10000 -%}{%- assign pf_ntx = '−5€ shipping' -%}{%- when 16900 -%}{%- assign pf_ntx = '−10€ shipping' -%}{%- when 26900 -%}{%- assign pf_ntx = '−15€ shipping' -%}{%- endcase -%}
   {%- endif -%}
 
-  <details class="pf-shipbar{% if pf_next == 0 %} pf-shipbar--max{% endif %}">
+  <details class="pf-shipbar{% if pf_open %} pf-shipbar--open{% endif %}{% if pf_next == 0 %} pf-shipbar--max{% endif %}"{% if pf_open %} open{% endif %}>
     <summary class="pf-shipbar__sum">
       <span class="pf-shipbar__head">🎁 {% if vi %}Ưu đãi đơn hàng{% else %}Order rewards{% endif %}<span class="pf-shipbar__chev" aria-hidden="true">⌄</span></span>
       <span class="pf-shipbar__track"><span class="pf-shipbar__fill" style="width: {{ pf_pct }}%;"></span></span>
@@ -108,6 +110,11 @@
     .pf-rw__badge { margin-left: auto; flex: none; background: #1e8541; color: #fff; font-size: 1rem; font-weight: 800; padding: .15rem .6rem; border-radius: 999px; white-space: nowrap; }
     .pf-rw__need { margin-left: auto; flex: none; font-size: 1.05rem; color: #c07a2a; font-weight: 700; white-space: nowrap; }
     .pf-shipbar__note { margin: .6rem 0 0; font-size: 1.05rem; line-height: 1.35; color: #a8a08e; font-weight: 500; }
+    /* Forced-open variant (cart page) — always show all tiers, no toggle. */
+    .pf-shipbar--open .pf-shipbar__list { display: flex !important; }
+    .pf-shipbar--open .pf-shipbar__note { display: block !important; }
+    .pf-shipbar--open .pf-shipbar__chev, .pf-shipbar--open .pf-shipbar__toggle { display: none !important; }
+    .pf-shipbar--open .pf-shipbar__sum { cursor: default; }
     .pf-shipbar--max { background: #eef7f0; border-color: #bfe0c7; }
     .pf-shipbar--max .pf-shipbar__head { color: #14672f; }
     .pf-shipbar--max .pf-shipbar__fill { background: linear-gradient(90deg, #1e8541, #14672f); }
