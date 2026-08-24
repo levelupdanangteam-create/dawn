@@ -692,7 +692,10 @@
               {%- endcase -%}
             {%- endfor -%}
             {% render 'pf-delivery-note' %}
-            {% render 'pf-qty-deal' %}
+            {%- comment -%}Box "mua 50 giảm 10%" chỉ hiện ở trang Chân gà bà Tuyết.{%- endcomment -%}
+            {%- if product.handle contains 'chan-ga-ba-tuy' -%}
+              {% render 'pf-qty-deal' %}
+            {%- endif -%}
             {% render 'pf-wholesale-contact' %}
             {% render 'pf-product-trust' %}
             {% render 'pf-shipping-policy' %}
