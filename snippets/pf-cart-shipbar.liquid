@@ -1,79 +1,100 @@
 {%- comment -%}
-  Cart reward progress (compact — shows only the NEXT milestone).
-  Milestones (chỉ áp dụng 1 ưu đãi cao nhất, KHÔNG cộng dồn):
-    50€ → tặng 1 sản phẩm bất kỳ · 100€ → −5€ ship · 169€ → −10€ ship · 269€ → −15€ ship.
-  Re-renders with the cart on change.
+  Cart reward ladder — shows ALL milestones at once (chỉ áp dụng 1 mức cao nhất,
+  KHÔNG cộng dồn): 50€ → tặng 1 sản phẩm · 100€ → −5€ ship · 169€ → −10€ ship ·
+  269€ → −15€ ship. Marks reached tiers (✓), the active (highest reached) tier,
+  and how much more is needed for the locked ones. Re-renders with the cart.
 {%- endcomment -%}
 {%- unless cart == empty -%}
-  {%- assign pf_gift = 5000 -%}{%- comment -%}50€{%- endcomment -%}
-  {%- assign pf_t5 = 10000 -%}{%- comment -%}100€{%- endcomment -%}
-  {%- assign pf_t1 = 16900 -%}{%- comment -%}169€{%- endcomment -%}
-  {%- assign pf_t2 = 26900 -%}{%- comment -%}269€{%- endcomment -%}
+  {%- assign pf_g = 5000 -%}{%- assign pf_a = 10000 -%}{%- assign pf_b = 16900 -%}{%- assign pf_c = 26900 -%}
   {%- assign pf_sub = cart.total_price -%}
   {%- assign vi = false -%}{%- if request.locale.iso_code == 'vi' -%}{%- assign vi = true -%}{%- endif -%}
 
-  {%- comment -%}Pick the current target = next unmet milestone.{%- endcomment -%}
-  {%- if pf_sub < pf_gift -%}
-    {%- assign pf_pct = pf_sub | times: 100 | divided_by: pf_gift -%}
-    {%- assign pf_rem = pf_gift | minus: pf_sub -%}
-    {%- assign pf_state = 'gift' -%}
-  {%- elsif pf_sub < pf_t5 -%}
-    {%- assign pf_pct = pf_sub | times: 100 | divided_by: pf_t5 -%}
-    {%- assign pf_rem = pf_t5 | minus: pf_sub -%}
-    {%- assign pf_state = 'tier5' -%}
-  {%- elsif pf_sub < pf_t1 -%}
-    {%- assign pf_pct = pf_sub | times: 100 | divided_by: pf_t1 -%}
-    {%- assign pf_rem = pf_t1 | minus: pf_sub -%}
-    {%- assign pf_state = 'tier1' -%}
-  {%- elsif pf_sub < pf_t2 -%}
-    {%- assign pf_pct = pf_sub | times: 100 | divided_by: pf_t2 -%}
-    {%- assign pf_rem = pf_t2 | minus: pf_sub -%}
-    {%- assign pf_state = 'tier2' -%}
-  {%- else -%}
-    {%- assign pf_pct = 100 -%}
-    {%- assign pf_state = 'max' -%}
-  {%- endif -%}
+  {%- comment -%}Highest reached tier = the one actually applied.{%- endcomment -%}
+  {%- assign pf_active = 0 -%}
+  {%- if pf_sub >= pf_c -%}{%- assign pf_active = pf_c -%}
+  {%- elsif pf_sub >= pf_b -%}{%- assign pf_active = pf_b -%}
+  {%- elsif pf_sub >= pf_a -%}{%- assign pf_active = pf_a -%}
+  {%- elsif pf_sub >= pf_g -%}{%- assign pf_active = pf_g -%}{%- endif -%}
 
-  <div class="pf-shipbar pf-shipbar--{{ pf_state }}">
-    <p class="pf-shipbar__line">
-      {%- if pf_state == 'gift' -%}
-        🎁 {% if vi %}Mua thêm <b>{{ pf_rem | money }}</b> để được <strong>TẶNG 1 sản phẩm bất kỳ</strong>!{% else %}Add <b>{{ pf_rem | money }}</b> to get <strong>1 FREE product of your choice</strong>!{% endif %}
-      {%- elsif pf_state == 'tier5' -%}
-        🎁 {% if vi %}Đơn của bạn được <strong>tặng 1 sản phẩm</strong> · thêm <b>{{ pf_rem | money }}</b> để lên <strong>giảm 5€ ship</strong>{% else %}You get a <strong>free gift</strong> · add <b>{{ pf_rem | money }}</b> to upgrade to <strong>−5€ shipping</strong>{% endif %}
-      {%- elsif pf_state == 'tier1' -%}
-        🚚 {% if vi %}Đơn của bạn được <strong>giảm 5€ ship</strong> · thêm <b>{{ pf_rem | money }}</b> để lên <strong>giảm 10€</strong>{% else %}You get <strong>−5€ shipping</strong> · add <b>{{ pf_rem | money }}</b> to upgrade to <strong>−10€</strong>{% endif %}
-      {%- elsif pf_state == 'tier2' -%}
-        🚚 {% if vi %}Đơn của bạn được <strong>giảm 10€ ship</strong> · thêm <b>{{ pf_rem | money }}</b> để lên <strong>giảm 15€</strong>{% else %}You get <strong>−10€ shipping</strong> · add <b>{{ pf_rem | money }}</b> to upgrade to <strong>−15€</strong>{% endif %}
+  {%- comment -%}Progress toward the next locked tier.{%- endcomment -%}
+  {%- if pf_sub < pf_g -%}{%- assign pf_next = pf_g -%}
+  {%- elsif pf_sub < pf_a -%}{%- assign pf_next = pf_a -%}
+  {%- elsif pf_sub < pf_b -%}{%- assign pf_next = pf_b -%}
+  {%- elsif pf_sub < pf_c -%}{%- assign pf_next = pf_c -%}
+  {%- else -%}{%- assign pf_next = 0 -%}{%- endif -%}
+  {%- if pf_next > 0 -%}{%- assign pf_pct = pf_sub | times: 100 | divided_by: pf_next -%}{%- assign pf_rem = pf_next | minus: pf_sub -%}{%- else -%}{%- assign pf_pct = 100 -%}{%- endif -%}
+
+  <div class="pf-shipbar pf-shipbar--list{% if pf_next == 0 %} pf-shipbar--max{% endif %}">
+    <p class="pf-shipbar__head">🎁 {% if vi %}Ưu đãi theo giá trị đơn{% else %}Rewards by order value{% endif %}</p>
+    <div class="pf-shipbar__track"><div class="pf-shipbar__fill" style="width: {{ pf_pct }}%;"></div></div>
+    <p class="pf-shipbar__next">
+      {%- if pf_next > 0 -%}
+        {% if vi %}Mua thêm <b>{{ pf_rem | money }}</b> để lên mức ưu đãi cao hơn{% else %}Add <b>{{ pf_rem | money }}</b> to reach a higher reward{% endif %}
       {%- else -%}
-        🎉 {% if vi %}Đơn của bạn được <strong>giảm 15€ phí ship</strong> — ưu đãi cao nhất!{% else %}You get <strong>−15€ shipping</strong> — the best tier!{% endif %}
+        {% if vi %}Bạn đang ở mức ưu đãi cao nhất! 🎉{% else %}You've reached the top reward! 🎉{% endif %}
       {%- endif -%}
     </p>
-    <div class="pf-shipbar__track"><div class="pf-shipbar__fill" style="width: {{ pf_pct }}%;"></div></div>
-    <p class="pf-shipbar__note">{% if vi %}* Mỗi đơn chỉ áp dụng 1 ưu đãi cao nhất, không cộng dồn.{% else %}* One best reward per order — offers don't stack.{% endif %}</p>
+
+    <ul class="pf-shipbar__list">
+      {%- comment -%}—— 50€: gift ——{%- endcomment -%}
+      <li class="pf-rw{% if pf_sub >= pf_g %} is-on{% endif %}{% if pf_active == pf_g %} is-active{% endif %}">
+        <span class="pf-rw__ic">{% if pf_sub >= pf_g %}✓{% else %}○{% endif %}</span>
+        <span class="pf-rw__txt"><b>50€</b> — {% if vi %}Tặng 1 sản phẩm bất kỳ{% else %}1 free product{% endif %}</span>
+        {%- if pf_active == pf_g -%}<span class="pf-rw__badge">{% if vi %}Đang áp dụng{% else %}Applied{% endif %}</span>
+        {%- elsif pf_sub < pf_g -%}<span class="pf-rw__need">{% if vi %}thêm{% else %}+{% endif %} {{ pf_g | minus: pf_sub | money }}</span>{%- endif -%}
+      </li>
+      {%- comment -%}—— 100€: −5€ ship ——{%- endcomment -%}
+      <li class="pf-rw{% if pf_sub >= pf_a %} is-on{% endif %}{% if pf_active == pf_a %} is-active{% endif %}">
+        <span class="pf-rw__ic">{% if pf_sub >= pf_a %}✓{% else %}○{% endif %}</span>
+        <span class="pf-rw__txt"><b>100€</b> — {% if vi %}Giảm 5€ phí ship{% else %}−5€ shipping{% endif %}</span>
+        {%- if pf_active == pf_a -%}<span class="pf-rw__badge">{% if vi %}Đang áp dụng{% else %}Applied{% endif %}</span>
+        {%- elsif pf_sub < pf_a -%}<span class="pf-rw__need">{% if vi %}thêm{% else %}+{% endif %} {{ pf_a | minus: pf_sub | money }}</span>{%- endif -%}
+      </li>
+      {%- comment -%}—— 169€: −10€ ship ——{%- endcomment -%}
+      <li class="pf-rw{% if pf_sub >= pf_b %} is-on{% endif %}{% if pf_active == pf_b %} is-active{% endif %}">
+        <span class="pf-rw__ic">{% if pf_sub >= pf_b %}✓{% else %}○{% endif %}</span>
+        <span class="pf-rw__txt"><b>169€</b> — {% if vi %}Giảm 10€ phí ship{% else %}−10€ shipping{% endif %}</span>
+        {%- if pf_active == pf_b -%}<span class="pf-rw__badge">{% if vi %}Đang áp dụng{% else %}Applied{% endif %}</span>
+        {%- elsif pf_sub < pf_b -%}<span class="pf-rw__need">{% if vi %}thêm{% else %}+{% endif %} {{ pf_b | minus: pf_sub | money }}</span>{%- endif -%}
+      </li>
+      {%- comment -%}—— 269€: −15€ ship ——{%- endcomment -%}
+      <li class="pf-rw{% if pf_sub >= pf_c %} is-on{% endif %}{% if pf_active == pf_c %} is-active{% endif %}">
+        <span class="pf-rw__ic">{% if pf_sub >= pf_c %}✓{% else %}○{% endif %}</span>
+        <span class="pf-rw__txt"><b>269€</b> — {% if vi %}Giảm 15€ phí ship{% else %}−15€ shipping{% endif %}</span>
+        {%- if pf_active == pf_c -%}<span class="pf-rw__badge">{% if vi %}Đang áp dụng{% else %}Applied{% endif %}</span>
+        {%- elsif pf_sub < pf_c -%}<span class="pf-rw__need">{% if vi %}thêm{% else %}+{% endif %} {{ pf_c | minus: pf_sub | money }}</span>{%- endif -%}
+      </li>
+    </ul>
+
+    <p class="pf-shipbar__note">{% if vi %}* Mỗi đơn chỉ áp dụng 1 mức ưu đãi cao nhất, không cộng dồn.{% else %}* One best reward per order — offers don't stack.{% endif %}</p>
   </div>
 
   <style>
-    .pf-shipbar { background: #fbf7ee; border: 1px solid #ecdfc4; border-radius: 12px; padding: .9rem 1.1rem; margin: 1rem 0; }
-    .pf-shipbar__line { margin: 0 0 .6rem; font-size: 1.3rem; line-height: 1.4; font-weight: 600; color: #6a5c40; }
-    .pf-shipbar__line b { color: #d62828; font-weight: 800; }
-    .pf-shipbar__line strong { color: #b8791a; font-weight: 800; }
+    .pf-shipbar { background: #fbf7ee; border: 1px solid #ecdfc4; border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; }
+    .pf-shipbar__head { margin: 0 0 .6rem; font-size: 1.35rem; font-weight: 800; color: #6a5c40; }
     .pf-shipbar__track { height: 7px; border-radius: 999px; background: #ece3d0; overflow: hidden; }
     .pf-shipbar__fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #1e8541, #63c98a); transition: width .35s ease; }
-    .pf-shipbar__note { margin: .5rem 0 0; font-size: 1.05rem; line-height: 1.35; color: #a8a08e; font-weight: 500; }
-    /* Gift tier (first milestone) — warm accent to draw attention */
-    .pf-shipbar--gift { background: #fef4ef; border-color: #f4d2bf; }
-    .pf-shipbar--gift .pf-shipbar__line { color: #a4442a; }
-    .pf-shipbar--gift .pf-shipbar__line strong { color: #d62828; }
-    .pf-shipbar--gift .pf-shipbar__fill { background: linear-gradient(90deg, #e8602f, #f2a65a); }
-    .pf-shipbar--tier5 .pf-shipbar__line strong { color: #b8791a; }
-    .pf-shipbar--tier1 .pf-shipbar__line strong { color: #b8791a; }
+    .pf-shipbar__next { margin: .55rem 0 0; font-size: 1.2rem; font-weight: 600; color: #8a7b5c; }
+    .pf-shipbar__next b { color: #d62828; font-weight: 800; }
+    .pf-shipbar__list { list-style: none; margin: .7rem 0 0; padding: 0; display: flex; flex-direction: column; gap: .35rem; }
+    .pf-rw { display: flex; align-items: center; gap: .55rem; font-size: 1.2rem; color: #a49a86; line-height: 1.3; }
+    .pf-rw__ic { flex: none; width: 1.8rem; height: 1.8rem; border-radius: 50%; display: grid; place-items: center; font-size: 1.05rem; background: #e7ddc8; color: #b3a993; }
+    .pf-rw__txt { min-width: 0; }
+    .pf-rw__txt b { color: inherit; font-weight: 800; }
+    .pf-rw.is-on { color: #5f7050; }
+    .pf-rw.is-on .pf-rw__ic { background: #1e8541; color: #fff; }
+    .pf-rw.is-active { color: #14672f; font-weight: 700; }
+    .pf-rw.is-active .pf-rw__ic { background: #14672f; }
+    .pf-rw__badge { margin-left: auto; flex: none; background: #1e8541; color: #fff; font-size: 1rem; font-weight: 800; padding: .15rem .65rem; border-radius: 999px; white-space: nowrap; }
+    .pf-rw__need { margin-left: auto; flex: none; font-size: 1.05rem; color: #c07a2a; font-weight: 700; white-space: nowrap; }
+    .pf-shipbar__note { margin: .7rem 0 0; font-size: 1.05rem; line-height: 1.35; color: #a8a08e; font-weight: 500; }
     .pf-shipbar--max { background: #eef7f0; border-color: #bfe0c7; }
-    .pf-shipbar--max .pf-shipbar__line { color: #14672f; }
-    .pf-shipbar--max .pf-shipbar__line strong { color: #1e8541; }
+    .pf-shipbar--max .pf-shipbar__head { color: #14672f; }
     .pf-shipbar--max .pf-shipbar__fill { background: linear-gradient(90deg, #1e8541, #14672f); }
     @media (max-width: 749px) {
-      .pf-shipbar { padding: .8rem 1rem; margin: .8rem 0; border-radius: 10px; }
-      .pf-shipbar__line { font-size: 1.25rem; margin-bottom: .5rem; }
+      .pf-shipbar { padding: .9rem 1rem; margin: .8rem 0; border-radius: 10px; }
+      .pf-shipbar__head { font-size: 1.3rem; }
+      .pf-rw { font-size: 1.15rem; }
     }
   </style>
 {%- endunless -%}
