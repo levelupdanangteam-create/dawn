@@ -33,6 +33,16 @@
     "pf_hero_slideshow_UijQAg": {
       "type": "pf-hero-slideshow",
       "blocks": {
+        "slide_XgQhqw": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/da15f5b9-d6d6-4ccd-8b91-de8ef45ab5e2.png",
+            "title": "",
+            "text": "",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
         "slide_ECJQFW": {
           "type": "slide",
           "settings": {
@@ -52,27 +62,17 @@
             "button_label": "",
             "button_link": ""
           }
-        },
-        "slide_yfNzfF": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/45f5784d-8b1b-4261-83bc-978eb2c99516_50bab695-67d5-45cf-8abe-dd8060b6cfb4.png",
-            "title": "",
-            "text": "",
-            "button_label": "",
-            "button_link": ""
-          }
         }
       },
       "block_order": [
+        "slide_XgQhqw",
         "slide_ECJQFW",
-        "slide_h7RtgL",
-        "slide_yfNzfF"
+        "slide_h7RtgL"
       ],
       "name": "Hero Slideshow",
       "settings": {
         "autoplay_interval": 5,
-        "height_desktop": 740,
+        "height_desktop": 460,
         "height_mobile": 300,
         "text_align": "left",
         "fallback_asset": "pf-hero.jpg"
