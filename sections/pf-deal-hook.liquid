@@ -47,7 +47,7 @@
               {%- endif -%}
             </div>
             <div class="pf-deal__limit{% if pf_is_gift %} pf-deal__limit--gift{% endif %}">
-              {%- if pf_is_gift -%}🎁 {% if request.locale.iso_code == "vi" %}Chỉ <b>0€</b> · mỗi đơn giới hạn <b>1 sản phẩm</b>{% else %}Only <b>0€</b> · limit <b>1 per order</b>{% endif %}
+              {%- if pf_is_gift -%}🎁 {% if request.locale.iso_code == "vi" %}Tặng miễn phí khi đơn từ <b>{{ pf_gm }}€</b>{% else %}Free gift on orders from <b>{{ pf_gm }}€</b>{% endif %}
               {%- else -%}{% if request.locale.iso_code == "vi" %}⚠️ Ưu đãi chỉ áp dụng cho 1 sản phẩm — giá có thể thay đổi khi mua nhiều hơn{% else %}⚠️ Offer applies to 1 item only — price may change for larger quantities{% endif %}{%- endif -%}
             </div>
             {%- render 'pf-card-buttons', product: p, section_id: section.id -%}
