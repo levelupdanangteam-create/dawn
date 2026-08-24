@@ -46,6 +46,11 @@
           {% if vi %}Mua thêm <b>{{ pf_rem | money }}</b> để được <b>{{ pf_ntx }}</b>{% else %}Add <b>{{ pf_rem | money }}</b> to get <b>{{ pf_ntx }}</b>{% endif %}
         {%- endif -%}
       </span>
+      <span class="pf-shipbar__toggle">
+        <span class="pf-shipbar__tgl-c">{% if vi %}Xem tất cả 4 mốc ưu đãi{% else %}See all 4 tiers{% endif %}</span>
+        <span class="pf-shipbar__tgl-o">{% if vi %}Thu gọn{% else %}Show less{% endif %}</span>
+        <span class="pf-shipbar__tgl-ar" aria-hidden="true">⌄</span>
+      </span>
     </summary>
 
     <ul class="pf-shipbar__list">
@@ -81,6 +86,12 @@
     .pf-shipbar__head { display: flex; align-items: center; font-size: 1.3rem; font-weight: 800; color: #6a5c40; }
     .pf-shipbar__chev { margin-left: auto; font-size: 1.6rem; line-height: 1; color: #b3a68a; transition: transform .2s ease; }
     .pf-shipbar[open] .pf-shipbar__chev { transform: rotate(180deg); }
+    .pf-shipbar__toggle { display: inline-flex; align-items: center; gap: .35rem; margin: .7rem 0 0; padding: .4rem .9rem; font-size: 1.15rem; font-weight: 800; color: #1e8541; background: #eaf5ee; border: 1px solid #c8e6d2; border-radius: 999px; }
+    .pf-shipbar__tgl-ar { font-size: 1.35rem; line-height: 1; transition: transform .2s ease; }
+    .pf-shipbar[open] .pf-shipbar__tgl-ar { transform: rotate(180deg); }
+    .pf-shipbar__tgl-o { display: none; }
+    .pf-shipbar[open] .pf-shipbar__tgl-c { display: none; }
+    .pf-shipbar[open] .pf-shipbar__tgl-o { display: inline; }
     .pf-shipbar__track { display: block; height: 7px; border-radius: 999px; background: #ece3d0; overflow: hidden; margin: .55rem 0 0; }
     .pf-shipbar__fill { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #1e8541, #63c98a); transition: width .35s ease; }
     .pf-shipbar__status { display: block; margin: .5rem 0 0; font-size: 1.2rem; font-weight: 600; color: #8a7b5c; line-height: 1.35; }
@@ -104,7 +115,7 @@
     @media (min-width: 750px) {
       .pf-shipbar__list { display: flex !important; }
       .pf-shipbar__note { display: block !important; }
-      .pf-shipbar__chev { display: none; }
+      .pf-shipbar__chev, .pf-shipbar__toggle { display: none; }
       .pf-shipbar__sum { cursor: default; }
     }
   </style>
