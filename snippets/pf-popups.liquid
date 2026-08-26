@@ -156,9 +156,9 @@
 
     // Popup 1: free-ship banner (10s after landing, once per session).
     schedule('pf_fs_shown', 'pf-pop-freeship', FREESHIP_DELAY);
-    // Popup 2: shown AFTER the free-ship popup. It starts trying a bit later,
-    // waits (retries) while popup 1 is open, then appears once the slot frees —
-    // ignoring the cooldown so it follows shortly after popup 1 is closed.
-    schedule('pf_vc_shown', 'pf-pop-voucher', FREESHIP_DELAY + 2000, true);
+    // Popup 2: shown AFTER the free-ship popup, with a rest gap. It waits while
+    // popup 1 is open AND respects the cooldown, so it only appears ~15s after
+    // popup 1 is closed (not back-to-back).
+    schedule('pf_vc_shown', 'pf-pop-voucher', FREESHIP_DELAY + 2000);
   })();
 </script>
