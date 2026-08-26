@@ -155,9 +155,9 @@
         "subheading": "Gói trọn theo nhu cầu — tiết kiệm hơn mua lẻ!",
         "collection": "combo",
         "products_to_show": 12,
-        "initial_count": 8,
+        "initial_count": 4,
         "show_view_all": true,
-        "view_all_label": "Xem tất cả combo",
+        "view_all_label": "Xem thêm",
         "columns_desktop": 4,
         "padding_top": 40,
         "padding_bottom": 40
@@ -418,9 +418,9 @@
   "order": [
     "pf_category_grid",
     "pf_deal_hook",
-    "pf_combo",
     "pf_weekly_deals",
     "pf_new_arrivals",
+    "pf_combo",
     "pf_flash_sale",
     "pf_bestsellers",
     "pf_promo_image",

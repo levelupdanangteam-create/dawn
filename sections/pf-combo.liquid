@@ -95,17 +95,41 @@
         {%- endif -%}
       </div>
 
-      {%- if col != blank and section.settings.show_view_all -%}
+      {%- liquid
+        assign rendered = 0
+        if col != blank
+          assign rendered = col.products_count
+          if rendered > section.settings.products_to_show
+            assign rendered = section.settings.products_to_show
+          endif
+        endif
+      -%}
+      {%- if section.settings.show_view_all and rendered > initial -%}
         <div class="pf-cb__morewrap">
-          <a class="pf-cb__more" href="{{ col.url }}">
-            {{ section.settings.view_all_label | default: 'Xem tất cả combo' }}
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-          </a>
+          <button type="button" class="pf-cb__more">
+            {{ section.settings.view_all_label | default: 'Xem thêm' }}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
         </div>
       {%- endif -%}
     </div>
   </div>
 </div>
+
+<script>
+  (function () {
+    var root = document.getElementById('pf-cb-{{ section.id }}');
+    if (!root) return;
+    var btn = root.querySelector('.pf-cb__more');
+    if (!btn || btn.dataset.pfInit) return;
+    btn.dataset.pfInit = '1';
+    btn.addEventListener('click', function () {
+      root.querySelectorAll('.pf-cb__card.is-hidden').forEach(function (c) { c.classList.remove('is-hidden'); });
+      var wrap = btn.closest('.pf-cb__morewrap');
+      if (wrap) wrap.remove();
+    });
+  })();
+</script>
 
 {% schema %}
 {
@@ -117,8 +141,8 @@
     { "type": "collection", "id": "collection", "label": "Bộ sưu tập Combo" },
     { "type": "range", "id": "products_to_show", "min": 4, "max": 30, "step": 1, "label": "Số sản phẩm tối đa", "default": 12 },
     { "type": "range", "id": "initial_count", "min": 4, "max": 30, "step": 1, "label": "Số sản phẩm hiện ban đầu", "default": 8 },
-    { "type": "checkbox", "id": "show_view_all", "label": "Hiện nút Xem tất cả", "default": true },
-    { "type": "text", "id": "view_all_label", "label": "Nhãn nút Xem tất cả", "default": "Xem tất cả combo" },
+    { "type": "checkbox", "id": "show_view_all", "label": "Hiện nút Xem thêm", "default": true },
+    { "type": "text", "id": "view_all_label", "label": "Nhãn nút Xem thêm", "default": "Xem thêm" },
     { "type": "range", "id": "columns_desktop", "min": 3, "max": 5, "step": 1, "label": "Số cột (desktop)", "default": 4 },
     { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 40 },
     { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 40 }
