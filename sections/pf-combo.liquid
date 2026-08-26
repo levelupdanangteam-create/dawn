@@ -1,0 +1,128 @@
+<style>
+  #pf-cb-{{ section.id }} { padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px; }
+  #pf-cb-{{ section.id }} .pf-wrap { max-width: var(--page-width, 120rem); margin-inline: auto; padding-inline: clamp(1.6rem, 3vw, 3rem); }
+  #pf-cb-{{ section.id }} .pf-cb { --cols: {{ section.settings.columns_desktop }}; }
+  #pf-cb-{{ section.id }} .pf-cb__head { text-align: center; margin-bottom: 2.8rem; }
+  #pf-cb-{{ section.id }} .pf-cb__eyebrow { display: inline-block; font-size: 1.2rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: #1e8541; margin-bottom: 0.8rem; }
+  #pf-cb-{{ section.id }} .pf-cb__title { font-family: var(--font-heading-family, sans-serif); font-weight: 800; font-size: clamp(2.2rem, 3.4vw, 3.2rem); color: #14672f; margin: 0; line-height: 1.15; }
+  #pf-cb-{{ section.id }} .pf-cb__title::after { content: ""; display: block; width: 6rem; height: 4px; border-radius: 4px; margin: 1.2rem auto 0; background: linear-gradient(90deg, #1e8541, #f2b705); }
+  #pf-cb-{{ section.id }} .pf-cb__sub { margin: 1rem auto 0; max-width: 52ch; color: #6b6357; font-size: 1.45rem; }
+
+  #pf-cb-{{ section.id }} .pf-cb__grid { display: grid; grid-template-columns: repeat(var(--cols), 1fr); gap: 1.8rem; }
+  #pf-cb-{{ section.id }} .pf-cb__card {
+    position: relative; background: #fff; border: 1px solid #e6ddc4; border-radius: 16px; overflow: hidden;
+    display: flex; flex-direction: column; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  #pf-cb-{{ section.id }} .pf-cb__card:hover { transform: translateY(-5px); box-shadow: 0 16px 36px rgba(20,103,47,.14); border-color: #bfe0c7; }
+  #pf-cb-{{ section.id }} .pf-cb__media { position: relative; aspect-ratio: 1; background: #f6f1e6; display: grid; place-items: center; overflow: hidden; }
+  #pf-cb-{{ section.id }} .pf-cb__media img, #pf-cb-{{ section.id }} .pf-cb__media svg { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
+  #pf-cb-{{ section.id }} .pf-cb__card:hover .pf-cb__media img { transform: scale(1.06); }
+  #pf-cb-{{ section.id }} .pf-cb__sale { position: absolute; top: 1rem; right: 1rem; background: #d62828; color: #fff; font-size: 1.1rem; font-weight: 800; padding: .35rem .8rem; border-radius: 7px; }
+  #pf-cb-{{ section.id }} .pf-cb__ribbon { position: absolute; top: 1rem; left: 0; z-index: 3; background: #1e8541; color: #fff; font-size: 1.05rem; font-weight: 800; padding: .35rem .9rem .35rem .8rem; border-radius: 0 7px 7px 0; box-shadow: 0 3px 8px rgba(0,0,0,.15); }
+
+  #pf-cb-{{ section.id }} .pf-cb__info { padding: 1.3rem 1.4rem 1.6rem; display: flex; flex-direction: column; gap: .6rem; flex: 1; }
+  #pf-cb-{{ section.id }} .pf-cb__info .pf-card-actions { margin-top: auto; }
+  #pf-cb-{{ section.id }} .pf-cb__nm { margin: 0; font-size: 1.4rem; font-weight: 600; line-height: 1.35; color: #2a2622; }
+  #pf-cb-{{ section.id }} .pf-cb__nm a { color: inherit; text-decoration: none; }
+  #pf-cb-{{ section.id }} .pf-cb__nm a:hover { color: #1e8541; }
+  #pf-cb-{{ section.id }} .pf-cb__price { display: flex; align-items: baseline; gap: .8rem; font-variant-numeric: tabular-nums; }
+  #pf-cb-{{ section.id }} .pf-cb__price .now { font-size: 1.65rem; font-weight: 800; color: #1e8541; }
+  #pf-cb-{{ section.id }} .pf-cb__price .was { font-size: 1.2rem; color: #a79c8e; text-decoration: line-through; }
+
+  @media (max-width: 989px) { #pf-cb-{{ section.id }} .pf-cb__grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 599px) { #pf-cb-{{ section.id }} .pf-cb__grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; } }
+
+  #pf-cb-{{ section.id }} .pf-cb__card.is-hidden { display: none; }
+  #pf-cb-{{ section.id }} .pf-cb__morewrap { text-align: center; margin-top: 2.4rem; }
+  #pf-cb-{{ section.id }} .pf-cb__more {
+    display: inline-flex; align-items: center; gap: .6rem; background: #1e8541; border: 1.5px solid #1e8541;
+    color: #fff; font-weight: 800; font-size: 1.4rem; padding: 1.1rem 2.8rem; border-radius: 999px;
+    text-decoration: none; transition: filter .15s ease;
+  }
+  #pf-cb-{{ section.id }} .pf-cb__more:hover { filter: brightness(1.08); color: #fff; }
+</style>
+
+<div id="pf-cb-{{ section.id }}" class="pf-boxed-section">
+  <div class="pf-wrap">
+    <div class="pf-cb">
+      <div class="pf-cb__head">
+        <span class="pf-cb__eyebrow">{% if request.locale.iso_code == "vi" %}🎁 Combo tiết kiệm{% else %}🎁 Value combos{% endif %}</span>
+        <h2 class="pf-cb__title">{% render 'pf-tr', s: section.settings.heading %}</h2>
+        {%- if section.settings.subheading != blank -%}<p class="pf-cb__sub">{% render 'pf-tr', s: section.settings.subheading %}</p>{%- endif -%}
+      </div>
+
+      <div class="pf-cb__grid">
+        {%- assign col = section.settings.collection -%}
+        {%- assign initial = section.settings.initial_count -%}
+        {%- if col != blank and col.products_count > 0 -%}
+          {%- for product in col.products limit: section.settings.products_to_show -%}
+            {%- assign pf_v = product.selected_or_first_available_variant -%}
+            {%- assign pf_price = pf_v.price -%}
+            {%- assign pf_cmp = pf_v.compare_at_price -%}
+            {%- if pf_cmp == blank or pf_cmp <= pf_price -%}{%- assign pf_cmp = product.compare_at_price_max -%}{%- endif -%}
+            <div class="pf-cb__card{% if forloop.index > initial %} is-hidden{% endif %}">
+              <a class="pf-cb__media" href="{{ product.url }}">
+                <span class="pf-cb__ribbon">🎁 {% if request.locale.iso_code == "vi" %}Combo{% else %}Combo{% endif %}</span>
+                {%- if pf_cmp > pf_price -%}
+                  <span class="pf-cb__sale">-{{ pf_cmp | minus: pf_price | times: 100.0 | divided_by: pf_cmp | round }}%</span>
+                {%- endif -%}
+                {%- if product.featured_image -%}
+                  <img src="{{ product.featured_image | image_url: width: 500 }}" alt="{{ product.title | escape }}" loading="lazy" width="500" height="500">
+                {%- else -%}
+                  {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+              </a>
+              <div class="pf-cb__info">
+                <h3 class="pf-cb__nm"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+                <div class="pf-cb__price">
+                  <span class="now">{{ pf_price | money }}</span>
+                  {%- if pf_cmp > pf_price -%}<span class="was">{{ pf_cmp | money }}</span>{%- endif -%}
+                </div>
+                {% render 'pf-card-buttons', product: product, section_id: section.id %}
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for i in (1..4) -%}
+            <div class="pf-cb__card">
+              <div class="pf-cb__media">{{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+              <div class="pf-cb__info">
+                <h3 class="pf-cb__nm">{% if request.locale.iso_code == "vi" %}Chọn bộ sưu tập Combo trong cài đặt section{% else %}Pick the Combo collection in section settings{% endif %}</h3>
+                <div class="pf-cb__price"><span class="now">0&nbsp;€</span></div>
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+
+      {%- if col != blank and section.settings.show_view_all -%}
+        <div class="pf-cb__morewrap">
+          <a class="pf-cb__more" href="{{ col.url }}">
+            {{ section.settings.view_all_label | default: 'Xem tất cả combo' }}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Combo",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Combo Phomifood" },
+    { "type": "text", "id": "subheading", "label": "Phụ đề", "default": "Gói trọn theo nhu cầu — tiết kiệm hơn mua lẻ!" },
+    { "type": "collection", "id": "collection", "label": "Bộ sưu tập Combo" },
+    { "type": "range", "id": "products_to_show", "min": 4, "max": 30, "step": 1, "label": "Số sản phẩm tối đa", "default": 12 },
+    { "type": "range", "id": "initial_count", "min": 4, "max": 30, "step": 1, "label": "Số sản phẩm hiện ban đầu", "default": 8 },
+    { "type": "checkbox", "id": "show_view_all", "label": "Hiện nút Xem tất cả", "default": true },
+    { "type": "text", "id": "view_all_label", "label": "Nhãn nút Xem tất cả", "default": "Xem tất cả combo" },
+    { "type": "range", "id": "columns_desktop", "min": 3, "max": 5, "step": 1, "label": "Số cột (desktop)", "default": 4 },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 40 }
+  ],
+  "presets": [{ "name": "Combo" }]
+}
+{% endschema %}
