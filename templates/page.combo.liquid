@@ -1,0 +1,243 @@
+{%- comment -%}
+  PHOMIFOOD — Trang "Combo" / Combo landing page.
+  Gán template này cho 1 Page trong Shopify admin (Pages → Combo →
+  Theme template → "combo"). Self-contained (HTML + CSS).
+  Sửa combo: chỉnh trực tiếp các <article class="pfc-card"> bên dưới
+  (tên, mô tả, danh sách sản phẩm, giá). Nút đặt hàng dẫn về WhatsApp.
+{%- endcomment -%}
+{%- assign pf_wa = '84338139402' -%}
+
+<div class="pfc color-scheme-1">
+
+  {%- comment -%}================= HERO =================={%- endcomment -%}
+  <section class="pfc-hero">
+    <div class="pfc-wrap">
+      <span class="pfc-hero__eyebrow">🎁 GÓI TRỌN · TIẾT KIỆM</span>
+      <h1 class="pfc-hero__title">Combo Phomifood</h1>
+      <p class="pfc-hero__sub">Gói sẵn theo nhu cầu — đồ bếp cả tháng, nấu chuẩn vị, ăn vặt, lai rai… Mua trọn combo <b>tiết kiệm hơn</b> mua lẻ. Giao khắp châu Âu.</p>
+    </div>
+  </section>
+
+  {%- comment -%}================ COMBO GRID ================={%- endcomment -%}
+  <section class="pfc-wrap pfc-grid-wrap">
+    <div class="pfc-grid">
+
+      {%- comment -%}—— 1. ĐỦ ĐẦY ——{%- endcomment -%}
+      <article class="pfc-card pfc-card--green">
+        <div class="pfc-card__head">
+          <span class="pfc-card__emoji">🛒</span>
+          <div>
+            <h3 class="pfc-card__name">Combo Đủ Đầy</h3>
+            <p class="pfc-card__desc">Đồ bếp + cà phê + sữa cả nhà dùng mỗi tháng</p>
+          </div>
+        </div>
+        <ul class="pfc-list">
+          <li>Omachi mì tôm chua cay — 1 thùng</li>
+          <li>Hảo Hảo mì tôm chua cay — 1 thùng</li>
+          <li>Nam Ngư nước mắm 750ml — 3 chai</li>
+          <li>Knorr hạt nêm 900g — 1 gói</li>
+          <li>Nước tương tỏi ớt · Mì chính · Bột canh</li>
+          <li>Bánh tráng cuốn · Bánh đa nem</li>
+          <li>Cà phê G7 · Sữa TH True Milk</li>
+        </ul>
+        <div class="pfc-card__foot">
+          <div class="pfc-price"><span class="pfc-price__old">182,32€</span><span class="pfc-price__now">173,20€</span></div>
+          <a class="pfc-btn" href="https://wa.me/{{ pf_wa }}?text={{ 'Xin chào Phomifood, tôi muốn đặt Combo Đủ Đầy' | url_encode }}" target="_blank" rel="noopener">🟢 Đặt combo qua WhatsApp</a>
+        </div>
+      </article>
+
+      {%- comment -%}—— 2. CHUẨN VỊ ——{%- endcomment -%}
+      <article class="pfc-card pfc-card--red">
+        <div class="pfc-card__head">
+          <span class="pfc-card__emoji">🍜</span>
+          <div>
+            <h3 class="pfc-card__name">Combo Chuẩn Vị</h3>
+            <p class="pfc-card__desc">Nguyên liệu & gia vị nấu bún / phở / lẩu chuẩn vị Việt</p>
+          </div>
+        </div>
+        <ul class="pfc-list">
+          <li>Phở khô Oh Ricey 500g — 3 gói</li>
+          <li>Bún bò Huế Gia Bảo 500g — 3 gói</li>
+          <li>Nước mắm cá hồi · Mắm vị xưa 40 độ đạm</li>
+          <li>Tương ớt Chinsu · Knorr hạt nêm</li>
+          <li>Quế · Mộc nhĩ · Mắm tôm Hậu Lộc</li>
+        </ul>
+        <div class="pfc-card__foot">
+          <div class="pfc-price"><span class="pfc-price__old">55,70€</span><span class="pfc-price__now">52,90€</span></div>
+          <a class="pfc-btn" href="https://wa.me/{{ pf_wa }}?text={{ 'Xin chào Phomifood, tôi muốn đặt Combo Chuẩn Vị' | url_encode }}" target="_blank" rel="noopener">🟢 Đặt combo qua WhatsApp</a>
+        </div>
+      </article>
+
+      {%- comment -%}—— 3. GIÒN TAN ——{%- endcomment -%}
+      <article class="pfc-card pfc-card--gold">
+        <div class="pfc-card__head">
+          <span class="pfc-card__emoji">🍪</span>
+          <div>
+            <h3 class="pfc-card__name">Combo Giòn Tan</h3>
+            <p class="pfc-card__desc">Bánh kẹo, snack giòn rụm nhâm nhi cả nhà & trẻ nhỏ</p>
+          </div>
+        </div>
+        <ul class="pfc-list">
+          <li>ChocoPie vị truyền thống — 2 hộp</li>
+          <li>One One bánh gạo (rong biển + phô mai) — 4 gói</li>
+          <li>Nabati bánh xốp phô mai — 3 hộp</li>
+          <li>Ichi bánh gạo Nhật — 2 gói</li>
+          <li>Cơm cháy chà bông — 2 gói</li>
+        </ul>
+        <div class="pfc-card__foot">
+          <div class="pfc-price"><span class="pfc-price__old">53,29€</span><span class="pfc-price__now">50,63€</span></div>
+          <a class="pfc-btn" href="https://wa.me/{{ pf_wa }}?text={{ 'Xin chào Phomifood, tôi muốn đặt Combo Giòn Tan' | url_encode }}" target="_blank" rel="noopener">🟢 Đặt combo qua WhatsApp</a>
+        </div>
+      </article>
+
+      {%- comment -%}—— 4. LAI RAI ——{%- endcomment -%}
+      <article class="pfc-card pfc-card--amber">
+        <div class="pfc-card__head">
+          <span class="pfc-card__emoji">🍺</span>
+          <div>
+            <h3 class="pfc-card__name">Combo Lai Rai</h3>
+            <p class="pfc-card__desc">Món nhắm nhâm nhi, tụ tập bạn bè — có 50 chân gà + tăm cay</p>
+          </div>
+        </div>
+        <ul class="pfc-list">
+          <li>Chân gà bà Tuyết — 50 chân <span class="pfc-tag">−10%</span></li>
+          <li>Khô bò xé sợi Anh Vũ — 4 gói</li>
+          <li>Cơm cháy chà bông — 3 gói</li>
+          <li>Lạc nhân · Tăm cay (SP trend)</li>
+          <li>Sting nước tăng lực — 1 thùng</li>
+        </ul>
+        <div class="pfc-card__foot">
+          <div class="pfc-price"><span class="pfc-price__old">176,46€</span><span class="pfc-price__now">167,64€</span></div>
+          <a class="pfc-btn" href="https://wa.me/{{ pf_wa }}?text={{ 'Xin chào Phomifood, tôi muốn đặt Combo Lai Rai' | url_encode }}" target="_blank" rel="noopener">🟢 Đặt combo qua WhatsApp</a>
+        </div>
+      </article>
+
+      {%- comment -%}—— 5. ĂN LIỀN ——{%- endcomment -%}
+      <article class="pfc-card pfc-card--red">
+        <div class="pfc-card__head">
+          <span class="pfc-card__emoji">⚡</span>
+          <div>
+            <h3 class="pfc-card__name">Combo Ăn Liền</h3>
+            <p class="pfc-card__desc">Mì / phở / cháo ăn liền cho người bận rộn, sinh viên</p>
+          </div>
+        </div>
+        <ul class="pfc-list">
+          <li>Omachi mì tôm chua cay — 1 thùng</li>
+          <li>Hảo Hảo mì tôm chua cay — 1 thùng</li>
+          <li>Vifon Hoàng Gia phở bò (thịt thật) — 1 thùng</li>
+          <li>Lẩu Thái mì ly — 1 thùng</li>
+        </ul>
+        <div class="pfc-card__foot">
+          <div class="pfc-price"><span class="pfc-price__old">100,43€</span><span class="pfc-price__now">95,41€</span></div>
+          <a class="pfc-btn" href="https://wa.me/{{ pf_wa }}?text={{ 'Xin chào Phomifood, tôi muốn đặt Combo Ăn Liền' | url_encode }}" target="_blank" rel="noopener">🟢 Đặt combo qua WhatsApp</a>
+        </div>
+      </article>
+
+      {%- comment -%}—— 6. GHIỀN CHÂN GÀ ——{%- endcomment -%}
+      <article class="pfc-card pfc-card--amber">
+        <div class="pfc-card__head">
+          <span class="pfc-card__emoji">🍗</span>
+          <div>
+            <h3 class="pfc-card__name">Combo Ghiền Chân Gà</h3>
+            <p class="pfc-card__desc">50 chân gà bà Tuyết trend + món nhắm — mua 50 giảm 10%</p>
+          </div>
+        </div>
+        <ul class="pfc-list">
+          <li>Chân gà bà Tuyết — 50 chân <span class="pfc-tag">−10%</span></li>
+          <li>Cà pháo dầm ớt Ngọc Liên — 2 hũ</li>
+          <li>Khô bò xé sợi — 2 gói · Lạc nhân — 2 gói</li>
+          <li>Sting nước tăng lực — 1 thùng</li>
+        </ul>
+        <div class="pfc-card__foot">
+          <div class="pfc-price"><span class="pfc-price__old">118,48€</span><span class="pfc-price__now">112,56€</span></div>
+          <a class="pfc-btn" href="https://wa.me/{{ pf_wa }}?text={{ 'Xin chào Phomifood, tôi muốn đặt Combo Ghiền Chân Gà' | url_encode }}" target="_blank" rel="noopener">🟢 Đặt combo qua WhatsApp</a>
+        </div>
+      </article>
+
+      {%- comment -%}—— 7. BÁNH MÌ ——{%- endcomment -%}
+      <article class="pfc-card pfc-card--gold">
+        <div class="pfc-card__head">
+          <span class="pfc-card__emoji">🥖</span>
+          <div>
+            <h3 class="pfc-card__name">Combo Bánh Mì</h3>
+            <p class="pfc-card__desc">Đủ 6 vị bánh mì Bếp Mẹ Em — ăn sáng / ăn nhẹ</p>
+          </div>
+        </div>
+        <ul class="pfc-list">
+          <li>Bơ · Bơ Tỏi · Kem Trứng</li>
+          <li>Phô Mai Caramel · Muối Tỏi Ớt · Bơ Đường Phô Mai</li>
+          <li>Mỗi vị 1 cái (300g)</li>
+        </ul>
+        <div class="pfc-card__foot">
+          <div class="pfc-price"><span class="pfc-price__old">55,98€</span><span class="pfc-price__now">52,90€</span></div>
+          <a class="pfc-btn" href="https://wa.me/{{ pf_wa }}?text={{ 'Xin chào Phomifood, tôi muốn đặt Combo Bánh Mì' | url_encode }}" target="_blank" rel="noopener">🟢 Đặt combo qua WhatsApp</a>
+        </div>
+      </article>
+
+    </div>
+    <p class="pfc-note">* Giá combo là giá tham khảo, đã ưu đãi so với mua lẻ. Số lượng/sản phẩm có thể điều chỉnh theo yêu cầu — nhắn WhatsApp để chốt đơn.</p>
+  </section>
+
+  {%- comment -%}================= CTA =================={%- endcomment -%}
+  <section class="pfc-cta">
+    <div class="pfc-wrap">
+      <h2 class="pfc-cta__title">Muốn combo riêng theo ý bạn?</h2>
+      <p class="pfc-cta__sub">Nhắn cho Phomifood — tụi mình gói combo theo đúng nhu cầu & ngân sách của bạn.</p>
+      <a class="pfc-btn pfc-btn--big" href="https://wa.me/{{ pf_wa }}?text={{ 'Xin chào Phomifood, tôi muốn tư vấn combo riêng' | url_encode }}" target="_blank" rel="noopener">💬 Nhắn Phomifood tư vấn combo</a>
+    </div>
+  </section>
+</div>
+
+<style>
+  .pfc { --pf-green:#1e8541; --pf-green-d:#14672f; --pf-cream:#fff8e9; --pf-gold:#f2b705; --pf-red:#d62828; --pf-ink:#3d3a33; color: var(--pf-ink); }
+  .pfc * { box-sizing: border-box; }
+  .pfc-wrap { max-width: 116rem; margin: 0 auto; padding: 0 clamp(1.6rem, 4vw, 3rem); }
+
+  .pfc-hero { text-align: center; padding: clamp(3.6rem,7vw,6rem) 0 clamp(2.4rem,4vw,3.6rem);
+    background: radial-gradient(120% 100% at 50% 0%, #eaf6ee 0%, var(--pf-cream) 55%, #fff 100%); }
+  .pfc-hero__eyebrow { letter-spacing: 2px; font-weight: 800; color: var(--pf-green); font-size: 1.3rem; }
+  .pfc-hero__title { font-size: clamp(3rem,6vw,4.6rem); font-weight: 900; color: var(--pf-green-d); margin: .8rem 0 0; }
+  .pfc-hero__sub { max-width: 66rem; margin: 1.4rem auto 0; font-size: 1.6rem; line-height: 1.65; color: #5c5747; }
+
+  .pfc-grid-wrap { padding: clamp(2.4rem,5vw,4rem) 0 clamp(2rem,4vw,3rem); }
+  .pfc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+  .pfc-card {
+    display: flex; flex-direction: column; background: #fff; border-radius: 18px; overflow: hidden;
+    border: 1px solid #ecdcb6; box-shadow: 0 8px 24px rgba(20,103,47,.08);
+    transition: transform .18s ease, box-shadow .18s ease; border-top: 5px solid var(--pf-green);
+  }
+  .pfc-card:hover { transform: translateY(-4px); box-shadow: 0 16px 34px rgba(20,103,47,.16); }
+  .pfc-card--green { border-top-color: var(--pf-green); }
+  .pfc-card--red { border-top-color: var(--pf-red); }
+  .pfc-card--gold { border-top-color: var(--pf-gold); }
+  .pfc-card--amber { border-top-color: #e8862f; }
+  .pfc-card__head { display: flex; gap: 1.1rem; align-items: flex-start; padding: 1.8rem 1.8rem 1.2rem; }
+  .pfc-card__emoji { flex: none; font-size: 2.8rem; line-height: 1; }
+  .pfc-card__name { margin: 0; font-size: 2rem; font-weight: 900; color: var(--pf-green-d); }
+  .pfc-card__desc { margin: .4rem 0 0; font-size: 1.35rem; line-height: 1.45; color: #6a6255; }
+  .pfc-list { list-style: none; margin: 0; padding: 0 1.8rem; flex: 1; }
+  .pfc-list li { position: relative; padding: .5rem 0 .5rem 2.2rem; font-size: 1.4rem; line-height: 1.4; color: #4a463d; border-bottom: 1px dashed #f0e6cd; }
+  .pfc-list li:last-child { border-bottom: 0; }
+  .pfc-list li::before { content: "✓"; position: absolute; left: 0; top: .5rem; width: 1.6rem; height: 1.6rem; background: #e9f7ee; color: var(--pf-green); border-radius: 50%; display: grid; place-items: center; font-size: 1.05rem; font-weight: 900; }
+  .pfc-tag { display: inline-block; background: var(--pf-red); color: #fff; font-size: 1rem; font-weight: 800; padding: .1rem .5rem; border-radius: 999px; vertical-align: middle; }
+  .pfc-card__foot { padding: 1.4rem 1.8rem 1.8rem; margin-top: 1rem; }
+  .pfc-price { display: flex; align-items: baseline; gap: .8rem; margin-bottom: 1rem; }
+  .pfc-price__old { font-size: 1.5rem; color: #a49c8c; text-decoration: line-through; }
+  .pfc-price__now { font-size: 2.6rem; font-weight: 900; color: var(--pf-red); }
+  .pfc-btn { display: block; text-align: center; text-decoration: none; font-weight: 800; font-size: 1.5rem;
+    padding: 1.15rem 1.4rem; border-radius: 12px; background: linear-gradient(90deg, #25D366, #1ea952); color: #fff;
+    box-shadow: 0 6px 16px rgba(30,169,82,.28); transition: filter .15s ease, transform .15s ease; }
+  .pfc-btn:hover { filter: brightness(1.05); transform: translateY(-1px); color: #fff; }
+  .pfc-note { margin: 2rem 0 0; font-size: 1.25rem; line-height: 1.5; color: #8a8271; text-align: center; }
+
+  .pfc-cta { text-align: center; padding: clamp(3.6rem,6vw,5.6rem) 0; margin-top: 1rem;
+    background: linear-gradient(135deg, var(--pf-cream) 0%, #fdeecb 100%); }
+  .pfc-cta__title { font-size: clamp(2.2rem,3.6vw,3rem); font-weight: 900; color: var(--pf-green-d); margin: 0 0 .8rem; }
+  .pfc-cta__sub { font-size: 1.6rem; color: #5c5747; margin: 0 0 2.4rem; }
+  .pfc-btn--big { display: inline-block; padding: 1.3rem 2.6rem; font-size: 1.7rem; }
+
+  @media (max-width: 749px) {
+    .pfc-grid { grid-template-columns: 1fr; gap: 1.6rem; }
+    .pfc-card__name { font-size: 1.8rem; }
+  }
+</style>
