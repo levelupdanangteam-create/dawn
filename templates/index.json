@@ -106,9 +106,20 @@
             "price_text": "",
             "badge_color": ""
           }
+        },
+        "cat_combo": {
+          "type": "category",
+          "settings": {
+            "collection": "combo",
+            "label": "Combo tiết kiệm",
+            "image_url": "",
+            "price_text": "",
+            "badge_color": ""
+          }
         }
       },
       "block_order": [
+        "cat_combo",
         "category_MTQ6Hj",
         "category_9T6JEJ",
         "category_Epjgx6",
