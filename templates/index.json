@@ -12,6 +12,16 @@
     "pf_category_grid": {
       "type": "pf-category-grid",
       "blocks": {
+        "cat_combo": {
+          "type": "category",
+          "settings": {
+            "collection": "combo",
+            "label": "Combo tiết kiệm",
+            "image_url": "",
+            "price_text": "",
+            "badge_color": ""
+          }
+        },
         "category_MTQ6Hj": {
           "type": "category",
           "settings": {
@@ -106,16 +116,6 @@
             "price_text": "",
             "badge_color": ""
           }
-        },
-        "cat_combo": {
-          "type": "category",
-          "settings": {
-            "collection": "combo",
-            "label": "Combo tiết kiệm",
-            "image_url": "",
-            "price_text": "",
-            "badge_color": ""
-          }
         }
       },
       "block_order": [
@@ -144,21 +144,6 @@
       "settings": {
         "heading": "🔥 ƯU ĐÃI ĐẶC BIỆT 0€",
         "subheading": "Số lượng có hạn! Thêm vào giỏ hàng ngay.",
-        "padding_top": 40,
-        "padding_bottom": 40
-      }
-    },
-    "pf_combo": {
-      "type": "pf-combo",
-      "settings": {
-        "heading": "Combo Phomifood",
-        "subheading": "Gói trọn theo nhu cầu — tiết kiệm hơn mua lẻ!",
-        "collection": "combo",
-        "products_to_show": 12,
-        "initial_count": 4,
-        "show_view_all": true,
-        "view_all_label": "Xem thêm",
-        "columns_desktop": 4,
         "padding_top": 40,
         "padding_bottom": 40
       }
@@ -327,6 +312,21 @@
         "padding_bottom": 40
       }
     },
+    "pf_combo": {
+      "type": "pf-combo",
+      "settings": {
+        "heading": "Combo Phomifood",
+        "subheading": "Gói trọn theo nhu cầu — tiết kiệm hơn mua lẻ!",
+        "collection": "combo",
+        "products_to_show": 12,
+        "initial_count": 4,
+        "show_view_all": true,
+        "view_all_label": "Xem thêm",
+        "columns_desktop": 4,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
     "pf_flash_sale": {
       "type": "pf-flash-sale",
       "disabled": true,
@@ -358,7 +358,7 @@
     "pf_promo_image": {
       "type": "pf-promo-image",
       "settings": {
-        "image": "shopify://shop_images/freeship_3924fd44-f34f-4d62-b508-58108de9a8cc.png",
+        "image": "shopify://shop_images/free.png",
         "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/a206d210-2d7b-4262-8930-5d659a92e314_1.png?v=1784527901",
         "alt": "Ưu đãi vận chuyển PHOMIFOOD",
         "link": "",
