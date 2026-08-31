@@ -13,7 +13,7 @@
   <div class="pf-pop__box" role="dialog" aria-modal="true" aria-label="Ưu đãi miễn phí vận chuyển">
     <button type="button" class="pf-pop__x" data-pf-pop-close aria-label="Đóng">&times;</button>
     <a class="pf-pop__imglink" href="{{ pf_pop_link }}">
-      <img class="pf-pop__img" src="https://cdn.shopify.com/s/files/1/0749/9353/3018/files/free.png?v=1787911708" alt="Miễn phí vận chuyển" width="440" height="440" loading="lazy">
+      <img class="pf-pop__img" src="https://cdn.shopify.com/s/files/1/0749/9353/3018/files/4334a45b-afdf-427a-8141-614bc2b460eb.png?v=1787910976" alt="Ưu đãi Phomifood" width="440" height="440" loading="lazy">
     </a>
   </div>
 </div>
@@ -144,11 +144,7 @@
       if (e.key === 'Escape') { close(document.querySelector('.pf-pop.is-open')); }
     });
 
-    // Popup 1: free-ship banner (10s after landing, once per session).
+    // Single promo popup — 10s after landing, once per session.
     schedule('pf_fs_shown', 'pf-pop-freeship', FREESHIP_DELAY);
-    // Popup 2: shown AFTER the free-ship popup, with a rest gap. It waits while
-    // popup 1 is open AND respects the cooldown, so it only appears ~15s after
-    // popup 1 is closed (not back-to-back).
-    schedule('pf_vc_shown', 'pf-pop-voucher', FREESHIP_DELAY + 2000);
   })();
 </script>
