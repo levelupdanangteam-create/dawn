@@ -1,0 +1,22 @@
+{%- comment -%}
+  Hiển thị tổng khối lượng của cả giỏ hàng (cart.total_weight, đơn vị gram).
+  Chỉ hiện khi có ít nhất một sản phẩm đã được set Weight trong Shopify.
+  Dùng: {% render 'pf-cart-total-weight' %}
+{%- endcomment -%}
+{%- if cart.total_weight > 0 -%}
+  {%- assign pf_ctw_vi = false -%}{%- if request.locale.iso_code == 'vi' -%}{%- assign pf_ctw_vi = true -%}{%- endif -%}
+  <div class="pf-ctw">
+    <span aria-hidden="true">⚖️</span>
+    <span>{% if pf_ctw_vi %}Tổng khối lượng{% else %}Total weight{% endif %}</span>
+    <b>{%- if cart.total_weight >= 1000 -%}{{ cart.total_weight | divided_by: 1000.0 | round: 2 }} kg{%- else -%}{{ cart.total_weight }} g{%- endif -%}</b>
+  </div>
+  <style>
+    .pf-ctw {
+      display: flex; align-items: center; gap: .5rem;
+      margin-top: .8rem; padding: .7rem 1rem;
+      background: #f4f1ea; border-radius: 10px;
+      font-size: 1.3rem; color: #6a6255; line-height: 1.3;
+    }
+    .pf-ctw b { margin-left: auto; color: #3d3a33; font-weight: 700; font-size: 1.4rem; }
+  </style>
+{%- endif -%}
