@@ -1,0 +1,28 @@
+{%- comment -%}
+  Dòng note ưu đãi vận chuyển hiện tại ở giỏ hàng.
+  Dùng: {% render 'pf-cart-offer-note' %}
+{%- endcomment -%}
+{%- assign pf_on_vi = false -%}{%- if request.locale.iso_code == 'vi' -%}{%- assign pf_on_vi = true -%}{%- endif -%}
+<div class="pf-offer-note">
+  <span class="pf-offer-note__icon" aria-hidden="true">🚚</span>
+  <div class="pf-offer-note__text">
+    {%- if pf_on_vi -%}
+      <b>Ưu đãi vận chuyển</b><br>
+      Freeship cho đơn từ <b>169€</b> hoặc <b>269€</b>, hoặc <b>giảm 5%</b> — tùy quốc gia giao hàng.
+    {%- else -%}
+      <b>Shipping offer</b><br>
+      Free shipping on orders from <b>€169</b> or <b>€269</b>, or <b>5% off</b> — depending on your country.
+    {%- endif -%}
+  </div>
+</div>
+<style>
+  .pf-offer-note {
+    display: flex; align-items: flex-start; gap: .7rem;
+    margin-top: .9rem; padding: .9rem 1.1rem;
+    background: #eaf4ec; border: 1px solid #cbe3d0; border-left: 4px solid #4a9c5d;
+    border-radius: 10px; line-height: 1.45;
+  }
+  .pf-offer-note__icon { font-size: 1.7rem; line-height: 1; flex-shrink: 0; }
+  .pf-offer-note__text { font-size: 1.3rem; color: #35513c; }
+  .pf-offer-note__text b { color: #234a2c; font-weight: 700; }
+</style>
