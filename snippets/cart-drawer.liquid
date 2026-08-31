@@ -254,6 +254,8 @@
                               </li>
                             {%- endfor -%}
                           </ul>
+
+                          {% render 'pf-cart-weight', line: item %}
                         </td>
 
                         <td class="cart-item__totals right" role="cell" headers="CartDrawer-ColumnTotal">
