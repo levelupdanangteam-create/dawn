@@ -92,12 +92,12 @@
 
     var shown = false, armed = false;
 
-    // Claim the single popup slot, ignoring the cooldown: this is the last-chance
-    // popup, so it must still fire at the real leave moment even shortly after a
-    // promo closed. It still yields when another popup is actually open (RULE:
-    // no two popups on screen at once).
+    // Claim the single popup slot, RESPECTING the cooldown so popups never show
+    // back-to-back. If a promo popup closed within the cooldown window, the
+    // exit-intent stays quiet (RULE: no two popups on screen, and a rest gap
+    // between any two popups).
     function claim() {
-      if (window.PFPopups && typeof window.PFPopups.claim === 'function') return window.PFPopups.claim(true);
+      if (window.PFPopups && typeof window.PFPopups.claim === 'function') return window.PFPopups.claim(false);
       return !document.querySelector('.pf-pop.is-open, #pf-lead-popup:not([hidden])');
     }
 

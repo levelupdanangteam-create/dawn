@@ -60,7 +60,7 @@
     if (window.__pfPopups) return;
     window.__pfPopups = true;
 
-    var FREESHIP_DELAY = 10000; // 10s after landing
+    var FREESHIP_DELAY = 20000; // 20s after landing
     var VOUCHER_DELAY = 1500;   // shortly after opening a later page
 
     function ss(key, val) {
@@ -73,7 +73,7 @@
     // Shared coordinator so the free-ship, voucher and exit-intent popups never
     // overlap and never fire back-to-back.
     window.PFPopups = window.PFPopups || {};
-    window.PFPopups.COOLDOWN = 15000; // ms between two popups
+    window.PFPopups.COOLDOWN = 30000; // ms giữa 2 popup — tránh hiện liên tiếp nhau
     if (window.PFPopups._lock === undefined) window.PFPopups._lock = false;
 
     // RULE: at most ONE popup on screen at any time. A popup is "open" if the
