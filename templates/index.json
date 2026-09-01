@@ -218,7 +218,7 @@
         "p3"
       ],
       "settings": {
-        "heading": "🔥 Ưu đãi tuần này, duy nhất 17 - 23/8",
+        "heading": "🔥 Ưu đãi tuần này",
         "subheading": "Giá tốt nhất trong tuần — số lượng có hạn!",
         "show_view_all": false,
         "view_all_label": "Xem tất cả sản phẩm",
@@ -358,7 +358,7 @@
     "pf_promo_image": {
       "type": "pf-promo-image",
       "settings": {
-        "image": "shopify://shop_images/free.png",
+        "image": "shopify://shop_images/shippppp.png",
         "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/a206d210-2d7b-4262-8930-5d659a92e314_1.png?v=1784527901",
         "alt": "Ưu đãi vận chuyển PHOMIFOOD",
         "link": "",
