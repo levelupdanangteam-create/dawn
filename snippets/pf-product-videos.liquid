@@ -10,29 +10,35 @@
 
 {%- if pf_pv_urls != '' -%}
   {%- assign pf_pv_list = pf_pv_urls | split: ',' -%}
-  <div class="pf-pvid">
-    <h3 class="pf-pvid__h">{% if request.locale.iso_code == 'vi' %}🎬 Video sản phẩm{% else %}🎬 Product videos{% endif %}</h3>
-    <div class="pf-pvid__grid">
-      {%- for u in pf_pv_list -%}
-        <video class="pf-pvid__v" controls playsinline preload="metadata" muted loop>
-          <source src="{{ u | strip }}" type="video/mp4">
-        </video>
-      {%- endfor -%}
+  <section class="pf-pvid">
+    <div class="pf-pvid__inner page-width">
+      <h2 class="pf-pvid__h">{% if request.locale.iso_code == 'vi' %}🎬 Video sản phẩm{% else %}🎬 Product videos{% endif %}</h2>
+      <div class="pf-pvid__grid">
+        {%- for u in pf_pv_list -%}
+          <video class="pf-pvid__v" controls playsinline preload="metadata" muted loop>
+            <source src="{{ u | strip }}" type="video/mp4">
+          </video>
+        {%- endfor -%}
+      </div>
     </div>
-  </div>
+  </section>
   <style>
-    .pf-pvid { margin: 1.6rem 0; }
-    .pf-pvid__h { font-size: 1.6rem; font-weight: 700; margin: 0 0 1rem; color: #2e7d46; }
+    .pf-pvid { margin: 3rem 0 1rem; padding: 3.5rem 0; background: #f4f1ea; border-top: 1px solid #ece6d8; }
+    .pf-pvid__inner { text-align: center; }
+    .pf-pvid__h { font-size: 2.2rem; font-weight: 700; margin: 0 0 1.8rem; color: #2e7d46; }
     .pf-pvid__grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 1.4rem;
     }
     .pf-pvid__v {
-      width: 100%; aspect-ratio: 9 / 16; object-fit: cover;
-      border-radius: 12px; background: #000; display: block;
-      box-shadow: 0 6px 18px rgba(0,0,0,.14);
+      width: 100%; max-width: 260px; aspect-ratio: 9 / 16; object-fit: cover;
+      border-radius: 14px; background: #000; display: block;
+      box-shadow: 0 8px 22px rgba(0,0,0,.16);
     }
     @media (max-width: 749px) {
-      .pf-pvid__grid { grid-template-columns: 1fr 1fr; gap: .7rem; }
+      .pf-pvid { padding: 2.4rem 0; }
+      .pf-pvid__h { font-size: 1.8rem; }
+      .pf-pvid__grid { gap: .8rem; }
+      .pf-pvid__v { max-width: 46vw; }
     }
   </style>
 {%- endif -%}
