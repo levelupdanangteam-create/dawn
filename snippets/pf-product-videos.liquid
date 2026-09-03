@@ -5,7 +5,7 @@
 {%- assign pf_pv_urls = '' -%}
 {%- case product.handle -%}
   {%- when 'canh-chua-isoup' -%}
-    {%- assign pf_pv_urls = 'https://cdn.shopify.com/videos/c/o/v/6cdfb0dc6a9a4c0cbd295df5dc6668a4.mp4,https://cdn.shopify.com/videos/c/o/v/f8a00a1c3d604feb9edd96b0f3c6679f.mp4,https://cdn.shopify.com/videos/c/o/v/3025f2f9a4714a7a840067e5db0e13e9.mp4' -%}
+    {%- assign pf_pv_urls = 'https://cdn.shopify.com/videos/c/o/v/3025f2f9a4714a7a840067e5db0e13e9.mp4,https://cdn.shopify.com/videos/c/o/v/6cdfb0dc6a9a4c0cbd295df5dc6668a4.mp4,https://cdn.shopify.com/videos/c/o/v/f8a00a1c3d604feb9edd96b0f3c6679f.mp4' -%}
 {%- endcase -%}
 
 {%- if pf_pv_urls != '' -%}
@@ -15,7 +15,7 @@
       <h2 class="pf-pvid__h">{% if request.locale.iso_code == 'vi' %}🎬 Video sản phẩm{% else %}🎬 Product videos{% endif %}</h2>
       <div class="pf-pvid__grid">
         {%- for u in pf_pv_list -%}
-          <video class="pf-pvid__v" controls playsinline preload="metadata" muted loop>
+          <video class="pf-pvid__v" controls playsinline muted loop {% if forloop.first %}autoplay preload="auto"{% else %}preload="metadata"{% endif %}>
             <source src="{{ u | strip }}" type="video/mp4">
           </video>
         {%- endfor -%}
