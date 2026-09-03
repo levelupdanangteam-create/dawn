@@ -1,0 +1,38 @@
+{%- comment -%}
+  Video riêng cho từng sản phẩm (khớp theo handle).
+  Thêm sản phẩm mới: thêm một nhánh {%- when 'handle-cua-san-pham' -%} với danh sách URL video.
+{%- endcomment -%}
+{%- assign pf_pv_urls = '' -%}
+{%- case product.handle -%}
+  {%- when 'canh-chua-isoup' -%}
+    {%- assign pf_pv_urls = 'https://cdn.shopify.com/videos/c/o/v/6cdfb0dc6a9a4c0cbd295df5dc6668a4.mp4,https://cdn.shopify.com/videos/c/o/v/f8a00a1c3d604feb9edd96b0f3c6679f.mp4,https://cdn.shopify.com/videos/c/o/v/3025f2f9a4714a7a840067e5db0e13e9.mp4' -%}
+{%- endcase -%}
+
+{%- if pf_pv_urls != '' -%}
+  {%- assign pf_pv_list = pf_pv_urls | split: ',' -%}
+  <div class="pf-pvid">
+    <h3 class="pf-pvid__h">{% if request.locale.iso_code == 'vi' %}🎬 Video sản phẩm{% else %}🎬 Product videos{% endif %}</h3>
+    <div class="pf-pvid__grid">
+      {%- for u in pf_pv_list -%}
+        <video class="pf-pvid__v" controls playsinline preload="metadata" muted loop>
+          <source src="{{ u | strip }}" type="video/mp4">
+        </video>
+      {%- endfor -%}
+    </div>
+  </div>
+  <style>
+    .pf-pvid { margin: 1.6rem 0; }
+    .pf-pvid__h { font-size: 1.6rem; font-weight: 700; margin: 0 0 1rem; color: #2e7d46; }
+    .pf-pvid__grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+    }
+    .pf-pvid__v {
+      width: 100%; aspect-ratio: 9 / 16; object-fit: cover;
+      border-radius: 12px; background: #000; display: block;
+      box-shadow: 0 6px 18px rgba(0,0,0,.14);
+    }
+    @media (max-width: 749px) {
+      .pf-pvid__grid { grid-template-columns: 1fr 1fr; gap: .7rem; }
+    }
+  </style>
+{%- endif -%}
