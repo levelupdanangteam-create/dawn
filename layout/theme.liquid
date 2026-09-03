@@ -430,7 +430,8 @@
     {%- endunless -%}
 
     {% render 'pf-popups' %}
-    {% render 'pf-salespop' %}
+    {%- comment -%} Tạm tắt popup "vừa đặt" (social proof). Bỏ comment dòng dưới để bật lại: {%- endcomment -%}
+    {%- comment -%} {% render 'pf-salespop' %} {%- endcomment -%}
     {% render 'pf-contact-buttons' %}
     {% render 'pf-hide-widgets' %}
     {% render 'pf-exit-intent' %}
