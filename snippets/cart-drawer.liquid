@@ -60,12 +60,14 @@
                 {{ 'general.continue_shopping' | t }}
               </a>
 
+              {%- comment -%} Ẩn lời mời đăng nhập trong giỏ hàng theo yêu cầu.
               {%- if shop.customer_accounts_enabled and customer == null -%}
                 <p class="cart__login-title h3">{{ 'sections.cart.login.title' | t }}</p>
                 <p class="cart__login-paragraph">
                   {{ 'sections.cart.login.paragraph_html' | t: link: routes.account_login_url }}
                 </p>
               {%- endif -%}
+              {%- endcomment -%}
             </div>
           </div>
           {%- if settings.cart_drawer_collection != blank -%}
