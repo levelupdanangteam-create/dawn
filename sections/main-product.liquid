@@ -106,6 +106,7 @@
                       </h2>
                     </a>
                   </div>
+                  {% render 'pf-preorder' %}
                 {%- when 'price' -%}
                   <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
                     {%- render 'price',
@@ -697,7 +698,6 @@
               {% render 'pf-qty-deal' %}
             {%- endif -%}
             {% render 'pf-wholesale-contact' %}
-            {% render 'pf-preorder' %}
             {% render 'pf-product-trust' %}
             {% render 'pf-product-videos' %}
             {%- comment -%} Ẩn khối "Chính sách vận chuyển & ưu đãi" trên trang sản phẩm. Bỏ comment để bật lại: {% render 'pf-shipping-policy' %} {%- endcomment -%}
