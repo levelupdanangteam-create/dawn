@@ -233,7 +233,19 @@
         "product_EggThH": {
           "type": "product",
           "settings": {
-            "product": "banh-trung-thu-kinh-do"
+            "product": "snack-hinh-mực-nướng"
+          }
+        },
+        "product_jJJpke": {
+          "type": "product",
+          "settings": {
+            "product": "canh-chua-isoup"
+          }
+        },
+        "product_kT6BiU": {
+          "type": "product",
+          "settings": {
+            "product": "sầu-rieng-sấy"
           }
         },
         "product_mzeaY9": {
@@ -254,12 +266,6 @@
             "product": "ca-phe-muối-chu-long"
           }
         },
-        "product_jJJpke": {
-          "type": "product",
-          "settings": {
-            "product": "banh-mi-bơ-dường-pho-mai-bep-mẹ-em-300g"
-          }
-        },
         "product_VDxC8J": {
           "type": "product",
           "settings": {
@@ -270,12 +276,6 @@
           "type": "product",
           "settings": {
             "product": "tam-cay-2"
-          }
-        },
-        "product_kT6BiU": {
-          "type": "product",
-          "settings": {
-            "product": "bia-sai-gon-special-24-chai"
           }
         },
         "product_CyWbRq": {
@@ -293,13 +293,13 @@
       },
       "block_order": [
         "product_EggThH",
+        "product_jJJpke",
+        "product_kT6BiU",
         "product_mzeaY9",
         "product_LrVacf",
         "product_VdmUWE",
-        "product_jJJpke",
         "product_VDxC8J",
         "product_YVFerx",
-        "product_kT6BiU",
         "product_CyWbRq",
         "product_KY6bhH"
       ],
