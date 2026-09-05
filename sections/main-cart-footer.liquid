@@ -115,7 +115,7 @@
                 <span class="pf-cart-urgency__icon">⏰</span>
                 <span>{% if request.locale.iso_code == 'vi' %}Ưu đãi trong giỏ hàng có thể thay đổi hoặc kết thúc bất cứ lúc nào. Hoàn tất đơn hàng ngay để giữ mức giá ưu đãi của bạn!{% else %}Cart offers may change or end at any time. Complete your order now to lock in your deal price!{% endif %}</span>
               </div>
-              {% render 'pf-ship-table' %}
+              <div class="pf-cart-ship pf-cart-ship--mob">{% render 'pf-ship-table' %}</div>
               <div class="cart__ctas" {{ block.shopify_attributes }}>
                 <button
                   type="submit"
@@ -142,6 +142,15 @@
 
         <div id="cart-errors"></div>
       </div>
+
+      <style>
+        .pf-cart-ship--mob{ display:none; }
+        @media (max-width:749px){
+          .pf-cart-ship--mob{ display:block; }
+          .pf-cart-ship--desk{ display:none; }
+        }
+      </style>
+      <div class="pf-cart-ship pf-cart-ship--desk">{% render 'pf-ship-table' %}</div>
     </div>
   </div>
 </div>
