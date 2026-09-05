@@ -1,0 +1,66 @@
+{%- comment -%} Bảng phí vận chuyển & ưu đãi theo quốc gia (thay cho block gửi đơn qua chat) {%- endcomment -%}
+<div class="pf-ship">
+  <div class="pf-ship__head">
+    <span class="pf-ship__ic" aria-hidden="true">🚚</span>
+    <div>
+      <div class="pf-ship__title">{% if request.locale.iso_code == 'vi' %}Phí vận chuyển &amp; ưu đãi{% else %}Shipping fees &amp; offers{% endif %}</div>
+      <div class="pf-ship__sub">{% if request.locale.iso_code == 'vi' %}Giao hàng tận nơi khắp châu Âu{% else %}Door-to-door delivery across Europe{% endif %}</div>
+    </div>
+  </div>
+  <div class="pf-ship__wrap">
+    <table class="pf-ship__tb">
+      <thead>
+        <tr>
+          <th>{% if request.locale.iso_code == 'vi' %}Quốc gia{% else %}Country{% endif %}</th>
+          <th>{% if request.locale.iso_code == 'vi' %}Phí ship{% else %}Fee{% endif %}</th>
+          <th>{% if request.locale.iso_code == 'vi' %}Ưu đãi{% else %}Offer{% endif %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- assign free149 = 'Free ship từ €149' -%}
+        {%- assign free189 = 'Free ship từ €189' -%}
+        {%- assign sale10 = 'Giảm 10% từ €169' -%}
+        <tr><td>🇩🇪 Germany</td><td class="pf-ship__fee">€13</td><td><span class="pf-ship__b pf-ship__b--free">{{ free149 }}</span></td></tr>
+        <tr><td>🇵🇱 Poland</td><td class="pf-ship__fee">€13</td><td><span class="pf-ship__b pf-ship__b--free">{{ free149 }}</span></td></tr>
+        <tr><td>🇸🇰 Slovakia</td><td class="pf-ship__fee">€13</td><td><span class="pf-ship__b pf-ship__b--free">{{ free149 }}</span></td></tr>
+        <tr><td>🇧🇪 Belgium</td><td class="pf-ship__fee">€20</td><td><span class="pf-ship__b pf-ship__b--free">{{ free189 }}</span></td></tr>
+        <tr><td>🇩🇰 Denmark</td><td class="pf-ship__fee">€20</td><td><span class="pf-ship__b pf-ship__b--free">{{ free189 }}</span></td></tr>
+        <tr><td>🇫🇷 France</td><td class="pf-ship__fee">€20</td><td><span class="pf-ship__b pf-ship__b--free">{{ free189 }}</span></td></tr>
+        <tr><td>🇳🇱 Netherlands</td><td class="pf-ship__fee">€20</td><td><span class="pf-ship__b pf-ship__b--free">{{ free189 }}</span></td></tr>
+        <tr><td>🇪🇸 Spain</td><td class="pf-ship__fee">€28</td><td><span class="pf-ship__b pf-ship__b--sale">{{ sale10 }}</span></td></tr>
+        <tr><td>🇫🇮 Finland</td><td class="pf-ship__fee">€28</td><td><span class="pf-ship__b pf-ship__b--sale">{{ sale10 }}</span></td></tr>
+        <tr><td>🇸🇪 Sweden</td><td class="pf-ship__fee">€28</td><td><span class="pf-ship__b pf-ship__b--sale">{{ sale10 }}</span></td></tr>
+        <tr><td>🇮🇹 Italy</td><td class="pf-ship__fee">€28</td><td><span class="pf-ship__b pf-ship__b--sale">{{ sale10 }}</span></td></tr>
+        <tr><td>🇬🇷 Greece</td><td class="pf-ship__fee">€38</td><td><span class="pf-ship__b pf-ship__b--sale">{{ sale10 }}</span></td></tr>
+        <tr><td>🇮🇪 Ireland</td><td class="pf-ship__fee">€50</td><td><span class="pf-ship__b pf-ship__b--sale">{{ sale10 }}</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pf-ship__note">{% if request.locale.iso_code == 'vi' %}💚 Đặt đủ mức là được <b>miễn phí ship</b> hoặc <b>giảm 10%</b> — gom đơn để tiết kiệm nhé!{% else %}💚 Reach the threshold for <b>free shipping</b> or <b>10% off</b> — combine orders to save!{% endif %}</p>
+</div>
+<style>
+  .pf-ship{ margin:1.6rem 0; border:1px solid #e3ece5; border-radius:16px; overflow:hidden;
+    background:linear-gradient(180deg,#f4faf5,#ffffff); box-shadow:0 6px 18px rgba(20,90,45,.06); }
+  .pf-ship__head{ display:flex; align-items:center; gap:1rem; padding:1.3rem 1.5rem;
+    background:linear-gradient(135deg,#1e8541,#14672f); color:#fff; }
+  .pf-ship__ic{ font-size:2.4rem; line-height:1; }
+  .pf-ship__title{ font-size:1.7rem; font-weight:800; letter-spacing:.01em; }
+  .pf-ship__sub{ font-size:1.2rem; color:#dff0e4; margin-top:.2rem; }
+  .pf-ship__wrap{ overflow-x:auto; }
+  .pf-ship__tb{ width:100%; border-collapse:collapse; font-size:1.35rem; }
+  .pf-ship__tb th{ text-align:left; font-weight:800; color:#14672f; background:#eaf5ee;
+    padding:.85rem 1.4rem; border-bottom:2px solid #d7e8dd; white-space:nowrap; }
+  .pf-ship__tb td{ padding:.8rem 1.4rem; border-bottom:1px solid #eef3ef; color:#2e2a22; white-space:nowrap; }
+  .pf-ship__tb tr:last-child td{ border-bottom:0; }
+  .pf-ship__fee{ font-weight:800; color:#14672f; }
+  .pf-ship__b{ display:inline-block; font-size:1.2rem; font-weight:700; padding:.22rem .7rem; border-radius:999px; white-space:nowrap; }
+  .pf-ship__b--free{ background:#e4f3e8; color:#1a7a3c; border:1px solid #bfe3ca; }
+  .pf-ship__b--sale{ background:#fff3d9; color:#a86a12; border:1px solid #f0d9a8; }
+  .pf-ship__note{ margin:0; padding:1rem 1.5rem 1.3rem; font-size:1.25rem; color:#3f6b4d; }
+  @media (max-width:749px){
+    .pf-ship__tb{ font-size:1.25rem; }
+    .pf-ship__tb th, .pf-ship__tb td{ padding:.7rem .9rem; }
+    .pf-ship__b{ font-size:1.1rem; padding:.18rem .55rem; }
+    .pf-ship__title{ font-size:1.5rem; }
+  }
+</style>
