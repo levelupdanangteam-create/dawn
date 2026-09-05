@@ -1,0 +1,62 @@
+{%- comment -%}
+  Banner "Thanh toán trong 5 phút nhận quà" + đồng hồ đếm ngược, đặt ở giỏ hàng (trên nút Thanh toán).
+  Đếm ngược 5:00, lưu mốc theo trình duyệt nên không reset khi chuyển trang; hết giờ tự làm mới để luôn còn ưu đãi.
+{%- endcomment -%}
+<div class="pf-cd" role="note">
+  <span class="pf-cd__gift" aria-hidden="true">🎁</span>
+  <div class="pf-cd__txt">
+    {%- if request.locale.iso_code == 'vi' -%}
+      <b>Thanh toán trong <span class="pf-cd__time">05:00</span> — nhận ngay một phần quà!</b>
+      <span>Hoàn tất đặt hàng sớm để được tặng quà kèm đơn 🎉</span>
+    {%- else -%}
+      <b>Checkout within <span class="pf-cd__time">05:00</span> to get a free gift!</b>
+      <span>Complete your order soon to receive a gift with your parcel 🎉</span>
+    {%- endif -%}
+  </div>
+</div>
+<style>
+  .pf-cd{
+    display:flex; align-items:center; gap:1rem;
+    margin:1.2rem 0; padding:1.1rem 1.3rem; border-radius:14px;
+    background:linear-gradient(135deg,#fff4d6 0%,#ffe2b3 55%,#ffd39a 100%);
+    border:1px solid #f0c069; box-shadow:0 6px 16px rgba(200,120,20,.14);
+  }
+  .pf-cd__gift{ font-size:2.6rem; line-height:1; flex-shrink:0; animation:pf-cd-wob 1.6s ease-in-out infinite; }
+  @keyframes pf-cd-wob{ 0%,100%{transform:rotate(-8deg) scale(1)} 50%{transform:rotate(8deg) scale(1.12)} }
+  .pf-cd__txt{ display:flex; flex-direction:column; gap:.25rem; line-height:1.4; }
+  .pf-cd__txt b{ font-size:1.5rem; font-weight:800; color:#9c2a15; }
+  .pf-cd__txt span{ font-size:1.25rem; color:#7a4a12; }
+  .pf-cd__time{
+    display:inline-block; min-width:5.4rem; text-align:center;
+    background:#c62828; color:#fff; font-weight:800; letter-spacing:.04em;
+    padding:.1rem .7rem; border-radius:8px; font-variant-numeric:tabular-nums;
+    box-shadow:0 2px 6px rgba(198,40,40,.35);
+  }
+  @media (max-width:749px){
+    .pf-cd__gift{font-size:2.2rem}
+    .pf-cd__txt b{font-size:1.4rem} .pf-cd__txt span{font-size:1.2rem}
+  }
+</style>
+<script>
+  (function(){
+    if (window.__pfCd) return; window.__pfCd = true;
+    var KEY='pfCheckoutDeadline', DUR=5*60*1000;
+    function getDeadline(){
+      try{
+        var d=parseInt(localStorage.getItem(KEY),10), n=Date.now();
+        if(!d || isNaN(d) || d-n<=0 || d-n>DUR){ d=n+DUR; localStorage.setItem(KEY,String(d)); }
+        return d;
+      }catch(e){ return Date.now()+DUR; }
+    }
+    var dl=getDeadline();
+    function tick(){
+      var left=dl-Date.now();
+      if(left<=0){ dl=Date.now()+DUR; try{localStorage.setItem(KEY,String(dl));}catch(e){} left=DUR; }
+      var m=Math.floor(left/60000), s=Math.floor((left%60000)/1000);
+      var txt=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+      var els=document.querySelectorAll('.pf-cd__time');
+      for(var i=0;i<els.length;i++){ els[i].textContent=txt; }
+    }
+    tick(); setInterval(tick,1000);
+  })();
+</script>
