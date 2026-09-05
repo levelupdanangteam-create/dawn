@@ -4,13 +4,14 @@
 {%- endcomment -%}
 {%- unless cart == empty -%}
 <style>
-  .pf-ordercopy { margin: 0; background: transparent; }
+  .pf-ordercopy { margin: 1.4rem 0 0; padding: 1.4rem 1.5rem 1.5rem; background: #f7faf8; border: 1px solid #e3ece5; border-radius: 16px; }
+  .pf-ordercopy__title { margin: 0 0 .2rem; font-size: 1.45rem; font-weight: 800; color: #14672f; text-align: center; line-height: 1.4; }
   .pf-ordercopy__banner { display: block; margin: 0 0 1.2rem; transition: transform .15s ease; }
   .pf-ordercopy__banner:hover { transform: translateY(-2px); }
   .pf-ordercopy__banner img { display: block; width: 100%; height: auto; border-radius: 12px; }
   .pf-ordercopy__head { display: flex; align-items: center; gap: .8rem; padding: 1.2rem 1.6rem; background: linear-gradient(90deg, #1e8541, #14672f); color: #fff; border-radius: 12px; }
   .pf-ordercopy__head h3 { margin: 0; font-size: 1.6rem; font-weight: 800; color: #fff; }
-  .pf-ordercopy__body { padding: 1.4rem .2rem 0; }
+  .pf-ordercopy__body { padding: .8rem 0 0; }
   .pf-ordercopy__list { list-style: none; margin: 0 0 1.2rem; padding: 0; display: flex; flex-direction: column; gap: .7rem; }
   .pf-ordercopy__item { display: flex; justify-content: space-between; gap: 1rem; font-size: 1.4rem; color: #2a2622; padding-bottom: .7rem; border-bottom: 1px solid #f0e8db; }
   .pf-ordercopy__item:last-child { border-bottom: none; padding-bottom: 0; }
@@ -52,9 +53,7 @@ TỔNG TẠM TÍNH: {{ cart.total_price | money }}
 {%- endcapture -%}
 
 <div class="pf-ordercopy" id="pf-ordercopy" data-currency="{{ cart.currency.iso_code }}" data-locale="{{ request.locale.iso_code | default: 'vi' }}">
-  <a class="pf-ordercopy__banner" href="https://m.me/phomifoodstore" target="_blank" rel="noopener" aria-label="Liên hệ tư vấn qua Messenger">
-    <img src="https://cdn.shopify.com/s/files/1/0749/9353/3018/files/t_v_n.png?v=1785144732" alt="Liên hệ tư vấn PHOMIFOOD" loading="lazy">
-  </a>
+  <p class="pf-ordercopy__title">{% if request.locale.iso_code == 'vi' %}💬 Không tiện thanh toán online? Gửi đơn qua chat:{% else %}💬 Prefer to order via chat? Send your order:{% endif %}</p>
   <div class="pf-ordercopy__body">
     <textarea class="pf-ordercopy__src" id="pf-order-src" readonly aria-hidden="true">{{ pf_order_text }}</textarea>
     <a class="pf-ordercopy__wa" id="pf-order-wa" href="https://wa.me/84398621643?text={{ pf_order_text | url_encode }}" target="_blank" rel="noopener">
