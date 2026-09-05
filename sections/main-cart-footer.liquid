@@ -67,7 +67,7 @@
 
                 {% render 'pf-cart-total-weight' %}
                 <div class="pf-cart-ship pf-cart-ship--mob">{% render 'pf-ship-img' %}</div>
-                {% render 'pf-checkout-countdown' %}
+                {% render 'pf-delivery-note' %}
 
                 <small class="tax-note caption-large rte">
                   {%- if cart.duties_included and cart.taxes_included -%}
@@ -110,12 +110,7 @@
                 </small>
               </div>
             {%- else -%}
-              {% render 'pf-delivery-note' %}
-              {%- comment -%} Ưu đãi ship hết hạn — tạm ẩn. Bỏ comment để bật lại: {% render 'pf-cart-shipbar', expanded: true %} {%- endcomment -%}
-              <div class="pf-cart-urgency">
-                <span class="pf-cart-urgency__icon">⏰</span>
-                <span>{% if request.locale.iso_code == 'vi' %}Ưu đãi trong giỏ hàng có thể thay đổi hoặc kết thúc bất cứ lúc nào. Hoàn tất đơn hàng ngay để giữ mức giá ưu đãi của bạn!{% else %}Cart offers may change or end at any time. Complete your order now to lock in your deal price!{% endif %}</span>
-              </div>
+              {% render 'pf-checkout-countdown' %}
               <div class="cart__ctas" {{ block.shopify_attributes }}>
                 <button
                   type="submit"
