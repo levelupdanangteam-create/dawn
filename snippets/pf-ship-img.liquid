@@ -1,0 +1,12 @@
+{%- comment -%} Ảnh phí vận chuyển & ưu đãi (dùng cho MOBILE / cart drawer) {%- endcomment -%}
+<div class="pf-ship-img">
+  <img
+    src="https://cdn.shopify.com/s/files/1/0749/9353/3018/files/19c2832b-3341-496b-9a6f-7465efbf6a6b_1.png?v=1788581205"
+    alt="{% if request.locale.iso_code == 'vi' %}Phí vận chuyển &amp; ưu đãi theo quốc gia — Phomifood{% else %}Shipping fees &amp; offers by country — Phomifood{% endif %}"
+    loading="lazy">
+</div>
+<style>
+  .pf-ship-img{ margin:1.4rem 0; text-align:center; }
+  .pf-ship-img img{ width:100%; max-width:520px; height:auto; display:block; margin:0 auto;
+    border-radius:14px; box-shadow:0 6px 18px rgba(20,90,45,.10); }
+</style>
