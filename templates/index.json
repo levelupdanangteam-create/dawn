@@ -141,6 +141,37 @@
     },
     "pf_deal_hook": {
       "type": "pf-deal-hook",
+      "blocks": {
+        "product_Db8cPB": {
+          "type": "product",
+          "settings": {
+            "product": "chip-oishi-ngo-80-goi-32g-x-80-goi-bich",
+            "deal_price": "0",
+            "is_gift": false
+          }
+        },
+        "product_77RH79": {
+          "type": "product",
+          "settings": {
+            "product": "sting-nuoc-tang-luc-vi-hong-sam",
+            "deal_price": "0.9",
+            "is_gift": false
+          }
+        },
+        "product_R3UDyK": {
+          "type": "product",
+          "settings": {
+            "product": "ngoc-lien-ca-phao-trang-365g-x-24-lo",
+            "deal_price": "1.9",
+            "is_gift": false
+          }
+        }
+      },
+      "block_order": [
+        "product_Db8cPB",
+        "product_77RH79",
+        "product_R3UDyK"
+      ],
       "settings": {
         "heading": "🔥 ƯU ĐÃI ĐẶC BIỆT 0€",
         "subheading": "Số lượng có hạn! Thêm vào giỏ hàng ngay.",
