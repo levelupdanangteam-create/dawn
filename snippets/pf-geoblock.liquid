@@ -1,0 +1,95 @@
+{%- comment -%}
+  Chặn truy cập theo quốc gia (mặc định: Mỹ / US).
+  Cách hoạt động: JS phía trình duyệt gọi API geo-IP để lấy quốc gia của
+  khách. Nếu nằm trong danh sách chặn -> hiện lớp phủ toàn màn hình và khoá
+  trang. Bật/tắt & sửa danh sách tại Theme settings -> Phomifood.
+
+  LƯU Ý: đây là chặn phía client (dựa trên IP), có thể bị lách bằng VPN hoặc
+  tắt JS. Muốn chặn "cứng" tuyệt đối cần app Shopify hoặc tường lửa/CDN.
+
+  Bỏ chặn cho chính bạn: mở web kèm ?pfgeo=allow một lần (lưu vào máy).
+{%- endcomment -%}
+{%- if settings.pf_geoblock_on -%}
+  {%- assign pf_gb_cc = settings.pf_geoblock_countries | default: 'US' -%}
+  {%- assign pf_gb_msg_vi = settings.pf_geoblock_msg_vi | default: 'Rất tiếc, Phomifood hiện chỉ phục vụ khách hàng tại châu Âu và chưa nhận đơn từ khu vực của bạn.' -%}
+  {%- assign pf_gb_msg_en = settings.pf_geoblock_msg_en | default: 'Sorry, Phomifood currently serves customers in Europe only and cannot accept orders from your region.' -%}
+  <style>
+    #pf-geoblock{position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;
+      background:radial-gradient(120% 120% at 50% 0%,#14672f 0%,#0c3d1c 60%,#082a13 100%);
+      color:#fff;padding:4vw;text-align:center;font-family:inherit;-webkit-font-smoothing:antialiased;}
+    #pf-geoblock .pf-gb__box{max-width:560px;}
+    #pf-geoblock .pf-gb__logo{font-size:2.6rem;font-weight:900;letter-spacing:.5px;color:#ffd24a;margin:0 0 1.4rem;}
+    #pf-geoblock .pf-gb__ic{font-size:4.2rem;line-height:1;margin-bottom:1rem;}
+    #pf-geoblock h2{font-size:2.2rem;font-weight:800;margin:0 0 1rem;line-height:1.3;}
+    #pf-geoblock p{font-size:1.6rem;line-height:1.6;margin:0 0 1.6rem;color:#e8f3ea;}
+    #pf-geoblock a{display:inline-block;color:#0c3d1c;background:#ffd24a;font-weight:800;font-size:1.5rem;
+      text-decoration:none;padding:1rem 2rem;border-radius:12px;}
+    html.pf-gb-lock,html.pf-gb-lock body{overflow:hidden!important;height:100%!important;}
+  </style>
+  <script>
+    (function(){
+      // Không chặn khi đang chỉnh sửa theme (Shopify editor)
+      try{ if(window.Shopify && Shopify.designMode) return; }catch(e){}
+
+      var BLOCK = ('{{ pf_gb_cc }}').toUpperCase().split(/[,\s]+/).filter(Boolean);
+      var LANG = ('{{ request.locale.iso_code }}' === 'vi') ? 'vi' : 'en';
+      var MSG = { vi: {{ pf_gb_msg_vi | json }}, en: {{ pf_gb_msg_en | json }} };
+
+      // Cho phép chủ shop tự bỏ chặn: mở kèm ?pfgeo=allow (lưu vĩnh viễn),
+      // hoặc ?pfgeo=reset để xoá.
+      try{
+        var qs = new URLSearchParams(location.search);
+        if(qs.get('pfgeo')==='allow'){ localStorage.setItem('pfGeoAllow','1'); }
+        if(qs.get('pfgeo')==='reset'){ localStorage.removeItem('pfGeoAllow'); }
+        if(localStorage.getItem('pfGeoAllow')==='1') return;
+      }catch(e){}
+
+      function build(){
+        if(document.getElementById('pf-geoblock')) return;
+        var o=document.createElement('div');
+        o.id='pf-geoblock';
+        o.innerHTML='<div class="pf-gb__box">'+
+          '<div class="pf-gb__logo">PHOMIFOOD.EU</div>'+
+          '<div class="pf-gb__ic">🌍</div>'+
+          '<h2>'+(LANG==='vi'?'Nội dung không khả dụng tại khu vực của bạn':'Not available in your region')+'</h2>'+
+          '<p>'+MSG[LANG]+'</p>'+
+          '<a href="mailto:phomifoodchauau@gmail.com">'+(LANG==='vi'?'Liên hệ chúng tôi':'Contact us')+'</a>'+
+          '</div>';
+        (document.body||document.documentElement).appendChild(o);
+        document.documentElement.classList.add('pf-gb-lock');
+      }
+      function lock(){
+        if(document.body){ build(); }
+        else { document.addEventListener('DOMContentLoaded', build, {once:true}); }
+      }
+      function decide(cc){
+        if(!cc) return;
+        cc = String(cc).toUpperCase();
+        try{ sessionStorage.setItem('pfGeoCC', cc); }catch(e){}
+        if(BLOCK.indexOf(cc) !== -1){ lock(); }
+      }
+
+      // Dùng lại kết quả trong phiên để chặn ngay, tránh nháy trang
+      try{ var cached=sessionStorage.getItem('pfGeoCC'); if(cached){ decide(cached); } }catch(e){}
+
+      // Nếu chưa có cache thì mới gọi API
+      var haveCache=false;
+      try{ haveCache=!!sessionStorage.getItem('pfGeoCC'); }catch(e){}
+      if(haveCache) return;
+
+      function viaGeojs(){
+        return fetch('https://get.geojs.io/v1/ip/country.json',{cache:'no-store'})
+          .then(function(r){return r.json();})
+          .then(function(d){ return d && (d.country || d.country_code); });
+      }
+      function viaIpwho(){
+        return fetch('https://ipwho.is/?fields=country_code',{cache:'no-store'})
+          .then(function(r){return r.json();})
+          .then(function(d){ return d && d.country_code; });
+      }
+      viaGeojs()
+        .then(function(cc){ if(cc){ decide(cc); } else { return viaIpwho().then(decide); } })
+        .catch(function(){ viaIpwho().then(decide).catch(function(){}); });
+    })();
+  </script>
+{%- endif -%}
