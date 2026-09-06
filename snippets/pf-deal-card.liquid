@@ -1,0 +1,37 @@
+{%- comment -%}
+  Một thẻ sản phẩm deal cho section "Ưu đãi đặc biệt".
+  Params:
+    p           (required) sản phẩm
+    deal_price  (optional) chuỗi giá deal, vd "0" hoặc "1.9" (€ tự thêm)
+    is_gift     (optional) true = thẻ quà tặng 0€
+    gift_min    (optional) mức đơn tối thiểu để tặng quà (mặc định 100)
+    section_id  (required) id section cho nút thêm giỏ
+    block_attrs (optional) chuỗi {{ block.shopify_attributes }} khi render từ block
+{%- endcomment -%}
+{%- assign v = p.selected_or_first_available_variant -%}
+{%- assign pf_gm = gift_min | default: 100 -%}
+<div class="pf-deal__card{% if is_gift %} pf-deal__card--gift{% endif %}"{% if block_attrs %} {{ block_attrs }}{% endif %}>
+  <div class="pf-deal__ribbon{% if is_gift %} pf-deal__ribbon--gift{% endif %}">{% if is_gift %}🎁 {% if request.locale.iso_code == "vi" %}QUÀ{% else %}GIFT{% endif %}{% else %}DEAL{% endif %}</div>
+  <a class="pf-deal__media" href="{{ p.url }}">
+    {%- if p.featured_image -%}
+      <img src="{{ p.featured_image | image_url: width: 400 }}" alt="{{ p.title | escape }}" loading="lazy" width="200" height="200">
+    {%- endif -%}
+  </a>
+  <a class="pf-deal__name" href="{{ p.url }}">{{ p.title }}</a>
+  <div class="pf-deal__price">
+    {%- if is_gift -%}
+      <span class="pf-deal__now pf-deal__now--gift">0€</span>
+      <span class="pf-deal__was">{{ v.price | money }}</span>
+    {%- elsif deal_price != blank -%}
+      <span class="pf-deal__now">{%- unless deal_price contains '€' -%}€{%- endunless -%}{{ deal_price }}</span>
+      <span class="pf-deal__was">{{ v.price | money }}</span>
+    {%- else -%}
+      <span class="pf-deal__now">{{ v.price | money }}</span>
+    {%- endif -%}
+  </div>
+  <div class="pf-deal__limit{% if is_gift %} pf-deal__limit--gift{% endif %}">
+    {%- if is_gift -%}🎁 {% if request.locale.iso_code == "vi" %}Tặng miễn phí khi đơn từ <b>{{ pf_gm }}€</b>{% else %}Free gift on orders from <b>{{ pf_gm }}€</b>{% endif %}
+    {%- else -%}{% if request.locale.iso_code == "vi" %}⚠️ Ưu đãi chỉ áp dụng cho 1 sản phẩm — giá có thể thay đổi khi mua nhiều hơn{% else %}⚠️ Offer applies to 1 item only — price may change for larger quantities{% endif %}{%- endif -%}
+  </div>
+  {%- render 'pf-card-buttons', product: p, section_id: section_id -%}
+</div>
