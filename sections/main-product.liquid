@@ -106,6 +106,7 @@
                       </h2>
                     </a>
                   </div>
+                  <div class="pf-sold-wrap">{% render 'pf-sold-badge', p: product %}</div>
                   {% render 'pf-preorder' %}
                 {%- when 'price' -%}
                   <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>

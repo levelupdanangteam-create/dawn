@@ -87,6 +87,7 @@
               </a>
               <div class="pf-na__info">
                 <h3 class="pf-na__nm"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+                {% render 'pf-sold-badge', p: product %}
                 <div class="pf-na__price">
                   <span class="now">{{ pf_price | money }}</span>
                   {%- if pf_cmp > pf_price -%}<span class="was">{{ pf_cmp | money }}</span>{%- endif -%}
