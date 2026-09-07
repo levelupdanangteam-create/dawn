@@ -843,3 +843,14 @@ body:has(.menu-drawer-container[open]) .slideshow__control {
   color: #1e8541 !important;
 }
 .menu-drawer__submenu .pf-drawer-viewall:active { color: #14672f !important; }
+
+/* ===== Nhãn "Đã bán X" (số thật) / "Mới về" ===== */
+.pf-sold{
+  display:inline-flex; align-items:center; gap:.3em;
+  font-size:1.15rem; font-weight:700; line-height:1.2;
+  padding:.28em .7em; border-radius:999px; margin:.2rem 0 .4rem;
+  white-space:nowrap;
+}
+.pf-sold--hot{ color:#c62828; background:#fdeceb; border:1px solid #f6c9c5; }
+.pf-sold--new{ color:#1e7a3c; background:#e9f7ee; border:1px solid #bfe0c7; }
+@media (max-width:749px){ .pf-sold{ font-size:1.05rem; padding:.24em .6em; } }

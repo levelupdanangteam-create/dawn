@@ -18,6 +18,7 @@
     {%- endif -%}
   </a>
   <a class="pf-deal__name" href="{{ p.url }}">{{ p.title }}</a>
+  {% render 'pf-sold-badge', p: p %}
   <div class="pf-deal__price">
     {%- if is_gift -%}
       <span class="pf-deal__now pf-deal__now--gift">0€</span>

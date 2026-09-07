@@ -74,6 +74,7 @@
               </a>
               <div class="pf-cb__info">
                 <h3 class="pf-cb__nm"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+                {% render 'pf-sold-badge', p: product %}
                 <div class="pf-cb__price">
                   <span class="now">{{ pf_price | money }}</span>
                   {%- if pf_cmp > pf_price -%}<span class="was">{{ pf_cmp | money }}</span>{%- endif -%}

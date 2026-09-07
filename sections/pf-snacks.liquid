@@ -40,6 +40,7 @@
             </a>
             <div class="pf-info">
               <h3 class="pf-name"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+              {% render 'pf-sold-badge', p: product %}
               <div class="pf-price">{{ product.price | money }}</div>
               {% render 'pf-card-buttons', product: product, section_id: section.id %}
             </div>
