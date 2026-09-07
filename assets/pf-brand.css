@@ -854,3 +854,23 @@ body:has(.menu-drawer-container[open]) .slideshow__control {
 .pf-sold--hot{ color:#c62828; background:#fdeceb; border:1px solid #f6c9c5; }
 .pf-sold--new{ color:#1e7a3c; background:#e9f7ee; border:1px solid #bfe0c7; }
 @media (max-width:749px){ .pf-sold{ font-size:1.05rem; padding:.24em .6em; } }
+
+/* ===== Cart drawer: note phí ship + nút "Xem giỏ hàng & thanh toán" ===== */
+.pf-ship-note{
+  display:flex; align-items:flex-start; gap:.6rem; margin:1.2rem 0;
+  padding:1rem 1.2rem; border-radius:12px; text-decoration:none;
+  background:#f4faf5; border:1px solid #d7e8dd; color:#2e2a22;
+  font-size:1.3rem; line-height:1.45;
+}
+.pf-ship-note__ic{ font-size:1.7rem; line-height:1; flex:none; }
+.pf-ship-note b{ color:#14672f; }
+.pf-ship-note u{ color:#1e8541; text-underline-offset:2px; }
+.pf-ship-note:hover{ background:#eaf5ee; }
+.cart-drawer__continue--primary{
+  display:flex; align-items:center; justify-content:center; gap:.7rem;
+  width:100%; margin-top:.4rem; padding:1.3rem 1.6rem; border-radius:12px;
+  background:linear-gradient(135deg,#1e8541,#14672f); color:#fff !important;
+  font-size:1.6rem; font-weight:800; text-decoration:none;
+  border:0; transition:filter .15s ease;
+}
+.cart-drawer__continue--primary:hover{ filter:brightness(1.07); color:#fff !important; }

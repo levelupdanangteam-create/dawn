@@ -555,7 +555,10 @@
           </div>
 
           {% render 'pf-cart-total-weight' %}
-          {% render 'pf-ship-img' %}
+          <a class="pf-ship-note" href="{{ routes.cart_url }}">
+            <span class="pf-ship-note__ic" aria-hidden="true">🚚</span>
+            <span>{% if request.locale.iso_code == 'vi' %}Ưu đãi <b>miễn phí ship</b> &amp; <b>giảm giá</b> tùy quốc gia — <u>xem chi tiết ở trang giỏ hàng</u>{% else %}<b>Free shipping</b> &amp; <b>discounts</b> vary by country — <u>see details on the cart page</u>{% endif %}</span>
+          </a>
           {% render 'pf-checkout-countdown' %}
 
           <small class="tax-note caption-large rte">
@@ -602,21 +605,9 @@
         <!-- CTAs -->
 
         <div class="cart__ctas" {{ block.shopify_attributes }}>
-          <button
-            type="submit"
-            id="CartDrawer-Checkout"
-            class="cart__checkout-button button"
-            name="checkout"
-            form="CartDrawer-Form"
-            {% if cart == empty %}
-              disabled
-            {% endif %}
-          >
-            {{ 'sections.cart.checkout' | t }}
-          </button>
-          <a class="cart-drawer__continue" href="{{ routes.cart_url }}">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-            Xem chi tiết giỏ hàng
+          <a class="cart-drawer__continue cart-drawer__continue--primary" href="{{ routes.cart_url }}">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            {% if request.locale.iso_code == 'vi' %}Xem giỏ hàng &amp; thanh toán{% else %}View cart &amp; checkout{% endif %}
           </a>
         </div>
       </div>
