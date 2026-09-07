@@ -28,11 +28,11 @@
   .pf-cd__txt{ display:flex; flex-direction:column; gap:.3rem; line-height:1.4; }
   .pf-cd__txt b{ font-size:1.7rem; font-weight:800; color:#c62828; }
   .pf-cd__txt span{ font-size:1.3rem; color:#7a4a12; font-weight:600; }
-  .pf-cd__time{
+  .pf-cd__time, .pf-cd__txt b .pf-cd__time{
     display:inline-block; min-width:6rem; text-align:center; font-size:1.95rem; vertical-align:-2px;
-    background:linear-gradient(180deg,#e53935,#c62828); color:#fff; font-weight:900; letter-spacing:.06em;
-    padding:.1rem .8rem; border-radius:9px; font-variant-numeric:tabular-nums;
-    box-shadow:0 3px 8px rgba(198,40,40,.45); animation:pf-cd-pulse 1s ease-in-out infinite;
+    background:#b71c1c; color:#fff; font-weight:900; letter-spacing:.06em;
+    padding:.15rem .85rem; border-radius:9px; font-variant-numeric:tabular-nums;
+    box-shadow:0 3px 8px rgba(140,20,20,.4); animation:pf-cd-pulse 1s ease-in-out infinite;
   }
   @keyframes pf-cd-pulse{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.07)} }
   @media (max-width:749px){
