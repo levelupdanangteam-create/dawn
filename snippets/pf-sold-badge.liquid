@@ -2,7 +2,7 @@
   Nhãn "Đã bán X" bằng SỐ THẬT lấy từ metafield custom.total_sold
   (được cập nhật từ dữ liệu đơn hàng thật trên Shopify).
   - Đã bán >= ngưỡng (mặc định 20): hiện "🔥 Đã bán X".
-  - Dưới ngưỡng / chưa có số: hiện "🆕 Mới về".
+  - Dưới ngưỡng / chưa có số: KHÔNG hiện gì (ẩn nhãn).
   Param: p (sản phẩm). Mặc định dùng biến `product` nếu không truyền.
   CSS nằm trong assets/pf-brand.css (.pf-sold...).
 {%- endcomment -%}
@@ -11,6 +11,4 @@
 {%- assign pf_sold_min = 20 -%}
 {%- if pf_sold >= pf_sold_min -%}
   <span class="pf-sold pf-sold--hot">🔥 {% if request.locale.iso_code == 'vi' %}Đã bán {{ pf_sold }}{% else %}Sold {{ pf_sold }}{% endif %}</span>
-{%- else -%}
-  <span class="pf-sold pf-sold--new">🆕 {% if request.locale.iso_code == 'vi' %}Mới về{% else %}New{% endif %}</span>
 {%- endif -%}
