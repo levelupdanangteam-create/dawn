@@ -31,7 +31,7 @@
     <h2 class="pfa-h2 pfa-h2--center">🎬 {% if vi %}Video giới thiệu Phomifood{% else %}Meet Phomifood{% endif %}</h2>
     <p class="pfa-video__sub">{% if vi %}Hương vị Việt, giao tận nơi khắp châu Âu — từ kho hàng của chúng tôi đến bàn ăn nhà bạn.{% else %}Vietnamese flavors delivered across Europe — from our warehouse to your table.{% endif %}</p>
     <div class="pfa-video__frame">
-      <video class="pfa-video__v" controls playsinline preload="metadata" poster="">
+      <video class="pfa-video__v" controls playsinline muted preload="metadata">
         <source src="https://cdn.shopify.com/videos/c/o/v/065abf7625254b97ad6198a553f32f1f.mp4" type="video/mp4">
       </video>
     </div>
@@ -313,15 +313,14 @@
   /* Intro video */
   .pfa-video { text-align: center; }
   .pfa-video__sub { max-width: 62rem; margin: .4rem auto 1.8rem; font-size: 1.5rem; color: #6a6255; line-height: 1.55; }
+  /* Video dọc: khung hẹp như màn hình điện thoại, luôn hiển thị */
   .pfa-video__frame {
-    width: fit-content; max-width: 100%; margin: 0 auto; border-radius: 18px; overflow: hidden;
+    width: 100%; max-width: 34rem; margin: 0 auto; border-radius: 18px; overflow: hidden;
     background: #000; box-shadow: 0 18px 44px rgba(20, 60, 30, .18); border: 1px solid #ece6d8;
   }
-  /* Video dọc: ôm sát chiều cao, không để hai bên đen thừa */
-  .pfa-video__v { display: block; width: auto; height: auto; max-width: 100%; max-height: 82vh; }
+  .pfa-video__v { display: block; width: 100%; height: auto; }
   @media (max-width: 749px) {
     .pfa-video__sub { font-size: 1.35rem; }
-    .pfa-video__frame { border-radius: 14px; }
-    .pfa-video__v { max-height: 78vh; }
+    .pfa-video__frame { border-radius: 14px; max-width: 30rem; }
   }
 </style>
