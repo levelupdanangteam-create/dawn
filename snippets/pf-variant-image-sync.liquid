@@ -1,0 +1,64 @@
+{%- comment -%}
+  Bấm thumbnail (ảnh của một vị) → tự chọn luôn biến thể tương ứng.
+  Chỉ đổi những option mà ảnh đó xác định duy nhất (vd "Vị"), giữ nguyên
+  option khác (vd "Quy cách"). Chạy trên trang sản phẩm.
+{%- endcomment -%}
+{%- if product.variants.size > 1 -%}
+<script>
+  (function(){
+    var SID = {{ section.id | json }};
+    var OPTION_NAMES = {{ product.options | json }};
+    var VARIANTS = [
+      {%- for v in product.variants -%}
+      { media: {% if v.featured_media %}{{ v.featured_media.id }}{% else %}null{% endif %}, opts: {{ v.options | json }} }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ];
+
+    // media id -> mảng option value; null nếu ảnh đó dùng chung nhiều giá trị.
+    var mediaToOpts = {};
+    VARIANTS.forEach(function(v){
+      if(v.media==null) return;
+      var cur = mediaToOpts[v.media];
+      if(!cur){ mediaToOpts[v.media] = v.opts.slice(); return; }
+      for(var i=0;i<cur.length;i++){ if(cur[i]!==v.opts[i]) cur[i]=null; }
+    });
+    if(!Object.keys(mediaToOpts).length) return;
+
+    function selectVariantFromMedia(mediaId){
+      var opts = mediaToOpts[mediaId];
+      if(!opts) return;
+      var vs = document.getElementById('variant-selects-'+SID) ||
+               document.querySelector('variant-selects');
+      if(!vs) return;
+      var changed=false, lastInput=null;
+      for(var i=0;i<opts.length;i++){
+        var val=opts[i]; if(val==null) continue;
+        var name=OPTION_NAMES[i];
+        // Pill / swatch radio
+        var radios=vs.querySelectorAll('input[type="radio"]');
+        for(var r=0;r<radios.length;r++){
+          var inp=radios[r];
+          var oname=inp.getAttribute('data-option-name');
+          if(oname && oname!==name) continue;
+          if(inp.value===val){
+            if(!inp.checked){ inp.checked=true; changed=true; lastInput=inp; }
+            break;
+          }
+        }
+        // Dropdown select
+        var sel=vs.querySelector('select[name="options['+name+']"]');
+        if(sel && sel.value!==val){ sel.value=val; changed=true; lastInput=sel; }
+      }
+      if(changed && lastInput){ lastInput.dispatchEvent(new Event('change',{bubbles:true})); }
+    }
+
+    document.addEventListener('click', function(e){
+      var li = e.target.closest ? e.target.closest('.thumbnail-list__item[data-target]') : null;
+      if(!li) return;
+      var t = li.getAttribute('data-target') || '';
+      var m = t.match(/(\d+)$/);
+      if(m){ selectVariantFromMedia(m[1]); }
+    });
+  })();
+</script>
+{%- endif -%}
