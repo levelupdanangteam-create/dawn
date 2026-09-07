@@ -868,3 +868,8 @@ body:has(.menu-drawer-container[open]) .slideshow__control {
 .pf-ship-note:hover{ background:#eaf5ee; }
 /* Nút "Xem giỏ hàng & thanh toán" được style trực tiếp trong snippets/cart-drawer.liquid
    để áp ngay khi render (tránh nháy trắng do thứ tự tải CSS). */
+
+/* ===== Ảnh sản phẩm: thumbnail 3 cột (ảnh chính trên, 3 thumbnail dưới) ===== */
+@media screen and (min-width: 750px){
+  .product--thumbnail .thumbnail-list{ grid-template-columns: repeat(3, 1fr) !important; }
+}
