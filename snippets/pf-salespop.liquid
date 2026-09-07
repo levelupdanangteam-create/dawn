@@ -1,8 +1,9 @@
 {%- comment -%}
-  PHOMIFOOD — Social-proof "recent order" popup (self-contained).
-  Cycles through recent-order notifications: name • city, product, order value,
-  a blurred address line, and time-ago. Bottom-left toast, auto-dismiss,
-  closeable. Edit the pf_orders array below to change the notifications.
+  PHOMIFOOD — Thông báo "đã mua hàng" bằng ĐƠN THẬT gần đây.
+  Dữ liệu lấy từ đơn hàng thật trên Shopify, ĐÃ ẨN DANH: chỉ hiện tên gọi
+  (không họ) + thành phố + sản phẩm + giá trị + thời gian thật. KHÔNG hiện
+  địa chỉ/họ tên đầy đủ của khách (tôn trọng quyền riêng tư / GDPR).
+  Muốn làm mới danh sách: cập nhật mảng ORDERS bên dưới (chạy lại từ Shopify).
 {%- endcomment -%}
 {%- assign vi = false -%}
 {%- if request.locale.iso_code == 'vi' -%}{%- assign vi = true -%}{%- endif -%}
@@ -18,13 +19,13 @@
       <span class="pf-sp__city" id="pf-sp-city"></span>
     </div>
     <div class="pf-sp__line2">
-      <span id="pf-sp-action">{% if vi %}vừa đặt{% else %}just ordered{% endif %}</span>
+      <span id="pf-sp-action">{% if vi %}đã mua{% else %}bought{% endif %}</span>
+      <span class="pf-sp__prod" id="pf-sp-prod"></span>
+    </div>
+    <div class="pf-sp__line3">
       <span class="pf-sp__val" id="pf-sp-val"></span>
       <span class="pf-sp__time" id="pf-sp-time"></span>
-    </div>
-    <div class="pf-sp__addr">
-      <span class="pf-sp__pin" aria-hidden="true">📍</span>
-      <span class="pf-sp__blur" id="pf-sp-addr"></span><span id="pf-sp-addrcity"></span>
+      <span class="pf-sp__verified">{% if vi %}✓ Đơn đã xác nhận{% else %}✓ Verified order{% endif %}</span>
     </div>
   </div>
 </div>
@@ -32,10 +33,10 @@
 <style>
   .pf-sp {
     position: fixed; inset: auto auto 1.4rem 1.4rem; z-index: 2147483000;
-    width: min(26rem, calc(100vw - 2.6rem));
+    width: min(27rem, calc(100vw - 2.6rem));
     display: flex; align-items: center; gap: .85rem;
     background: #fff; border: 1px solid #e6ecdf; border-left: 4px solid #1e8541;
-    border-radius: 13px; padding: .8rem 2rem .8rem .9rem;
+    border-radius: 13px; padding: .85rem 2rem .85rem .9rem;
     box-shadow: 0 10px 28px rgba(20, 60, 30, .16);
     transform: translateY(140%); opacity: 0;
     transition: transform .5s cubic-bezier(.2,.8,.2,1), opacity .4s ease;
@@ -58,27 +59,27 @@
   .pf-sp__line1 { display: flex; align-items: baseline; gap: .4rem; flex-wrap: wrap; }
   .pf-sp__name { font-size: 1.3rem; font-weight: 800; color: #23201b; }
   .pf-sp__city { font-size: 1.1rem; color: #1e8541; font-weight: 700; }
-  .pf-sp__line2 { margin-top: .1rem; font-size: 1.15rem; color: #6a6255; line-height: 1.3; display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; }
+  .pf-sp__line2 { margin-top: .12rem; font-size: 1.2rem; color: #5a5346; line-height: 1.35; }
+  .pf-sp__prod { font-weight: 700; color: #23201b; }
+  .pf-sp__line3 { margin-top: .28rem; display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
   .pf-sp__val {
     background: #fdeaea; color: #d62828; font-weight: 800; font-size: 1.1rem;
     padding: .05rem .5rem; border-radius: 999px; white-space: nowrap;
   }
   .pf-sp__time { font-size: 1.05rem; color: #a49c8c; }
-  .pf-sp__addr { margin-top: .15rem; font-size: 1.05rem; color: #9a9080; display: flex; align-items: center; gap: .25rem; white-space: nowrap; overflow: hidden; }
-  .pf-sp__blur { filter: blur(3px); user-select: none; letter-spacing: .5px; }
+  .pf-sp__verified { font-size: 1.02rem; color: #1e8541; font-weight: 700; }
   @media (max-width: 749px) {
-    /* Gọn hơn, nâng cao khỏi mép dưới và chừa chỗ cho nút liên hệ bên phải. */
+    /* Gọn hơn, nâng cao khỏi mép dưới và nằm BÊN TRÁI để không đè nút chat bên phải. */
     .pf-sp {
       left: .8rem; bottom: 5.5rem; right: auto;
-      width: min(19rem, calc(100vw - 8rem));
+      width: min(20rem, calc(100vw - 8rem));
       padding: .9rem 1.9rem .9rem .8rem; gap: .6rem; border-radius: 11px;
     }
     .pf-sp__check { width: 2.3rem; height: 2.3rem; }
     .pf-sp__name { font-size: 1.2rem; }
     .pf-sp__city { font-size: 1.05rem; }
-    .pf-sp__line2 { font-size: 1.05rem; }
+    .pf-sp__line2 { font-size: 1.1rem; }
     .pf-sp__val { font-size: 1.02rem; }
-    .pf-sp__addr { font-size: .98rem; }
   }
   @media (prefers-reduced-motion: reduce) {
     .pf-sp { transition: opacity .3s ease; transform: none; }
@@ -89,57 +90,47 @@
   (function () {
     var el = document.getElementById('pf-sp');
     if (!el) return;
-    // Re-attach to <body> so a transformed ancestor (e.g. an injected popup
-    // container) can't trap our position:fixed and float it mid-screen.
     if (el.parentNode !== document.body) { document.body.appendChild(el); }
     var VI = {{ vi }};
 
-    // ==== Editable sample orders ==================================
-    // name, city (hiển thị), country flag, product, value(€), street (bị làm mờ), addrCity
-    var ORDERS = [
-      ['Thu Hương', 'Praha', '🇨🇿', VI ? 'Mì Hảo Hảo & nước mắm Chinsu' : 'Hao Hao noodles & fish sauce', 142, 'Vinohradská 118', 'Praha 3'],
-      ['Quốc Tuấn', 'Berlin', '🇩🇪', VI ? 'Bún, phở khô & gia vị' : 'Rice noodles & seasonings', 89, 'Karl-Marx-Str. 42', 'Berlin'],
-      ['Ngọc Lan', 'Paris', '🇫🇷', VI ? 'Combo gạo ST25 & cà phê G7' : 'ST25 rice & G7 coffee', 176, 'Rue de Belleville 61', 'Paris 20'],
-      ['Việt Minh', 'Warszawa', '🇵🇱', VI ? 'Thùng mì Omachi & bánh gạo' : 'Omachi noodles & rice crackers', 210, 'Marszałkowska 9', 'Warszawa'],
-      ['Hồng Mai', 'Amsterdam', '🇳🇱', VI ? 'Nước mắm, mắm tôm & cà pháo' : 'Sauces & pickled eggplant', 64, 'Damstraat 7', 'Amsterdam'],
-      ['Trung Đức', 'München', '🇩🇪', VI ? 'Hạt nêm Knorr & dầu hào' : 'Knorr bouillon & oyster sauce', 118, 'Landsberger Str. 24', 'München'],
-      ['Thanh Thủy', 'Brno', '🇨🇿', VI ? 'Bánh đa nem & bún Gia Bảo' : 'Rice paper & vermicelli', 73, 'Cejl 55', 'Brno'],
-      ['Hải Long', 'Bruxelles', '🇧🇪', VI ? 'Combo bán sỉ nhà hàng' : 'Wholesale restaurant combo', 268, 'Chaussée de Louvain 30', 'Bruxelles'],
-      ['Kiều Nga', 'Praha', '🇨🇿', VI ? 'Sữa TH, Kun & bánh Chocopie' : 'Milk & Chocopie', 96, 'Českomoravská 12', 'Praha 9'],
-      ['Thái Sơn', 'Wien', '🇦🇹', VI ? 'Phở Đệ Nhất & cà phê Trung Nguyên' : 'Pho & coffee', 131, 'Favoritenstraße 88', 'Wien']
-    ];
+    // ==== ĐƠN HÀNG THẬT (đã ẩn danh) ============================
+    // [tên gọi, thành phố, cờ, sản phẩm, giá trị €, thời điểm đặt ISO]
+    var ORDERS = [["Tiến","Hassfurt","🇩🇪","Bánh gạo OneOne vị sữa ngô",86,"2026-09-06T20:17:23Z"],["Thi","Berlin","🇩🇪","Cơm Cháy VIP",166,"2026-09-05T23:44:19Z"],["Phuong","Gutach","🇩🇪","Bánh quy Gouté Mè giòn tan",149,"2026-09-05T09:45:22Z"],["Thi","Nice","🇫🇷","Nước mắm chinsu cá hồi",51,"2026-09-04T22:08:49Z"],["Khiêm","Apeldoorn","🇳🇱","Cà Phê Phố Sữa Đá",65,"2026-09-04T16:30:53Z"],["Thảo","Rilland","🇳🇱","Phở bò Đệ Nhất",170,"2026-09-04T04:04:41Z"],["Nguyen","Düsseldorf","🇩🇪","Nước Tương Chinsu Tỏi Ớt",53,"2026-09-04T00:58:55Z"],["Thi","Lörrach","🇩🇪","Mì Hoàng Gia vị Gà",157,"2026-09-03T15:02:18Z"],["Lực","Toulouse","🇫🇷","Bánh Bon sợi thịt gà",197,"2026-09-03T10:27:42Z"],["Hoang","Weil Am Rhein","🇩🇪","Bánh quy Coconut Cracker",150,"2026-09-02T09:20:15Z"],["Mai","Amancy","🇫🇷","Tân Tân - Đậu phộng nước cốt dừa",297,"2026-09-02T08:18:32Z"],["Gio","Støvring","🇩🇰","Nước mắm chinsu cá hồi",192,"2026-09-02T06:40:52Z"],["Dep","Närpes","🇫🇮","Nước Tương Chinsu Tỏi Ớt",160,"2026-09-02T04:50:57Z"],["Lien","Eindhoven","🇳🇱","Thanh Thủy - Gạo Nếp Cái Hoa Vàng",195,"2026-09-01T17:14:05Z"],["Thi","Schwerin","🇩🇪","Bánh đa nem Thành Lộc",163,"2026-08-30T12:05:49Z"],["Giau","Skövde","🇸🇪","Chinsu - Tương ớt tiêu chuẩn",143,"2026-08-30T05:24:02Z"]];
     // =============================================================
 
     var name = document.getElementById('pf-sp-name');
     var city = document.getElementById('pf-sp-city');
+    var prod = document.getElementById('pf-sp-prod');
     var val  = document.getElementById('pf-sp-val');
-    var addr = document.getElementById('pf-sp-addr');
-    var addrCity = document.getElementById('pf-sp-addrcity');
     var timeEl = document.getElementById('pf-sp-time');
 
     var i = Math.floor((new Date().getTime() / 60000) % ORDERS.length);
     var stopped = false;
     var hideT, nextT;
 
-    function timeAgo() {
-      var m = 2 + Math.floor(Math.random() * 22);
-      return VI ? (m + ' phút trước') : (m + ' min ago');
+    function timeAgo(iso) {
+      var then = new Date(iso).getTime();
+      if (isNaN(then)) return '';
+      var mins = Math.max(1, Math.round((Date.now() - then) / 60000));
+      if (mins < 60) return VI ? (mins + ' phút trước') : (mins + ' min ago');
+      var hrs = Math.round(mins / 60);
+      if (hrs < 24) return VI ? (hrs + ' giờ trước') : (hrs + 'h ago');
+      var days = Math.round(hrs / 24);
+      return VI ? (days + ' ngày trước') : (days + 'd ago');
     }
     function render() {
       var o = ORDERS[i % ORDERS.length];
       name.textContent = o[0];
       city.textContent = '• ' + o[1] + ' ' + o[2];
+      prod.textContent = o[3];
       val.textContent = o[4] + '€';
-      addr.textContent = o[5];
-      addrCity.textContent = ', ' + o[6];
-      timeEl.textContent = '· ' + timeAgo();
+      timeEl.textContent = '· ' + timeAgo(o[5]);
       i++;
     }
     function show() {
       if (stopped) return;
       render();
       el.hidden = false;
-      // force reflow then animate in
       void el.offsetWidth;
       el.classList.add('is-in');
       hideT = setTimeout(hide, 6500);
@@ -156,7 +147,6 @@
       setTimeout(function () { el.hidden = true; }, 400);
     });
 
-    // First popup a few seconds after load.
     setTimeout(show, 4000);
   })();
 </script>
