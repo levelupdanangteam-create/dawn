@@ -40,8 +40,9 @@
     <div class="pf-ship__card">
       <h3 class="pf-ship__h">🎁 {% if request.locale.iso_code == 'vi' %}Ưu đãi theo giá trị đơn{% else %}Offers by order value{% endif %}</h3>
       <ul class="pf-ship__list">
-        <li class="pf-ship__row"><span class="pf-ship__label">{% if request.locale.iso_code == 'vi' %}Đơn từ 169€{% else %}Orders from 169€{% endif %}</span><span class="pf-ship__val free">{% if request.locale.iso_code == 'vi' %}Giảm 10€ ship{% else %}−10€ shipping{% endif %}</span></li>
-        <li class="pf-ship__row hot"><span class="pf-ship__label">{% if request.locale.iso_code == 'vi' %}Đơn từ 269€{% else %}Orders from 269€{% endif %}</span><span class="pf-ship__val free">{% if request.locale.iso_code == 'vi' %}Giảm 15€ ship{% else %}−15€ shipping{% endif %}</span></li>
+        <li class="pf-ship__row"><span class="pf-ship__label">🇩🇪🇵🇱🇸🇰 {% if request.locale.iso_code == 'vi' %}Đơn từ 149€{% else %}Orders from 149€{% endif %}</span><span class="pf-ship__val free">{% if request.locale.iso_code == 'vi' %}Miễn phí ship{% else %}Free shipping{% endif %}</span></li>
+        <li class="pf-ship__row"><span class="pf-ship__label">🇧🇪🇩🇰🇫🇷🇳🇱 {% if request.locale.iso_code == 'vi' %}Đơn từ 189€{% else %}Orders from 189€{% endif %}</span><span class="pf-ship__val free">{% if request.locale.iso_code == 'vi' %}Miễn phí ship{% else %}Free shipping{% endif %}</span></li>
+        <li class="pf-ship__row hot"><span class="pf-ship__label">🌍 {% if request.locale.iso_code == 'vi' %}Các nước còn lại · đơn từ 169€{% else %}Other countries · from 169€{% endif %}</span><span class="pf-ship__val free">{% if request.locale.iso_code == 'vi' %}Giảm 10% ship{% else %}10% off ship{% endif %}</span></li>
       </ul>
     </div>
   </div>
