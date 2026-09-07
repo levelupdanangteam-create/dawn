@@ -866,11 +866,5 @@ body:has(.menu-drawer-container[open]) .slideshow__control {
 .pf-ship-note b{ color:#14672f; }
 .pf-ship-note u{ color:#1e8541; text-underline-offset:2px; }
 .pf-ship-note:hover{ background:#eaf5ee; }
-.cart-drawer__continue--primary{
-  display:flex; align-items:center; justify-content:center; gap:.7rem;
-  width:100%; margin-top:.4rem; padding:1.3rem 1.6rem; border-radius:12px;
-  background:linear-gradient(135deg,#1e8541,#14672f); color:#fff !important;
-  font-size:1.6rem; font-weight:800; text-decoration:none;
-  border:0; transition:filter .15s ease;
-}
-.cart-drawer__continue--primary:hover{ filter:brightness(1.07); color:#fff !important; }
+/* Nút "Xem giỏ hàng & thanh toán" được style trực tiếp trong snippets/cart-drawer.liquid
+   để áp ngay khi render (tránh nháy trắng do thứ tự tải CSS). */

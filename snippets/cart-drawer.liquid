@@ -25,6 +25,9 @@
   }
   .cart-drawer__continue svg { flex: none; }
   .cart-drawer__continue:hover { background: #d62828; color: #fff; }
+  /* Nút chính (đỏ đầy) — định nghĩa tại đây để áp ngay, không nháy trắng */
+  .cart-drawer__continue--primary { background: #d62828; color: #fff; border-color: #d62828; }
+  .cart-drawer__continue--primary:hover { background: #b81f1f; color: #fff; }
   @media screen and (max-width: 749px) {
     #CartDrawer .cart__checkout-button { font-size: 1.7rem; min-height: 5.6rem; }
     .cart-drawer__continue { font-size: 1.65rem; min-height: 5.6rem; }
