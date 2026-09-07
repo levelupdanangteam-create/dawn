@@ -1,16 +1,27 @@
 {%- comment -%}
-  Banner "Thanh toán trong 5 phút nhận quà" + đồng hồ đếm ngược, đặt ở giỏ hàng (trên nút Thanh toán).
-  Đếm ngược 5:00, lưu mốc theo trình duyệt nên không reset khi chuyển trang; hết giờ tự làm mới để luôn còn ưu đãi.
+  Khối ưu đãi ở giỏ hàng (trên nút Thanh toán): mời khách nhập mã GIAMGIA để
+  được giảm giá, kèm đồng hồ đếm ngược + số suất còn lại (tạo cảm giác gấp).
+  - Đồng hồ 5:00 lưu theo trình duyệt, hết giờ tự làm mới.
+  - Số suất giảm dần theo thời gian trong phiên (urgency), có mức sàn.
+  LƯU Ý: mã GIAMGIA phải được tạo trong Shopify (Discounts) thì mới giảm thật.
 {%- endcomment -%}
 <div class="pf-cd" role="note">
-  <span class="pf-cd__gift" aria-hidden="true">🎁</span>
+  <span class="pf-cd__gift" aria-hidden="true">🏷️</span>
   <div class="pf-cd__txt">
     {%- if request.locale.iso_code == 'vi' -%}
-      <b>Thanh toán trong <span class="pf-cd__time">05:00</span> — nhận ngay một phần quà!</b>
-      <span>Hoàn tất đặt hàng sớm để được tặng quà kèm đơn 🎉</span>
+      <b>Nhập mã <button type="button" class="pf-cd__code" id="pf-cd-code" data-code="GIAMGIA" title="Bấm để sao chép">GIAMGIA<span class="pf-cd__copyic" aria-hidden="true">⧉</span></button> để được giảm giá!</b>
+      <div class="pf-cd__meta">
+        <span class="pf-cd__chip pf-cd__chip--time">⏳ Còn <span class="pf-cd__time">05:00</span></span>
+        <span class="pf-cd__chip pf-cd__chip--slot">🔥 Chỉ còn <b class="pf-cd__slot">—</b> suất</span>
+      </div>
+      <span>Áp mã ở bước thanh toán — ưu đãi có hạn 🎉</span>
     {%- else -%}
-      <b>Checkout within <span class="pf-cd__time">05:00</span> to get a free gift!</b>
-      <span>Complete your order soon to receive a gift with your parcel 🎉</span>
+      <b>Use code <button type="button" class="pf-cd__code" id="pf-cd-code" data-code="GIAMGIA" title="Click to copy">GIAMGIA<span class="pf-cd__copyic" aria-hidden="true">⧉</span></button> for a discount!</b>
+      <div class="pf-cd__meta">
+        <span class="pf-cd__chip pf-cd__chip--time">⏳ <span class="pf-cd__time">05:00</span> left</span>
+        <span class="pf-cd__chip pf-cd__chip--slot">🔥 Only <b class="pf-cd__slot">—</b> left</span>
+      </div>
+      <span>Apply the code at checkout — limited-time offer 🎉</span>
     {%- endif -%}
   </div>
 </div>
@@ -25,20 +36,39 @@
   @keyframes pf-cd-glow{ 0%,100%{box-shadow:0 8px 20px rgba(214,120,20,.20)} 50%{box-shadow:0 10px 28px rgba(214,120,20,.44)} }
   .pf-cd__gift{ font-size:3rem; line-height:1; flex-shrink:0; animation:pf-cd-wob 1.4s ease-in-out infinite; }
   @keyframes pf-cd-wob{ 0%,100%{transform:rotate(-10deg) scale(1)} 50%{transform:rotate(10deg) scale(1.18)} }
-  .pf-cd__txt{ display:flex; flex-direction:column; gap:.3rem; line-height:1.4; }
-  .pf-cd__txt b{ font-size:1.7rem; font-weight:800; color:#c62828; }
+  .pf-cd__txt{ display:flex; flex-direction:column; gap:.45rem; line-height:1.4; min-width:0; }
+  .pf-cd__txt b{ font-size:1.6rem; font-weight:800; color:#c62828; }
   .pf-cd__txt span{ font-size:1.3rem; color:#7a4a12; font-weight:600; }
-  .pf-cd__time, .pf-cd__txt b .pf-cd__time{
-    display:inline-block; min-width:6rem; text-align:center; font-size:1.95rem; vertical-align:-2px;
-    background:#b71c1c; color:#fff; font-weight:900; letter-spacing:.06em;
-    padding:.15rem .85rem; border-radius:9px; font-variant-numeric:tabular-nums;
-    box-shadow:0 3px 8px rgba(140,20,20,.4); animation:pf-cd-pulse 1s ease-in-out infinite;
+  /* Mã ưu đãi bấm để sao chép */
+  .pf-cd__code{
+    display:inline-flex; align-items:center; gap:.4rem; vertical-align:-1px;
+    background:#fff; color:#c62828; border:2px dashed #d62828; border-radius:8px;
+    font:inherit; font-weight:900; font-size:1.55rem; letter-spacing:.12em;
+    padding:.1rem .7rem; margin:0 .1rem; cursor:pointer; transition:background .15s ease,transform .1s ease;
   }
-  @keyframes pf-cd-pulse{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.07)} }
+  .pf-cd__code:hover{ background:#fff3f3; }
+  .pf-cd__code:active{ transform:scale(.97); }
+  .pf-cd__code.copied{ background:#1e8541; color:#fff; border-color:#1e8541; }
+  .pf-cd__copyic{ font-size:1.25rem; opacity:.8; }
+  /* Chip đồng hồ + suất */
+  .pf-cd__meta{ display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; }
+  .pf-cd__chip{ display:inline-flex; align-items:center; gap:.35rem; font-size:1.25rem; font-weight:800;
+    padding:.25rem .7rem; border-radius:999px; line-height:1.2; }
+  .pf-cd__chip--time{ background:#fdecec; color:#b71c1c; border:1px solid #f4c3c3; }
+  .pf-cd__chip--slot{ background:#fff3d9; color:#a86a12; border:1px solid #f0d9a8; }
+  .pf-cd__chip--slot .pf-cd__slot{ color:#c62828; }
+  .pf-cd__time, .pf-cd__chip .pf-cd__time{
+    display:inline-block; min-width:5.2rem; text-align:center; font-size:1.5rem; vertical-align:-1px;
+    background:#b71c1c; color:#fff; font-weight:900; letter-spacing:.06em;
+    padding:.05rem .55rem; border-radius:7px; font-variant-numeric:tabular-nums;
+    box-shadow:0 2px 6px rgba(140,20,20,.4); animation:pf-cd-pulse 1s ease-in-out infinite;
+  }
+  @keyframes pf-cd-pulse{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
   @media (max-width:749px){
     .pf-cd__gift{font-size:2.5rem}
-    .pf-cd__txt b{font-size:1.5rem} .pf-cd__txt span{font-size:1.25rem}
-    .pf-cd__time{font-size:1.7rem; min-width:5.4rem}
+    .pf-cd__txt b{font-size:1.45rem} .pf-cd__txt span{font-size:1.2rem}
+    .pf-cd__code{font-size:1.4rem} .pf-cd__time{font-size:1.35rem; min-width:4.6rem}
+    .pf-cd__chip{font-size:1.15rem}
   }
 </style>
 <script>
@@ -52,6 +82,15 @@
         return d;
       }catch(e){ return Date.now()+DUR; }
     }
+    // Số suất còn lại: khởi tạo 9–15 mỗi khách, giảm 1 mỗi ~4 phút, sàn 3.
+    function getSlots(){
+      try{
+        var K='pfPromoSlots', raw=localStorage.getItem(K), o=raw?JSON.parse(raw):null, now=Date.now();
+        if(!o || !o.t || !o.n){ o={ n: 9 + Math.floor(Math.random()*7), t: now }; localStorage.setItem(K, JSON.stringify(o)); }
+        var dec=Math.floor((now-o.t)/(4*60*1000));
+        return Math.max(3, o.n - dec);
+      }catch(e){ return 7; }
+    }
     var dl=getDeadline();
     function tick(){
       var left=dl-Date.now();
@@ -60,7 +99,22 @@
       var txt=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
       var els=document.querySelectorAll('.pf-cd__time');
       for(var i=0;i<els.length;i++){ els[i].textContent=txt; }
+      var sl=getSlots(), sels=document.querySelectorAll('.pf-cd__slot');
+      for(var j=0;j<sels.length;j++){ sels[j].textContent=sl; }
     }
     tick(); setInterval(tick,1000);
+
+    // Sao chép mã khi bấm
+    document.addEventListener('click', function(e){
+      var b=e.target.closest ? e.target.closest('.pf-cd__code') : null;
+      if(!b) return;
+      var code=b.getAttribute('data-code')||'GIAMGIA';
+      try{ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(code); } }catch(err){}
+      var vi=(document.documentElement.lang||'').indexOf('vi')===0 || true;
+      var orig=b.getAttribute('data-orig'); if(!orig){ orig=b.innerHTML; b.setAttribute('data-orig',orig); }
+      b.classList.add('copied');
+      b.textContent = (vi ? '✓ Đã sao chép' : '✓ Copied');
+      setTimeout(function(){ b.classList.remove('copied'); b.innerHTML=orig; }, 1800);
+    });
   })();
 </script>
