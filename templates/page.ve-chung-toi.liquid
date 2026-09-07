@@ -145,7 +145,7 @@
           <p>{% if vi %}Các nước còn lại (Tây Ban Nha, Ý, Phần Lan, Thụy Điển, Hy Lạp, Ireland…) — <strong>giảm 10% phí ship</strong> cho đơn từ <strong>169€</strong>.{% else %}Other countries (Spain, Italy, Finland, Sweden, Greece, Ireland…) — <strong>10% off shipping</strong> on orders from <strong>€169</strong>.{% endif %}</p>
         </div>
       </div>
-      <p class="pfa-note">{% if vi %}🎁 <strong>Ngoài ra:</strong> đơn từ <strong>100€</strong> được tặng ngay <strong>1 sản phẩm quà</strong> theo chương trình áp dụng. Các ưu đãi có thể thay đổi theo từng thời điểm — vui lòng kiểm tra thông tin hiện hành trên website trước khi đặt hàng.{% else %}🎁 <strong>Plus:</strong> orders from <strong>€100</strong> receive <strong>1 free gift product</strong> per the active program. Offers may change over time — please check the current offers on the website before ordering.{% endif %}</p>
+      <p class="pfa-note">{% if vi %}<strong>Lưu ý:</strong> Các chương trình ưu đãi có thể thay đổi theo từng thời điểm. Vui lòng kiểm tra thông tin ưu đãi hiện hành trên website trước khi đặt hàng.{% else %}<strong>Note:</strong> Promotions may change over time. Please check the current offers on the website before ordering.{% endif %}</p>
     </div>
   </section>
 
@@ -314,13 +314,14 @@
   .pfa-video { text-align: center; }
   .pfa-video__sub { max-width: 62rem; margin: .4rem auto 1.8rem; font-size: 1.5rem; color: #6a6255; line-height: 1.55; }
   .pfa-video__frame {
-    max-width: 90rem; margin: 0 auto; border-radius: 18px; overflow: hidden; background: #000;
-    box-shadow: 0 18px 44px rgba(20, 60, 30, .18); border: 1px solid #ece6d8;
+    width: fit-content; max-width: 100%; margin: 0 auto; border-radius: 18px; overflow: hidden;
+    background: #000; box-shadow: 0 18px 44px rgba(20, 60, 30, .18); border: 1px solid #ece6d8;
   }
-  .pfa-video__v { display: block; width: auto; height: auto; max-width: 100%; max-height: 80vh; margin: 0 auto; }
+  /* Video dọc: ôm sát chiều cao, không để hai bên đen thừa */
+  .pfa-video__v { display: block; width: auto; height: auto; max-width: 100%; max-height: 82vh; }
   @media (max-width: 749px) {
     .pfa-video__sub { font-size: 1.35rem; }
     .pfa-video__frame { border-radius: 14px; }
-    .pfa-video__v { max-height: 72vh; }
+    .pfa-video__v { max-height: 78vh; }
   }
 </style>
