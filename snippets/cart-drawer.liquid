@@ -562,7 +562,6 @@
             <span class="pf-ship-note__ic" aria-hidden="true">🚚</span>
             <span>{% if request.locale.iso_code == 'vi' %}Ưu đãi <b>miễn phí ship</b> &amp; <b>giảm giá</b> tùy quốc gia — <u>xem chi tiết ở trang giỏ hàng</u>{% else %}<b>Free shipping</b> &amp; <b>discounts</b> vary by country — <u>see details on the cart page</u>{% endif %}</span>
           </a>
-          {% render 'pf-checkout-countdown' %}
 
           <small class="tax-note caption-large rte">
             {%- if cart.duties_included and cart.taxes_included -%}
