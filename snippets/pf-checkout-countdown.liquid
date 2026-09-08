@@ -1,27 +1,27 @@
 {%- comment -%}
-  Khối ưu đãi ở giỏ hàng (trên nút Thanh toán): mời khách nhập mã GIAMGIA để
-  được giảm giá, kèm đồng hồ đếm ngược + số suất còn lại (tạo cảm giác gấp).
+  Khối ưu đãi (đặt ở nút "Thêm vào giỏ" trang sản phẩm + trong giỏ hàng):
+  báo đang có ưu đãi GIẢM GIÁ tự động áp dụng, kèm đồng hồ đếm ngược + số suất
+  còn lại để tạo cảm giác gấp. KHÔNG cần nhập mã (giảm giá tự động).
   - Đồng hồ 5:00 lưu theo trình duyệt, hết giờ tự làm mới.
   - Số suất giảm dần theo thời gian trong phiên (urgency), có mức sàn.
-  LƯU Ý: mã GIAMGIA phải được tạo trong Shopify (Discounts) thì mới giảm thật.
 {%- endcomment -%}
 <div class="pf-cd" role="note">
-  <span class="pf-cd__gift" aria-hidden="true">🏷️</span>
+  <span class="pf-cd__gift" aria-hidden="true">🎁</span>
   <div class="pf-cd__txt">
     {%- if request.locale.iso_code == 'vi' -%}
-      <b>Nhập mã <button type="button" class="pf-cd__code" id="pf-cd-code" data-code="GIAMGIA" title="Bấm để sao chép">GIAMGIA<span class="pf-cd__copyic" aria-hidden="true">⧉</span></button> để được giảm giá!</b>
+      <b>Đang có ưu đãi <span class="pf-cd__badge">GIẢM GIÁ</span> — tự động áp dụng!</b>
       <div class="pf-cd__meta">
         <span class="pf-cd__chip pf-cd__chip--time">⏳ Còn <span class="pf-cd__time">05:00</span></span>
         <span class="pf-cd__chip pf-cd__chip--slot">🔥 Chỉ còn <b class="pf-cd__slot">—</b> suất</span>
       </div>
-      <span>Áp mã ở bước thanh toán — ưu đãi có hạn 🎉</span>
+      <span>Thêm vào giỏ &amp; hoàn tất đơn sớm để nhận ưu đãi — không cần nhập mã 🎉</span>
     {%- else -%}
-      <b>Use code <button type="button" class="pf-cd__code" id="pf-cd-code" data-code="GIAMGIA" title="Click to copy">GIAMGIA<span class="pf-cd__copyic" aria-hidden="true">⧉</span></button> for a discount!</b>
+      <b>A <span class="pf-cd__badge">DISCOUNT</span> is on — applied automatically!</b>
       <div class="pf-cd__meta">
         <span class="pf-cd__chip pf-cd__chip--time">⏳ <span class="pf-cd__time">05:00</span> left</span>
         <span class="pf-cd__chip pf-cd__chip--slot">🔥 Only <b class="pf-cd__slot">—</b> left</span>
       </div>
-      <span>Apply the code at checkout — limited-time offer 🎉</span>
+      <span>Add to cart &amp; check out soon to get it — no code needed 🎉</span>
     {%- endif -%}
   </div>
 </div>
@@ -39,7 +39,9 @@
   .pf-cd__txt{ display:flex; flex-direction:column; gap:.45rem; line-height:1.4; min-width:0; }
   .pf-cd__txt b{ font-size:1.6rem; font-weight:800; color:#c62828; }
   .pf-cd__txt span{ font-size:1.3rem; color:#7a4a12; font-weight:600; }
-  /* Mã ưu đãi bấm để sao chép */
+  .pf-cd__badge{ display:inline-block; background:#d62828; color:#fff; font-weight:900;
+    font-size:1.35rem; letter-spacing:.04em; padding:.05rem .55rem; border-radius:7px; vertical-align:-1px; }
+  /* (không dùng) mã ưu đãi bấm để sao chép */
   .pf-cd__code{
     display:inline-flex; align-items:center; gap:.4rem; vertical-align:-1px;
     background:#fff; color:#c62828; border:2px dashed #d62828; border-radius:8px;
@@ -103,18 +105,5 @@
       for(var j=0;j<sels.length;j++){ sels[j].textContent=sl; }
     }
     tick(); setInterval(tick,1000);
-
-    // Sao chép mã khi bấm
-    document.addEventListener('click', function(e){
-      var b=e.target.closest ? e.target.closest('.pf-cd__code') : null;
-      if(!b) return;
-      var code=b.getAttribute('data-code')||'GIAMGIA';
-      try{ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(code); } }catch(err){}
-      var vi=(document.documentElement.lang||'').indexOf('vi')===0 || true;
-      var orig=b.getAttribute('data-orig'); if(!orig){ orig=b.innerHTML; b.setAttribute('data-orig',orig); }
-      b.classList.add('copied');
-      b.textContent = (vi ? '✓ Đã sao chép' : '✓ Copied');
-      setTimeout(function(){ b.classList.remove('copied'); b.innerHTML=orig; }, 1800);
-    });
   })();
 </script>
