@@ -6,22 +6,22 @@
   - Số suất giảm dần theo thời gian trong phiên (urgency), có mức sàn.
 {%- endcomment -%}
 <div class="pf-cd" role="note">
-  <span class="pf-cd__gift" aria-hidden="true">🎁</span>
+  <span class="pf-cd__gift" aria-hidden="true">🏷️</span>
   <div class="pf-cd__txt">
     {%- if request.locale.iso_code == 'vi' -%}
-      <b>Đang có ưu đãi <span class="pf-cd__badge">GIẢM GIÁ</span> — tự động áp dụng!</b>
+      <b>Nhập mã <button type="button" class="pf-cd__code" id="pf-cd-code" data-code="GIAMGIA" title="Bấm để sao chép">GIAMGIA<span class="pf-cd__copyic" aria-hidden="true">⧉</span></button> vào ô “Mã giảm giá” để được giảm!</b>
       <div class="pf-cd__meta">
         <span class="pf-cd__chip pf-cd__chip--time">⏳ Còn <span class="pf-cd__time">05:00</span></span>
         <span class="pf-cd__chip pf-cd__chip--slot">🔥 Chỉ còn <b class="pf-cd__slot">—</b> suất</span>
       </div>
-      <span>Thêm vào giỏ &amp; hoàn tất đơn sớm để nhận ưu đãi — không cần nhập mã 🎉</span>
+      <span>Bấm để sao chép mã, dán vào ô “Mã giảm giá” ở bước thanh toán — ưu đãi có hạn 🎉</span>
     {%- else -%}
-      <b>A <span class="pf-cd__badge">DISCOUNT</span> is on — applied automatically!</b>
+      <b>Enter code <button type="button" class="pf-cd__code" id="pf-cd-code" data-code="GIAMGIA" title="Click to copy">GIAMGIA<span class="pf-cd__copyic" aria-hidden="true">⧉</span></button> in the “Discount code” field to save!</b>
       <div class="pf-cd__meta">
         <span class="pf-cd__chip pf-cd__chip--time">⏳ <span class="pf-cd__time">05:00</span> left</span>
         <span class="pf-cd__chip pf-cd__chip--slot">🔥 Only <b class="pf-cd__slot">—</b> left</span>
       </div>
-      <span>Add to cart &amp; check out soon to get it — no code needed 🎉</span>
+      <span>Tap to copy the code, paste it in the “Discount code” field at checkout — limited-time offer 🎉</span>
     {%- endif -%}
   </div>
 </div>
@@ -105,5 +105,18 @@
       for(var j=0;j<sels.length;j++){ sels[j].textContent=sl; }
     }
     tick(); setInterval(tick,1000);
+
+    // Sao chép mã khi bấm
+    document.addEventListener('click', function(e){
+      var b=e.target.closest ? e.target.closest('.pf-cd__code') : null;
+      if(!b) return;
+      var code=b.getAttribute('data-code')||'GIAMGIA';
+      try{ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(code); } }catch(err){}
+      var vi=('{{ request.locale.iso_code }}'==='vi');
+      var orig=b.getAttribute('data-orig'); if(!orig){ orig=b.innerHTML; b.setAttribute('data-orig',orig); }
+      b.classList.add('copied');
+      b.textContent = (vi ? '✓ Đã sao chép' : '✓ Copied');
+      setTimeout(function(){ b.classList.remove('copied'); b.innerHTML=orig; }, 1800);
+    });
   })();
 </script>
