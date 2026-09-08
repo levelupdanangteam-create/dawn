@@ -225,7 +225,7 @@
 
     <div class="header__icons{% if section.settings.enable_country_selector or section.settings.enable_language_selector %} header__icons--localization header-localization{% endif %}">
       {%- capture pf_track_text -%}{% if request.locale.iso_code == 'vi' %}Xin chào PHOMIFOOD, tôi muốn theo dõi đơn hàng của mình ạ.{% else %}Hello PHOMIFOOD, I'd like to track my order.{% endif %}{%- endcapture -%}
-      <a href="https://wa.me/84338139402?text={{ pf_track_text | url_encode }}" target="_blank" rel="noopener" class="pf-wholesale-btn" aria-label="{% if request.locale.iso_code == 'vi' %}Theo dõi đơn hàng{% else %}Track my order{% endif %}">
+      <a href="https://wa.me/84384625443?text={{ pf_track_text | url_encode }}" target="_blank" rel="noopener" class="pf-wholesale-btn" aria-label="{% if request.locale.iso_code == 'vi' %}Theo dõi đơn hàng{% else %}Track my order{% endif %}">
         <svg class="pf-wholesale-btn__ic" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16.5 9.4 7.55 4.24"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
         <span class="pf-wholesale-btn__tx">{% if request.locale.iso_code == 'vi' %}Theo dõi đơn hàng{% else %}Track my order{% endif %}</span>
       </a>
