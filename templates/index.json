@@ -139,6 +139,10 @@
         "padding_bottom": 40
       }
     },
+    "pf_exclusive": {
+      "type": "pf-exclusive",
+      "settings": {}
+    },
     "pf_deal_hook": {
       "type": "pf-deal-hook",
       "settings": {
@@ -418,6 +422,7 @@
   "order": [
     "pf_category_grid",
     "pf_deal_hook",
+    "pf_exclusive",
     "pf_weekly_deals",
     "pf_new_arrivals",
     "pf_combo",
