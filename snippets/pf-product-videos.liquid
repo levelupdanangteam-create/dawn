@@ -24,6 +24,14 @@
     {%- assign pf_pv_urls = 'https://cdn.shopify.com/videos/c/o/v/ab40c47916d14e8c8b6a83a3426d5d2a.mp4,https://cdn.shopify.com/videos/c/o/v/7f1206b3e20c4cd190e9a52c3e5c5df0.mp4,https://cdn.shopify.com/videos/c/o/v/c17d0be64d3f4412813ba531b90a5ded.mp4' -%}
 {%- endcase -%}
 
+{%- comment -%} Khớp theo tiêu đề (dự phòng khi không chắc handle) {%- endcomment -%}
+{%- if pf_pv_urls == '' -%}
+  {%- assign pf_title_dc = product.title | downcase -%}
+  {%- if pf_title_dc contains 'miến lẩu thái' or pf_title_dc contains 'mien lau thai' -%}
+    {%- assign pf_pv_urls = 'https://cdn.shopify.com/videos/c/o/v/c58d0dc7e8784baaaa39f10585b5d927.mp4,https://cdn.shopify.com/videos/c/o/v/aa426c8028ce44b598ae8a51ad1f4e77.mp4,https://cdn.shopify.com/videos/c/o/v/48780efb6d504c348c1669e44e271575.mp4' -%}
+  {%- endif -%}
+{%- endif -%}
+
 {%- if pf_pv_urls != '' -%}
   {%- assign pf_pv_list = pf_pv_urls | split: ',' -%}
   <section class="pf-pvid">
