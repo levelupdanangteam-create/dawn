@@ -105,7 +105,7 @@
                 disabled
               {% endif %}
             >
-              <span>{{ 'products.product.pf_checkout_now' | t | default: 'Thanh toán ngay' }}</span>
+              <span>{% if request.locale.iso_code == 'vi' %}Thanh toán ngay{% else %}Checkout now{% endif %}</span>
               {%- render 'loading-spinner' -%}
             </button>
             <script>
