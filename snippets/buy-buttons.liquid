@@ -94,7 +94,51 @@
             {%- render 'loading-spinner' -%}
           </button>
           {%- if show_dynamic_checkout -%}
-            {{ form | payment_button }}
+            <button
+              type="button"
+              class="button button--full-width button--primary pf-buy-now"
+              data-pf-buy-now
+              {% if product.selected_or_first_available_variant.available == false
+                or quantity_rule_soldout
+                or product.selected_or_first_available_variant == null
+              %}
+                disabled
+              {% endif %}
+            >
+              <span>{{ 'products.product.pf_checkout_now' | t | default: 'Thanh toán ngay' }}</span>
+              {%- render 'loading-spinner' -%}
+            </button>
+            <script>
+              if (!window.pfBuyNowInit) {
+                window.pfBuyNowInit = true;
+                document.addEventListener('click', function (e) {
+                  var btn = e.target.closest('[data-pf-buy-now]');
+                  if (!btn || btn.disabled) return;
+                  e.preventDefault();
+                  var form = btn.closest('form');
+                  if (!form) return;
+                  var idInput = form.querySelector('.product-variant-id') || form.querySelector('[name="id"]');
+                  var qtyInput = form.querySelector('[name="quantity"]');
+                  var id = idInput && idInput.value;
+                  var qty = qtyInput && qtyInput.value ? qtyInput.value : 1;
+                  if (!id) return;
+                  var root = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
+                  btn.setAttribute('aria-busy', 'true');
+                  btn.disabled = true;
+                  fetch(root + 'cart/add.js', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                    body: JSON.stringify({ items: [{ id: Number(id), quantity: Number(qty) }] })
+                  })
+                    .then(function (r) { return r.json(); })
+                    .then(function () { window.location.href = root + 'checkout'; })
+                    .catch(function () {
+                      btn.removeAttribute('aria-busy');
+                      btn.disabled = false;
+                    });
+                });
+              }
+            </script>
           {%- endif -%}
         </div>
       {%- endform -%}
