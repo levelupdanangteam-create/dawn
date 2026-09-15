@@ -139,34 +139,30 @@
         "padding_bottom": 40
       }
     },
-    "pf_exclusive": {
-      "type": "pf-exclusive",
-      "settings": {}
-    },
     "pf_deal_hook": {
       "type": "pf-deal-hook",
       "blocks": {
         "product_Db8cPB": {
           "type": "product",
           "settings": {
-            "product": "chip-oishi-ngo-80-goi-32g-x-80-goi-bich",
-            "deal_price": "0",
+            "product": "ngoc-lien-ca-phao-trang-365g-x-24-lo",
+            "deal_price": "1.9",
             "is_gift": false
           }
         },
         "product_77RH79": {
           "type": "product",
           "settings": {
-            "product": "sting-nuoc-tang-luc-vi-hong-sam",
-            "deal_price": "0.9",
+            "product": "mỳ-quảng-hội-an-an-liền-cathifood-4-vị",
+            "deal_price": "2.9",
             "is_gift": false
           }
         },
         "product_R3UDyK": {
           "type": "product",
           "settings": {
-            "product": "ngoc-lien-ca-phao-trang-365g-x-24-lo",
-            "deal_price": "1.9",
+            "product": "canh-chua-isoup",
+            "deal_price": "3.9",
             "is_gift": false
           }
         }
@@ -177,8 +173,21 @@
         "product_R3UDyK"
       ],
       "settings": {
-        "heading": "🔥 ƯU ĐÃI ĐẶC BIỆT 0€",
+        "heading": "🔥 ƯU ĐÃI ĐẶC BIỆT",
         "subheading": "Số lượng có hạn! Thêm vào giỏ hàng ngay.",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "pf_exclusive": {
+      "type": "pf-exclusive",
+      "settings": {
+        "eyebrow": "Sản phẩm độc quyền",
+        "heading": "Chỉ có tại Phomifood",
+        "subheading": "Những món độc quyền chỉ Phomifood mới có — không tìm thấy ở nơi nào khác tại châu Âu.",
+        "product_handles": "miến-lẩu-thai-vifon\ncombo-4-hộp-ca-thu-chien-sốt-tương-ớt-roza\nkho-quẹt-chay\ncốt-lếch-chay\nsườn-chay-xao-sả-ớt\nsườn-non-chay\nbun-bo-huế-vifon-thịt-thật\ncombo-5-goi-banh-da-trộn-vifon\nmỳ-quảng-hội-an-an-liền-cathifood-4-vị\ncanh-chua-isoup",
+        "columns_desktop": 5,
+        "pf_initial": 10,
         "padding_top": 40,
         "padding_bottom": 40
       }
