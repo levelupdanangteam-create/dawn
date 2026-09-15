@@ -110,13 +110,36 @@
                   <div class="pf-sold-wrap">{% render 'pf-sold-badge', p: product %}</div>
                   {% render 'pf-preorder' %}
                 {%- when 'price' -%}
-                  <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
+                  {%- liquid
+                    assign pf_dp = ''
+                    assign pf_rows = settings.pf_deal_rows | split: ';;'
+                    for r in pf_rows
+                      assign pp = r | split: '||'
+                      if pp[0] == product.handle
+                        assign pf_dp = pp[1]
+                      endif
+                    endfor
+                  -%}
+                  <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}{% if pf_dp != '' %} class="pf-dealwrap"{% endif %}>
                     {%- render 'price',
                       product: product,
                       use_variant: true,
                       show_badges: true,
                       price_class: 'price--large'
                     -%}
+                    {%- if pf_dp != '' -%}
+                      <div class="pf-dealprice">
+                        <span class="pf-dealprice__now">{{ pf_dp }}</span>
+                        <span class="pf-dealprice__note">{% if request.locale.iso_code == 'vi' %}Ưu đãi khi mua 1 sản phẩm{% else %}Deal price for 1 item{% endif %}</span>
+                      </div>
+                      <style>
+                        #price-{{ section.id }}.pf-dealwrap .price__regular .price-item--regular,
+                        #price-{{ section.id }}.pf-dealwrap .price__sale .price-item--regular { text-decoration: line-through; opacity: .5; font-weight: 500; }
+                        .pf-dealprice { margin-top: .4rem; display: flex; align-items: center; flex-wrap: wrap; gap: .6rem; }
+                        .pf-dealprice__now { color: #1e8541; font-weight: 800; font-size: 2.6rem; line-height: 1; }
+                        .pf-dealprice__note { font-size: 1.2rem; font-weight: 700; color: #d62828; background: #ffe6e6; border: 1px solid #f2b8a0; border-radius: 999px; padding: .2rem .8rem; }
+                      </style>
+                    {%- endif -%}
                   </div>
                   {%- if product.quantity_price_breaks_configured? -%}
                     <div class="volume-pricing-note" id="Volume-Note-{{ section.id }}">
