@@ -261,6 +261,7 @@
         "p2",
         "p3"
       ],
+      "disabled": true,
       "settings": {
         "heading": "🔥 Ưu đãi tuần này",
         "subheading": "Giá tốt nhất trong tuần — số lượng có hạn!",
@@ -347,6 +348,7 @@
         "product_CyWbRq",
         "product_KY6bhH"
       ],
+      "disabled": true,
       "settings": {
         "heading": "Sản phẩm đang được săn đón",
         "subheading": "Những sản phẩm đang được nhiều khách hàng quan tâm và lựa chọn!",
