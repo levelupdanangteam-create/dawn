@@ -16,6 +16,7 @@
 
 {%- comment -%} Ghi chú deal riêng theo sản phẩm (áp dụng cho vị cụ thể). Thêm handle mới ở đây nếu cần. {%- endcomment -%}
 {%- if product.handle == 'canh-chua-isoup' -%}{%- assign pf_deal_note = 'ưu đãi áp dụng cho vị Khoai mỡ' -%}{%- endif -%}
+{%- if product.handle == 'chan-ga-ba-tuyết' -%}{%- assign pf_deal_price = '1,9€' -%}{%- assign pf_deal_note = 'áp dụng cho 1 combo' -%}{%- endif -%}
 
 {%- if settings.pf_gift_enable and settings.pf_gift_handle != blank and product.handle == settings.pf_gift_handle -%}
   {%- assign pf_gm = settings.pf_gift_min | default: 100 -%}
