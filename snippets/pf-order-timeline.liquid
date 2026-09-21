@@ -1,0 +1,95 @@
+{%- comment -%}
+  PHOMIFOOD — Box quy trình đơn hàng trên trang sản phẩm.
+  Hiển thị 3 mốc với NGÀY THẬT tính theo thời điểm khách truy cập (JS):
+    1. Đặt hàng      = hôm nay (ngày khách vào)
+    2. Xác nhận đơn  = hôm nay + 1 ngày
+    3. Giao hàng     = 3–5 ngày kể từ ngày xác nhận (hôm nay+4 → hôm nay+6)
+{%- endcomment -%}
+{%- assign pf_vi = false -%}
+{%- if request.locale.iso_code == 'vi' -%}{%- assign pf_vi = true -%}{%- endif -%}
+
+<div class="pf-otl" data-pf-otl>
+  <div class="pf-otl__head">
+    <span class="pf-otl__ico">🚚</span>
+    <span class="pf-otl__title">{% if pf_vi %}Quy trình đơn hàng của bạn{% else %}Your order process{% endif %}</span>
+  </div>
+  <ol class="pf-otl__steps">
+    <li class="pf-otl__step">
+      <span class="pf-otl__dot">1</span>
+      <span class="pf-otl__label">{% if pf_vi %}Đặt hàng{% else %}Order placed{% endif %}</span>
+      <span class="pf-otl__date" data-otl="order">—</span>
+    </li>
+    <li class="pf-otl__step">
+      <span class="pf-otl__dot">2</span>
+      <span class="pf-otl__label">{% if pf_vi %}Xác nhận đơn{% else %}Order confirmed{% endif %}</span>
+      <span class="pf-otl__date" data-otl="confirm">—</span>
+    </li>
+    <li class="pf-otl__step pf-otl__step--last">
+      <span class="pf-otl__dot">3</span>
+      <span class="pf-otl__label">{% if pf_vi %}Giao hàng{% else %}Delivery{% endif %}</span>
+      <span class="pf-otl__date" data-otl="deliver">—</span>
+    </li>
+  </ol>
+  <p class="pf-otl__note">{% if pf_vi %}*Thời gian giao dự kiến 3–5 ngày làm việc kể từ khi xác nhận đơn.{% else %}*Estimated delivery 3–5 business days after confirmation.{% endif %}</p>
+</div>
+
+<style>
+  .pf-otl{
+    margin:1.6rem 0;padding:1.4rem 1.5rem;border:1px solid #cfe6d6;border-radius:14px;
+    background:linear-gradient(180deg,#f2faf4,#ffffff);
+  }
+  .pf-otl__head{display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem}
+  .pf-otl__ico{font-size:1.6rem;line-height:1}
+  .pf-otl__title{font-weight:800;font-size:1.45rem;color:#14672f;letter-spacing:.2px}
+  .pf-otl__steps{
+    list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative;
+  }
+  .pf-otl__step{
+    position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:.5rem;padding:0 .4rem;
+  }
+  /* Đường nối giữa các bước */
+  .pf-otl__step::after{
+    content:"";position:absolute;top:1.4rem;left:50%;width:100%;height:3px;
+    background:#bfe0c8;z-index:0;
+  }
+  .pf-otl__step--last::after{display:none}
+  .pf-otl__dot{
+    position:relative;z-index:1;width:2.8rem;height:2.8rem;flex:none;border-radius:50%;
+    background:#1e8541;color:#fff;font-weight:800;font-size:1.35rem;
+    display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(20,90,45,.25);
+  }
+  .pf-otl__label{font-weight:700;font-size:1.2rem;color:#1b241d;line-height:1.25}
+  .pf-otl__date{
+    font-weight:800;font-size:1.35rem;color:#14672f;font-variant-numeric:tabular-nums;
+    background:#e6f2ea;border-radius:8px;padding:.25rem .6rem;white-space:nowrap;
+  }
+  .pf-otl__note{margin:1.1rem 0 0;font-size:1.1rem;color:#5f6b60;line-height:1.4}
+  @media (max-width:600px){
+    .pf-otl__title{font-size:1.3rem}
+    .pf-otl__label{font-size:1.05rem}
+    .pf-otl__date{font-size:1.15rem}
+    .pf-otl__dot{width:2.4rem;height:2.4rem;font-size:1.15rem}
+    .pf-otl__step::after{top:1.2rem}
+  }
+</style>
+
+<script>
+  (function(){
+    function fmt(d){
+      var dd=('0'+d.getDate()).slice(-2), mm=('0'+(d.getMonth()+1)).slice(-2), yy=d.getFullYear();
+      return dd+'/'+mm+'/'+yy;
+    }
+    function addDays(base,n){ var d=new Date(base.getTime()); d.setDate(d.getDate()+n); return d; }
+    function fill(box){
+      if(box.dataset.otlDone) return; box.dataset.otlDone='1';
+      var now=new Date();
+      var order=now, confirm=addDays(now,1), from=addDays(now,4), to=addDays(now,6);
+      var set=function(k,txt){ var el=box.querySelector('[data-otl="'+k+'"]'); if(el) el.textContent=txt; };
+      set('order', fmt(order));
+      set('confirm', fmt(confirm));
+      set('deliver', fmt(from)+' – '+fmt(to));
+    }
+    function run(){ document.querySelectorAll('[data-pf-otl]').forEach(fill); }
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run); else run();
+  })();
+</script>
