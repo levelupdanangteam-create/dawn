@@ -92,10 +92,6 @@
 <script>
   (function(){
     function fmt(d){
-      var dd=('0'+d.getDate()).slice(-2), mm=('0'+(d.getMonth()+1)).slice(-2), yy=d.getFullYear();
-      return dd+'/'+mm+'/'+yy;
-    }
-    function fmtShort(d){
       var dd=('0'+d.getDate()).slice(-2), mm=('0'+(d.getMonth()+1)).slice(-2);
       return dd+'/'+mm;
     }
@@ -107,9 +103,9 @@
       var set=function(k,txt){ var el=box.querySelector('[data-otl="'+k+'"]'); if(el) el.textContent=txt; };
       set('order', fmt(now));
       set('confirm', fmt(confirm));
-      // khoảng giao: nếu cùng tháng/năm rút gọn "25 – 27/09/2026", khác thì đầy đủ
-      var sameMY = from.getMonth()===to.getMonth() && from.getFullYear()===to.getFullYear();
-      set('deliver', sameMY ? (('0'+from.getDate()).slice(-2)+' – '+fmt(to)) : (fmt(from)+' – '+fmt(to)));
+      // khoảng giao (không hiện năm): cùng tháng -> "25 – 27/09", khác tháng -> "29/09 – 02/10"
+      var sameMonth = from.getMonth()===to.getMonth();
+      set('deliver', sameMonth ? (('0'+from.getDate()).slice(-2)+' – '+fmt(to)) : (fmt(from)+' – '+fmt(to)));
     }
     function run(){ document.querySelectorAll('[data-pf-otl]').forEach(fill); }
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run); else run();
