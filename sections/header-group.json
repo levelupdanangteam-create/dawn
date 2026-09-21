@@ -11,6 +11,30 @@
   "name": "t:sections.header.name",
   "type": "header",
   "sections": {
+    "announcement_bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement_freeship": {
+          "type": "announcement",
+          "settings": {
+            "text": "🚚 FREESHIP toàn châu Âu cho đơn từ 169€ — tự động giảm thêm 10%!",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "announcement_freeship"
+      ],
+      "settings": {
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "color_scheme": "scheme-4",
+        "show_line_separator": false,
+        "show_social": false,
+        "enable_country_selector": false,
+        "enable_language_selector": false
+      }
+    },
     "header": {
       "type": "header",
       "settings": {
@@ -69,6 +93,7 @@
     }
   },
   "order": [
+    "announcement_bar",
     "header",
     "pf_hero_slideshow_UijQAg"
   ]
