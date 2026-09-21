@@ -4,6 +4,7 @@
     1. Đặt hàng      = hôm nay (ngày khách vào)
     2. Xác nhận đơn  = hôm nay + 1 ngày
     3. Giao hàng     = 3–5 ngày kể từ ngày xác nhận (hôm nay+4 → hôm nay+6)
+  Layout: DỌC trên mobile, NGANG trên desktop (≥640px).
 {%- endcomment -%}
 {%- assign pf_vi = false -%}
 {%- if request.locale.iso_code == 'vi' -%}{%- assign pf_vi = true -%}{%- endif -%}
@@ -16,60 +17,75 @@
   <ol class="pf-otl__steps">
     <li class="pf-otl__step">
       <span class="pf-otl__dot">1</span>
-      <span class="pf-otl__label">{% if pf_vi %}Đặt hàng{% else %}Order placed{% endif %}</span>
-      <span class="pf-otl__date" data-otl="order">—</span>
+      <span class="pf-otl__body">
+        <span class="pf-otl__label">{% if pf_vi %}Đặt hàng{% else %}Order placed{% endif %}</span>
+        <span class="pf-otl__date" data-otl="order">—</span>
+      </span>
     </li>
     <li class="pf-otl__step">
       <span class="pf-otl__dot">2</span>
-      <span class="pf-otl__label">{% if pf_vi %}Xác nhận đơn{% else %}Order confirmed{% endif %}</span>
-      <span class="pf-otl__date" data-otl="confirm">—</span>
+      <span class="pf-otl__body">
+        <span class="pf-otl__label">{% if pf_vi %}Xác nhận đơn{% else %}Order confirmed{% endif %}</span>
+        <span class="pf-otl__date" data-otl="confirm">—</span>
+      </span>
     </li>
     <li class="pf-otl__step pf-otl__step--last">
       <span class="pf-otl__dot">3</span>
-      <span class="pf-otl__label">{% if pf_vi %}Giao hàng{% else %}Delivery{% endif %}</span>
-      <span class="pf-otl__date" data-otl="deliver">—</span>
+      <span class="pf-otl__body">
+        <span class="pf-otl__label">{% if pf_vi %}Giao hàng{% else %}Delivery{% endif %}</span>
+        <span class="pf-otl__date pf-otl__date--range" data-otl="deliver">—</span>
+      </span>
     </li>
   </ol>
-  <p class="pf-otl__note">{% if pf_vi %}*Thời gian giao dự kiến 3–5 ngày làm việc kể từ khi xác nhận đơn.{% else %}*Estimated delivery 3–5 business days after confirmation.{% endif %}</p>
+  <p class="pf-otl__note">{% if pf_vi %}*Giao dự kiến 3–5 ngày làm việc kể từ khi xác nhận đơn.{% else %}*Estimated delivery 3–5 business days after confirmation.{% endif %}</p>
 </div>
 
 <style>
   .pf-otl{
-    margin:1.6rem 0;padding:1.4rem 1.5rem;border:1px solid #cfe6d6;border-radius:14px;
-    background:linear-gradient(180deg,#f2faf4,#ffffff);
+    margin:1.6rem 0;padding:1.4rem 1.4rem;border:1px solid #cfe6d6;border-radius:14px;
+    background:linear-gradient(180deg,#f2faf4,#ffffff);overflow:hidden;
   }
-  .pf-otl__head{display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem}
-  .pf-otl__ico{font-size:1.6rem;line-height:1}
-  .pf-otl__title{font-weight:800;font-size:1.45rem;color:#14672f;letter-spacing:.2px}
-  .pf-otl__steps{
-    list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative;
-  }
+  .pf-otl__head{display:flex;align-items:center;gap:.55rem;margin-bottom:1.2rem}
+  .pf-otl__ico{font-size:1.5rem;line-height:1}
+  .pf-otl__title{font-weight:800;font-size:1.35rem;color:#14672f;letter-spacing:.2px}
+  .pf-otl__steps{list-style:none;margin:0;padding:0}
+
+  /* ---------- MOBILE: timeline DỌC (mặc định) ---------- */
   .pf-otl__step{
-    position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:.5rem;padding:0 .4rem;
+    position:relative;display:grid;grid-template-columns:2.6rem 1fr;align-items:center;
+    column-gap:1.1rem;padding-bottom:1.4rem;
   }
-  /* Đường nối giữa các bước */
-  .pf-otl__step::after{
-    content:"";position:absolute;top:1.4rem;left:50%;width:100%;height:3px;
-    background:#bfe0c8;z-index:0;
+  .pf-otl__step--last{padding-bottom:0}
+  /* đường nối dọc giữa các chấm */
+  .pf-otl__step:not(.pf-otl__step--last)::before{
+    content:"";position:absolute;left:calc(1.3rem - 1.5px);top:2.6rem;bottom:0;width:3px;background:#bfe0c8;z-index:0;
   }
-  .pf-otl__step--last::after{display:none}
   .pf-otl__dot{
-    position:relative;z-index:1;width:2.8rem;height:2.8rem;flex:none;border-radius:50%;
-    background:#1e8541;color:#fff;font-weight:800;font-size:1.35rem;
+    position:relative;z-index:1;width:2.6rem;height:2.6rem;flex:none;border-radius:50%;
+    background:#1e8541;color:#fff;font-weight:800;font-size:1.25rem;
     display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(20,90,45,.25);
   }
-  .pf-otl__label{font-weight:700;font-size:1.2rem;color:#1b241d;line-height:1.25}
+  .pf-otl__body{display:flex;flex-direction:column;gap:.3rem;min-width:0}
+  .pf-otl__label{font-weight:700;font-size:1.2rem;color:#1b241d;line-height:1.2}
   .pf-otl__date{
-    font-weight:800;font-size:1.35rem;color:#14672f;font-variant-numeric:tabular-nums;
-    background:#e6f2ea;border-radius:8px;padding:.25rem .6rem;white-space:nowrap;
+    align-self:flex-start;font-weight:800;font-size:1.25rem;color:#14672f;font-variant-numeric:tabular-nums;
+    background:#e6f2ea;border-radius:8px;padding:.2rem .6rem;line-height:1.35;
   }
-  .pf-otl__note{margin:1.1rem 0 0;font-size:1.1rem;color:#5f6b60;line-height:1.4}
-  @media (max-width:600px){
-    .pf-otl__title{font-size:1.3rem}
-    .pf-otl__label{font-size:1.05rem}
-    .pf-otl__date{font-size:1.15rem}
-    .pf-otl__dot{width:2.4rem;height:2.4rem;font-size:1.15rem}
-    .pf-otl__step::after{top:1.2rem}
+  .pf-otl__note{margin:1.2rem 0 0;font-size:1.1rem;color:#5f6b60;line-height:1.4}
+
+  /* ---------- DESKTOP: timeline NGANG (≥640px) ---------- */
+  @media (min-width:640px){
+    .pf-otl__steps{display:grid;grid-template-columns:repeat(3,1fr);column-gap:.6rem}
+    .pf-otl__step{
+      grid-template-columns:1fr;justify-items:center;text-align:center;
+      row-gap:.7rem;padding-bottom:0;
+    }
+    .pf-otl__step:not(.pf-otl__step--last)::before{
+      left:50%;right:auto;top:1.3rem;bottom:auto;width:100%;height:3px;
+    }
+    .pf-otl__body{align-items:center;gap:.4rem}
+    .pf-otl__date{align-self:center;text-align:center}
+    .pf-otl__date--range{white-space:nowrap}
   }
 </style>
 
@@ -79,15 +95,21 @@
       var dd=('0'+d.getDate()).slice(-2), mm=('0'+(d.getMonth()+1)).slice(-2), yy=d.getFullYear();
       return dd+'/'+mm+'/'+yy;
     }
+    function fmtShort(d){
+      var dd=('0'+d.getDate()).slice(-2), mm=('0'+(d.getMonth()+1)).slice(-2);
+      return dd+'/'+mm;
+    }
     function addDays(base,n){ var d=new Date(base.getTime()); d.setDate(d.getDate()+n); return d; }
     function fill(box){
       if(box.dataset.otlDone) return; box.dataset.otlDone='1';
       var now=new Date();
-      var order=now, confirm=addDays(now,1), from=addDays(now,4), to=addDays(now,6);
+      var confirm=addDays(now,1), from=addDays(now,4), to=addDays(now,6);
       var set=function(k,txt){ var el=box.querySelector('[data-otl="'+k+'"]'); if(el) el.textContent=txt; };
-      set('order', fmt(order));
+      set('order', fmt(now));
       set('confirm', fmt(confirm));
-      set('deliver', fmt(from)+' – '+fmt(to));
+      // khoảng giao: nếu cùng tháng/năm rút gọn "25 – 27/09/2026", khác thì đầy đủ
+      var sameMY = from.getMonth()===to.getMonth() && from.getFullYear()===to.getFullYear();
+      set('deliver', sameMY ? (('0'+from.getDate()).slice(-2)+' – '+fmt(to)) : (fmt(from)+' – '+fmt(to)));
     }
     function run(){ document.querySelectorAll('[data-pf-otl]').forEach(fill); }
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run); else run();
