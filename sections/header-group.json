@@ -17,7 +17,7 @@
         "announcement_freeship": {
           "type": "announcement",
           "settings": {
-            "text": "🚚 FREESHIP toàn châu Âu cho đơn hàng từ 169€ — giảm thêm 10%!",
+            "text": "🚚 Freeship đơn hàng từ 169€ hoặc giảm 10%",
             "link": ""
           }
         }
