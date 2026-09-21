@@ -51,6 +51,18 @@ body.gradient {
 .shopify-section-header-sticky .header-wrapper {
   box-shadow: 0 6px 24px rgba(20, 90, 45, .32);
 }
+/* ---- Announcement bar: brand green to match the header ------------ */
+.utility-bar {
+  background: linear-gradient(90deg, #14672f 0%, #1e8541 100%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, .12);
+}
+.utility-bar .announcement-bar__message,
+.utility-bar .announcement-bar__message span,
+.utility-bar .announcement-bar__link,
+.utility-bar .announcement-bar__link:hover {
+  color: #fff !important;
+}
+.utility-bar .announcement-bar__message { font-weight: 600; letter-spacing: .2px; }
 /* White nav text + icons on the blue header */
 .header,
 .header__menu-item,
