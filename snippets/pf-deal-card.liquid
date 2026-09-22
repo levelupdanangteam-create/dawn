@@ -32,6 +32,9 @@
   </div>
   <div class="pf-deal__limit{% if is_gift %} pf-deal__limit--gift{% endif %}">
     {%- if is_gift -%}🎁 {% if request.locale.iso_code == "vi" %}Tặng miễn phí khi đơn từ <b>{{ pf_gm }}€</b>{% else %}Free gift on orders from <b>{{ pf_gm }}€</b>{% endif %}
+    {%- elsif deal_price != blank -%}
+      {%- assign pf_dp = deal_price -%}{%- unless pf_dp contains '€' -%}{%- assign pf_dp = '€' | append: deal_price -%}{%- endunless -%}
+      {% if request.locale.iso_code == "vi" %}⚠️ Giá ưu đãi <b>{{ pf_dp }}</b> áp dụng cho 1 sản phẩm — mua thêm sẽ tính theo giá gốc{% else %}⚠️ Deal price <b>{{ pf_dp }}</b> applies to 1 item — extra units are charged at the regular price{% endif %}
     {%- else -%}{% if request.locale.iso_code == "vi" %}⚠️ Ưu đãi chỉ áp dụng cho 1 sản phẩm — giá có thể thay đổi khi mua nhiều hơn{% else %}⚠️ Offer applies to 1 item only — price may change for larger quantities{% endif %}{%- endif -%}
   </div>
   {%- render 'pf-card-buttons', product: p, section_id: section_id -%}
