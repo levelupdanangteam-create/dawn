@@ -509,9 +509,6 @@
         </form>
       </cart-drawer-items>
       <div class="drawer__footer">
-        {%- comment -%} Ưu đãi ship hết hạn — tạm ẩn. Bỏ comment để bật lại:
-          {%- unless cart == empty -%}{% render 'pf-cart-shipbar' %}{%- endunless -%}
-        {%- endcomment -%}
         {%- if settings.show_cart_note -%}
           <details id="Details-CartDrawer">
             <summary>
@@ -556,6 +553,8 @@
             <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
             <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
           </div>
+
+          {% render 'pf-cart-shipbar' %}
 
           {% render 'pf-cart-total-weight' %}
           <a class="pf-ship-note" href="{{ routes.cart_url }}">
