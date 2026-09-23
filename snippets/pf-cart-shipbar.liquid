@@ -1,129 +1,44 @@
 {%- comment -%}
-  Cart reward ladder (mobile-friendly, collapsible).
-  Tiers (chỉ áp dụng 1 mức cao nhất, KHÔNG cộng dồn): 50€ → tặng 1 sản phẩm ·
-  100€ → −5€ ship · 169€ → −10€ ship · 269€ → −15€ ship.
-  Collapsed on mobile: header + progress + 1-line status. Tap to see all tiers.
-  Desktop (≥750px): full list always shown. Re-renders with the cart on change.
+  PHOMIFOOD — Thanh tiến độ ưu đãi giỏ hàng (1 mốc duy nhất: 169€).
+  Mua thêm X để đạt 169€ → hưởng ưu đãi (Freeship / giảm 10%).
+  Dùng chung cho trang giỏ hàng và giỏ hàng drawer; nằm trong vùng js-contents
+  nên tự cập nhật ngay khi số lượng / giỏ thay đổi.
 {%- endcomment -%}
 {%- unless cart == empty -%}
-  {%- assign pf_g = 5000 -%}{%- assign pf_a = 10000 -%}{%- assign pf_b = 16900 -%}{%- assign pf_c = 26900 -%}
+  {%- assign pf_goal = 16900 -%}
   {%- assign pf_sub = cart.total_price -%}
   {%- assign vi = false -%}{%- if request.locale.iso_code == 'vi' -%}{%- assign vi = true -%}{%- endif -%}
-  {%- comment -%}expanded:true (cart page) → always show all tiers, no toggle.{%- endcomment -%}
-  {%- assign pf_open = false -%}{%- if expanded -%}{%- assign pf_open = true -%}{%- endif -%}
-
-  {%- comment -%}Highest reached tier = the one actually applied.{%- endcomment -%}
-  {%- assign pf_active = 0 -%}
-  {%- if pf_sub >= pf_c -%}{%- assign pf_active = pf_c -%}
-  {%- elsif pf_sub >= pf_b -%}{%- assign pf_active = pf_b -%}
-  {%- elsif pf_sub >= pf_a -%}{%- assign pf_active = pf_a -%}
-  {%- elsif pf_sub >= pf_g -%}{%- assign pf_active = pf_g -%}{%- endif -%}
-
-  {%- comment -%}Progress toward the next locked tier.{%- endcomment -%}
-  {%- if pf_sub < pf_g -%}{%- assign pf_next = pf_g -%}
-  {%- elsif pf_sub < pf_a -%}{%- assign pf_next = pf_a -%}
-  {%- elsif pf_sub < pf_b -%}{%- assign pf_next = pf_b -%}
-  {%- elsif pf_sub < pf_c -%}{%- assign pf_next = pf_c -%}
-  {%- else -%}{%- assign pf_next = 0 -%}{%- endif -%}
-  {%- if pf_next > 0 -%}{%- assign pf_pct = pf_sub | times: 100 | divided_by: pf_next -%}{%- assign pf_rem = pf_next | minus: pf_sub -%}{%- else -%}{%- assign pf_pct = 100 -%}{%- endif -%}
-
-  {%- comment -%}Reward labels for the compact status line.{%- endcomment -%}
-  {%- assign pf_atx = '' -%}{%- assign pf_ntx = '' -%}
-  {%- if vi -%}
-    {%- case pf_active -%}{%- when 5000 -%}{%- assign pf_atx = 'Tặng 1 sản phẩm' -%}{%- when 10000 -%}{%- assign pf_atx = 'Giảm 5€ ship' -%}{%- when 16900 -%}{%- assign pf_atx = 'Giảm 10€ ship' -%}{%- when 26900 -%}{%- assign pf_atx = 'Giảm 15€ ship' -%}{%- endcase -%}
-    {%- case pf_next -%}{%- when 5000 -%}{%- assign pf_ntx = 'Tặng 1 sản phẩm' -%}{%- when 10000 -%}{%- assign pf_ntx = 'Giảm 5€ ship' -%}{%- when 16900 -%}{%- assign pf_ntx = 'Giảm 10€ ship' -%}{%- when 26900 -%}{%- assign pf_ntx = 'Giảm 15€ ship' -%}{%- endcase -%}
+  {%- if pf_sub >= pf_goal -%}
+    {%- assign pf_pct = 100 -%}{%- assign pf_reached = true -%}
   {%- else -%}
-    {%- case pf_active -%}{%- when 5000 -%}{%- assign pf_atx = '1 free product' -%}{%- when 10000 -%}{%- assign pf_atx = '−5€ shipping' -%}{%- when 16900 -%}{%- assign pf_atx = '−10€ shipping' -%}{%- when 26900 -%}{%- assign pf_atx = '−15€ shipping' -%}{%- endcase -%}
-    {%- case pf_next -%}{%- when 5000 -%}{%- assign pf_ntx = '1 free product' -%}{%- when 10000 -%}{%- assign pf_ntx = '−5€ shipping' -%}{%- when 16900 -%}{%- assign pf_ntx = '−10€ shipping' -%}{%- when 26900 -%}{%- assign pf_ntx = '−15€ shipping' -%}{%- endcase -%}
+    {%- assign pf_pct = pf_sub | times: 100 | divided_by: pf_goal -%}
+    {%- assign pf_rem = pf_goal | minus: pf_sub -%}{%- assign pf_reached = false -%}
   {%- endif -%}
 
-  <details class="pf-shipbar{% if pf_open %} pf-shipbar--open{% endif %}{% if pf_next == 0 %} pf-shipbar--max{% endif %}"{% if pf_open %} open{% endif %}>
-    <summary class="pf-shipbar__sum">
-      <span class="pf-shipbar__head">🎁 {% if vi %}Ưu đãi đơn hàng{% else %}Order rewards{% endif %}<span class="pf-shipbar__chev" aria-hidden="true">⌄</span></span>
-      <span class="pf-shipbar__track"><span class="pf-shipbar__fill" style="width: {{ pf_pct }}%;"></span></span>
-      <span class="pf-shipbar__status">
-        {%- if pf_active > 0 -%}
-          {% if vi %}Đang áp dụng: <b>{{ pf_atx }}</b>{% else %}Applied: <b>{{ pf_atx }}</b>{% endif %}{%- if pf_next > 0 -%} · {% if vi %}thêm <b>{{ pf_rem | money }}</b> để lên {{ pf_ntx }}{% else %}add <b>{{ pf_rem | money }}</b> for {{ pf_ntx }}{% endif %}{%- else -%} · {% if vi %}mức cao nhất{% else %}top tier{% endif %} 🎉{%- endif -%}
-        {%- else -%}
-          {% if vi %}Mua thêm <b>{{ pf_rem | money }}</b> để được <b>{{ pf_ntx }}</b>{% else %}Add <b>{{ pf_rem | money }}</b> to get <b>{{ pf_ntx }}</b>{% endif %}
-        {%- endif -%}
-      </span>
-      <span class="pf-shipbar__toggle">
-        <span class="pf-shipbar__tgl-c">{% if vi %}Xem tất cả 4 mốc ưu đãi{% else %}See all 4 tiers{% endif %}</span>
-        <span class="pf-shipbar__tgl-o">{% if vi %}Thu gọn{% else %}Show less{% endif %}</span>
-        <span class="pf-shipbar__tgl-ar" aria-hidden="true">⌄</span>
-      </span>
-    </summary>
-
-    <ul class="pf-shipbar__list">
-      <li class="pf-rw{% if pf_sub >= pf_g %} is-on{% endif %}{% if pf_active == pf_g %} is-active{% endif %}">
-        <span class="pf-rw__ic">{% if pf_sub >= pf_g %}✓{% else %}○{% endif %}</span>
-        <span class="pf-rw__txt"><b>50€</b> — {% if vi %}Tặng 1 sản phẩm bất kỳ{% else %}1 free product{% endif %}</span>
-        {%- if pf_active == pf_g -%}<span class="pf-rw__badge">{% if vi %}Đang áp dụng{% else %}Applied{% endif %}</span>{%- elsif pf_sub < pf_g -%}<span class="pf-rw__need">+{{ pf_g | minus: pf_sub | money }}</span>{%- endif -%}
-      </li>
-      <li class="pf-rw{% if pf_sub >= pf_a %} is-on{% endif %}{% if pf_active == pf_a %} is-active{% endif %}">
-        <span class="pf-rw__ic">{% if pf_sub >= pf_a %}✓{% else %}○{% endif %}</span>
-        <span class="pf-rw__txt"><b>100€</b> — {% if vi %}Giảm 5€ phí ship{% else %}−5€ shipping{% endif %}</span>
-        {%- if pf_active == pf_a -%}<span class="pf-rw__badge">{% if vi %}Đang áp dụng{% else %}Applied{% endif %}</span>{%- elsif pf_sub < pf_a -%}<span class="pf-rw__need">+{{ pf_a | minus: pf_sub | money }}</span>{%- endif -%}
-      </li>
-      <li class="pf-rw{% if pf_sub >= pf_b %} is-on{% endif %}{% if pf_active == pf_b %} is-active{% endif %}">
-        <span class="pf-rw__ic">{% if pf_sub >= pf_b %}✓{% else %}○{% endif %}</span>
-        <span class="pf-rw__txt"><b>169€</b> — {% if vi %}Giảm 10€ phí ship{% else %}−10€ shipping{% endif %}</span>
-        {%- if pf_active == pf_b -%}<span class="pf-rw__badge">{% if vi %}Đang áp dụng{% else %}Applied{% endif %}</span>{%- elsif pf_sub < pf_b -%}<span class="pf-rw__need">+{{ pf_b | minus: pf_sub | money }}</span>{%- endif -%}
-      </li>
-      <li class="pf-rw{% if pf_sub >= pf_c %} is-on{% endif %}{% if pf_active == pf_c %} is-active{% endif %}">
-        <span class="pf-rw__ic">{% if pf_sub >= pf_c %}✓{% else %}○{% endif %}</span>
-        <span class="pf-rw__txt"><b>269€</b> — {% if vi %}Giảm 15€ phí ship{% else %}−15€ shipping{% endif %}</span>
-        {%- if pf_active == pf_c -%}<span class="pf-rw__badge">{% if vi %}Đang áp dụng{% else %}Applied{% endif %}</span>{%- elsif pf_sub < pf_c -%}<span class="pf-rw__need">+{{ pf_c | minus: pf_sub | money }}</span>{%- endif -%}
-      </li>
-    </ul>
-
-    <p class="pf-shipbar__note">{% if vi %}* Mỗi đơn chỉ áp dụng 1 mức cao nhất, không cộng dồn.{% else %}* One best reward per order — offers don't stack.{% endif %}</p>
-  </details>
+  <div class="pf-shipbar{% if pf_reached %} pf-shipbar--max{% endif %}">
+    <div class="pf-shipbar__head">
+      🚚 <span>{% if vi %}Ưu đãi đơn hàng{% else %}Order reward{% endif %}</span>
+    </div>
+    <div class="pf-shipbar__track"><span class="pf-shipbar__fill" style="width: {{ pf_pct }}%;"></span></div>
+    <p class="pf-shipbar__status">
+      {%- if pf_reached -%}
+        🎉 {% if vi %}Đơn của bạn đã đạt <b>169€</b> — được <b>Freeship / giảm 10%</b>!{% else %}Your order reached <b>169€</b> — enjoy <b>free shipping / 10% off</b>!{% endif %}
+      {%- else -%}
+        {% if vi %}Mua thêm <b>{{ pf_rem | money }}</b> để đạt <b>169€</b> — hưởng <b>Freeship / giảm 10%</b>{% else %}Add <b>{{ pf_rem | money }}</b> to reach <b>169€</b> — get <b>free shipping / 10% off</b>{% endif %}
+      {%- endif -%}
+    </p>
+  </div>
 
   <style>
-    .pf-shipbar { background: #fbf7ee; border: 1px solid #ecdfc4; border-radius: 12px; padding: .85rem 1rem; margin: 1rem 0; }
-    .pf-shipbar__sum { list-style: none; cursor: pointer; display: block; }
-    .pf-shipbar__sum::-webkit-details-marker { display: none; }
-    .pf-shipbar__head { display: flex; align-items: center; font-size: 1.3rem; font-weight: 800; color: #6a5c40; }
-    .pf-shipbar__chev { margin-left: auto; font-size: 1.6rem; line-height: 1; color: #b3a68a; transition: transform .2s ease; }
-    .pf-shipbar[open] .pf-shipbar__chev { transform: rotate(180deg); }
-    .pf-shipbar__toggle { display: inline-flex; align-items: center; gap: .35rem; margin: .7rem 0 0; padding: .4rem .9rem; font-size: 1.15rem; font-weight: 800; color: #1e8541; background: #eaf5ee; border: 1px solid #c8e6d2; border-radius: 999px; }
-    .pf-shipbar__tgl-ar { font-size: 1.35rem; line-height: 1; transition: transform .2s ease; }
-    .pf-shipbar[open] .pf-shipbar__tgl-ar { transform: rotate(180deg); }
-    .pf-shipbar__tgl-o { display: none; }
-    .pf-shipbar[open] .pf-shipbar__tgl-c { display: none; }
-    .pf-shipbar[open] .pf-shipbar__tgl-o { display: inline; }
-    .pf-shipbar__track { display: block; height: 7px; border-radius: 999px; background: #ece3d0; overflow: hidden; margin: .55rem 0 0; }
-    .pf-shipbar__fill { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #1e8541, #63c98a); transition: width .35s ease; }
-    .pf-shipbar__status { display: block; margin: .5rem 0 0; font-size: 1.2rem; font-weight: 600; color: #8a7b5c; line-height: 1.35; }
-    .pf-shipbar__status b { color: #d62828; font-weight: 800; }
-    .pf-shipbar__list { list-style: none; margin: .7rem 0 0; padding: .7rem 0 0; border-top: 1px dashed #e6d9bd; display: flex; flex-direction: column; gap: .35rem; }
-    .pf-rw { display: flex; align-items: center; gap: .55rem; font-size: 1.2rem; color: #a49a86; line-height: 1.3; }
-    .pf-rw__ic { flex: none; width: 1.8rem; height: 1.8rem; border-radius: 50%; display: grid; place-items: center; font-size: 1.05rem; background: #e7ddc8; color: #b3a993; }
-    .pf-rw__txt { min-width: 0; }
-    .pf-rw__txt b { color: inherit; font-weight: 800; }
-    .pf-rw.is-on { color: #5f7050; }
-    .pf-rw.is-on .pf-rw__ic { background: #1e8541; color: #fff; }
-    .pf-rw.is-active { color: #14672f; font-weight: 700; }
-    .pf-rw.is-active .pf-rw__ic { background: #14672f; }
-    .pf-rw__badge { margin-left: auto; flex: none; background: #1e8541; color: #fff; font-size: 1rem; font-weight: 800; padding: .15rem .6rem; border-radius: 999px; white-space: nowrap; }
-    .pf-rw__need { margin-left: auto; flex: none; font-size: 1.05rem; color: #c07a2a; font-weight: 700; white-space: nowrap; }
-    .pf-shipbar__note { margin: .6rem 0 0; font-size: 1.05rem; line-height: 1.35; color: #a8a08e; font-weight: 500; }
-    /* Forced-open variant (cart page) — always show all tiers, no toggle. */
-    .pf-shipbar--open .pf-shipbar__list { display: flex !important; }
-    .pf-shipbar--open .pf-shipbar__note { display: block !important; }
-    .pf-shipbar--open .pf-shipbar__chev, .pf-shipbar--open .pf-shipbar__toggle { display: none !important; }
-    .pf-shipbar--open .pf-shipbar__sum { cursor: default; }
-    .pf-shipbar--max { background: #eef7f0; border-color: #bfe0c7; }
-    .pf-shipbar--max .pf-shipbar__head { color: #14672f; }
-    .pf-shipbar--max .pf-shipbar__fill { background: linear-gradient(90deg, #1e8541, #14672f); }
-    /* Desktop: enough room — always show the full ladder, hide the toggle. */
-    @media (min-width: 750px) {
-      .pf-shipbar__list { display: flex !important; }
-      .pf-shipbar__note { display: block !important; }
-      .pf-shipbar__chev, .pf-shipbar__toggle { display: none; }
-      .pf-shipbar__sum { cursor: default; }
-    }
+    .pf-shipbar{ background:#fbf7ee; border:1px solid #ecdfc4; border-radius:12px; padding:.9rem 1.1rem; margin:1rem 0; }
+    .pf-shipbar__head{ display:flex; align-items:center; gap:.4rem; font-size:1.3rem; font-weight:800; color:#6a5c40; }
+    .pf-shipbar__track{ height:9px; border-radius:999px; background:#ece3d0; overflow:hidden; margin:.6rem 0 0; }
+    .pf-shipbar__fill{ display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,#1e8541,#63c98a); transition:width .35s ease; }
+    .pf-shipbar__status{ margin:.55rem 0 0; font-size:1.25rem; font-weight:600; color:#8a7b5c; line-height:1.4; }
+    .pf-shipbar__status b{ color:#d62828; font-weight:800; }
+    .pf-shipbar--max{ background:#eef7f0; border-color:#bfe0c7; }
+    .pf-shipbar--max .pf-shipbar__head{ color:#14672f; }
+    .pf-shipbar--max .pf-shipbar__fill{ background:linear-gradient(90deg,#1e8541,#14672f); }
+    .pf-shipbar--max .pf-shipbar__status b{ color:#14672f; }
   </style>
 {%- endunless -%}
