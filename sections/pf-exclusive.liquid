@@ -61,11 +61,19 @@
 
 {%- assign pf_handles = section.settings.product_handles | newline_to_br | split: '<br />' -%}
 {%- assign pf_initial = section.settings.pf_initial | default: 10 -%}
-{%- assign pf_valid = 0 -%}
-{%- for h in pf_handles -%}
-  {%- assign hh = h | strip | remove: '<br>' | strip -%}
-  {%- if hh != blank and all_products[hh] != blank and all_products[hh].id -%}{%- assign pf_valid = pf_valid | plus: 1 -%}{%- endif -%}
-{%- endfor -%}
+{%- comment -%} Ưu tiên lấy sản phẩm từ Danh mục (collection) nếu có chọn; nếu không thì dùng danh sách handle. {%- endcomment -%}
+{%- assign pf_col = section.settings.collection -%}
+{%- assign pf_use_col = false -%}
+{%- if pf_col != blank and pf_col.products_count > 0 -%}
+  {%- assign pf_use_col = true -%}
+  {%- assign pf_valid = pf_col.products_count -%}
+{%- else -%}
+  {%- assign pf_valid = 0 -%}
+  {%- for h in pf_handles -%}
+    {%- assign hh = h | strip | remove: '<br>' | strip -%}
+    {%- if hh != blank and all_products[hh] != blank and all_products[hh].id -%}{%- assign pf_valid = pf_valid | plus: 1 -%}{%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
 
 <div id="pf-ex-{{ section.id }}" class="pf-boxed-section">
   <div class="pf-wrap">
@@ -78,41 +86,33 @@
 
       {%- assign pf_shown = 0 -%}
       <div class="pf-ex__grid">
-        {%- for h in pf_handles -%}
-          {%- assign hh = h | strip | remove: '<br>' | strip -%}
-          {%- assign product = all_products[hh] -%}
-          {%- if hh != blank and product != blank and product.id -%}
-            {%- assign pf_shown = pf_shown | plus: 1 -%}
-            {%- assign pf_v = product.selected_or_first_available_variant -%}
-            {%- assign pf_price = pf_v.price -%}
-            {%- assign pf_cmp = pf_v.compare_at_price -%}
-            {%- if pf_cmp == blank or pf_cmp <= pf_price -%}{%- assign pf_cmp = product.compare_at_price_max -%}{%- endif -%}
-            <div class="pf-ex__card{% if pf_shown > pf_initial %} pf-ex__card--hidden{% endif %}">
-              <span class="pf-ex__badge">{% if request.locale.iso_code == "vi" %}⭐ Độc quyền{% else %}⭐ Exclusive{% endif %}</span>
-              <a class="pf-ex__media" href="{{ product.url }}">
-                {%- if pf_cmp > pf_price -%}
-                  <span class="pf-ex__sale">-{{ pf_cmp | minus: pf_price | times: 100.0 | divided_by: pf_cmp | round }}%</span>
-                {%- endif -%}
-                {%- if product.featured_image -%}
-                  <img src="{{ product.featured_image | image_url: width: 500 }}" alt="{{ product.title | escape }}" loading="lazy" width="500" height="500">
-                {%- else -%}
-                  {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
-                {%- endif -%}
-              </a>
-              <div class="pf-ex__info">
-                <h3 class="pf-ex__nm"><a href="{{ product.url }}">{{ product.title }}</a></h3>
-                {% render 'pf-sold-badge', p: product %}
-                <div class="pf-ex__price">
-                  <span class="now">{{ pf_price | money }}</span>
-                  {%- if pf_cmp > pf_price -%}<span class="was">{{ pf_cmp | money }}</span>{%- endif -%}
-                </div>
-                {% render 'pf-card-buttons', product: product, section_id: section.id %}
-              </div>
-            </div>
-          {%- endif -%}
-        {%- endfor -%}
+        {%- if pf_use_col -%}
+          {%- for product in pf_col.products -%}
+            {%- if product != blank and product.id -%}
+              {%- assign pf_shown = pf_shown | plus: 1 -%}
+              {%- if pf_shown > pf_initial -%}
+                {% render 'pf-ex-card', product: product, section_id: section.id, hidden: true %}
+              {%- else -%}
+                {% render 'pf-ex-card', product: product, section_id: section.id %}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for h in pf_handles -%}
+            {%- assign hh = h | strip | remove: '<br>' | strip -%}
+            {%- assign product = all_products[hh] -%}
+            {%- if hh != blank and product != blank and product.id -%}
+              {%- assign pf_shown = pf_shown | plus: 1 -%}
+              {%- if pf_shown > pf_initial -%}
+                {% render 'pf-ex-card', product: product, section_id: section.id, hidden: true %}
+              {%- else -%}
+                {% render 'pf-ex-card', product: product, section_id: section.id %}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
         {%- if pf_valid == 0 -%}
-          <p class="pf-ex__sub">{% if request.locale.iso_code == "vi" %}Chưa có sản phẩm — thêm handle sản phẩm trong cài đặt section.{% else %}No products yet — add product handles in section settings.{% endif %}</p>
+          <p class="pf-ex__sub">{% if request.locale.iso_code == "vi" %}Chưa có sản phẩm — chọn Danh mục hàng độc quyền hoặc thêm handle trong cài đặt section.{% else %}No products yet — pick a collection or add product handles in section settings.{% endif %}</p>
         {%- endif -%}
       </div>
 
@@ -152,7 +152,8 @@
     { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "Sản phẩm độc quyền" },
     { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Chỉ có tại Phomifood" },
     { "type": "text", "id": "subheading", "label": "Phụ đề", "default": "Những món độc quyền chỉ Phomifood mới có — không tìm thấy ở nơi nào khác tại châu Âu." },
-    { "type": "textarea", "id": "product_handles", "label": "Danh sách sản phẩm (mỗi dòng 1 handle)", "info": "Handle lấy từ URL sản phẩm (phần sau /products/).", "default": "miến-lẩu-thai-vifon\ncombo-4-hộp-ca-thu-chien-sốt-tương-ớt-roza\nkho-quẹt-chay\ncốt-lếch-chay\nsườn-chay-xao-sả-ớt\nsườn-non-chay\nbun-bo-huế-vifon-thịt-thật\ncombo-5-goi-banh-da-trộn-vifon\nmỳ-quảng-hội-an-an-liền-cathifood-4-vị\ncanh-chua-isoup" },
+    { "type": "collection", "id": "collection", "label": "Danh mục hàng độc quyền", "info": "Chọn danh mục — section sẽ tự lấy sản phẩm trong danh mục này. Nếu để trống sẽ dùng danh sách handle bên dưới." },
+    { "type": "textarea", "id": "product_handles", "label": "Danh sách sản phẩm (dự phòng — mỗi dòng 1 handle)", "info": "Chỉ dùng khi KHÔNG chọn danh mục ở trên. Handle lấy từ URL sản phẩm (phần sau /products/).", "default": "miến-lẩu-thai-vifon\ncombo-4-hộp-ca-thu-chien-sốt-tương-ớt-roza\nkho-quẹt-chay\ncốt-lếch-chay\nsườn-chay-xao-sả-ớt\nsườn-non-chay\nbun-bo-huế-vifon-thịt-thật\ncombo-5-goi-banh-da-trộn-vifon\nmỳ-quảng-hội-an-an-liền-cathifood-4-vị\ncanh-chua-isoup" },
     { "type": "range", "id": "columns_desktop", "min": 3, "max": 6, "step": 1, "label": "Số cột (desktop)", "default": 5 },
     { "type": "range", "id": "pf_initial", "min": 3, "max": 20, "step": 1, "label": "Số sản phẩm hiện ban đầu (còn lại ẩn sau nút Xem thêm)", "default": 10 },
     { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 40 },
