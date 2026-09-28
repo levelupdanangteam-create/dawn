@@ -60,6 +60,8 @@
                   {%- endif -%}
                 </div>
 
+                {% render 'pf-order-timeline' %}
+
                 <div class="totals">
                   <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
                   <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
@@ -139,10 +141,6 @@
           {%- endcase -%}
         {% endfor %}
 
-        {%- unless cart == empty -%}
-          {% render 'pf-order-timeline' %}
-        {%- endunless -%}
-
         <div id="cart-errors"></div>
       </div>
 
@@ -157,6 +155,34 @@
     </div>
   </div>
 </div>
+
+<script>
+  // Điền ngày cho box "Quy trình đơn hàng" trên trang giỏ — bền với việc
+  // giỏ tự cập nhật (đổi số lượng) làm re-render vùng .js-contents.
+  (function () {
+    var root = document.getElementById('main-cart-footer');
+    if (!root) return;
+    function fmt(d){ return ('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2); }
+    function addDays(b,n){ var d=new Date(b.getTime()); d.setDate(d.getDate()+n); return d; }
+    var mo;
+    function fill(){
+      var boxes = root.querySelectorAll('[data-pf-otl]');
+      if(!boxes.length) return;
+      if(mo) mo.disconnect();
+      boxes.forEach(function(box){
+        var now=new Date(), c=addDays(now,1), f=addDays(now,4), t=addDays(now,6);
+        var set=function(k,v){ var el=box.querySelector('[data-otl="'+k+'"]'); if(el && el.textContent!==v) el.textContent=v; };
+        set('order', fmt(now));
+        set('confirm', fmt(c));
+        var same=f.getMonth()===t.getMonth();
+        set('deliver', same ? (('0'+f.getDate()).slice(-2)+' – '+fmt(t)) : (fmt(f)+' – '+fmt(t)));
+      });
+      if(mo) mo.observe(root,{childList:true,subtree:true});
+    }
+    mo = new MutationObserver(function(){ fill(); });
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', fill); else fill();
+  })();
+</script>
 
 {% schema %}
 {
