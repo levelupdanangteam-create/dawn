@@ -27,6 +27,7 @@
       <span class="pf-otl__body">
         <span class="pf-otl__label">{% if pf_vi %}Xác nhận đơn{% else %}Order confirmed{% endif %}</span>
         <span class="pf-otl__date" data-otl="confirm">—</span>
+        <span class="pf-otl__sub">{% if pf_vi %}📧 Nhận email thông báo &amp; theo dõi (tracking) đơn hàng{% else %}📧 You'll get an email with order tracking{% endif %}</span>
       </span>
     </li>
     <li class="pf-otl__step pf-otl__step--last">
@@ -71,6 +72,7 @@
     align-self:flex-start;font-weight:800;font-size:1.25rem;color:#14672f;font-variant-numeric:tabular-nums;
     background:#e6f2ea;border-radius:8px;padding:.2rem .6rem;line-height:1.35;
   }
+  .pf-otl__sub{font-size:1.05rem;color:#5f6b60;line-height:1.35;margin-top:.15rem}
   .pf-otl__note{margin:1.2rem 0 0;font-size:1.1rem;color:#5f6b60;line-height:1.4}
 
   /* ---------- DESKTOP: timeline NGANG (≥640px) ---------- */

@@ -139,6 +139,10 @@
           {%- endcase -%}
         {% endfor %}
 
+        {%- unless cart == empty -%}
+          {% render 'pf-order-timeline' %}
+        {%- endunless -%}
+
         <div id="cart-errors"></div>
       </div>
 
