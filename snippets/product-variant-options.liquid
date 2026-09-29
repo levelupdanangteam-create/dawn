@@ -37,7 +37,18 @@
     if value.available
       assign option_disabled = false
     endif
+
+    # PHOMIFOOD: ẩn hẳn quy cách "Combo 10" / "Lẻ" khi đang bị tắt bán (hết hàng + chặn bán).
+    # Không ẩn nếu đang được chọn (ví dụ khách vào từ link ?variant=).
+    assign pf_hide = false
+    if option_disabled and value.selected == false
+      assign pf_val = value.name | downcase
+      if pf_val contains 'combo 10' or pf_val contains 'lẻ'
+        assign pf_hide = true
+      endif
+    endif
   -%}
+  {%- if pf_hide -%}{%- continue -%}{%- endif -%}
 
   {%- capture input_id -%}
     {{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}
