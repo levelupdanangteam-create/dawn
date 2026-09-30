@@ -222,7 +222,8 @@
       }
     },
     "pf_geoblock_on": true,
-    "pf_geoblock_countries": "US"
+    "pf_geoblock_countries": "US",
+    "pf_logo_url": "https://cdn.shopify.com/s/files/1/0847/0557/5140/files/739112195_1827580091981267_4983752128548169573_n.jpg?v=1790759216"
   },
   "presets": {
     "Dawn": {

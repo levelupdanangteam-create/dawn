@@ -1524,6 +1524,17 @@
       },
       {
         "type": "header",
+        "content": "Logo"
+      },
+      {
+        "type": "text",
+        "id": "pf_logo_url",
+        "label": "Link ảnh logo",
+        "default": "https://cdn.shopify.com/s/files/1/0847/0557/5140/files/739112195_1827580091981267_4983752128548169573_n.jpg?v=1790759216",
+        "info": "Dán link ảnh (vd từ Nội dung → Tệp). Khi có link, header dùng ảnh này thay cho logo ở mục Logo. Để trống để dùng logo tải lên."
+      },
+      {
+        "type": "header",
         "content": "Ngôn ngữ"
       },
       {
