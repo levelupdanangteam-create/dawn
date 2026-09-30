@@ -1,0 +1,150 @@
+{%- comment -%}
+  Danh mục icon tròn — section độc lập (CSS nằm ngay trong file, không cần file khác).
+  Tiêu đề trái + "View all" phải; mỗi ô = ảnh tròn + tên bên dưới.
+  Máy tính: dàn đều nhiều cột. Điện thoại: trượt ngang 1–2 hàng.
+  Ảnh ưu tiên: ảnh tải lên → ảnh danh mục → ảnh sản phẩm đầu tiên → emoji.
+{%- endcomment -%}
+<style>
+  #pfcc-{{ section.id }} { padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px; }
+  #pfcc-{{ section.id }} .pfcc__wrap { max-width: var(--page-width, 120rem); margin: 0 auto; padding: 0 clamp(1.6rem, 3vw, 3rem); }
+  #pfcc-{{ section.id }} .pfcc__box { background: {{ section.settings.box_color }}; border-radius: 18px; padding: clamp(1.6rem, 2.4vw, 2.6rem); box-shadow: 0 2px 10px rgba(120, 100, 70, .06); }
+  #pfcc-{{ section.id }} .pfcc__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.6rem; margin-bottom: 1.8rem; }
+  #pfcc-{{ section.id }} .pfcc__title { margin: 0; font-family: var(--font-heading-family, sans-serif); font-weight: 800; font-size: clamp(2rem, 2.4vw, 2.6rem); line-height: 1.2; color: #2a2622; }
+  #pfcc-{{ section.id }} .pfcc__all { flex: none; display: inline-flex; align-items: center; gap: .4rem; font-size: 1.4rem; font-weight: 800; color: #1e8541; text-decoration: none; white-space: nowrap; }
+  #pfcc-{{ section.id }} .pfcc__all:hover { color: #d62828; }
+  #pfcc-{{ section.id }} .pfcc__grid { display: grid; grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr)); gap: 1.6rem 1.2rem; }
+  #pfcc-{{ section.id }} .pfcc__item { display: flex; flex-direction: column; align-items: center; gap: .8rem; text-align: center; text-decoration: none; }
+  #pfcc-{{ section.id }} .pfcc__img {
+    width: 100%; max-width: 9.6rem; aspect-ratio: 1 / 1; border-radius: 50%; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    background: #f7f1e9; border: 2px solid #ece3d4;
+    transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+  }
+  #pfcc-{{ section.id }} .pfcc__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #pfcc-{{ section.id }} .pfcc__img--contain { background: #fff; }
+  #pfcc-{{ section.id }} .pfcc__img--contain img { object-fit: contain; padding: 14%; }
+  #pfcc-{{ section.id }} .pfcc__img svg { width: 100%; height: 100%; }
+  #pfcc-{{ section.id }} .pfcc__emoji { font-size: 3.4rem; line-height: 1; }
+  #pfcc-{{ section.id }} .pfcc__item:hover .pfcc__img { border-color: #1e8541; transform: translateY(-3px); box-shadow: 0 8px 18px rgba(20, 90, 45, .16); }
+  #pfcc-{{ section.id }} .pfcc__name { font-size: 1.3rem; font-weight: 700; line-height: 1.25; color: #2a2622; }
+  #pfcc-{{ section.id }} .pfcc__item:hover .pfcc__name { color: #1e8541; }
+  @media screen and (max-width: 989px) {
+    #pfcc-{{ section.id }} .pfcc__grid {
+      grid-template-columns: none; grid-auto-flow: column; grid-template-rows: repeat({{ section.settings.rows_mobile }}, auto);
+      grid-auto-columns: 7.6rem; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: .8rem; scrollbar-width: none;
+    }
+    #pfcc-{{ section.id }} .pfcc__grid::-webkit-scrollbar { display: none; }
+    #pfcc-{{ section.id }} .pfcc__item { scroll-snap-align: start; }
+    #pfcc-{{ section.id }} .pfcc__name { font-size: 1.2rem; }
+  }
+</style>
+
+<div id="pfcc-{{ section.id }}">
+  <div class="pfcc__wrap">
+    <div class="pfcc__box">
+      {%- if section.settings.heading != blank or section.settings.all_label != blank -%}
+        <div class="pfcc__head">
+          <h2 class="pfcc__title">{{ section.settings.heading }}</h2>
+          {%- if section.settings.all_label != blank -%}
+            <a class="pfcc__all" href="{{ section.settings.all_link | default: routes.collections_url }}">
+              {{ section.settings.all_label }}
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <div class="pfcc__grid">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign c = block.settings.collection
+            assign label = block.settings.label
+            if label == blank and c != blank
+              assign label = c.title
+            endif
+            assign url = block.settings.link
+            if url == blank and c != blank
+              assign url = c.url
+            endif
+            if url == blank
+              assign url = routes.collections_url
+            endif
+            assign img = block.settings.image
+            assign contain = false
+            if img == blank and c != blank
+              if c.featured_image != blank
+                assign img = c.featured_image
+              elsif c.products.first.featured_image != blank
+                assign img = c.products.first.featured_image
+                assign contain = true
+              endif
+            endif
+          -%}
+          <a class="pfcc__item" href="{{ url }}" {{ block.shopify_attributes }}>
+            <span class="pfcc__img{% if contain %} pfcc__img--contain{% endif %}">
+              {%- if img != blank -%}
+                <img src="{{ img | image_url: width: 200 }}" alt="" width="96" height="96" loading="lazy">
+              {%- elsif block.settings.emoji != blank -%}
+                <span class="pfcc__emoji" aria-hidden="true">{{ block.settings.emoji }}</span>
+              {%- else -%}
+                {{ 'collection-1' | placeholder_svg_tag }}
+              {%- endif -%}
+            </span>
+            <span class="pfcc__name">{{ label | default: 'Category' }}</span>
+          </a>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Danh mục icon tròn",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 24,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Shop by category" },
+    { "type": "text", "id": "all_label", "label": "Chữ link bên phải", "default": "View all", "info": "Để trống để ẩn link" },
+    { "type": "url", "id": "all_link", "label": "Link bên phải", "info": "Để trống = trang tất cả danh mục" },
+    { "type": "range", "id": "columns_desktop", "min": 4, "max": 12, "step": 1, "label": "Số cột trên máy tính", "default": 12 },
+    { "type": "range", "id": "rows_mobile", "min": 1, "max": 2, "step": 1, "label": "Số hàng trên điện thoại", "default": 2 },
+    { "type": "color", "id": "box_color", "label": "Màu nền khung", "default": "#ffffff" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 16 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 16 }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Danh mục",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Danh mục" },
+        { "type": "text", "id": "label", "label": "Tên hiển thị", "info": "Để trống = tên danh mục" },
+        { "type": "image_picker", "id": "image", "label": "Ảnh (tuỳ chọn)", "info": "Để trống = ảnh danh mục hoặc ảnh sản phẩm đầu tiên" },
+        { "type": "text", "id": "emoji", "label": "Emoji dự phòng", "info": "Hiện khi không có ảnh nào" },
+        { "type": "url", "id": "link", "label": "Link khác (tuỳ chọn)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Danh mục icon tròn",
+      "blocks": [
+        { "type": "category", "settings": { "label": "Best sellers", "emoji": "🔥" } },
+        { "type": "category", "settings": { "label": "Instant noodles", "emoji": "🍜" } },
+        { "type": "category", "settings": { "label": "Rice noodles & pho", "emoji": "🍲" } },
+        { "type": "category", "settings": { "label": "Sauces & spices", "emoji": "🧂" } },
+        { "type": "category", "settings": { "label": "Snacks & sweets", "emoji": "🍬" } },
+        { "type": "category", "settings": { "label": "Drinks", "emoji": "🧃" } },
+        { "type": "category", "settings": { "label": "Ready to eat", "emoji": "🥘" } },
+        { "type": "category", "settings": { "label": "Rice", "emoji": "🍚" } },
+        { "type": "category", "settings": { "label": "Rice paper", "emoji": "🫓" } },
+        { "type": "category", "settings": { "label": "Milk & dairy", "emoji": "🥛" } },
+        { "type": "category", "settings": { "label": "Bundles", "emoji": "🎁" } },
+        { "type": "category", "settings": { "label": "Exclusives", "emoji": "⭐" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
