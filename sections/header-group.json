@@ -17,7 +17,7 @@
         "announcement_freeship": {
           "type": "announcement",
           "settings": {
-            "text": "🚚 Freeship đơn hàng từ 169€ hoặc giảm 10%",
+            "text": "🚚 Free shipping on orders over 169 € · Authentic Vietnamese groceries delivered across Europe",
             "link": ""
           }
         }
@@ -38,7 +38,7 @@
     "header": {
       "type": "header",
       "settings": {
-        "logo_position": "middle-left",
+        "logo_position": "top-left",
         "mobile_logo_position": "center",
         "menu": "main-menu",
         "menu_type_desktop": "dropdown",
@@ -51,7 +51,8 @@
         "enable_customer_avatar": false,
         "margin_bottom": 0,
         "padding_top": 8,
-        "padding_bottom": 8
+        "padding_bottom": 8,
+        "pf_search_bar": true
       }
     },
     "pf_hero_slideshow_UijQAg": {

@@ -1,0 +1,147 @@
+{%- comment -%}
+  Dải cam kết / lý do mua hàng (free ship, hàng chính hãng, thanh toán an toàn…).
+  2 kiểu: "strip" = dải gọn ngay dưới banner; "cards" = khối icon lớn cuối trang.
+{%- endcomment -%}
+{%- capture ic_truck -%}<path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>{%- endcapture -%}
+{%- capture ic_leaf -%}<path d="M5 19c0-8 6-13 15-14-1 9-6 15-14 15"/><path d="M5 19c3-4 6-6 10-8"/>{%- endcapture -%}
+{%- capture ic_lock -%}<rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>{%- endcapture -%}
+{%- capture ic_star -%}<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>{%- endcapture -%}
+{%- capture ic_box -%}<path d="M21 16V8l-9-5-9 5v8l9 5z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/>{%- endcapture -%}
+{%- capture ic_clock -%}<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>{%- endcapture -%}
+{%- capture ic_chat -%}<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>{%- endcapture -%}
+{%- capture ic_return -%}<path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/>{%- endcapture -%}
+{%- capture ic_tag -%}<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="7.5" r="1.4"/>{%- endcapture -%}
+
+<style>
+  #pf-usp-{{ section.id }} { padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px; }
+  #pf-usp-{{ section.id }} .pf-usp__list { display: grid; grid-template-columns: repeat({{ section.blocks.size | at_least: 1 }}, minmax(0, 1fr)); gap: 1.2rem; margin: 0; padding: 0; list-style: none; }
+  #pf-usp-{{ section.id }} .pf-usp__item { display: flex; align-items: center; gap: 1rem; color: #2a2622; text-decoration: none; min-width: 0; }
+  #pf-usp-{{ section.id }} .pf-usp__ic { flex: none; display: grid; place-items: center; border-radius: 50%; color: #1e8541; background: #e7f3ea; }
+  #pf-usp-{{ section.id }} .pf-usp__title { display: block; font-weight: 800; line-height: 1.25; }
+  #pf-usp-{{ section.id }} .pf-usp__text { display: block; color: #6a6255; line-height: 1.35; }
+  #pf-usp-{{ section.id }} .pf-usp__stars { color: #f2c14e; letter-spacing: .08em; }
+
+  /* strip */
+  #pf-usp-{{ section.id }}.pf-usp--strip .pf-panel__inner { padding-block: 1.2rem; }
+  #pf-usp-{{ section.id }}.pf-usp--strip .pf-usp__ic { width: 3.8rem; height: 3.8rem; }
+  #pf-usp-{{ section.id }}.pf-usp--strip .pf-usp__title { font-size: 1.35rem; }
+  #pf-usp-{{ section.id }}.pf-usp--strip .pf-usp__text { font-size: 1.2rem; }
+  #pf-usp-{{ section.id }}.pf-usp--strip .pf-usp__item + .pf-usp__item { border-left: 1px solid #ece3d4; padding-left: 1.2rem; }
+
+  /* cards */
+  #pf-usp-{{ section.id }}.pf-usp--cards .pf-usp__item { flex-direction: column; text-align: center; gap: 1.2rem; padding: 1.2rem; }
+  #pf-usp-{{ section.id }}.pf-usp--cards .pf-usp__ic { width: 6.4rem; height: 6.4rem; }
+  #pf-usp-{{ section.id }}.pf-usp--cards .pf-usp__ic svg { width: 30px; height: 30px; }
+  #pf-usp-{{ section.id }}.pf-usp--cards .pf-usp__title { font-size: 1.6rem; }
+  #pf-usp-{{ section.id }}.pf-usp--cards .pf-usp__text { font-size: 1.35rem; margin-top: .4rem; }
+
+  @media (max-width: 989px) {
+    #pf-usp-{{ section.id }}.pf-usp--strip .pf-usp__list {
+      grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(22rem, 1fr);
+      overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+    }
+    #pf-usp-{{ section.id }}.pf-usp--strip .pf-usp__list::-webkit-scrollbar { display: none; }
+    #pf-usp-{{ section.id }}.pf-usp--strip .pf-usp__item { scroll-snap-align: start; }
+    #pf-usp-{{ section.id }}.pf-usp--cards .pf-usp__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+</style>
+
+<div id="pf-usp-{{ section.id }}" class="pf-usp pf-usp--{{ section.settings.style }}">
+  <div class="pf-panel{% unless section.settings.boxed %} pf-panel--flat{% endunless %}">
+    <div class="pf-panel__inner">
+      <ul class="pf-usp__list">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            case block.settings.icon
+              when 'truck'
+                assign ic = ic_truck
+              when 'leaf'
+                assign ic = ic_leaf
+              when 'lock'
+                assign ic = ic_lock
+              when 'star'
+                assign ic = ic_star
+              when 'box'
+                assign ic = ic_box
+              when 'clock'
+                assign ic = ic_clock
+              when 'chat'
+                assign ic = ic_chat
+              when 'return'
+                assign ic = ic_return
+              else
+                assign ic = ic_tag
+            endcase
+            if block.settings.link != blank
+              assign tag = 'a'
+            else
+              assign tag = 'div'
+            endif
+          -%}
+          <li {{ block.shopify_attributes }}>
+            <{{ tag }} class="pf-usp__item"{% if block.settings.link != blank %} href="{{ block.settings.link }}"{% endif %}>
+              <span class="pf-usp__ic">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{{ ic }}</svg>
+              </span>
+              <span>
+                <span class="pf-usp__title">
+                  {%- if block.settings.icon == 'star' and block.settings.show_stars -%}<span class="pf-usp__stars" aria-hidden="true">★★★★★</span> {% endif -%}
+                  {{- block.settings.title -}}
+                </span>
+                {%- if block.settings.text != blank -%}<span class="pf-usp__text">{{ block.settings.text }}</span>{%- endif -%}
+              </span>
+            </{{ tag }}>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Dải cam kết",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "select", "id": "style", "label": "Kiểu", "default": "strip",
+      "options": [
+        { "value": "strip", "label": "Dải gọn (dưới banner)" },
+        { "value": "cards", "label": "Icon lớn (cuối trang)" }
+      ]
+    },
+    { "type": "checkbox", "id": "boxed", "label": "Đặt trong khung trắng", "default": true },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 12 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 12 }
+  ],
+  "blocks": [
+    {
+      "type": "usp",
+      "name": "Cam kết",
+      "settings": [
+        {
+          "type": "select", "id": "icon", "label": "Icon", "default": "truck",
+          "options": [
+            { "value": "truck", "label": "Xe giao hàng" },
+            { "value": "leaf", "label": "Lá (tự nhiên / chính hãng)" },
+            { "value": "lock", "label": "Ổ khoá (thanh toán an toàn)" },
+            { "value": "star", "label": "Ngôi sao (đánh giá)" },
+            { "value": "box", "label": "Hộp hàng" },
+            { "value": "clock", "label": "Đồng hồ (giao nhanh)" },
+            { "value": "chat", "label": "Tin nhắn (hỗ trợ)" },
+            { "value": "return", "label": "Mũi tên (đổi trả)" },
+            { "value": "tag", "label": "Nhãn giá" }
+          ]
+        },
+        { "type": "checkbox", "id": "show_stars", "label": "Hiện 5 sao trước tiêu đề (chỉ với icon ngôi sao)", "default": false },
+        { "type": "text", "id": "title", "label": "Tiêu đề", "default": "Free shipping from 169 €" },
+        { "type": "text", "id": "text", "label": "Mô tả ngắn" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [{ "name": "Dải cam kết", "blocks": [{ "type": "usp" }, { "type": "usp" }, { "type": "usp" }] }]
+}
+{% endschema %}

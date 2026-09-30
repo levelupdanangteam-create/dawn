@@ -1,0 +1,96 @@
+{%- comment -%}
+  Khối đăng ký email nhận ưu đãi (kiểu MAOMAO "10% Rabatt"): nền vàng nhạt, tiêu đề lớn, ô email.
+  Dùng form 'customer' của Shopify → khách được thêm vào danh sách nhận tin (Khách hàng → Đăng ký nhận email).
+  Mã giảm giá gửi qua Shopify Email / flow chào mừng, KHÔNG hiện trực tiếp ở đây.
+{%- endcomment -%}
+<style>
+  #pf-nl-{{ section.id }} { padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px; }
+  #pf-nl-{{ section.id }} .pf-nl {
+    position: relative; overflow: hidden; text-align: center; border-radius: 18px;
+    background: #fdf3d6; border: 2px dashed #f2c14e; padding: clamp(2.4rem, 4vw, 4rem) clamp(1.6rem, 4vw, 4rem);
+  }
+  #pf-nl-{{ section.id }} .pf-nl__eyebrow {
+    display: inline-block; margin-bottom: 1rem; padding: .4rem 1rem; border-radius: 999px;
+    background: #d62828; color: #fff; font-size: 1.2rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+  }
+  #pf-nl-{{ section.id }} .pf-nl__title { margin: 0; font-family: var(--font-heading-family, sans-serif); font-weight: 800; font-size: clamp(2.2rem, 3vw, 3rem); line-height: 1.2; color: #2a2622; }
+  #pf-nl-{{ section.id }} .pf-nl__text { max-width: 56ch; margin: 1rem auto 0; font-size: 1.45rem; color: #4a443c; }
+  #pf-nl-{{ section.id }} .pf-nl__form { display: flex; gap: .8rem; max-width: 52rem; margin: 2rem auto 0; }
+  #pf-nl-{{ section.id }} .pf-nl__input {
+    flex: 1; min-width: 0; height: 4.8rem; padding: 0 1.8rem; border-radius: 999px; border: 1.5px solid #e2d3a6;
+    background: #fff; font: inherit; font-size: 1.5rem; color: #2a2622;
+  }
+  #pf-nl-{{ section.id }} .pf-nl__input:focus { outline: none; border-color: #1e8541; box-shadow: 0 0 0 3px rgba(30,133,65,.15); }
+  #pf-nl-{{ section.id }} .pf-nl__btn {
+    flex: none; height: 4.8rem; padding: 0 2.4rem; border: 0; border-radius: 999px; cursor: pointer;
+    background: #1e8541; color: #fff; font: inherit; font-size: 1.5rem; font-weight: 800; transition: background .15s ease;
+  }
+  #pf-nl-{{ section.id }} .pf-nl__btn:hover { background: #14672f; }
+  #pf-nl-{{ section.id }} .pf-nl__note { margin: 1.2rem auto 0; max-width: 60ch; font-size: 1.15rem; color: #8a8175; }
+  #pf-nl-{{ section.id }} .pf-nl__msg { margin: 1.4rem 0 0; font-size: 1.45rem; font-weight: 700; }
+  #pf-nl-{{ section.id }} .pf-nl__msg--ok { color: #1e8541; }
+  #pf-nl-{{ section.id }} .pf-nl__msg--err { color: #d62828; }
+  @media (max-width: 599px) {
+    #pf-nl-{{ section.id }} .pf-nl__form { flex-direction: column; }
+    #pf-nl-{{ section.id }} .pf-nl__btn { width: 100%; }
+  }
+</style>
+
+<div id="pf-nl-{{ section.id }}">
+  <div class="pf-panel pf-panel--flat">
+    <div class="pf-panel__inner">
+      <div class="pf-nl">
+        {%- if section.settings.eyebrow != blank -%}<span class="pf-nl__eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+        <h2 class="pf-nl__title">{{ section.settings.heading }}</h2>
+        {%- if section.settings.text != blank -%}<div class="pf-nl__text">{{ section.settings.text }}</div>{%- endif -%}
+
+        {%- assign pf_nl_form_id = 'PfNewsletter-' | append: section.id -%}
+        {%- form 'customer', id: pf_nl_form_id -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          {%- if form.posted_successfully? -%}
+            <p class="pf-nl__msg pf-nl__msg--ok" role="status">{{ 'pf.newsletter_success' | t }}</p>
+          {%- else -%}
+            <div class="pf-nl__form">
+              <label class="visually-hidden" for="PfNlEmail-{{ section.id }}">{{ 'pf.newsletter_placeholder' | t }}</label>
+              <input
+                id="PfNlEmail-{{ section.id }}"
+                class="pf-nl__input"
+                type="email"
+                name="contact[email]"
+                required
+                autocomplete="email"
+                autocorrect="off"
+                autocapitalize="off"
+                placeholder="{{ 'pf.newsletter_placeholder' | t }}"
+              >
+              <button type="submit" class="pf-nl__btn">{{ section.settings.button_label }}</button>
+            </div>
+            {%- if form.errors -%}
+              <p class="pf-nl__msg pf-nl__msg--err" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endform -%}
+
+        {%- if section.settings.note != blank -%}<p class="pf-nl__note">{{ section.settings.note }}</p>{%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Đăng ký nhận ưu đãi",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "Newsletter" },
+    { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Get 10% off your first order" },
+    { "type": "richtext", "id": "text", "label": "Mô tả", "default": "<p>Sign up for new arrivals, recipes and member-only deals.</p>" },
+    { "type": "text", "id": "button_label", "label": "Nhãn nút", "default": "Get my discount" },
+    { "type": "text", "id": "note", "label": "Ghi chú nhỏ", "default": "You can unsubscribe at any time. See our privacy policy." },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 12 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 12 }
+  ],
+  "presets": [{ "name": "Đăng ký nhận ưu đãi" }]
+}
+{% endschema %}

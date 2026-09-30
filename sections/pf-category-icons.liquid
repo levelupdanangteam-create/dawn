@@ -1,0 +1,104 @@
+{%- comment -%}
+  Lưới danh mục dạng icon tròn (kiểu "Kategorien" của MAOMAO):
+  ảnh tròn + tên ngắn, desktop dàn đều nhiều cột, điện thoại trượt ngang.
+  Mỗi block = 1 danh mục; ảnh lấy từ block, nếu trống thì lấy ảnh danh mục / sản phẩm đầu tiên.
+{%- endcomment -%}
+<style>
+  #pf-cic-{{ section.id }} { padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px; }
+  #pf-cic-{{ section.id }} .pf-cic__grid {
+    display: grid; grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr)); gap: 1.6rem 1.2rem;
+  }
+  #pf-cic-{{ section.id }} .pf-cic__item { display: flex; flex-direction: column; align-items: center; gap: .8rem; text-decoration: none; text-align: center; }
+  #pf-cic-{{ section.id }} .pf-cic__img {
+    width: 100%; max-width: 9.6rem; aspect-ratio: 1; border-radius: 50%; overflow: hidden;
+    background: #f7f1e9; border: 2px solid #ece3d4; display: grid; place-items: center;
+    transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+  }
+  #pf-cic-{{ section.id }} .pf-cic__img img { width: 100%; height: 100%; object-fit: cover; }
+  #pf-cic-{{ section.id }} .pf-cic__img--contain img { object-fit: contain; padding: 14%; }
+  #pf-cic-{{ section.id }} .pf-cic__emoji { font-size: 3.4rem; line-height: 1; }
+  #pf-cic-{{ section.id }} .pf-cic__item:hover .pf-cic__img { border-color: #1e8541; transform: translateY(-3px); box-shadow: 0 8px 18px rgba(20,90,45,.16); }
+  #pf-cic-{{ section.id }} .pf-cic__name { font-size: 1.3rem; font-weight: 700; line-height: 1.25; color: #2a2622; }
+  #pf-cic-{{ section.id }} .pf-cic__item:hover .pf-cic__name { color: #1e8541; }
+  @media (max-width: 989px) {
+    #pf-cic-{{ section.id }} .pf-cic__grid {
+      grid-auto-flow: column; grid-template-columns: none; grid-template-rows: repeat({{ section.settings.rows_mobile }}, auto);
+      grid-auto-columns: 7.6rem; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: .8rem; scrollbar-width: none;
+    }
+    #pf-cic-{{ section.id }} .pf-cic__grid::-webkit-scrollbar { display: none; }
+    #pf-cic-{{ section.id }} .pf-cic__item { scroll-snap-align: start; }
+    #pf-cic-{{ section.id }} .pf-cic__name { font-size: 1.2rem; }
+  }
+</style>
+
+<div id="pf-cic-{{ section.id }}">
+  <div class="pf-panel{% unless section.settings.boxed %} pf-panel--flat{% endunless %}">
+    <div class="pf-panel__inner">
+      {%- if section.settings.heading != blank -%}
+        <div class="pf-rowhead"><h2 class="pf-rowhead__title">{{ section.settings.heading }}</h2></div>
+      {%- endif -%}
+      <div class="pf-cic__grid">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign c = block.settings.collection
+            assign label = block.settings.label | default: c.title
+            assign url = block.settings.link | default: c.url | default: routes.all_products_collection_url
+            assign img = block.settings.image
+            assign contain = false
+            if img == blank and c != blank
+              if c.featured_image
+                assign img = c.featured_image
+              else
+                assign img = c.products.first.featured_image
+                assign contain = true
+              endif
+            endif
+          -%}
+          <a class="pf-cic__item" href="{{ url }}" {{ block.shopify_attributes }}>
+            <span class="pf-cic__img{% if contain %} pf-cic__img--contain{% endif %}">
+              {%- if img != blank -%}
+                {{ img | image_url: width: 200 | image_tag: loading: 'lazy', width: 96, height: 96, alt: '' }}
+              {%- elsif block.settings.emoji != blank -%}
+                <span class="pf-cic__emoji" aria-hidden="true">{{ block.settings.emoji }}</span>
+              {%- else -%}
+                {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </span>
+            <span class="pf-cic__name">{{ label | default: 'Category' }}</span>
+          </a>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Danh mục dạng icon",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Shop by category" },
+    { "type": "range", "id": "columns_desktop", "min": 4, "max": 12, "step": 1, "label": "Số cột trên máy tính", "default": 8 },
+    { "type": "range", "id": "rows_mobile", "min": 1, "max": 2, "step": 1, "label": "Số hàng trên điện thoại", "default": 2 },
+    { "type": "checkbox", "id": "boxed", "label": "Đặt trong khung trắng", "default": true },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 12 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 12 }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Danh mục",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Danh mục" },
+        { "type": "text", "id": "label", "label": "Tên hiển thị", "info": "Để trống = tên danh mục" },
+        { "type": "image_picker", "id": "image", "label": "Ảnh (tuỳ chọn)", "info": "Để trống = ảnh danh mục hoặc sản phẩm đầu tiên" },
+        { "type": "text", "id": "emoji", "label": "Emoji dự phòng", "info": "Dùng khi không có ảnh nào" },
+        { "type": "url", "id": "link", "label": "Link khác (tuỳ chọn)" }
+      ]
+    }
+  ],
+  "max_blocks": 24,
+  "presets": [{ "name": "Danh mục dạng icon", "blocks": [{ "type": "category" }, { "type": "category" }, { "type": "category" }, { "type": "category" }] }]
+}
+{% endschema %}

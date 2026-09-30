@@ -42,7 +42,9 @@
 
       var btn = form.querySelector('button[type="submit"]');
       var label = btn ? btn.innerHTML : '';
-      if (btn) { btn.disabled = true; btn.textContent = 'Đang thêm…'; }
+      var vi = (document.documentElement.lang || '').toLowerCase().indexOf('vi') === 0;
+      function msg(key, viText, enText) { return (btn && btn.getAttribute('data-pf-' + key)) || (vi ? viText : enText); }
+      if (btn) { btn.disabled = true; btn.textContent = msg('adding', 'Đang thêm…', 'Adding…'); }
 
       fetch(addUrl(), {
         method: 'POST',
@@ -54,12 +56,12 @@
           if (!res.ok) throw res.data;
           refreshBubble();
           try { document.dispatchEvent(new CustomEvent('pf:cart:added', { detail: res.data })); } catch (_) {}
-          if (btn) { btn.textContent = 'Đã thêm ✓'; }
+          if (btn) { btn.textContent = msg('added', 'Đã thêm ✓', 'Added ✓'); }
           setTimeout(function () { if (btn) { btn.innerHTML = label; btn.disabled = false; } }, 1600);
         })
         .catch(function () {
           if (btn) {
-            btn.textContent = 'Thử lại';
+            btn.textContent = msg('retry', 'Thử lại', 'Try again');
             setTimeout(function () { btn.innerHTML = label; btn.disabled = false; }, 1600);
           }
         });

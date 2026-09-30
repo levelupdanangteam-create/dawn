@@ -528,5 +528,24 @@
       "expanded": "Đã mở rộng biểu mẫu người nhận thẻ quà tặng",
       "collapsed": "Đã thu nhỏ biểu mẫu người nhận thẻ quà tặng"
     }
+  },
+  "pf": {
+    "search_placeholder": "Tìm mì, nước chấm, bánh kẹo…",
+    "search_button": "Tìm",
+    "search_view_all": "Xem tất cả kết quả",
+    "search_no_results": "Không tìm thấy sản phẩm",
+    "view_all": "Xem tất cả",
+    "in_stock": "Còn hàng",
+    "low_stock": "Chỉ còn {{ count }}",
+    "sold_out": "Hết hàng",
+    "add": "Thêm",
+    "adding": "Đang thêm…",
+    "added": "Đã thêm ✓",
+    "retry": "Thử lại",
+    "prev": "Trước",
+    "next": "Sau",
+    "newsletter_placeholder": "Địa chỉ email của bạn",
+    "newsletter_success": "Cảm ơn bạn! Mã giảm giá đã được gửi vào email.",
+    "per_unit": "mỗi"
   }
 }

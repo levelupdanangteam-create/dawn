@@ -1,0 +1,108 @@
+{%- comment -%}
+  Thanh tìm kiếm lớn trong header (kiểu siêu thị online: logo · ô tìm kiếm · icon).
+  - Form GET tới /search (chỉ tìm sản phẩm), luôn chạy kể cả khi JS lỗi.
+  - Gợi ý nhanh qua /search/suggest.json (ảnh + tên + giá), tối đa 6 sản phẩm.
+  Bật/tắt bằng setting "pf_search_bar" của section header. CSS nằm trong pf-brand.css (.pf-hsearch).
+{%- endcomment -%}
+<div class="pf-hsearch" data-pf-hsearch>
+  <form action="{{ routes.search_url }}" method="get" role="search" class="pf-hsearch__form">
+    <input type="hidden" name="type" value="product">
+    <input type="hidden" name="options[prefix]" value="last">
+    <label class="visually-hidden" for="PfHeaderSearch">{{ 'pf.search_placeholder' | t }}</label>
+    <input
+      id="PfHeaderSearch"
+      class="pf-hsearch__input"
+      type="search"
+      name="q"
+      value="{{ search.terms | escape }}"
+      placeholder="{{ 'pf.search_placeholder' | t }}"
+      autocomplete="off"
+      autocorrect="off"
+      role="combobox"
+      aria-expanded="false"
+      aria-controls="PfHeaderSearchResults"
+      aria-autocomplete="list"
+    >
+    <button type="submit" class="pf-hsearch__btn" aria-label="{{ 'pf.search_button' | t }}">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    </button>
+  </form>
+  <div
+    class="pf-hsearch__results"
+    id="PfHeaderSearchResults"
+    role="listbox"
+    hidden
+    data-view-all="{{ 'pf.search_view_all' | t | escape }}"
+    data-empty="{{ 'pf.search_no_results' | t | escape }}"
+  ></div>
+</div>
+
+<script>
+  (function () {
+    var box = document.querySelector('[data-pf-hsearch]');
+    if (!box || box.dataset.pfInit) return;
+    box.dataset.pfInit = '1';
+    var input = box.querySelector('.pf-hsearch__input');
+    var list = box.querySelector('.pf-hsearch__results');
+    var root = (window.Shopify && Shopify.routes && Shopify.routes.root) || '/';
+    var timer, lastQ = '', ctrl;
+
+    function esc(s) {
+      return String(s || '').replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+    function close() { list.hidden = true; input.setAttribute('aria-expanded', 'false'); }
+    function money(p) {
+      var n = Number(p);
+      if (isNaN(n)) return esc(p);
+      try {
+        return new Intl.NumberFormat(document.documentElement.lang || 'en', {
+          style: 'currency', currency: (window.Shopify && Shopify.currency && Shopify.currency.active) || 'EUR'
+        }).format(n);
+      } catch (e) { return n.toFixed(2) + ' €'; }
+    }
+    function render(q, products) {
+      var html = '';
+      if (!products.length) {
+        html = '<p class="pf-hsearch__empty">' + esc(list.dataset.empty) + '</p>';
+      } else {
+        products.forEach(function (p) {
+          var img = p.image ? p.image + (p.image.indexOf('?') > -1 ? '&' : '?') + 'width=120' : '';
+          html += '<a class="pf-hsearch__item" role="option" href="' + esc(p.url) + '">' +
+            (img ? '<img src="' + esc(img) + '" alt="" width="48" height="48" loading="lazy">' : '<span class="pf-hsearch__ph"></span>') +
+            '<span class="pf-hsearch__name">' + esc(p.title) + '</span>' +
+            '<span class="pf-hsearch__price">' + money(p.price) + '</span></a>';
+        });
+      }
+      html += '<a class="pf-hsearch__all" href="' + root + 'search?type=product&q=' + encodeURIComponent(q) + '">' +
+        esc(list.dataset.viewAll) + ' →</a>';
+      list.innerHTML = html;
+      list.hidden = false;
+      input.setAttribute('aria-expanded', 'true');
+    }
+    function fetchSuggest(q) {
+      if (ctrl) ctrl.abort();
+      ctrl = window.AbortController ? new AbortController() : null;
+      fetch(root + 'search/suggest.json?q=' + encodeURIComponent(q) +
+        '&resources[type]=product&resources[limit]=6&resources[options][unavailable_products]=last',
+        ctrl ? { signal: ctrl.signal } : {})
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (q !== lastQ) return;
+          var ps = (d && d.resources && d.resources.results && d.resources.results.products) || [];
+          render(q, ps);
+        })
+        .catch(function () {});
+    }
+    input.addEventListener('input', function () {
+      var q = input.value.trim();
+      lastQ = q;
+      clearTimeout(timer);
+      if (q.length < 2) { close(); return; }
+      timer = setTimeout(function () { fetchSuggest(q); }, 220);
+    });
+    input.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    document.addEventListener('click', function (e) { if (!box.contains(e.target)) close(); });
+  })();
+</script>

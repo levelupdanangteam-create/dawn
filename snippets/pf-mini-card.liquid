@@ -1,0 +1,84 @@
+{%- comment -%}
+  Thẻ sản phẩm gọn kiểu siêu thị online (dùng trong pf-product-row).
+  Ảnh nền trắng · nhãn -% · tên 2 dòng · sao đánh giá · tình trạng kho · giá · nút "+ Thêm".
+  Nút thêm giỏ dùng form .pf-card-actions__form → pf-cart-ajax.js thêm ngầm, không chuyển trang.
+  Params: product (bắt buộc), section_id (bắt buộc), show_rating, show_stock, low_stock (mặc định 5)
+{%- endcomment -%}
+{%- liquid
+  assign v = product.selected_or_first_available_variant
+  assign price = v.price
+  assign cmp = v.compare_at_price
+  if cmp == blank or cmp <= price
+    assign cmp = product.compare_at_price_max
+  endif
+  assign low_limit = low_stock | default: 5
+  assign rating = product.metafields.reviews.rating.value
+  assign rating_count = product.metafields.reviews.rating_count.value
+-%}
+<div class="pf-mc{% unless product.available %} pf-mc--soldout{% endunless %}">
+  <a class="pf-mc__media" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+    {%- if cmp > price -%}
+      <span class="pf-mc__badge">-{{ cmp | minus: price | times: 100.0 | divided_by: cmp | round }}%</span>
+    {%- endif -%}
+    {%- if product.featured_media -%}
+      {{ product.featured_media | image_url: width: 400 | image_tag: loading: 'lazy', widths: '200, 300, 400', sizes: '(min-width: 990px) 220px, 42vw', alt: product.title }}
+    {%- else -%}
+      {{ 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+  </a>
+  <div class="pf-mc__body">
+    <h3 class="pf-mc__title"><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
+
+    {%- if show_rating and rating != blank -%}
+      {%- assign pct = rating.rating | times: 100.0 | divided_by: rating.scale_max -%}
+      <div class="pf-mc__rating" aria-label="{{ rating.rating | round: 1 }} / {{ rating.scale_max }}">
+        <span class="pf-mc__stars" style="--pf-pct: {{ pct | round }}%;" aria-hidden="true">★★★★★</span>
+        {%- if rating_count > 0 -%}<span class="pf-mc__count">({{ rating_count }})</span>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if show_stock -%}
+      {%- if product.available == false -%}
+        <p class="pf-mc__stock pf-mc__stock--out">{{ 'pf.sold_out' | t }}</p>
+      {%- elsif v.inventory_management == 'shopify' and v.inventory_policy == 'deny' and v.inventory_quantity > 0 and v.inventory_quantity <= low_limit -%}
+        <p class="pf-mc__stock pf-mc__stock--low">{{ 'pf.low_stock' | t: count: v.inventory_quantity }}</p>
+      {%- else -%}
+        <p class="pf-mc__stock">{{ 'pf.in_stock' | t }}</p>
+      {%- endif -%}
+    {%- endif -%}
+
+    <div class="pf-mc__foot">
+      <div class="pf-mc__price">
+        <span class="pf-mc__now{% if cmp > price %} is-sale{% endif %}">{{ price | money }}</span>
+        {%- if cmp > price -%}<s class="pf-mc__was">{{ cmp | money }}</s>{%- endif -%}
+        {%- if v.unit_price_measurement -%}
+          <span class="pf-mc__unit">
+            {{- v.unit_price | money }}/
+            {%- if v.unit_price_measurement.reference_value != 1 -%}{{ v.unit_price_measurement.reference_value }}{%- endif -%}
+            {{ v.unit_price_measurement.reference_unit -}}
+          </span>
+        {%- endif -%}
+      </div>
+      {%- if product.available -%}
+        {%- assign form_id = 'pf-mc-' | append: section_id | append: '-' | append: product.id -%}
+        {%- form 'product', product, id: form_id, class: 'pf-card-actions__form pf-mc__form' -%}
+          <input type="hidden" name="id" value="{{ v.id }}">
+          <input type="hidden" name="quantity" value="1">
+          <button
+            type="submit"
+            class="pf-mc__add"
+            data-pf-adding="{{ 'pf.adding' | t | escape }}"
+            data-pf-added="{{ 'pf.added' | t | escape }}"
+            data-pf-retry="{{ 'pf.retry' | t | escape }}"
+            aria-label="{{ 'pf.add' | t | escape }}: {{ product.title | escape }}"
+          >
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            <span>{{ 'pf.add' | t }}</span>
+          </button>
+        {%- endform -%}
+      {%- else -%}
+        <button type="button" class="pf-mc__add" disabled>{{ 'pf.sold_out' | t }}</button>
+      {%- endif -%}
+    </div>
+  </div>
+</div>

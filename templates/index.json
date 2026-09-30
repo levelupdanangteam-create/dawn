@@ -137,7 +137,8 @@
         "all_button_link": "",
         "padding_top": 40,
         "padding_bottom": 40
-      }
+      },
+      "disabled": true
     },
     "pf_deal_hook": {
       "type": "pf-deal-hook",
@@ -177,7 +178,8 @@
         "subheading": "Số lượng có hạn! Thêm vào giỏ hàng ngay.",
         "padding_top": 40,
         "padding_bottom": 40
-      }
+      },
+      "disabled": true
     },
     "pf_exclusive": {
       "type": "pf-exclusive",
@@ -191,7 +193,8 @@
         "pf_initial": 12,
         "padding_top": 40,
         "padding_bottom": 40
-      }
+      },
+      "disabled": true
     },
     "pf_weekly_deals": {
       "type": "pf-weekly-deals",
@@ -372,7 +375,8 @@
         "columns_desktop": 4,
         "padding_top": 40,
         "padding_bottom": 40
-      }
+      },
+      "disabled": true
     },
     "pf_flash_sale": {
       "type": "pf-flash-sale",
@@ -400,7 +404,8 @@
         "columns_desktop": 5,
         "padding_top": 40,
         "padding_bottom": 40
-      }
+      },
+      "disabled": true
     },
     "pf_promo_image": {
       "type": "pf-promo-image",
@@ -414,7 +419,8 @@
         "shadow": true,
         "padding_top": 32,
         "padding_bottom": 32
-      }
+      },
+      "disabled": true
     },
     "pf_buying_guide": {
       "type": "pf-buying-guide",
@@ -460,9 +466,446 @@
         "padding_top": 56,
         "padding_bottom": 56
       }
+    },
+    "pf_eu_trust": {
+      "type": "pf-usp-bar",
+      "blocks": {
+        "usp_1": {
+          "type": "usp",
+          "settings": {
+            "icon": "truck",
+            "title": "Free shipping from 169 €",
+            "text": "Delivered across Europe",
+            "show_stars": false
+          }
+        },
+        "usp_2": {
+          "type": "usp",
+          "settings": {
+            "icon": "clock",
+            "title": "Ships from the EU",
+            "text": "From our warehouse in Czechia",
+            "show_stars": false
+          }
+        },
+        "usp_3": {
+          "type": "usp",
+          "settings": {
+            "icon": "leaf",
+            "title": "Authentic Vietnamese food",
+            "text": "Real brands from Vietnam",
+            "show_stars": false
+          }
+        },
+        "usp_4": {
+          "type": "usp",
+          "settings": {
+            "icon": "lock",
+            "title": "Secure payment",
+            "text": "Encrypted checkout by Shopify",
+            "show_stars": false
+          }
+        }
+      },
+      "block_order": [
+        "usp_1",
+        "usp_2",
+        "usp_3",
+        "usp_4"
+      ],
+      "settings": {
+        "style": "strip",
+        "boxed": true,
+        "padding_top": 16,
+        "padding_bottom": 12
+      }
+    },
+    "pf_eu_categories": {
+      "type": "pf-category-icons",
+      "blocks": {
+        "cat_1": {
+          "type": "category",
+          "settings": {
+            "collection": "ban-chay-nhat",
+            "label": "Best sellers",
+            "emoji": "🔥"
+          }
+        },
+        "cat_2": {
+          "type": "category",
+          "settings": {
+            "collection": "mi-an-liền",
+            "label": "Instant noodles",
+            "emoji": "🍜",
+            "image": "shopify://shop_images/747613366_122098487565396579_1473846482251679537_n.jpg"
+          }
+        },
+        "cat_3": {
+          "type": "category",
+          "settings": {
+            "collection": "bun-phở-kho",
+            "label": "Rice noodles & pho",
+            "emoji": "🍲",
+            "image": "shopify://shop_images/bun_ph.png"
+          }
+        },
+        "cat_4": {
+          "type": "category",
+          "settings": {
+            "collection": "bột-gia-vị",
+            "label": "Sauces & spices",
+            "emoji": "🧂",
+            "image": "shopify://shop_images/nuoc-mam-hieu-ca-muc-squid-300ml-thai-lan-03.jpg"
+          }
+        },
+        "cat_5": {
+          "type": "category",
+          "settings": {
+            "collection": "banh-kẹo-dồ-an-vặt",
+            "label": "Snacks & sweets",
+            "emoji": "🍬"
+          }
+        },
+        "cat_6": {
+          "type": "category",
+          "settings": {
+            "collection": "dồ-uống",
+            "label": "Drinks",
+            "emoji": "🧃"
+          }
+        },
+        "cat_7": {
+          "type": "category",
+          "settings": {
+            "collection": "thực-phẩm-chế-biến-sẵn",
+            "label": "Ready to eat",
+            "emoji": "🥘"
+          }
+        },
+        "cat_8": {
+          "type": "category",
+          "settings": {
+            "collection": "gạo-nếp-cac-loại",
+            "label": "Rice",
+            "emoji": "🍚"
+          }
+        },
+        "cat_9": {
+          "type": "category",
+          "settings": {
+            "collection": "banh-trang-cac-loại",
+            "label": "Rice paper",
+            "emoji": "🫓",
+            "image": "shopify://shop_images/banh-da-nem-totaco.webp"
+          }
+        },
+        "cat_10": {
+          "type": "category",
+          "settings": {
+            "collection": "sữa-cac-loại",
+            "label": "Milk & dairy",
+            "emoji": "🥛",
+            "image": "shopify://shop_images/sua-tuoi-th-true-milk-it-duong-hop-180ml-a1.jpg"
+          }
+        },
+        "cat_11": {
+          "type": "category",
+          "settings": {
+            "collection": "combo",
+            "label": "Bundles",
+            "emoji": "🎁"
+          }
+        },
+        "cat_12": {
+          "type": "category",
+          "settings": {
+            "collection": "hang-dộc-quyền",
+            "label": "Exclusives",
+            "emoji": "⭐"
+          }
+        }
+      },
+      "block_order": [
+        "cat_1",
+        "cat_2",
+        "cat_3",
+        "cat_4",
+        "cat_5",
+        "cat_6",
+        "cat_7",
+        "cat_8",
+        "cat_9",
+        "cat_10",
+        "cat_11",
+        "cat_12"
+      ],
+      "settings": {
+        "heading": "Shop by category",
+        "columns_desktop": 12,
+        "rows_mobile": 2,
+        "boxed": true,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "pf_eu_row_deals": {
+      "type": "pf-product-row",
+      "settings": {
+        "heading": "🔥 Hot deals",
+        "subheading": "Save more with our bundles",
+        "collection": "combo",
+        "products_to_show": 12,
+        "columns_desktop": 6,
+        "show_rating": true,
+        "show_stock": true,
+        "low_stock": 5,
+        "boxed": true,
+        "padding_top": 12,
+        "padding_bottom": 12
+      },
+      "blocks": {
+        "chip_1": {
+          "type": "chip",
+          "settings": {
+            "label": "Bundles & sets",
+            "link": "/collections/combo",
+            "highlight": true
+          }
+        },
+        "chip_2": {
+          "type": "chip",
+          "settings": {
+            "label": "Best sellers",
+            "link": "/collections/ban-chay-nhat",
+            "highlight": false
+          }
+        },
+        "chip_3": {
+          "type": "chip",
+          "settings": {
+            "label": "Exclusives",
+            "link": "/collections/hang-d%E1%BB%99c-quy%E1%BB%81n",
+            "highlight": false
+          }
+        }
+      },
+      "block_order": [
+        "chip_1",
+        "chip_2",
+        "chip_3"
+      ]
+    },
+    "pf_eu_row_best": {
+      "type": "pf-product-row",
+      "settings": {
+        "heading": "Best sellers",
+        "subheading": "",
+        "collection": "ban-chay-nhat",
+        "products_to_show": 12,
+        "columns_desktop": 6,
+        "show_rating": true,
+        "show_stock": true,
+        "low_stock": 5,
+        "boxed": true,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "pf_eu_row_noodles": {
+      "type": "pf-product-row",
+      "settings": {
+        "heading": "Instant noodles",
+        "subheading": "",
+        "collection": "mi-an-liền",
+        "products_to_show": 12,
+        "columns_desktop": 6,
+        "show_rating": true,
+        "show_stock": true,
+        "low_stock": 5,
+        "boxed": true,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "pf_eu_newsletter": {
+      "type": "pf-newsletter-offer",
+      "settings": {
+        "eyebrow": "Newsletter",
+        "heading": "Get 10% off your first order",
+        "text": "<p>Sign up for new arrivals, easy Vietnamese recipes and member-only deals.</p>",
+        "button_label": "Get my discount",
+        "note": "You can unsubscribe at any time. See our privacy policy.",
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "pf_eu_row_pho": {
+      "type": "pf-product-row",
+      "settings": {
+        "heading": "Rice noodles & pho",
+        "subheading": "",
+        "collection": "bun-phở-kho",
+        "products_to_show": 12,
+        "columns_desktop": 6,
+        "show_rating": true,
+        "show_stock": true,
+        "low_stock": 5,
+        "boxed": true,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "pf_eu_row_snacks": {
+      "type": "pf-product-row",
+      "settings": {
+        "heading": "Snacks & sweets",
+        "subheading": "",
+        "collection": "banh-kẹo-dồ-an-vặt",
+        "products_to_show": 12,
+        "columns_desktop": 6,
+        "show_rating": true,
+        "show_stock": true,
+        "low_stock": 5,
+        "boxed": true,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "pf_eu_row_sauces": {
+      "type": "pf-product-row",
+      "settings": {
+        "heading": "Sauces & spices",
+        "subheading": "",
+        "collection": "bột-gia-vị",
+        "products_to_show": 12,
+        "columns_desktop": 6,
+        "show_rating": true,
+        "show_stock": true,
+        "low_stock": 5,
+        "boxed": true,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "pf_eu_row_drinks": {
+      "type": "pf-product-row",
+      "settings": {
+        "heading": "Drinks",
+        "subheading": "",
+        "collection": "dồ-uống",
+        "products_to_show": 12,
+        "columns_desktop": 6,
+        "show_rating": true,
+        "show_stock": true,
+        "low_stock": 5,
+        "boxed": true,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "pf_eu_faq": {
+      "type": "pf-faq",
+      "blocks": {
+        "g1": {
+          "type": "group",
+          "settings": {
+            "title": "Shipping"
+          }
+        },
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "Which countries do you ship to?",
+            "answer": "<p>We ship to most countries in the European Union from our warehouse in the Czech Republic.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "How much is shipping?",
+            "answer": "<p>Shipping is free on orders from 169 €. Below that, the shipping cost is shown at checkout.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "g1",
+        "q1",
+        "q3"
+      ],
+      "settings": {
+        "heading": "Frequently asked questions",
+        "boxed": true,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "pf_eu_usp_bottom": {
+      "type": "pf-usp-bar",
+      "blocks": {
+        "usp_1": {
+          "type": "usp",
+          "settings": {
+            "icon": "truck",
+            "title": "Free shipping from 169 €",
+            "text": "Delivered to your door across Europe",
+            "show_stars": false
+          }
+        },
+        "usp_2": {
+          "type": "usp",
+          "settings": {
+            "icon": "leaf",
+            "title": "Authentic & affordable",
+            "text": "Real Vietnamese brands at fair prices",
+            "show_stars": false
+          }
+        },
+        "usp_3": {
+          "type": "usp",
+          "settings": {
+            "icon": "chat",
+            "title": "Friendly support",
+            "text": "Chat with us on WhatsApp",
+            "show_stars": false
+          }
+        },
+        "usp_4": {
+          "type": "usp",
+          "settings": {
+            "icon": "lock",
+            "title": "Secure payment",
+            "text": "Encrypted checkout by Shopify",
+            "show_stars": false
+          }
+        }
+      },
+      "block_order": [
+        "usp_1",
+        "usp_2",
+        "usp_3",
+        "usp_4"
+      ],
+      "settings": {
+        "style": "cards",
+        "boxed": true,
+        "padding_top": 12,
+        "padding_bottom": 32
+      }
     }
   },
   "order": [
+    "pf_eu_trust",
+    "pf_eu_categories",
+    "pf_eu_row_deals",
+    "pf_eu_row_best",
+    "pf_eu_row_noodles",
+    "pf_eu_newsletter",
+    "pf_eu_row_pho",
+    "pf_eu_row_snacks",
+    "pf_eu_row_sauces",
+    "pf_eu_row_drinks",
+    "pf_eu_faq",
+    "pf_eu_usp_bottom",
     "pf_category_grid",
     "pf_deal_hook",
     "pf_exclusive",

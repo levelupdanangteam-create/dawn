@@ -1524,6 +1524,17 @@
       },
       {
         "type": "header",
+        "content": "Ngôn ngữ"
+      },
+      {
+        "type": "checkbox",
+        "id": "pf_force_vi",
+        "label": "Tự chuyển khách lần đầu sang tiếng Việt",
+        "default": false,
+        "info": "Chỉ bật cho store bán cho người Việt. Store châu Âu để TẮT để khách thấy tiếng Anh."
+      },
+      {
+        "type": "header",
         "content": "Chặn truy cập theo quốc gia"
       },
       {

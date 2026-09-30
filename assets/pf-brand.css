@@ -885,3 +885,164 @@ body:has(.menu-drawer-container[open]) .slideshow__control {
 @media screen and (min-width: 750px){
   .product--thumbnail .thumbnail-list{ grid-template-columns: repeat(3, 1fr) !important; }
 }
+
+/* =====================================================================
+   Bố cục siêu thị online (tham khảo HuongViet / MAOMAO) — giữ tông màu cũ
+   ===================================================================== */
+
+/* ---- Announcement bar: đỏ thương hiệu, chữ nhỏ gọn ---------------- */
+.utility-bar {
+  background: #d62828 !important;
+  border-bottom: none;
+}
+.utility-bar .announcement-bar__message { font-size: 1.3rem; padding-block: .7rem; }
+
+/* ---- Header: logo · ô tìm kiếm lớn · icon, menu ở hàng dưới -------- */
+.header--pf-search .header__search { display: none !important; }
+.header--pf-search .pf-hsearch { grid-area: search; }
+@media screen and (min-width: 990px) {
+  .header.header--pf-search.header--top-left {
+    grid-template-areas:
+      'heading search icons'
+      'navigation navigation navigation';
+    grid-template-columns: auto minmax(0, 1fr) auto !important;
+    column-gap: 3.2rem;
+  }
+  .header--pf-search.header--top-left .header__inline-menu {
+    margin-top: .8rem;
+    padding-top: .4rem;
+    border-top: 1px solid rgba(255, 255, 255, .18);
+  }
+  .header--pf-search.header--middle-left {
+    grid-template-areas: 'heading navigation search icons';
+    grid-template-columns: auto auto minmax(0, 1fr) auto !important;
+  }
+}
+@media screen and (max-width: 989px) {
+  .header.header--pf-search {
+    grid-template-areas:
+      'left-icons heading icons'
+      'search search search';
+    row-gap: .8rem;
+  }
+}
+
+.pf-hsearch { position: relative; width: 100%; max-width: 72rem; justify-self: center; }
+.pf-hsearch__form {
+  display: flex; align-items: center; margin: 0;
+  background: #ffffff; border-radius: 999px; overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .12);
+  border: 2px solid transparent; transition: border-color .15s ease;
+}
+.pf-hsearch__form:focus-within { border-color: #f2c14e; }
+.pf-hsearch__input {
+  flex: 1; min-width: 0; border: 0; outline: 0; background: transparent;
+  font: inherit; font-size: 1.5rem; color: #2a2622; padding: 1.1rem 1.8rem; height: 4.6rem;
+}
+.pf-hsearch__input::placeholder { color: #8a8175; }
+.pf-hsearch__input::-webkit-search-cancel-button { cursor: pointer; }
+.pf-hsearch__btn {
+  flex: none; display: grid; place-items: center; width: 5.2rem; height: 4.2rem; margin-right: .2rem;
+  border: 0; border-radius: 999px; cursor: pointer; color: #ffffff;
+  background: #d62828; transition: background .15s ease;
+}
+.pf-hsearch__btn:hover { background: #b51f1f; }
+.pf-hsearch__results {
+  position: absolute; left: 0; right: 0; top: calc(100% + .6rem); z-index: 30;
+  background: #ffffff; border-radius: 14px; padding: .6rem;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, .18); max-height: 70vh; overflow: auto;
+}
+.pf-hsearch__item {
+  display: grid; grid-template-columns: 4.8rem 1fr auto; align-items: center; gap: 1.2rem;
+  padding: .7rem .8rem; border-radius: 10px; text-decoration: none; color: #2a2622 !important;
+}
+.pf-hsearch__item:hover, .pf-hsearch__item:focus { background: #f7f1e9; }
+.pf-hsearch__item img, .pf-hsearch__ph { width: 4.8rem; height: 4.8rem; object-fit: contain; border-radius: 8px; background: #f7f1e9; }
+.pf-hsearch__name { font-size: 1.4rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.pf-hsearch__price { font-size: 1.4rem; font-weight: 800; color: #1e63c8; white-space: nowrap; }
+.pf-hsearch__empty { margin: 0; padding: 1.2rem; font-size: 1.4rem; color: #6a6255; }
+.pf-hsearch__all {
+  display: block; margin-top: .4rem; padding: 1rem; border-top: 1px solid #ece3d4;
+  text-align: center; font-size: 1.4rem; font-weight: 800; color: #1e8541 !important; text-decoration: none;
+}
+@media screen and (max-width: 749px) {
+  .pf-hsearch__input { height: 4.2rem; font-size: 1.6rem; padding-inline: 1.4rem; }
+  .pf-hsearch__btn { width: 4.6rem; height: 3.8rem; }
+  .pf-hsearch__item { grid-template-columns: 4.2rem 1fr auto; }
+  .pf-hsearch__item img, .pf-hsearch__ph { width: 4.2rem; height: 4.2rem; }
+}
+
+/* ---- Tiêu đề section dạng siêu thị: tiêu đề trái · "Xem tất cả" phải */
+.pf-rowhead { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.6rem; margin-bottom: 1.6rem; }
+.pf-rowhead__title {
+  margin: 0; font-family: var(--font-heading-family, sans-serif); font-weight: 800;
+  font-size: clamp(2rem, 2.4vw, 2.6rem); line-height: 1.2; color: #2a2622;
+}
+.pf-rowhead__sub { margin: .4rem 0 0; font-size: 1.4rem; color: #6a6255; }
+.pf-rowhead__all {
+  flex: none; display: inline-flex; align-items: center; gap: .4rem; white-space: nowrap;
+  font-size: 1.4rem; font-weight: 800; color: #1e8541; text-decoration: none;
+}
+.pf-rowhead__all:hover { color: #d62828; }
+.pf-rowhead__all svg { transition: transform .15s ease; }
+.pf-rowhead__all:hover svg { transform: translateX(3px); }
+
+/* ---- Khung section trắng bo góc trên nền be ------------------------ */
+.pf-panel { max-width: var(--page-width, 120rem); margin-inline: auto; padding-inline: clamp(1.6rem, 3vw, 3rem); }
+.pf-panel__inner { background: #ffffff; border-radius: 18px; padding: clamp(1.6rem, 2.4vw, 2.6rem); box-shadow: 0 2px 10px rgba(120, 100, 70, .06); }
+.pf-panel--flat .pf-panel__inner { background: transparent; box-shadow: none; padding: 0; }
+
+/* ---- Thẻ sản phẩm gọn (pf-mini-card) ------------------------------- */
+.pf-mc {
+  position: relative; display: flex; flex-direction: column; height: 100%;
+  background: #ffffff; border: 1px solid #ece3d4; border-radius: 14px; overflow: hidden;
+  transition: box-shadow .18s ease, border-color .18s ease, transform .18s ease;
+}
+.pf-mc:hover { border-color: #bfe0c7; box-shadow: 0 10px 24px rgba(20, 90, 45, .12); transform: translateY(-2px); }
+.pf-mc__media { position: relative; display: block; aspect-ratio: 1; background: #ffffff; padding: 1rem; }
+.pf-mc__media img, .pf-mc__media svg { width: 100%; height: 100%; object-fit: contain; transition: transform .25s ease; }
+.pf-mc:hover .pf-mc__media img { transform: scale(1.04); }
+.pf-mc__badge {
+  position: absolute; top: .8rem; left: .8rem; z-index: 1;
+  background: #d62828; color: #ffffff; font-size: 1.2rem; font-weight: 800; line-height: 1;
+  padding: .45rem .7rem; border-radius: 6px;
+}
+.pf-mc__body { display: flex; flex-direction: column; gap: .5rem; flex: 1; padding: .2rem 1.2rem 1.2rem; }
+.pf-mc__title {
+  margin: 0; font-size: 1.35rem; font-weight: 600; line-height: 1.35; color: #2a2622;
+  min-height: calc(1.35em * 2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.pf-mc__title a { color: inherit; text-decoration: none; }
+.pf-mc__title a:hover { color: #1e8541; }
+.pf-mc__rating { display: flex; align-items: center; gap: .4rem; font-size: 1.2rem; line-height: 1; }
+.pf-mc__stars {
+  letter-spacing: .1em; font-size: 1.3rem;
+  background: linear-gradient(90deg, #f2c14e var(--pf-pct, 0%), #e2dbcf var(--pf-pct, 0%));
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+}
+.pf-mc__count { color: #8a8175; }
+.pf-mc__stock { display: flex; align-items: center; gap: .5rem; margin: 0; font-size: 1.2rem; font-weight: 600; color: #1e8541; }
+.pf-mc__stock::before { content: ""; width: .8rem; height: .8rem; border-radius: 50%; background: currentColor; flex: none; }
+.pf-mc__stock--low { color: #e0701f; }
+.pf-mc__stock--out { color: #a79c8e; }
+.pf-mc__foot { margin-top: auto; display: flex; flex-direction: column; gap: .8rem; padding-top: .4rem; }
+.pf-mc__price { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem .7rem; font-variant-numeric: tabular-nums; }
+.pf-mc__now { font-size: 1.7rem; font-weight: 800; color: #2a2622; }
+.pf-mc__now.is-sale { color: #d62828; }
+.pf-mc__was { font-size: 1.25rem; color: #a79c8e; }
+.pf-mc__unit { flex-basis: 100%; font-size: 1.1rem; color: #8a8175; }
+.pf-mc__form { margin: 0; }
+.pf-mc__add {
+  width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  min-height: 3.8rem; padding: .6rem 1rem; border: 0; border-radius: 10px; cursor: pointer;
+  background: #1e8541; color: #ffffff; font: inherit; font-size: 1.4rem; font-weight: 800;
+  transition: background .15s ease;
+}
+.pf-mc__add:hover { background: #14672f; }
+.pf-mc__add[disabled] { background: #e2dbcf; color: #6a6255; cursor: not-allowed; }
+.pf-mc--soldout .pf-mc__media img { opacity: .55; }
+@media (max-width: 599px) {
+  .pf-mc__body { padding: .2rem 1rem 1rem; }
+  .pf-mc__title { font-size: 1.3rem; }
+  .pf-mc__now { font-size: 1.6rem; }
+}

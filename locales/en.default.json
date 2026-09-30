@@ -537,5 +537,24 @@
       "send_on": "YYYY-MM-DD",
       "send_on_label": "Send on (optional)"
     }
+  },
+  "pf": {
+    "search_placeholder": "Search noodles, sauces, snacks…",
+    "search_button": "Search",
+    "search_view_all": "See all results",
+    "search_no_results": "No products found",
+    "view_all": "View all",
+    "in_stock": "In stock",
+    "low_stock": "Only {{ count }} left",
+    "sold_out": "Sold out",
+    "add": "Add",
+    "adding": "Adding…",
+    "added": "Added ✓",
+    "retry": "Try again",
+    "prev": "Previous",
+    "next": "Next",
+    "newsletter_placeholder": "Your email address",
+    "newsletter_success": "Thanks! Check your inbox for your discount code.",
+    "per_unit": "per"
   }
 }
