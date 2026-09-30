@@ -1,0 +1,219 @@
+{%- comment -%}
+  Thẻ danh mục dạng ảnh lớn trượt ngang (kiểu "Cuisine spotlight: China / Thailand / Korea…").
+  Mỗi block = 1 ảnh (đã có chữ + nút trong ảnh) + link. Có mũi tên trái/phải và chấm trang.
+  Section độc lập: CSS + JS nằm trong file, không cần file khác.
+{%- endcomment -%}
+<style>
+  #pfcu-{{ section.id }} { padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px; }
+  #pfcu-{{ section.id }} .pfcu__wrap { max-width: {% if section.settings.full_width %}none{% else %}var(--page-width, 120rem){% endif %}; margin: 0 auto; padding: 0 clamp(1.6rem, 3vw, 3rem); }
+  #pfcu-{{ section.id }} .pfcu__head { display: flex; align-items: baseline; justify-content: space-between; gap: 1.6rem; margin-bottom: 1.8rem; }
+  #pfcu-{{ section.id }} .pfcu__title { margin: 0; font-family: var(--font-heading-family, sans-serif); font-weight: 600; font-size: clamp(1.8rem, 1.8vw, 2.2rem); line-height: 1.2; color: #2a2622; }
+  #pfcu-{{ section.id }} .pfcu__viewport { position: relative; }
+  #pfcu-{{ section.id }} .pfcu__track {
+    --pfcu-cols: {{ section.settings.cards_desktop }};
+    --pfcu-gap: 2rem;
+    display: grid; grid-auto-flow: column; gap: var(--pfcu-gap);
+    grid-auto-columns: calc((100% - (var(--pfcu-cols) - 1) * var(--pfcu-gap)) / var(--pfcu-cols));
+    overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; padding: 1rem 0 2.4rem; margin: -1rem 0 -1.6rem;
+  }
+  #pfcu-{{ section.id }} .pfcu__track::-webkit-scrollbar { display: none; }
+  #pfcu-{{ section.id }} .pfcu__card {
+    display: block; scroll-snap-align: start; border-radius: {{ section.settings.radius }}px; overflow: hidden;
+    aspect-ratio: {{ section.settings.ratio }}; background: #efeae2;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .08); transition: transform .25s ease, box-shadow .25s ease;
+  }
+  #pfcu-{{ section.id }} .pfcu__card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(0, 0, 0, .14); }
+  #pfcu-{{ section.id }} .pfcu__card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #pfcu-{{ section.id }} .pfcu__card .placeholder-svg { width: 100%; height: 100%; }
+  #pfcu-{{ section.id }} .pfcu__arrow {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+    width: 4.8rem; height: 4.8rem; border-radius: 50%; border: 0; cursor: pointer;
+    display: grid; place-items: center; background: #fff; color: #2a2622;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .18); transition: opacity .2s ease, background .15s ease, color .15s ease;
+  }
+  #pfcu-{{ section.id }} .pfcu__arrow:hover { background: #1e8541; color: #fff; }
+  #pfcu-{{ section.id }} .pfcu__arrow[disabled] { opacity: 0; pointer-events: none; }
+  #pfcu-{{ section.id }} .pfcu__arrow--prev { left: -1.2rem; }
+  #pfcu-{{ section.id }} .pfcu__arrow--next { right: -1.2rem; }
+  #pfcu-{{ section.id }} .pfcu__dots { display: flex; justify-content: center; gap: .8rem; margin-top: 1.6rem; }
+  #pfcu-{{ section.id }} .pfcu__dot { width: .9rem; height: .9rem; padding: 0; border: 0; border-radius: 999px; background: #cfc8bd; cursor: pointer; transition: width .2s ease, background .2s ease; }
+  #pfcu-{{ section.id }} .pfcu__dot.is-active { width: 2.6rem; background: #2a2622; }
+  @media screen and (max-width: 989px) {
+    #pfcu-{{ section.id }} .pfcu__track { --pfcu-cols: {{ section.settings.cards_tablet }}; --pfcu-gap: 1.4rem; }
+    #pfcu-{{ section.id }} .pfcu__arrow { display: none; }
+  }
+  @media screen and (max-width: 599px) {
+    #pfcu-{{ section.id }} .pfcu__track { --pfcu-cols: {{ section.settings.cards_mobile }}; --pfcu-gap: 1.2rem; }
+  }
+</style>
+
+<div id="pfcu-{{ section.id }}">
+  <div class="pfcu__wrap">
+    {%- if section.settings.heading != blank -%}
+      <div class="pfcu__head"><h2 class="pfcu__title">{{ section.settings.heading }}</h2></div>
+    {%- endif -%}
+    <div class="pfcu__viewport">
+      <button type="button" class="pfcu__arrow pfcu__arrow--prev" aria-label="Previous" disabled>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="pfcu__track">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign c = block.settings.collection
+            assign url = block.settings.link
+            if url == blank and c != blank
+              assign url = c.url
+            endif
+            if url == blank
+              assign url = routes.collections_url
+            endif
+            assign alt = block.settings.alt
+            if alt == blank and c != blank
+              assign alt = c.title
+            endif
+          -%}
+          <a class="pfcu__card" href="{{ url }}" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1200', sizes: '(min-width: 990px) 30vw, 85vw', alt: alt }}
+            {%- elsif block.settings.image_url != blank -%}
+              <img src="{{ block.settings.image_url }}" alt="{{ alt | escape }}" loading="lazy" width="1200" height="800">
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </a>
+        {%- endfor -%}
+      </div>
+      <button type="button" class="pfcu__arrow pfcu__arrow--next" aria-label="Next">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+    {%- if section.settings.show_dots -%}<div class="pfcu__dots" role="tablist"></div>{%- endif -%}
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('pfcu-{{ section.id }}');
+    if (!root || root.dataset.pfInit) return;
+    root.dataset.pfInit = '1';
+    var track = root.querySelector('.pfcu__track');
+    var prev = root.querySelector('.pfcu__arrow--prev');
+    var next = root.querySelector('.pfcu__arrow--next');
+    var dotsBox = root.querySelector('.pfcu__dots');
+    var autoplay = {{ section.settings.autoplay | json }};
+    var speed = {{ section.settings.autoplay_speed | times: 1000 }};
+    var timer;
+
+    function pageCount() { return Math.max(1, Math.ceil((track.scrollWidth - 4) / track.clientWidth)); }
+    function currentPage() {
+      var max = track.scrollWidth - track.clientWidth;
+      if (max <= 0) return 0;
+      if (track.scrollLeft >= max - 4) return pageCount() - 1;
+      return Math.round(track.scrollLeft / track.clientWidth);
+    }
+    function buildDots() {
+      if (!dotsBox) return;
+      var n = pageCount();
+      dotsBox.innerHTML = '';
+      dotsBox.style.display = n > 1 ? '' : 'none';
+      for (var i = 0; i < n; i++) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'pfcu__dot';
+        b.setAttribute('aria-label', 'Page ' + (i + 1));
+        (function (idx) { b.addEventListener('click', function () { goTo(idx); restart(); }); })(i);
+        dotsBox.appendChild(b);
+      }
+    }
+    function update() {
+      var max = track.scrollWidth - track.clientWidth - 4;
+      prev.disabled = track.scrollLeft <= 4;
+      next.disabled = track.scrollLeft >= max;
+      if (dotsBox) {
+        var p = currentPage();
+        Array.prototype.forEach.call(dotsBox.children, function (d, i) { d.classList.toggle('is-active', i === p); });
+      }
+    }
+    function goTo(i) { track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' }); }
+    function step(dir) {
+      var max = track.scrollWidth - track.clientWidth - 4;
+      if (dir > 0 && track.scrollLeft >= max) { goTo(0); return; }
+      track.scrollBy({ left: dir * track.clientWidth, behavior: 'smooth' });
+    }
+    function restart() {
+      if (!autoplay) return;
+      clearInterval(timer);
+      timer = setInterval(function () { step(1); }, speed);
+    }
+    prev.addEventListener('click', function () { step(-1); restart(); });
+    next.addEventListener('click', function () { step(1); restart(); });
+    track.addEventListener('scroll', update, { passive: true });
+    root.addEventListener('mouseenter', function () { clearInterval(timer); });
+    root.addEventListener('mouseleave', restart);
+    window.addEventListener('resize', function () { buildDots(); update(); });
+    buildDots(); update(); restart();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Thẻ danh mục ảnh lớn",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 16,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Tiêu đề (tuỳ chọn)" },
+    { "type": "range", "id": "cards_desktop", "min": 2, "max": 6, "step": 1, "label": "Số thẻ trên máy tính", "default": 4 },
+    { "type": "range", "id": "cards_tablet", "min": 1, "max": 4, "step": 1, "label": "Số thẻ trên máy tính bảng", "default": 2 },
+    {
+      "type": "select", "id": "cards_mobile", "label": "Số thẻ trên điện thoại", "default": "1.15",
+      "options": [
+        { "value": "1", "label": "1 thẻ" },
+        { "value": "1.15", "label": "1 thẻ + hé thẻ sau" },
+        { "value": "1.6", "label": "1,5 thẻ" },
+        { "value": "2", "label": "2 thẻ" }
+      ]
+    },
+    {
+      "type": "select", "id": "ratio", "label": "Tỉ lệ ảnh", "default": "3 / 2",
+      "options": [
+        { "value": "3 / 2", "label": "3:2 (1200×800)" },
+        { "value": "16 / 9", "label": "16:9" },
+        { "value": "4 / 3", "label": "4:3" },
+        { "value": "1 / 1", "label": "Vuông" }
+      ]
+    },
+    { "type": "range", "id": "radius", "min": 0, "max": 32, "step": 2, "unit": "px", "label": "Bo góc", "default": 20 },
+    { "type": "checkbox", "id": "show_dots", "label": "Hiện chấm chuyển trang", "default": true },
+    { "type": "checkbox", "id": "autoplay", "label": "Tự động trượt", "default": false },
+    { "type": "range", "id": "autoplay_speed", "min": 3, "max": 10, "step": 1, "unit": "s", "label": "Thời gian mỗi trang", "default": 5 },
+    { "type": "checkbox", "id": "full_width", "label": "Tràn hết chiều ngang", "default": false },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 24 }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Thẻ ảnh",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Ảnh (tải lên)" },
+        { "type": "text", "id": "image_url", "label": "Hoặc dán link ảnh", "info": "Dùng khi không tải ảnh lên. Nên dùng ảnh 1200×800." },
+        { "type": "collection", "id": "collection", "label": "Danh mục khi bấm vào" },
+        { "type": "url", "id": "link", "label": "Link khác (tuỳ chọn)", "info": "Để trống = link tới danh mục ở trên" },
+        { "type": "text", "id": "alt", "label": "Mô tả ảnh (alt)", "info": "Vd: Indonesian food. Để trống = tên danh mục" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Thẻ danh mục ảnh lớn",
+      "blocks": [
+        { "type": "card", "settings": { "alt": "Indonesian food", "image_url": "https://cdn.shopify.com/s/files/1/0847/0557/5140/files/indonesian-card-baked-1200x800_a91f9fb4-3a9f-4fbf-acbd-ec40ab444117.webp?v=1790772158" } },
+        { "type": "card", "settings": { "alt": "Korean food", "image_url": "https://cdn.shopify.com/s/files/1/0847/0557/5140/files/korean-card-baked-1200x800_a45a1f8c-8c6d-4bc7-8171-fa2e1c25e50d.webp?v=1790772159" } },
+        { "type": "card", "settings": { "alt": "Japanese food", "image_url": "https://cdn.shopify.com/s/files/1/0847/0557/5140/files/japanese-card-baked-1200x800.webp?v=1790772158" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
