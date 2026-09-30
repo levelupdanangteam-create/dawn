@@ -145,12 +145,11 @@
         "show_all_button": true,
         "all_button_label": "Xem tất cả danh mục",
         "all_button_link": "",
-        "padding_top": 12,
-        "padding_bottom": 12,
+        "padding_top": 24,
+        "padding_bottom": 16,
         "columns_desktop": 12,
         "rows_mobile": 2
-      },
-      "disabled": true
+      }
     },
     "pf_deal_hook": {
       "type": "pf-deal-hook",
@@ -658,7 +657,8 @@
         "boxed": true,
         "padding_top": 12,
         "padding_bottom": 12
-      }
+      },
+      "disabled": true
     },
     "pf_eu_row_deals": {
       "type": "pf-product-row",
@@ -903,10 +903,57 @@
         "padding_top": 12,
         "padding_bottom": 32
       }
+    },
+    "pf_eu_cuisine": {
+      "type": "pf-cuisine-cards",
+      "blocks": {
+        "card_id": {
+          "type": "card",
+          "settings": {
+            "alt": "Indonesian food",
+            "image_url": "https://cdn.shopify.com/s/files/1/0847/0557/5140/files/indonesian-card-baked-1200x800_a91f9fb4-3a9f-4fbf-acbd-ec40ab444117.webp?v=1790772158"
+          }
+        },
+        "card_kr": {
+          "type": "card",
+          "settings": {
+            "alt": "Korean food",
+            "image_url": "https://cdn.shopify.com/s/files/1/0847/0557/5140/files/korean-card-baked-1200x800_a45a1f8c-8c6d-4bc7-8171-fa2e1c25e50d.webp?v=1790772159"
+          }
+        },
+        "card_jp": {
+          "type": "card",
+          "settings": {
+            "alt": "Japanese food",
+            "image_url": "https://cdn.shopify.com/s/files/1/0847/0557/5140/files/japanese-card-baked-1200x800.webp?v=1790772158"
+          }
+        }
+      },
+      "block_order": [
+        "card_id",
+        "card_kr",
+        "card_jp"
+      ],
+      "settings": {
+        "heading": "",
+        "cards_desktop": 4,
+        "cards_tablet": 2,
+        "cards_mobile": "1.15",
+        "ratio": "3 / 2",
+        "radius": 20,
+        "show_dots": true,
+        "autoplay": false,
+        "autoplay_speed": 5,
+        "full_width": false,
+        "padding_top": 8,
+        "padding_bottom": 16
+      }
     }
   },
   "order": [
     "pf_eu_trust",
+    "pf_category_grid",
+    "pf_eu_cuisine",
     "pf_eu_categories",
     "pf_eu_row_deals",
     "pf_eu_row_best",
@@ -918,7 +965,6 @@
     "pf_eu_row_drinks",
     "pf_eu_faq",
     "pf_eu_usp_bottom",
-    "pf_category_grid",
     "pf_deal_hook",
     "pf_exclusive",
     "pf_weekly_deals",
