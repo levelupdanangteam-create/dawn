@@ -913,6 +913,14 @@ body:has(.menu-drawer-container[open]) .slideshow__control {
     padding-top: .4rem;
     border-top: 1px solid rgba(255, 255, 255, .18);
   }
+  /* Menu hàng dưới căn giữa */
+  .header--pf-search.header--top-left .header__inline-menu {
+    display: flex;
+    justify-content: center;
+  }
+  .header--pf-search.header--top-left .header__inline-menu > .list-menu {
+    justify-content: center;
+  }
   .header--pf-search.header--middle-left {
     grid-template-areas: 'heading navigation search icons';
     grid-template-columns: auto auto minmax(0, 1fr) auto !important;
