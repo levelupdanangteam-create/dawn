@@ -6,6 +6,12 @@
 {%- endcomment -%}
 <style>
   #pf-catgrid-{{ section.id }} { padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px; }
+  #pf-catgrid-{{ section.id }} .pf-catgrid__wrap { max-width: var(--page-width, 120rem); margin: 0 auto; padding: 0 clamp(1.6rem, 3vw, 3rem); }
+  #pf-catgrid-{{ section.id }} .pf-catgrid__box { background: #ffffff; border-radius: 18px; padding: clamp(1.6rem, 2.4vw, 2.6rem); box-shadow: 0 2px 10px rgba(120, 100, 70, .06); }
+  #pf-catgrid-{{ section.id }} .pf-catgrid__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.6rem; margin-bottom: 1.8rem; }
+  #pf-catgrid-{{ section.id }} .pf-catgrid__title { margin: 0; font-family: var(--font-heading-family, sans-serif); font-weight: 800; font-size: clamp(2rem, 2.4vw, 2.6rem); line-height: 1.2; color: #2a2622; }
+  #pf-catgrid-{{ section.id }} .pf-catgrid__all { flex: none; display: inline-flex; align-items: center; gap: .4rem; font-size: 1.4rem; font-weight: 800; color: #1e8541; text-decoration: none; white-space: nowrap; }
+  #pf-catgrid-{{ section.id }} .pf-catgrid__all:hover { color: #d62828; }
   #pf-catgrid-{{ section.id }} .pf-catgrid__grid {
     display: grid; grid-template-columns: repeat({{ section.settings.columns_desktop | default: 12 }}, minmax(0, 1fr)); gap: 1.6rem 1.2rem;
   }
@@ -37,16 +43,22 @@
   if request.locale.iso_code == 'vi'
     assign all_label = section.settings.all_button_label | default: 'Xem tất cả danh mục'
   else
-    assign all_label = 'pf.view_all' | t
+    assign all_label = 'View all'
   endif
 -%}
 <div id="pf-catgrid-{{ section.id }}">
-  <div class="pf-panel">
-    <div class="pf-panel__inner">
-      <div class="pf-rowhead">
-        <h2 class="pf-rowhead__title">{% render 'pf-tr', s: section.settings.heading %}</h2>
+  <div class="pf-catgrid__wrap">
+    <div class="pf-catgrid__box">
+      <div class="pf-catgrid__head">
+        {%- liquid
+          assign cat_heading = section.settings.heading
+          if request.locale.iso_code != 'vi' and cat_heading == 'Danh Mục Sản Phẩm'
+            assign cat_heading = 'Shop by category'
+          endif
+        -%}
+        <h2 class="pf-catgrid__title">{{ cat_heading }}</h2>
         {%- if section.settings.show_all_button -%}
-          <a class="pf-rowhead__all" href="{{ section.settings.all_button_link | default: routes.collections_url }}">
+          <a class="pf-catgrid__all" href="{{ section.settings.all_button_link | default: routes.collections_url }}">
             {{ all_label }}
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
@@ -58,9 +70,31 @@
           {%- liquid
             assign col = block.settings.collection
             if block.settings.label != blank
-              capture cat_label
-                render 'pf-tr', s: block.settings.label
-              endcapture
+              assign cat_label = block.settings.label
+              if request.locale.iso_code != 'vi'
+                case cat_label
+                  when 'Combo tiết kiệm'
+                    assign cat_label = 'Value bundles'
+                  when 'Đồ uống'
+                    assign cat_label = 'Drinks'
+                  when 'Gia vị và bột'
+                    assign cat_label = 'Sauces & spices'
+                  when 'Thực phẩm chế biến sẵn'
+                    assign cat_label = 'Ready to eat'
+                  when 'Bánh, kẹo và đồ ăn vặt'
+                    assign cat_label = 'Snacks & sweets'
+                  when 'Gạo, nếp các loại'
+                    assign cat_label = 'Rice'
+                  when 'Mì ăn liền'
+                    assign cat_label = 'Instant noodles'
+                  when 'Bánh tráng'
+                    assign cat_label = 'Rice paper'
+                  when 'Sữa'
+                    assign cat_label = 'Milk & dairy'
+                  when 'Bún, phở'
+                    assign cat_label = 'Rice noodles & pho'
+                endcase
+              endif
             elsif col != blank
               assign cat_label = col.title
             else
@@ -86,6 +120,37 @@
                 {{ img | image_url: width: 200 | image_tag: loading: 'lazy', width: 96, height: 96, alt: '' }}
               {%- elsif block.settings.emoji != blank -%}
                 <span class="pf-catgrid__emoji" aria-hidden="true">{{ block.settings.emoji }}</span>
+              {%- elsif col != blank -%}
+                {%- liquid
+                  assign h = col.handle
+                  assign em = '🛒'
+                  if h contains 'combo'
+                    assign em = '🎁'
+                  elsif h contains 'uống'
+                    assign em = '🧃'
+                  elsif h contains 'gia-vị'
+                    assign em = '🧂'
+                  elsif h contains 'chế-biến'
+                    assign em = '🥘'
+                  elsif h contains 'kẹo'
+                    assign em = '🍬'
+                  elsif h contains 'gạo'
+                    assign em = '🍚'
+                  elsif h contains 'mi-an'
+                    assign em = '🍜'
+                  elsif h contains 'banh-trang'
+                    assign em = '🫓'
+                  elsif h contains 'sữa'
+                    assign em = '🥛'
+                  elsif h contains 'phở'
+                    assign em = '🍲'
+                  elsif h contains 'ban-chay'
+                    assign em = '🔥'
+                  elsif h contains 'dộc-quyền'
+                    assign em = '⭐'
+                  endif
+                -%}
+                <span class="pf-catgrid__emoji" aria-hidden="true">{{ em }}</span>
               {%- else -%}
                 {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
               {%- endif -%}
