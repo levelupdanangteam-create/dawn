@@ -1,0 +1,75 @@
+{%- comment -%}
+  PHOMIFOOD: hiện tên sản phẩm KHÔNG kèm quy cách.
+  "Trà bí đao lon 310ml x 24" → "Trà bí đao lon"
+  Cắt từ chữ quy cách đầu tiên trở đi:
+    - số + đơn vị: 310ml, 500gx40, 1,284g, 0.5kg, 330m ("10 kg", "80 gói" cũng tính)
+    - "x 24", "x24"
+    - "(50 gói)"
+  Không cắt: số đứng riêng ("loại 3", "Wake-up 247"), cỡ sợi "1.1mm", "4X".
+  Tên gốc trong Shopify giữ nguyên (đơn hàng, checkout, catalog vẫn đủ quy cách).
+  Cách dùng: {% render 'pf-short-title', title: product.title %} → đã escape.
+{%- endcomment -%}
+{%- liquid
+  assign pf_digits = '0123456789'
+  assign pf_words = title | strip | split: ' '
+  assign pf_cut = pf_words.size
+  for w in pf_words
+    assign wl = w | downcase
+    assign c0 = wl | slice: 0
+    assign c1 = wl | slice: 1
+    assign is_spec = false
+    if c0 == '(' and c1 != blank and pf_digits contains c1
+      assign is_spec = true
+    elsif c0 == 'x'
+      assign rest_x = wl | remove_first: 'x'
+      if rest_x == blank
+        assign nxt = pf_words[forloop.index] | slice: 0
+        if nxt != blank and pf_digits contains nxt
+          assign is_spec = true
+        endif
+      else
+        assign rx0 = rest_x | slice: 0
+        if pf_digits contains rx0
+          assign is_spec = true
+        endif
+      endif
+    elsif c0 != blank and pf_digits contains c0
+      assign unit = wl | remove: '0' | remove: '1' | remove: '2' | remove: '3' | remove: '4' | remove: '5' | remove: '6' | remove: '7' | remove: '8' | remove: '9' | remove: '.' | remove: ','
+      if unit == blank
+        assign nxt = pf_words[forloop.index] | downcase
+        if nxt == 'kg' or nxt == 'g' or nxt == 'gr' or nxt == 'ml' or nxt == 'l' or nxt == 'lít' or nxt == 'cl'
+          assign is_spec = true
+        elsif nxt == 'gói' or nxt == 'chai' or nxt == 'lon' or nxt == 'hộp' or nxt == 'túi' or nxt == 'lọ' or nxt == 'hũ' or nxt == 'bịch' or nxt == 'bát' or nxt == 'can' or nxt == 'lốc'
+          assign is_spec = true
+        endif
+      else
+        assign u2 = unit | slice: 0, 2
+        assign u1 = unit | slice: 0
+        if u2 == 'mm'
+          assign is_spec = false
+        elsif u2 == 'ml' or u2 == 'kg' or u2 == 'gr' or u2 == 'cl' or u2 == 'lí' or u1 == 'g' or u1 == 'l' or unit == 'm'
+          assign is_spec = true
+        endif
+      endif
+    endif
+    if is_spec
+      assign pf_cut = forloop.index0
+      break
+    endif
+  endfor
+
+  assign pf_short = title | strip
+  if pf_cut > 0 and pf_cut < pf_words.size
+    assign pf_short = pf_words | slice: 0, pf_cut | join: ' '
+    for i in (1..3)
+      assign pf_last = pf_short | slice: -1
+      if pf_last == '-' or pf_last == ',' or pf_last == '/' or pf_last == '(' or pf_last == ':' or pf_last == '|' or pf_last == '–'
+        assign pf_short = pf_short | remove_last: pf_last | strip
+      endif
+    endfor
+  endif
+  if pf_short == blank
+    assign pf_short = title
+  endif
+-%}
+{{- pf_short | escape -}}

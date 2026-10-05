@@ -124,7 +124,7 @@
                       {%- endif -%}
 
                       <div class="cart-item__title">
-                        <a href="{{ item.url }}" class="cart-item__name h4 break">{{ item.product.title | escape }}</a>
+                        <a href="{{ item.url }}" class="cart-item__name h4 break">{% render 'pf-short-title', title: item.product.title %}</a>
                         {%- assign cart_disclosure_modal_id = 'CartDisclosureModal-cart-' | append: item.key | replace: ':', '-' -%}
                         {%- render 'cart-disclosure-indicator',
                           product: item.product,

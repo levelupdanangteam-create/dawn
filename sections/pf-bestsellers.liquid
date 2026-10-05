@@ -87,7 +87,7 @@
               </a>
               <div class="pf-bs__info">
                 <span class="pf-bs__tag">🔥 Bán chạy</span>
-                <h3 class="pf-bs__nm"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+                <h3 class="pf-bs__nm"><a href="{{ product.url }}">{% render 'pf-short-title', title: product.title %}</a></h3>
                 {% render 'pf-sold-badge', p: product %}
                 <div class="pf-bs__price">
                   <span class="now">{{ pf_price | money }}</span>

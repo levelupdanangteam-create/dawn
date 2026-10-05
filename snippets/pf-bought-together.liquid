@@ -74,7 +74,7 @@
                 {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
               {%- endif -%}
             </a>
-            <h3 class="pf-bt__nm"><a href="{{ p.url }}">{{ p.title }}</a></h3>
+            <h3 class="pf-bt__nm"><a href="{{ p.url }}">{% render 'pf-short-title', title: p.title %}</a></h3>
             <div class="pf-bt__price">
               <span class="now">{{ p.price | money }}</span>
               {%- if p.compare_at_price > p.price -%}<span class="was">{{ p.compare_at_price | money }}</span>{%- endif -%}

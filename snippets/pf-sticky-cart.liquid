@@ -59,7 +59,7 @@
     <img class="pf-sc__img" id="pf-sc-img" alt="" width="44" height="44"
       {%- if cart.items.last.image %} src="{{ cart.items.last.image | image_url: width: 120 }}"{% endif -%}>
     <div class="pf-sc__text">
-      <span class="pf-sc__name" id="pf-sc-name">{{ cart.items.last.product.title | default: 'Sản phẩm đã thêm vào giỏ' }}</span>
+      <span class="pf-sc__name" id="pf-sc-name">{%- if cart.items.last -%}{% render 'pf-short-title', title: cart.items.last.product.title %}{%- else -%}Sản phẩm đã thêm vào giỏ{%- endif -%}</span>
       <span class="pf-sc__meta"><span id="pf-sc-count">{{ cart.item_count }}</span> {% if request.locale.iso_code == 'vi' %}sản phẩm{% else %}item(s){% endif %} · <b id="pf-sc-total">{{ cart.total_price | money }}</b></span>
     </div>
   </div>
@@ -114,10 +114,31 @@
         .catch(function () {});
     }
 
+    // Bỏ quy cách khỏi tên (giống snippet pf-short-title): "Trà bí đao lon 310ml x 24" → "Trà bí đao lon"
+    function pfShortTitle(t) {
+      if (!t) return '';
+      var w = String(t).trim().split(/\s+/), cut = w.length;
+      var MASS = /^(kg|g|gr|ml|l|lít|cl)$/, COUNT = /^(gói|chai|lon|hộp|túi|lọ|hũ|bịch|bát|can|lốc)$/;
+      for (var i = 0; i < w.length; i++) {
+        var x = w[i].toLowerCase(), nx = (w[i + 1] || '').toLowerCase(), spec = false;
+        if (/^\(\d/.test(x)) spec = true;
+        else if (x === 'x') spec = /^\d/.test(nx);
+        else if (/^x\d/.test(x)) spec = true;
+        else if (/^\d/.test(x)) {
+          var u = x.replace(/[\d.,]/g, '');
+          if (!u) spec = MASS.test(nx) || COUNT.test(nx);
+          else if (u.slice(0, 2) !== 'mm') spec = /^(ml|kg|gr|cl|lí)/.test(u) || /^[gl]/.test(u) || u === 'm';
+        }
+        if (spec) { cut = i; break; }
+      }
+      if (cut === 0 || cut === w.length) return String(t).trim();
+      return w.slice(0, cut).join(' ').replace(/[\s\-,\/(:|–]+$/, '').trim() || String(t).trim();
+    }
+
     // A product was added via the custom card buttons (pf-cart-ajax.js)
     document.addEventListener('pf:cart:added', function (e) {
       var d = e.detail || {};
-      var name = d.product_title || d.title || nameEl.textContent;
+      var name = pfShortTitle(d.product_title || d.title) || nameEl.textContent;
       var img = d.image || (d.featured_image && d.featured_image.url) || '';
       if (name) nameEl.textContent = name;
       if (img) imgEl.setAttribute('src', img);
