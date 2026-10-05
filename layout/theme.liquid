@@ -437,7 +437,7 @@
     {% render 'pf-salespop' %}
     {% render 'pf-contact-buttons' %}
     {% render 'pf-hide-widgets' %}
-    {% render 'pf-exit-intent' %}
+    {%- comment -%} Popup "Deal 0 Đồng / 0€" khi khách định rời trang — đã tắt. Bật lại: render 'pf-exit-intent'. {%- endcomment -%}
     {% render 'pf-deal-rule' %}
   </body>
 </html>
