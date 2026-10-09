@@ -1,0 +1,139 @@
+{%- comment -%}
+  "SIÊU SALE 10.10" — lưới sản phẩm giảm giá đợt 10.10.
+  Lấy sản phẩm từ Danh mục (mặc định: sieu-sale-10-10). Section riêng, CSS/JS
+  đều gắn với id section nên không ảnh hưởng các section khác trên trang.
+{%- endcomment -%}
+<style>
+  #pf-s10-{{ section.id }} { padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px; }
+  #pf-s10-{{ section.id }} .pf-wrap { max-width: var(--page-width, 120rem); margin-inline: auto; padding-inline: clamp(1.6rem, 3vw, 3rem); }
+  #pf-s10-{{ section.id }} .pf-s10 { --cols: {{ section.settings.columns_desktop }}; }
+  #pf-s10-{{ section.id }} .pf-s10__head { text-align: center; margin-bottom: 2.8rem; }
+  #pf-s10-{{ section.id }} .pf-s10__eyebrow {
+    display: inline-flex; align-items: center; gap: .5rem; font-size: 1.2rem; font-weight: 800;
+    letter-spacing: .14em; text-transform: uppercase; color: #c0261f;
+    background: #fff0ee; border: 1px solid #f6c3bd; padding: .4rem 1rem; border-radius: 999px; margin-bottom: 1rem;
+  }
+  #pf-s10-{{ section.id }} .pf-s10__title { font-family: var(--font-heading-family, sans-serif); font-weight: 900; font-size: clamp(2.4rem, 3.8vw, 3.6rem); color: #d62828; margin: 0; line-height: 1.15; letter-spacing: .02em; }
+  #pf-s10-{{ section.id }} .pf-s10__title::after { content: ""; display: block; width: 6rem; height: 4px; border-radius: 4px; margin: 1.2rem auto 0; background: linear-gradient(90deg, #d62828, #f4a261); }
+  #pf-s10-{{ section.id }} .pf-s10__sub { margin: 1rem auto 0; max-width: 56ch; color: #6b6357; font-size: 1.5rem; font-weight: 600; }
+
+  #pf-s10-{{ section.id }} .pf-s10__grid { display: grid; grid-template-columns: repeat(var(--cols), 1fr); gap: 1.8rem; }
+  #pf-s10-{{ section.id }} .pf-s10__card {
+    position: relative; background: #fff; border: 1px solid #ece4d8; border-radius: 16px; overflow: hidden;
+    display: flex; flex-direction: column; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  #pf-s10-{{ section.id }} .pf-s10__card:hover { transform: translateY(-5px); box-shadow: 0 16px 36px rgba(214,40,40,.14); border-color: #f6c3bd; }
+  #pf-s10-{{ section.id }} .pf-s10__badge {
+    position: absolute; top: 0; left: 0; z-index: 3;
+    display: inline-flex; align-items: center; gap: .3rem; font-weight: 800; font-size: 1.1rem; color: #fff;
+    background: linear-gradient(135deg, #e63946, #c0261f); padding: .45rem .9rem; border-radius: 16px 0 16px 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,.15);
+  }
+  #pf-s10-{{ section.id }} .pf-s10__media { position: relative; aspect-ratio: 1; background: #f7f1e9; display: grid; place-items: center; overflow: hidden; }
+  #pf-s10-{{ section.id }} .pf-s10__media img, #pf-s10-{{ section.id }} .pf-s10__media svg { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
+  #pf-s10-{{ section.id }} .pf-s10__card:hover .pf-s10__media img { transform: scale(1.06); }
+
+  #pf-s10-{{ section.id }} .pf-s10__info { padding: 1.3rem 1.4rem 1.6rem; display: flex; flex-direction: column; gap: .6rem; flex: 1; }
+  #pf-s10-{{ section.id }} .pf-s10__info .pf-card-actions { margin-top: auto; }
+  #pf-s10-{{ section.id }} .pf-s10__nm { margin: 0; font-size: 1.4rem; font-weight: 600; line-height: 1.35; color: #2a2622; }
+  #pf-s10-{{ section.id }} .pf-s10__nm a { color: inherit; text-decoration: none; }
+  #pf-s10-{{ section.id }} .pf-s10__nm a:hover { color: #d62828; }
+  #pf-s10-{{ section.id }} .pf-s10__price { display: flex; align-items: baseline; gap: .8rem; font-variant-numeric: tabular-nums; }
+  #pf-s10-{{ section.id }} .pf-s10__price .now { font-size: 1.65rem; font-weight: 800; color: #d62828; }
+  #pf-s10-{{ section.id }} .pf-s10__price .was { font-size: 1.2rem; color: #a79c8e; text-decoration: line-through; }
+
+  #pf-s10-{{ section.id }} .pf-s10__card--hidden { display: none; }
+  #pf-s10-{{ section.id }} .pf-s10.is-expanded .pf-s10__card--hidden { display: flex; }
+  #pf-s10-{{ section.id }} .pf-s10__more-wrap { text-align: center; margin-top: 2.6rem; }
+  #pf-s10-{{ section.id }} .pf-s10__more {
+    display: inline-flex; align-items: center; gap: .6rem; cursor: pointer;
+    background: #fff; border: 2px solid #d62828; color: #c0261f; font-weight: 800; font-size: 1.5rem;
+    padding: 1rem 2.6rem; border-radius: 999px; transition: background .18s ease, color .18s ease;
+  }
+  #pf-s10-{{ section.id }} .pf-s10__more:hover { background: #d62828; color: #fff; }
+  #pf-s10-{{ section.id }} .pf-s10__more .arw { transition: transform .2s ease; }
+  #pf-s10-{{ section.id }} .pf-s10.is-expanded .pf-s10__more .arw { transform: rotate(180deg); }
+
+  @media (max-width: 989px) { #pf-s10-{{ section.id }} .pf-s10__grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 599px) { #pf-s10-{{ section.id }} .pf-s10__grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; } }
+</style>
+
+{%- assign pf_initial = section.settings.pf_initial | default: 10 -%}
+{%- assign pf_col = section.settings.collection -%}
+{%- if pf_col == blank -%}{%- assign pf_col = collections['sieu-sale-10-10'] -%}{%- endif -%}
+{%- assign pf_valid = 0 -%}
+{%- if pf_col != blank -%}{%- assign pf_valid = pf_col.products_count -%}{%- endif -%}
+
+{%- if pf_valid > 0 -%}
+<div id="pf-s10-{{ section.id }}" class="pf-boxed-section">
+  <div class="pf-wrap">
+    <div class="pf-s10">
+      <div class="pf-s10__head">
+        {%- if section.settings.eyebrow != blank -%}<span class="pf-s10__eyebrow">🔥 {{ section.settings.eyebrow }}</span>{%- endif -%}
+        <h2 class="pf-s10__title">{{ section.settings.heading }}</h2>
+        {%- if section.settings.subheading != blank -%}<p class="pf-s10__sub">{{ section.settings.subheading }}</p>{%- endif -%}
+      </div>
+
+      {%- assign pf_shown = 0 -%}
+      <div class="pf-s10__grid">
+        {%- for product in pf_col.products limit: 50 -%}
+          {%- if product != blank and product.id -%}
+            {%- assign pf_shown = pf_shown | plus: 1 -%}
+            {%- if pf_shown > pf_initial -%}
+              {% render 'pf-s1010-card', product: product, section_id: section.id, hidden: true, badge: section.settings.badge %}
+            {%- else -%}
+              {% render 'pf-s1010-card', product: product, section_id: section.id, badge: section.settings.badge %}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      {%- if pf_shown > pf_initial -%}
+        <div class="pf-s10__more-wrap">
+          <button type="button" class="pf-s10__more" data-pf-s10-more>
+            <span class="pf-s10__more-txt">{% if request.locale.iso_code == "vi" %}Xem thêm{% else %}View more{% endif %}</span>
+            <span class="arw" aria-hidden="true">▾</span>
+          </button>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('pf-s10-{{ section.id }}');
+    if (!root) return;
+    var box = root.querySelector('.pf-s10');
+    var btn = root.querySelector('[data-pf-s10-more]');
+    if (!box || !btn) return;
+    var txt = btn.querySelector('.pf-s10__more-txt');
+    var vi = '{{ request.locale.iso_code }}' === 'vi';
+    btn.addEventListener('click', function () {
+      var expanded = box.classList.toggle('is-expanded');
+      if (txt) txt.textContent = expanded ? (vi ? 'Thu gọn' : 'View less') : (vi ? 'Xem thêm' : 'View more');
+    });
+  })();
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Siêu Sale 10.10",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "Chỉ trong dịp 10.10" },
+    { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "SIÊU SALE 10.10" },
+    { "type": "text", "id": "subheading", "label": "Câu hook", "default": "Thêm vào giỏ là có hời – Chốt đơn kẻo lỡ!" },
+    { "type": "text", "id": "badge", "label": "Tag trên mỗi sản phẩm", "default": "Giảm 10%" },
+    { "type": "collection", "id": "collection", "label": "Danh mục sản phẩm sale", "info": "Để trống = dùng danh mục 'Siêu Sale 10.10' (sieu-sale-10-10). Section tự ẩn nếu danh mục trống." },
+    { "type": "range", "id": "columns_desktop", "min": 3, "max": 6, "step": 1, "label": "Số cột (desktop)", "default": 5 },
+    { "type": "range", "id": "pf_initial", "min": 3, "max": 30, "step": 1, "label": "Số sản phẩm hiện ban đầu (còn lại ẩn sau nút Xem thêm)", "default": 10 },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 40 }
+  ],
+  "presets": [
+    { "name": "Siêu Sale 10.10" }
+  ]
+}
+{% endschema %}

@@ -56,32 +56,6 @@
     },
     "pf_hero_slideshow_UijQAg": {
       "type": "pf-hero-slideshow",
-      "blocks": {
-        "slide_ECJQFW": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/7f3842a4-1fc3-461b-b8bd-82bd340568dd.png",
-            "title": "",
-            "text": "",
-            "button_label": "",
-            "button_link": ""
-          }
-        },
-        "slide_h7RtgL": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/6f9f6f5e-0c8a-4a5c-b30b-bf33e128bb72.png",
-            "title": "",
-            "text": "",
-            "button_label": "",
-            "button_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "slide_ECJQFW",
-        "slide_h7RtgL"
-      ],
       "name": "Hero Slideshow",
       "settings": {
         "autoplay_interval": 5,

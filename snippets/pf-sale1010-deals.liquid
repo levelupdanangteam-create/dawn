@@ -1,0 +1,123 @@
+{%- comment -%}
+  Trang "Siêu Sale 10.10": header + đồng hồ đếm ngược tới mốc cố định + lưới sản phẩm.
+  Bản riêng dựa trên pf-flash-deals (dùng lại class/CSS pf-flash__*), KHÔNG sửa pf-flash-deals.
+  Params: deal_collection (collection), heading (string), badge (string),
+          end_at (ISO 8601, vd 2026-10-10T23:59:59+02:00), initial (int), uid (string, bắt buộc)
+{%- endcomment -%}
+{%- liquid
+  assign col = deal_collection
+  assign lim = 50
+  if col != blank
+    assign lim = col.products_count
+  endif
+  assign init = initial | default: 0
+  assign rendered = lim
+  assign tag_txt = badge | default: 'Giảm 10%'
+-%}
+<div class="pf-flash" id="pf-flash-{{ uid }}">
+  <div class="pf-flash__head">
+    <div class="pf-flash__brand">
+      <span class="pf-flash__badge">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>
+        SIÊU SALE 10.10
+      </span>
+      {%- if heading != blank -%}<span class="pf-flash__name">{{ heading }}</span>{%- endif -%}
+    </div>
+    <div class="pf-flash__count">
+      <span class="pf-flash__count-label">{% if request.locale.iso_code == 'vi' %}Kết thúc sau{% else %}Ends in{% endif %}</span>
+      <span class="pf-flash__timer" data-end="{{ end_at | default: '2026-10-10T23:59:59+02:00' }}" role="timer" aria-label="{% if request.locale.iso_code == 'vi' %}Đếm ngược ưu đãi{% else %}Deal countdown{% endif %}">
+        <span class="pf-u dd">00</span><i>{% if request.locale.iso_code == 'vi' %} ngày {% else %}d {% endif %}</i><span class="pf-u hh">00</span><i>:</i><span class="pf-u mm">00</span><i>:</i><span class="pf-u ss">00</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="pf-flash__row">
+    {%- if col != blank and col.products_count > 0 -%}
+      {%- for product in col.products limit: lim -%}
+        {%- liquid
+          assign pf_v = product.selected_or_first_available_variant
+          assign pf_price = pf_v.price
+          assign pf_cmp = pf_v.compare_at_price
+          if pf_cmp == blank or pf_cmp <= pf_price
+            assign pf_cmp = product.compare_at_price_max
+          endif
+          assign on_sale = false
+          if pf_cmp > pf_price
+            assign on_sale = true
+          endif
+        -%}
+        <div class="pf-flash__card{% if init > 0 and forloop.index > init %} is-hidden{% endif %}">
+          <a class="pf-flash__media" href="{{ product.url }}">
+            <span class="pf-flash__disc">🔥 {{ tag_txt }}</span>
+            <span class="pf-flash__hot">HOT</span>
+            {%- if product.featured_image -%}
+              <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title | escape }}" loading="lazy" width="400" height="400">
+            {%- else -%}
+              {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </a>
+          <div class="pf-flash__info">
+            <h3 class="pf-flash__nm"><a href="{{ product.url }}">{% render 'pf-short-title', title: product.title %}</a></h3>
+            <div class="pf-flash__price">
+              <span class="now">{{ pf_price | money }}</span>
+              {%- if on_sale -%}<span class="was">{{ pf_cmp | money }}</span>{%- endif -%}
+            </div>
+            {% render 'pf-card-buttons', product: product, section_id: uid %}
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      <p>{% if request.locale.iso_code == 'vi' %}Chưa có sản phẩm trong danh mục Siêu Sale 10.10.{% else %}No products yet.{% endif %}</p>
+    {%- endif -%}
+  </div>
+
+  {%- if init > 0 and rendered > init -%}
+    <div class="pf-flash__morewrap">
+      <button type="button" class="pf-flash__more-btn">
+        {% if request.locale.iso_code == 'vi' %}Xem thêm{% else %}View more{% endif %}
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+    </div>
+  {%- endif -%}
+</div>
+
+<script>
+  (function () {
+    var box = document.getElementById('pf-flash-{{ uid }}');
+    if (!box) return;
+    var moreBtn = box.querySelector('.pf-flash__more-btn');
+    if (moreBtn && !moreBtn.dataset.pfInit) {
+      moreBtn.dataset.pfInit = '1';
+      moreBtn.addEventListener('click', function () {
+        box.querySelectorAll('.pf-flash__card.is-hidden').forEach(function (c) { c.classList.remove('is-hidden'); });
+        var w = moreBtn.closest('.pf-flash__morewrap');
+        if (w) w.remove();
+      });
+    }
+    var el = box.querySelector('.pf-flash__timer');
+    if (!el || el.dataset.pfInit) return;
+    el.dataset.pfInit = '1';
+    // Mốc kết thúc cố định (giờ châu Âu), giống nhau cho mọi khách, không reset khi tải lại trang.
+    var end = Date.parse(el.getAttribute('data-end'));
+    if (isNaN(end)) return;
+    var dd = el.querySelector('.dd'), hh = el.querySelector('.hh'), mm = el.querySelector('.mm'), ss = el.querySelector('.ss');
+    function p(n) { return (n < 10 ? '0' : '') + n; }
+    var timer;
+    function tick() {
+      var d = end - Date.now();
+      if (d <= 0) {
+        d = 0;
+        if (timer) clearInterval(timer);
+        var lb = box.querySelector('.pf-flash__count-label');
+        if (lb) lb.textContent = '{% if request.locale.iso_code == "vi" %}Ưu đãi đã kết thúc{% else %}Deal ended{% endif %}';
+      }
+      var s = Math.floor(d / 1000);
+      dd.textContent = p(Math.floor(s / 86400));
+      hh.textContent = p(Math.floor((s % 86400) / 3600));
+      mm.textContent = p(Math.floor((s % 3600) / 60));
+      ss.textContent = p(s % 60);
+    }
+    tick();
+    timer = setInterval(tick, 1000);
+  })();
+</script>

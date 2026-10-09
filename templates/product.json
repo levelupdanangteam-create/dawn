@@ -82,6 +82,16 @@
         "padding_bottom": 12
       }
     },
+    "custom_liquid_KJ6LNE": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "{%- assign certs = product.metafields.custom.certificates.value -%}\n{%- if certs != blank -%}\n<div class=\"pf-cert page-width\">\n  <div class=\"pf-cert__head\">\n    <h2 class=\"pf-cert__title\">Giấy chứng nhận sản phẩm</h2>\n    <p class=\"pf-cert__sub\">Đầy đủ giấy tờ chất lượng &amp; an toàn thực phẩm — bấm để xem bản gốc</p>\n  </div>\n  <div class=\"pf-cert__grid\">\n    {%- for c in certs -%}\n      <a class=\"pf-cert__card\" href=\"{{ c.pdf }}\" target=\"_blank\" rel=\"noopener\">\n        <span class=\"pf-cert__img\"><img src=\"{{ c.img }}\" alt=\"{{ c.name | escape }}\" loading=\"lazy\"></span>\n        <span class=\"pf-cert__nm\">{{ c.name }}</span>\n        <span class=\"pf-cert__cta\">📄 Xem bản PDF</span>\n      </a>\n    {%- endfor -%}\n  </div>\n</div>\n<style>\n  .pf-cert { padding-top: 32px; padding-bottom: 32px; }\n  .pf-cert__head { text-align: center; margin-bottom: 2rem; }\n  .pf-cert__title { margin: 0; font-size: clamp(2rem, 3vw, 2.8rem); font-weight: 800; color: #14672f; }\n  .pf-cert__sub { margin: .5rem 0 0; font-size: 1.5rem; color: #6a6255; }\n  .pf-cert__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.6rem; max-width: 88rem; margin: 0 auto; }\n  .pf-cert__card { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #2a2622; background: #fff; border: 1px solid #e6dcc4; border-radius: 16px; padding: .8rem .8rem 1.2rem; box-shadow: 0 8px 22px rgba(0,0,0,.08); transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease; }\n  .pf-cert__card:hover { transform: translateY(-4px); border-color: #a8d5b5; box-shadow: 0 14px 30px rgba(30,133,65,.15); }\n  .pf-cert__img { display: block; width: 100%; aspect-ratio: 3 / 4; overflow: hidden; border-radius: 10px; border: 1px solid #eee; background: #f7f7f7; }\n  .pf-cert__img img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }\n  .pf-cert__nm { margin-top: .9rem; font-size: 1.35rem; font-weight: 700; text-align: center; line-height: 1.3; }\n  .pf-cert__cta { margin-top: .4rem; font-size: 1.2rem; font-weight: 700; color: #1e8541; }\n  @media (max-width: 749px) {\n    .pf-cert__grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }\n    .pf-cert__nm { font-size: 1.25rem; }\n  }\n</style>\n{%- endif -%}",
+        "color_scheme": "",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
     "pf_review_video": {
       "type": "pf-review-video",
       "settings": {
@@ -177,6 +187,7 @@
   "order": [
     "main",
     "pf_frequently_bought",
+    "custom_liquid_KJ6LNE",
     "pf_review_video",
     "pf_reviews",
     "disclosures",

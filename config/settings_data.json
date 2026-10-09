@@ -132,6 +132,8 @@
     "show_cart_note": false,
     "cart_drawer_collection": "",
     "cart_color_scheme": "scheme-1",
+    "pf_geoblock_on": true,
+    "pf_geoblock_countries": "US",
     "sections": {
       "main-password-header": {
         "type": "main-password-header",
@@ -220,9 +222,7 @@
           "shadow": "#121212"
         }
       }
-    },
-    "pf_geoblock_on": true,
-    "pf_geoblock_countries": "US"
+    }
   },
   "presets": {
     "Dawn": {
@@ -415,5 +415,18 @@
         }
       }
     }
+  },
+  "platform_customizations": {
+    "custom_css": [
+      ".pf-flash__disc,.pf-s10__badge,.pf-flash__badge{background:linear-gradient(135deg,#2e8b47,#1d6b35)!important;color:#fff!important;box-shadow:none!important}",
+      ".pf-flash__price .now,.pf-s10__price .now,.pf-s10__title{color:#1e8541!important}",
+      ".pf-s10__title:after{background:#1e8541!important}",
+      ".pf-flash__card,.pf-s10__card{border:1px solid #f0e6d8!important}",
+      ".pf-flash__card:hover,.pf-s10__card:hover{border-color:#a8d5b5!important;box-shadow:0 16px 34px rgba(30,133,65,.14)!important}",
+      ".pf-flash__nm a:hover,.pf-s10__nm a:hover{color:#1e8541!important}",
+      ".pf-s10__more,.pf-flash__more-btn{background:#fff!important;border:2px solid #1e8541!important;color:#1e8541!important}",
+      ".pf-s10__more:hover,.pf-flash__more-btn:hover{background:#1e8541!important;color:#fff!important}",
+      ":is(.pf-flash__card,.pf-s10__card):has(a[href*=banh-da-tr],a[href*=ca-du-gion],a[href*=\"/bun-bo-hu\"],a[href*=ca-gia-t],a[href*=\"-ba-ba-h\"],a[href*=bao-gion-v]) :is(.pf-flash__disc,.pf-s10__badge){background:linear-gradient(135deg,#7b2ff7,#f107a3)!important;box-shadow:0 0 0 2px #ffd400!important}"
+    ]
   }
 }

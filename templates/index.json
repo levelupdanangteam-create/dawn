@@ -9,6 +9,73 @@
  */
 {
   "sections": {
+    "pf_hero_float": {
+      "type": "pf-hero-float",
+      "blocks": {
+        "p1": {
+          "type": "product",
+          "settings": {
+            "product": "chinsu-pho-story-truyen-thong-nuoc-trong",
+            "title": ""
+          }
+        },
+        "p2": {
+          "type": "product",
+          "settings": {
+            "product": "canh-chua-isoup",
+            "title": ""
+          }
+        },
+        "p3": {
+          "type": "product",
+          "settings": {
+            "product": "ca-du-gion-tẩm-vị-gion-tan-rom-rốp-sieu-ngon",
+            "title": ""
+          }
+        },
+        "p4": {
+          "type": "product",
+          "settings": {
+            "product": "chan-ga-ba-tuyết",
+            "title": ""
+          }
+        },
+        "p5": {
+          "type": "product",
+          "settings": {
+            "product": "bun-bo-huế-vifon-thịt-thật",
+            "title": ""
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
+      "settings": {
+        "pill": "Đồ Việt cho người Việt · giao khắp châu Âu",
+        "badge": "Ưu đãi mới mỗi tuần",
+        "heading_1": "Freeship",
+        "heading_2": "đơn từ 169€",
+        "text": "<p>Hoặc <strong>giảm 10%</strong> đơn hàng — hương vị Việt chuẩn vị, từ phở đến cà phê, giao tận cửa nhà bạn.</p>",
+        "stat_1_title": "15 quốc gia",
+        "stat_1_sub": "Miễn phí vận chuyển",
+        "stat_2_title": "4 quốc gia",
+        "stat_2_sub": "Giảm 10%",
+        "pop_1_title": "Áp dụng cho 15 quốc gia sau:",
+        "pop_1_countries": "sk|Slovakia\npl|Ba Lan\nde|Đức\nhu|Hungary\nbg|Bulgaria\nro|Romania\nat|Áo\nit|Ý\nhr|Croatia\nbe|Bỉ\nfr|Pháp\nnl|Hà Lan\nes|Tây Ban Nha\npt|Bồ Đào Nha\ngr|Hy Lạp",
+        "pop_2_title": "Áp dụng cho 4 quốc gia sau:",
+        "pop_2_countries": "ie|Ireland\ndk|Đan Mạch\nfi|Phần Lan\nse|Thụy Điển",
+        "stat_3": "Áp dụng đơn từ 169€",
+        "button_label": "Mua ngay",
+        "button_link": "shopify://collections/all",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
     "pf_category_grid": {
       "type": "pf-category-grid",
       "blocks": {
@@ -177,6 +244,30 @@
         "subheading": "Số lượng có hạn! Thêm vào giỏ hàng ngay.",
         "padding_top": 40,
         "padding_bottom": 40
+      }
+    },
+    "pf_sale_1010": {
+      "type": "pf-sale-1010",
+      "settings": {
+        "eyebrow": "",
+        "heading": "SIÊU SALE 10.10",
+        "subheading": "Chốt đơn liền tay – Deal khủng chỉ kéo dài đến hết 10.10",
+        "badge": "Giảm 20%",
+        "collection": "sieu-sale-10-10",
+        "columns_desktop": 5,
+        "pf_initial": 10,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "custom_liquid_m33TFL": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "<script>\n  (function () {\n    document.querySelectorAll('[data-pf-s10-more]').forEach(function (b) {\n      var a = document.createElement('a');\n      a.href = '/pages/flash-sale';\n      a.className = b.className;\n      a.style.textDecoration = 'none';\n      a.innerHTML = 'Xem thêm <span aria-hidden=\"true\">→</span>';\n      b.replaceWith(a);\n    });\n  })();\n</script>",
+        "color_scheme": "",
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "pf_exclusive": {
@@ -463,8 +554,11 @@
     }
   },
   "order": [
+    "pf_hero_float",
     "pf_category_grid",
     "pf_deal_hook",
+    "pf_sale_1010",
+    "custom_liquid_m33TFL",
     "pf_exclusive",
     "pf_weekly_deals",
     "pf_new_arrivals",

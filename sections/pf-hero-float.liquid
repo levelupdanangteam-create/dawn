@@ -1,0 +1,338 @@
+{%- comment -%}
+  Hero trang chủ: tiêu đề Freeship + thẻ sản phẩm bay lơ lửng.
+  CSS/JS gắn với id section nên không ảnh hưởng các section khác.
+{%- endcomment -%}
+<style>
+  #pf-hf-{{ section.id }} {
+    --pf-hf-green: #1f8a43;
+    --pf-hf-dark: #22201c;
+    --pf-hf-yellow: #ffc61a;
+    position: relative; overflow: hidden;
+    background: linear-gradient(115deg, #f1f8ee 0%, #f7faf2 45%, #fffbe9 100%);
+    border-top: 3px solid var(--pf-hf-yellow);
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+  #pf-hf-{{ section.id }} .pf-hf__wrap {
+    max-width: var(--page-width, 120rem); margin-inline: auto; padding-inline: clamp(1.6rem, 4vw, 5rem);
+    display: grid; grid-template-columns: 1fr 1.05fr; gap: 3rem; align-items: center;
+  }
+  #pf-hf-{{ section.id }} .pf-hf__copy { display: flex; flex-direction: column; align-items: flex-start; gap: 1.4rem; }
+  #pf-hf-{{ section.id }} .pf-hf__pill {
+    display: inline-block; background: #fff; color: #1d5e33; font-weight: 700; font-size: 1.3rem;
+    padding: .8rem 1.6rem; border-radius: 999px; box-shadow: 0 2px 10px rgba(0,0,0,.05);
+  }
+  #pf-hf-{{ section.id }} .pf-hf__badge {
+    display: inline-flex; align-items: center; gap: .7rem; background: var(--pf-hf-green); color: #fff;
+    font-weight: 800; font-size: 1.3rem; padding: .8rem 1.6rem; border-radius: 999px;
+  }
+  #pf-hf-{{ section.id }} .pf-hf__badge::before { content: ""; width: .8rem; height: .8rem; border-radius: 50%; background: var(--pf-hf-yellow); }
+  #pf-hf-{{ section.id }} .pf-hf__title {
+    margin: .4rem 0 0; font-family: var(--font-heading-family, sans-serif); font-weight: 900;
+    font-size: clamp(3.8rem, 6vw, 7rem); line-height: 1.02; letter-spacing: -.01em;
+  }
+  #pf-hf-{{ section.id }} .pf-hf__l1 { display: block; color: var(--pf-hf-green); }
+  #pf-hf-{{ section.id }} .pf-hf__l2 {
+    display: inline; color: var(--pf-hf-dark);
+    background: linear-gradient(transparent 58%, var(--pf-hf-yellow) 58%, var(--pf-hf-yellow) 92%, transparent 92%);
+    -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  }
+  #pf-hf-{{ section.id }} .pf-hf__text { margin: 0; max-width: 46ch; color: #57534b; font-size: 1.7rem; line-height: 1.55; }
+  #pf-hf-{{ section.id }} .pf-hf__text strong { color: var(--pf-hf-green); }
+  #pf-hf-{{ section.id }} .pf-hf__stats {
+    display: flex; align-items: stretch; background: #fff; border: 1px solid #e3e6dc; border-radius: 14px; overflow: hidden; margin-top: .4rem;
+  }
+  #pf-hf-{{ section.id }} .pf-hf__stat { display: flex; align-items: center; gap: .9rem; padding: 1rem 1.6rem; border-right: 1px solid #e3e6dc; }
+  #pf-hf-{{ section.id }} .pf-hf__stat:last-child { border-right: 0; background: #fff8d9; }
+  #pf-hf-{{ section.id }} .pf-hf__stat b { display: block; font-size: 1.35rem; color: var(--pf-hf-dark); line-height: 1.3; white-space: nowrap; }
+  #pf-hf-{{ section.id }} .pf-hf__stat small { display: block; font-size: 1.2rem; font-weight: 700; color: var(--pf-hf-green); line-height: 1.3; white-space: nowrap; }
+
+  /* Ô có danh sách quốc gia: rê chuột (hoặc chạm) để xem */
+  #pf-hf-{{ section.id }} .pf-hf__stat--list { position: relative; cursor: help; padding-right: 2.8rem; transition: background .15s ease; }
+  #pf-hf-{{ section.id }} .pf-hf__stat--list:hover,
+  #pf-hf-{{ section.id }} .pf-hf__stat--list.is-open { background: #f1f8ee; }
+  #pf-hf-{{ section.id }} .pf-hf__stat--list b { text-decoration: underline dotted #9bbfa6; text-underline-offset: 3px; }
+  #pf-hf-{{ section.id }} .pf-hf__info {
+    position: absolute; top: .6rem; right: .7rem; width: 1.6rem; height: 1.6rem; border-radius: 50%;
+    background: var(--pf-hf-green); color: #fff; font: 800 1rem/1.6rem Georgia, serif; text-align: center; font-style: italic;
+    animation: pf-hf-ping-{{ section.id }} 2.4s ease-out infinite;
+  }
+  @keyframes pf-hf-ping-{{ section.id }} {
+    0% { box-shadow: 0 0 0 0 rgba(31,138,67,.45); }
+    70%, 100% { box-shadow: 0 0 0 7px rgba(31,138,67,0); }
+  }
+  .pf-hf-pop--{{ section.id }} {
+    position: fixed; z-index: 9999; display: none; pointer-events: none;
+    background: #fff; border: 1px solid #dfe8da; border-radius: 14px; padding: 1.2rem 1.4rem 1.3rem;
+    box-shadow: 0 16px 40px rgba(20,50,20,.18); max-width: calc(100vw - 2.4rem);
+  }
+  .pf-hf-pop--{{ section.id }}.is-visible { display: block; }
+  .pf-hf-pop--{{ section.id }} .pf-hf-pop__title {
+    margin: 0 0 1rem; padding: .5rem 1.2rem; border-radius: 999px; background: #1f8a43; color: #fff;
+    font-size: 1.2rem; font-weight: 800; text-transform: uppercase; letter-spacing: .02em; text-align: center; white-space: nowrap;
+  }
+  .pf-hf-pop--{{ section.id }} ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(var(--cols, 1), auto); gap: .55rem 2rem; }
+  .pf-hf-pop--{{ section.id }} li { display: flex; align-items: center; gap: .8rem; font-size: 1.35rem; font-weight: 600; color: #1d3a8a; white-space: nowrap; }
+  .pf-hf-pop--{{ section.id }} li img { width: 2.4rem; height: 1.6rem; object-fit: cover; border-radius: 2px; box-shadow: 0 0 0 1px rgba(0,0,0,.08); }
+  #pf-hf-{{ section.id }} .pf-hf__stat--check { font-weight: 800; font-size: 1.35rem; color: #6a5200; }
+  #pf-hf-{{ section.id }} .pf-hf__eu { flex: none; width: 2.6rem; height: 1.8rem; border-radius: 3px; background: #1e3a9e; display: grid; place-items: center; }
+  #pf-hf-{{ section.id }} .pf-hf__cta {
+    display: inline-flex; align-items: center; gap: .6rem; margin-top: 1rem;
+    background: var(--pf-hf-yellow); color: var(--pf-hf-dark); font-weight: 800; font-size: 1.6rem;
+    padding: 1.4rem 2.8rem; border-radius: 999px; text-decoration: none;
+    box-shadow: 0 8px 20px rgba(255,170,0,.35); transition: transform .15s ease, box-shadow .15s ease;
+  }
+  #pf-hf-{{ section.id }} .pf-hf__cta:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(255,170,0,.45); }
+
+  /* Thẻ sản phẩm bay lơ lửng */
+  #pf-hf-{{ section.id }} .pf-hf__stage { position: relative; height: 46rem; }
+  #pf-hf-{{ section.id }} .pf-hf__card {
+    position: absolute; width: 15.5rem; left: var(--x); top: var(--y);
+    animation: pf-hf-float-{{ section.id }} var(--d, 6s) ease-in-out infinite; animation-delay: var(--delay, 0s);
+  }
+  #pf-hf-{{ section.id }} .pf-hf__card a {
+    display: block; background: #fff; border-radius: 16px; padding: 1rem 1rem 1.4rem; text-decoration: none; color: inherit;
+    box-shadow: 0 14px 32px rgba(30,60,30,.13); transform: rotate(var(--r, 0deg)); transition: transform .25s ease, box-shadow .25s ease;
+  }
+  #pf-hf-{{ section.id }} .pf-hf__card a:hover { transform: rotate(0deg) scale(1.05); box-shadow: 0 20px 40px rgba(30,60,30,.2); }
+  #pf-hf-{{ section.id }} .pf-hf__img { aspect-ratio: 1; border-radius: 10px; background: #f5f3ee; overflow: hidden; display: grid; place-items: center; }
+  #pf-hf-{{ section.id }} .pf-hf__img img, #pf-hf-{{ section.id }} .pf-hf__img svg { width: 100%; height: 100%; object-fit: contain; }
+  #pf-hf-{{ section.id }} .pf-hf__nm {
+    margin: .9rem 0 .4rem; font-size: 1.25rem; font-weight: 600; line-height: 1.35; text-align: center; color: #3a362f;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 3.4rem;
+  }
+  #pf-hf-{{ section.id }} .pf-hf__pr { text-align: center; font-weight: 800; font-size: 1.5rem; color: var(--pf-hf-green); }
+
+  @keyframes pf-hf-float-{{ section.id }} {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+  }
+
+  @media screen and (max-width: 989px) {
+    #pf-hf-{{ section.id }} .pf-hf__wrap { grid-template-columns: 1fr; gap: 1rem; }
+    #pf-hf-{{ section.id }} .pf-hf__stage { height: 40rem; max-width: 52rem; width: 100%; margin-inline: auto; }
+  }
+  @media screen and (max-width: 599px) {
+    #pf-hf-{{ section.id }} .pf-hf__text { font-size: 1.5rem; }
+    #pf-hf-{{ section.id }} .pf-hf__stats { flex-wrap: wrap; width: 100%; }
+    #pf-hf-{{ section.id }} .pf-hf__stat { flex: 1 1 auto; padding: .9rem 1.1rem; }
+    #pf-hf-{{ section.id }} .pf-hf__stat--list { padding-right: 2.6rem; }
+    #pf-hf-{{ section.id }} .pf-hf__stat:last-child { flex-basis: 100%; border-top: 1px solid #e3e6dc; justify-content: center; }
+    #pf-hf-{{ section.id }} .pf-hf__stage { height: 34rem; }
+    #pf-hf-{{ section.id }} .pf-hf__card { width: 11.5rem; }
+    #pf-hf-{{ section.id }} .pf-hf__card a { padding: .7rem .7rem 1rem; border-radius: 12px; }
+    #pf-hf-{{ section.id }} .pf-hf__nm { font-size: 1.1rem; min-height: 3rem; }
+    #pf-hf-{{ section.id }} .pf-hf__pr { font-size: 1.3rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #pf-hf-{{ section.id }} .pf-hf__card { animation: none; }
+  }
+</style>
+
+{%- liquid
+  assign pf_pos_x = '0%,30%,66%,16%,52%' | split: ','
+  assign pf_pos_y = '15%,0%,6%,52%,56%' | split: ','
+  assign pf_rot = '-4deg,2deg,4deg,-2deg,3deg' | split: ','
+  assign pf_dur = '6s,7s,5.5s,6.5s,7.5s' | split: ','
+  assign pf_delay = '0s,-1.5s,-3s,-2.2s,-4s' | split: ','
+-%}
+
+<div id="pf-hf-{{ section.id }}">
+  <div class="pf-hf__wrap">
+    <div class="pf-hf__copy">
+      {%- if section.settings.pill != blank -%}<span class="pf-hf__pill">{{ section.settings.pill }}</span>{%- endif -%}
+      {%- if section.settings.badge != blank -%}<span class="pf-hf__badge">{{ section.settings.badge }}</span>{%- endif -%}
+      <h2 class="pf-hf__title">
+        <span class="pf-hf__l1">{{ section.settings.heading_1 }}</span>
+        <span class="pf-hf__l2">{{ section.settings.heading_2 }}</span>
+      </h2>
+      {%- if section.settings.text != blank -%}<div class="pf-hf__text">{{ section.settings.text }}</div>{%- endif -%}
+
+      <div class="pf-hf__stats">
+        <div class="pf-hf__stat pf-hf__stat--list" data-pop="pf-hf-pop-{{ section.id }}-1" tabindex="0" role="button" aria-label="{{ section.settings.pop_1_title }}">
+          <span class="pf-hf__info" aria-hidden="true">i</span>
+          <span class="pf-hf__eu" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#ffcc00"><circle cx="12" cy="3" r="1.4"/><circle cx="16.5" cy="4.2" r="1.4"/><circle cx="19.8" cy="7.5" r="1.4"/><circle cx="21" cy="12" r="1.4"/><circle cx="19.8" cy="16.5" r="1.4"/><circle cx="16.5" cy="19.8" r="1.4"/><circle cx="12" cy="21" r="1.4"/><circle cx="7.5" cy="19.8" r="1.4"/><circle cx="4.2" cy="16.5" r="1.4"/><circle cx="3" cy="12" r="1.4"/><circle cx="4.2" cy="7.5" r="1.4"/><circle cx="7.5" cy="4.2" r="1.4"/></svg>
+          </span>
+          <span><b>{{ section.settings.stat_1_title }}</b><small>{{ section.settings.stat_1_sub }}</small></span>
+        </div>
+        <div class="pf-hf__stat pf-hf__stat--list" data-pop="pf-hf-pop-{{ section.id }}-2" tabindex="0" role="button" aria-label="{{ section.settings.pop_2_title }}">
+          <span class="pf-hf__info" aria-hidden="true">i</span>
+          <span><b>{{ section.settings.stat_2_title }}</b><small>{{ section.settings.stat_2_sub }}</small></span>
+        </div>
+        <div class="pf-hf__stat pf-hf__stat--check">✓&nbsp;{{ section.settings.stat_3 }}</div>
+      </div>
+
+      {%- if section.settings.button_label != blank -%}
+        <a class="pf-hf__cta" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">{{ section.settings.button_label }} →</a>
+      {%- endif -%}
+    </div>
+
+    <div class="pf-hf__stage">
+      {%- for block in section.blocks limit: 5 -%}
+        {%- assign i = forloop.index0 -%}
+        {%- assign p = block.settings.product -%}
+        <div class="pf-hf__card" style="--x: {{ pf_pos_x[i] }}; --y: {{ pf_pos_y[i] }}; --r: {{ pf_rot[i] }}; --d: {{ pf_dur[i] }}; --delay: {{ pf_delay[i] }};" {{ block.shopify_attributes }}>
+          <a href="{% if p != blank %}{{ p.url }}{% else %}#{% endif %}">
+            <div class="pf-hf__img">
+              {%- if p != blank and p.featured_image != blank -%}
+                {{ p.featured_image | image_url: width: 400 | image_tag: loading: 'eager', alt: p.title, sizes: '160px', widths: '200,300,400' }}
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag }}
+              {%- endif -%}
+            </div>
+            <p class="pf-hf__nm">{% if block.settings.title != blank %}{{ block.settings.title }}{% elsif p != blank %}{{ p.title }}{% else %}Sản phẩm{% endif %}</p>
+            {%- if p != blank -%}<div class="pf-hf__pr">{{ p.price | money }}</div>{%- endif -%}
+          </a>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- comment -%} Popup danh sách quốc gia. Mỗi dòng: mã quốc gia|Tên (vd: de|Đức) {%- endcomment -%}
+  {%- for n in (1..2) -%}
+    {%- liquid
+      if n == 1
+        assign pop_title = section.settings.pop_1_title
+        assign pop_list = section.settings.pop_1_countries
+      else
+        assign pop_title = section.settings.pop_2_title
+        assign pop_list = section.settings.pop_2_countries
+      endif
+      assign pop_lines = pop_list | newline_to_br | split: '<br />'
+      assign pop_cols = 1
+      if pop_lines.size > 6
+        assign pop_cols = 2
+      endif
+    -%}
+    <div class="pf-hf-pop--{{ section.id }}" id="pf-hf-pop-{{ section.id }}-{{ n }}" role="tooltip">
+      {%- if pop_title != blank -%}<p class="pf-hf-pop__title">{{ pop_title }}</p>{%- endif -%}
+      <ul style="--cols: {{ pop_cols }};">
+        {%- for line in pop_lines -%}
+          {%- assign parts = line | strip | split: '|' -%}
+          {%- if parts.size > 1 -%}
+            {%- assign code = parts[0] | strip | downcase -%}
+            <li><img src="https://flagcdn.com/w40/{{ code }}.png" alt="" width="24" height="16" loading="lazy">{{ parts[1] | strip }}</li>
+          {%- elsif parts.size == 1 -%}
+            <li>{{ parts[0] | strip }}</li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- endfor -%}
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('pf-hf-{{ section.id }}');
+    if (!root) return;
+    var GAP = 16;
+    var canHover = window.matchMedia && window.matchMedia('(hover: hover)').matches;
+    var triggers = Array.prototype.slice.call(root.querySelectorAll('[data-pop]'));
+    var current = null;
+
+    triggers.forEach(function (t) {
+      var pop = document.getElementById(t.getAttribute('data-pop'));
+      if (!pop) return;
+      // Đưa popup ra body để không bị cắt bởi khung hero
+      document.body.appendChild(pop);
+      t._pop = pop;
+    });
+
+    function place(pop, x, y) {
+      var w = pop.offsetWidth, h = pop.offsetHeight;
+      var vw = window.innerWidth, vh = window.innerHeight;
+      var left = x + GAP, top = y + GAP;
+      if (left + w > vw - 8) left = Math.max(8, x - GAP - w);
+      if (top + h > vh - 8) top = Math.max(8, y - GAP - h);
+      pop.style.left = left + 'px';
+      pop.style.top = top + 'px';
+    }
+    function show(t, x, y) {
+      if (current && current !== t) hide(current);
+      current = t;
+      t.classList.add('is-open');
+      t._pop.classList.add('is-visible');
+      place(t._pop, x, y);
+    }
+    function hide(t) {
+      t.classList.remove('is-open');
+      t._pop.classList.remove('is-visible');
+      if (current === t) current = null;
+    }
+    function anchor(t) {
+      var r = t.getBoundingClientRect();
+      return { x: r.left, y: r.bottom - GAP + 6 };
+    }
+
+    triggers.forEach(function (t) {
+      if (!t._pop) return;
+      if (canHover) {
+        t.addEventListener('mouseenter', function (e) { show(t, e.clientX, e.clientY); });
+        t.addEventListener('mousemove', function (e) { place(t._pop, e.clientX, e.clientY); });
+        t.addEventListener('mouseleave', function () { hide(t); });
+      }
+      // Chạm (điện thoại) hoặc bàn phím: bật/tắt popup ngay dưới ô
+      t.addEventListener('click', function (e) {
+        if (canHover) return;
+        e.stopPropagation();
+        if (current === t) { hide(t); return; }
+        var a = anchor(t); show(t, a.x, a.y);
+      });
+      t.addEventListener('focus', function () {
+        var kb = false;
+        try { kb = t.matches(':focus-visible'); } catch (err) {}
+        if (kb && current !== t) { var a = anchor(t); show(t, a.x, a.y); }
+      });
+      t.addEventListener('blur', function () { hide(t); });
+    });
+    document.addEventListener('click', function () { if (current) hide(current); });
+    window.addEventListener('scroll', function () { if (current && !canHover) hide(current); }, { passive: true });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Hero Freeship",
+  "tag": "section",
+  "max_blocks": 5,
+  "settings": [
+    { "type": "text", "id": "pill", "label": "Dòng giới thiệu", "default": "Đồ Việt & châu Á · giao khắp châu Âu" },
+    { "type": "text", "id": "badge", "label": "Nhãn xanh", "default": "Ưu đãi mới mỗi tuần" },
+    { "type": "text", "id": "heading_1", "label": "Tiêu đề dòng 1 (xanh)", "default": "Freeship" },
+    { "type": "text", "id": "heading_2", "label": "Tiêu đề dòng 2 (gạch chân vàng)", "default": "đơn từ 169€" },
+    { "type": "richtext", "id": "text", "label": "Mô tả", "default": "<p>Hoặc <strong>giảm 10%</strong> đơn hàng — hương vị Việt chuẩn vị, từ phở đến cà phê, giao tận cửa nhà bạn.</p>" },
+    { "type": "text", "id": "stat_1_title", "label": "Ô 1 - tiêu đề", "default": "15 quốc gia" },
+    { "type": "text", "id": "stat_1_sub", "label": "Ô 1 - phụ", "default": "Miễn phí vận chuyển" },
+    { "type": "text", "id": "stat_2_title", "label": "Ô 2 - tiêu đề", "default": "4 quốc gia" },
+    { "type": "text", "id": "stat_2_sub", "label": "Ô 2 - phụ", "default": "Giảm 10%" },
+    { "type": "header", "content": "Popup danh sách quốc gia" },
+    { "type": "text", "id": "pop_1_title", "label": "Popup ô 1 - tiêu đề", "default": "Áp dụng cho 15 quốc gia sau:" },
+    { "type": "textarea", "id": "pop_1_countries", "label": "Popup ô 1 - danh sách", "info": "Mỗi dòng 1 nước: mã quốc gia 2 chữ|Tên. Ví dụ: de|Đức", "default": "sk|Slovakia\npl|Ba Lan\nde|Đức\nhu|Hungary\nbg|Bulgaria\nro|Romania\nat|Áo\nit|Ý\nhr|Croatia\nbe|Bỉ\nfr|Pháp\nnl|Hà Lan\nes|Tây Ban Nha\npt|Bồ Đào Nha\ngr|Hy Lạp" },
+    { "type": "text", "id": "pop_2_title", "label": "Popup ô 2 - tiêu đề", "default": "Áp dụng cho 4 quốc gia sau:" },
+    { "type": "textarea", "id": "pop_2_countries", "label": "Popup ô 2 - danh sách", "info": "Mỗi dòng 1 nước: mã quốc gia 2 chữ|Tên", "default": "ie|Ireland\ndk|Đan Mạch\nfi|Phần Lan\nse|Thụy Điển" },
+    { "type": "text", "id": "stat_3", "label": "Ô 3","default": "Áp dụng đơn từ 169€" },
+    { "type": "text", "id": "button_label", "label": "Nút", "default": "Mua ngay" },
+    { "type": "url", "id": "button_link", "label": "Liên kết nút" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Sản phẩm bay",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Sản phẩm" },
+        { "type": "text", "id": "title", "label": "Tên hiển thị (để trống = tên sản phẩm)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Freeship",
+      "blocks": [
+        { "type": "product" }, { "type": "product" }, { "type": "product" }, { "type": "product" }, { "type": "product" }
+      ]
+    }
+  ]
+}
+{% endschema %}
