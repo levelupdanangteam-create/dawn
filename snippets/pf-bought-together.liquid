@@ -9,8 +9,16 @@
 {%- assign bt_initial = bt_initial | default: 4 -%}
 {%- assign bt_limit = bt_limit | default: 12 -%}
 {%- unless bt_heading -%}{%- if request.locale.iso_code == 'vi' -%}{%- assign bt_heading = '🛒 Thường được mua kèm' -%}{%- else -%}{%- assign bt_heading = '🛒 Frequently bought together' -%}{%- endif -%}{%- endunless -%}
+{%- comment -%}
+  Sản phẩm có metafield custom.bought_together (3 SP mua kèm tính từ đơn thật)
+  → hiện kiểu bundle tick chọn + "Thêm N sản phẩm vào giỏ" (snippets/pf-fbt.liquid).
+  Không có metafield → giữ cách cũ: lấy từ bộ sưu tập bán chạy.
+{%- endcomment -%}
 {%- assign bt_coll = collections[bt_handle] -%}
-{%- if bt_coll != empty and bt_coll.products_count > 0 -%}
+{%- assign pf_fbt_list = product.metafields.custom.bought_together.value -%}
+{%- if product and pf_fbt_list and pf_fbt_list.size > 0 -%}
+  {% render 'pf-fbt', fbt_heading: bt_heading %}
+{%- elsif bt_coll != empty and bt_coll.products_count > 0 -%}
   {%- assign bt_shown = 0 -%}
   <style>
     .pf-bt {

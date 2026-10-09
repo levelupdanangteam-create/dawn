@@ -1,0 +1,171 @@
+{%- comment -%}
+  PHOMIFOOD — "Thường được mua kèm" kiểu bundle (tick chọn + tổng tiền + thêm tất cả vào giỏ).
+  Dữ liệu: metafield sản phẩm custom.bought_together (list.product_reference, 3 SP),
+  được tính từ các đơn khách thật sự mua cùng nhau.
+  Gọi từ snippets/pf-bought-together.liquid khi sản phẩm có metafield này.
+  Params: fbt_heading
+{%- endcomment -%}
+{%- liquid
+  assign vi = false
+  if request.locale.iso_code == 'vi'
+    assign vi = true
+  endif
+  assign main_v = product.selected_or_first_available_variant
+  assign picks = product.metafields.custom.bought_together.value
+-%}
+<div class="pf-fbt color-scheme-1" data-pf-fbt data-money-format="{{ shop.money_format | escape }}">
+  <h2 class="pf-fbt__title">{{ fbt_heading }}</h2>
+  <div class="pf-fbt__body">
+    <div class="pf-fbt__row">
+      {%- if main_v.available -%}
+        <label class="pf-fbt__item is-main">
+          <input type="checkbox" class="pf-fbt__cb" checked data-id="{{ main_v.id }}" data-price="{{ main_v.price }}">
+          <span class="pf-fbt__tick" aria-hidden="true"></span>
+          <span class="pf-fbt__media">
+            {%- assign img = main_v.featured_image | default: product.featured_image -%}
+            {%- if img -%}<img src="{{ img | image_url: width: 400 }}" alt="{{ product.title | escape }}" loading="lazy" width="400" height="400">{%- endif -%}
+          </span>
+          <span class="pf-fbt__tag">{% if vi %}Sản phẩm này{% else %}This item{% endif %}</span>
+          <span class="pf-fbt__nm">{% render 'pf-short-title', title: product.title %}</span>
+          {%- unless product.has_only_default_variant -%}<span class="pf-fbt__vt">{{ main_v.title }}</span>{%- endunless -%}
+          <span class="pf-fbt__pr">{{ main_v.price | money }}</span>
+        </label>
+      {%- endif -%}
+      {%- for p in picks -%}
+        {%- assign v = p.selected_or_first_available_variant -%}
+        {%- if p.available and v.available and p.id != product.id -%}
+          <span class="pf-fbt__plus" aria-hidden="true">+</span>
+          <div class="pf-fbt__item">
+            <label class="pf-fbt__hit">
+              <input type="checkbox" class="pf-fbt__cb" checked data-id="{{ v.id }}" data-price="{{ v.price }}" aria-label="{% if vi %}Chọn{% else %}Select{% endif %} {{ p.title | escape }}">
+              <span class="pf-fbt__tick" aria-hidden="true"></span>
+            </label>
+            <a class="pf-fbt__media" href="{{ p.url }}">
+              {%- assign img = v.featured_image | default: p.featured_image -%}
+              {%- if img -%}<img src="{{ img | image_url: width: 400 }}" alt="{{ p.title | escape }}" loading="lazy" width="400" height="400">{%- endif -%}
+            </a>
+            <a class="pf-fbt__nm" href="{{ p.url }}">{% render 'pf-short-title', title: p.title %}</a>
+            {%- unless p.has_only_default_variant -%}<span class="pf-fbt__vt">{{ v.title }}</span>{%- endunless -%}
+            <span class="pf-fbt__pr">{{ v.price | money }}</span>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    <div class="pf-fbt__sum">
+      <span class="pf-fbt__sl">{% if vi %}Tổng cho sản phẩm đã chọn{% else %}Total for selected items{% endif %}</span>
+      <span class="pf-fbt__total" data-pf-fbt-total>—</span>
+      <button type="button" class="pf-fbt__btn" data-pf-fbt-add
+        data-l-one="{% if vi %}Thêm vào giỏ{% else %}Add to cart{% endif %}"
+        data-l-many="{% if vi %}Thêm [n] sản phẩm vào giỏ{% else %}Add [n] items to cart{% endif %}"
+        data-l-busy="{% if vi %}Đang thêm…{% else %}Adding…{% endif %}"
+        data-l-done="{% if vi %}Đã thêm vào giỏ ✓{% else %}Added to cart ✓{% endif %}"
+        data-l-err="{% if vi %}Có lỗi, thử lại{% else %}Something went wrong, try again{% endif %}"
+        data-l-none="{% if vi %}Chọn ít nhất 1 sản phẩm{% else %}Select at least 1 item{% endif %}"></button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .pf-fbt { max-width: var(--page-width, 120rem); margin: clamp(3rem, 6vw, 6rem) auto 0; background: #fff; border: 1px solid #ece3d4; border-radius: 22px; padding: clamp(2.2rem, 3.2vw, 3.6rem) clamp(1.6rem, 3vw, 3.2rem); box-shadow: 0 12px 32px rgba(120,100,70,.08); }
+  .pf-fbt__title { margin: 0 0 2.2rem; font-family: var(--font-heading-family, sans-serif); font-weight: 800; font-size: clamp(2rem, 2.8vw, 2.6rem); line-height: 1.2; color: #2a2622; }
+  .pf-fbt__body { display: grid; grid-template-columns: 1fr minmax(24rem, 30rem); gap: 2.4rem; align-items: center; }
+  .pf-fbt__row { display: flex; align-items: flex-start; gap: 1rem; min-width: 0; }
+  .pf-fbt__item { position: relative; flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: .4rem; cursor: pointer; }
+  .pf-fbt__plus { align-self: center; margin-top: -4rem; font-size: 2.2rem; color: #b9b0a3; flex: none; }
+  .pf-fbt__media { display: grid; place-items: center; aspect-ratio: 1; background: #fff; border: 1px solid #f0e8db; border-radius: 14px; overflow: hidden; }
+  .pf-fbt__media img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
+  .pf-fbt__cb { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .pf-fbt__hit { position: absolute; inset: 0 0 auto 0; height: 4.4rem; z-index: 2; cursor: pointer; }
+  .pf-fbt__tick { position: absolute; top: .9rem; left: .9rem; z-index: 2; width: 2.6rem; height: 2.6rem; border-radius: 7px; border: 2px solid #c9c0b2; background: #fff; display: grid; place-items: center; transition: background .15s, border-color .15s; }
+  .pf-fbt__cb:checked + .pf-fbt__tick { background: #1f7a47; border-color: #1f7a47; }
+  .pf-fbt__cb:checked + .pf-fbt__tick::after { content: ""; width: .7rem; height: 1.3rem; border: solid #fff; border-width: 0 3px 3px 0; transform: rotate(45deg) translate(-1px, -1px); }
+  .pf-fbt__cb:focus-visible + .pf-fbt__tick { outline: 2px solid #1f7a47; outline-offset: 2px; }
+  .pf-fbt__item:has(.pf-fbt__cb:not(:checked)) .pf-fbt__media { opacity: .45; }
+  .pf-fbt__tag { margin-top: .6rem; font-size: 1.15rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #1f7a47; }
+  .pf-fbt__nm { margin-top: .4rem; font-size: 1.45rem; line-height: 1.35; color: #2a2622; text-decoration: none; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  a.pf-fbt__nm:hover { color: #1e63c8; }
+  .pf-fbt__vt { font-size: 1.25rem; color: #8a8174; }
+  .pf-fbt__pr { font-weight: 800; font-size: 1.55rem; color: #2a2622; }
+  .pf-fbt__sum { display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center; background: #faf7f1; border-radius: 16px; padding: 2.2rem 1.8rem; }
+  .pf-fbt__sl { font-size: 1.4rem; color: #6c6458; }
+  .pf-fbt__total { font-size: clamp(2.6rem, 3.4vw, 3.2rem); font-weight: 900; color: #1f7a47; font-variant-numeric: tabular-nums; }
+  .pf-fbt__btn { width: 100%; border: 0; border-radius: 999px; padding: 1.4rem 2rem; background: #f2c14e; color: #2a2622; font-weight: 800; font-size: 1.6rem; cursor: pointer; transition: filter .15s; }
+  .pf-fbt__btn:hover { filter: brightness(.96); }
+  .pf-fbt__btn:disabled { opacity: .6; cursor: default; }
+  @media (max-width: 989px) {
+    .pf-fbt__body { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 749px) {
+    .pf-fbt__row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.6rem 1.2rem; }
+    .pf-fbt__plus { display: none; }
+  }
+</style>
+
+<script>
+  (function () {
+    document.querySelectorAll('[data-pf-fbt]:not([data-bound])').forEach(function (box) {
+      box.setAttribute('data-bound', '1');
+      var fmt = box.getAttribute('data-money-format') || ('€{' + '{amount_with_comma_separator}' + '}');
+      var totalEl = box.querySelector('[data-pf-fbt-total]');
+      var btn = box.querySelector('[data-pf-fbt-add]');
+      var cbs = Array.prototype.slice.call(box.querySelectorAll('.pf-fbt__cb'));
+      var root = (window.Shopify && Shopify.routes && Shopify.routes.root) || '/';
+
+      function group(n, sep) { return n.replace(/\B(?=(\d{3})+(?!\d))/g, sep); }
+      function money(cents) {
+        var v = (cents / 100).toFixed(2), parts = v.split('.');
+        return fmt.replace(/\{\{\s*(\w+)\s*\}\}/, function (_, k) {
+          if (k === 'amount_no_decimals') return group(String(Math.round(cents / 100)), ',');
+          if (k === 'amount_with_comma_separator') return group(parts[0], '.') + ',' + parts[1];
+          if (k === 'amount_no_decimals_with_comma_separator') return group(String(Math.round(cents / 100)), '.');
+          return group(parts[0], ',') + '.' + parts[1];
+        });
+      }
+      function checked() { return cbs.filter(function (c) { return c.checked; }); }
+      function update() {
+        var sel = checked(), sum = 0;
+        sel.forEach(function (c) { sum += parseInt(c.getAttribute('data-price'), 10) || 0; });
+        totalEl.textContent = money(sum);
+        btn.disabled = sel.length === 0;
+        btn.textContent = sel.length === 0 ? btn.getAttribute('data-l-none')
+          : sel.length === 1 ? btn.getAttribute('data-l-one')
+          : btn.getAttribute('data-l-many').replace('[n]', sel.length);
+      }
+      function refreshBubble() {
+        fetch(root + 'cart?sections=cart-icon-bubble', { headers: { Accept: 'application/json' } })
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            var html = d && d['cart-icon-bubble'], t = document.getElementById('cart-icon-bubble');
+            if (!html || !t) return;
+            var tmp = document.createElement('div'); tmp.innerHTML = html;
+            t.innerHTML = (tmp.querySelector('#cart-icon-bubble') || tmp).innerHTML;
+          }).catch(function () {});
+      }
+      cbs.forEach(function (c) { c.addEventListener('change', update); });
+      btn.addEventListener('click', function () {
+        var items = checked().map(function (c) { return { id: parseInt(c.getAttribute('data-id'), 10), quantity: 1 }; });
+        if (!items.length) return;
+        btn.disabled = true; btn.textContent = btn.getAttribute('data-l-busy');
+        fetch(root + 'cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ items: items })
+        })
+          .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+          .then(function (res) {
+            if (!res.ok) throw res.data;
+            refreshBubble();
+            var first = res.data && res.data.items ? res.data.items[0] : res.data;
+            try { document.dispatchEvent(new CustomEvent('pf:cart:added', { detail: first })); } catch (_) {}
+            btn.textContent = btn.getAttribute('data-l-done');
+            setTimeout(update, 1800);
+          })
+          .catch(function () {
+            btn.textContent = btn.getAttribute('data-l-err');
+            setTimeout(update, 1800);
+          });
+      });
+      update();
+    });
+  })();
+</script>
