@@ -176,9 +176,9 @@
   },
   "order": [
     "main",
+    "pf_frequently_bought",
     "pf_review_video",
     "pf_reviews",
-    "pf_frequently_bought",
     "disclosures",
     "related-products"
   ]
