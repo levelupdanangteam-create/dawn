@@ -711,6 +711,9 @@
         </div>
       </div>
 
+      {%- comment -%} Khối "Thường được mua kèm" đặt ngay dưới thông tin sản phẩm, TRÊN video sản phẩm. {%- endcomment -%}
+      {% render 'pf-bought-together' %}
+
       {% render 'pf-product-videos' %}
 
       {% render 'product-media-modal', variant_images: variant_images %}

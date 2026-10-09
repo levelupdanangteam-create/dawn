@@ -151,6 +151,7 @@
     },
     "pf_frequently_bought": {
       "type": "pf-frequently-bought",
+      "disabled": true,
       "settings": {}
     },
     "disclosures": {
