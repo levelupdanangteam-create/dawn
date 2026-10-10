@@ -1,0 +1,151 @@
+{%- comment -%}
+  PHOMIFOOD — "Sản phẩm cùng danh mục" ở cuối trang sản phẩm.
+  Tự chọn danh mục chính của sản phẩm:
+    1) danh mục đầu tiên trong "Danh mục ưu tiên" mà sản phẩm thuộc về;
+    2) nếu không có → bộ sưu tập đầu tiên của sản phẩm, bỏ qua các bộ sưu tập
+       chung (bán chạy, sale, độc quyền...) trong "Bỏ qua".
+  Hiện các sản phẩm khác trong danh mục đó (còn hàng trước), nút Xem thêm.
+{%- endcomment -%}
+{%- liquid
+  assign vi = false
+  if request.locale.iso_code == 'vi'
+    assign vi = true
+  endif
+  assign prio = section.settings.category_handles | newline_to_br | strip_newlines | split: '<br />'
+  assign skip = section.settings.exclude_handles | newline_to_br | strip_newlines | split: '<br />'
+  assign pick = nil
+  for h in prio
+    assign hh = h | strip
+    for c in product.collections
+      if c.handle == hh
+        assign pick = c
+        break
+      endif
+    endfor
+    if pick
+      break
+    endif
+  endfor
+  unless pick
+    for c in product.collections
+      assign is_skip = false
+      for s in skip
+        assign ss = s | strip
+        if ss != blank and c.handle == ss
+          assign is_skip = true
+        endif
+      endfor
+      if is_skip == false and c.products_count > 1
+        assign pick = c
+        break
+      endif
+    endfor
+  endunless
+  assign limit = section.settings.products_to_show
+  assign initial = section.settings.initial_count
+-%}
+{%- if pick and pick.products_count > 1 -%}
+  {%- capture cards -%}
+    {%- assign shown = 0 -%}
+    {%- comment -%} Còn hàng trước, hết hàng sau. {%- endcomment -%}
+    {%- for pass in (1..2) -%}
+      {%- for p in pick.products -%}
+        {%- if shown >= limit -%}{%- break -%}{%- endif -%}
+        {%- if p.id == product.id -%}{%- continue -%}{%- endif -%}
+        {%- if pass == 1 and p.available == false -%}{%- continue -%}{%- endif -%}
+        {%- if pass == 2 and p.available -%}{%- continue -%}{%- endif -%}
+        <div class="pf-sc__card{% if shown >= initial %} is-hidden{% endif %}">
+          <a class="pf-sc__media" href="{{ p.url }}">
+            {%- if p.compare_at_price > p.price -%}
+              <span class="pf-sc__sale">-{{ p.compare_at_price | minus: p.price | times: 100.0 | divided_by: p.compare_at_price | round }}%</span>
+            {%- endif -%}
+            {%- if p.featured_image -%}
+              <img src="{{ p.featured_image | image_url: width: 500 }}" alt="{{ p.title | escape }}" loading="lazy" width="500" height="500">
+            {%- endif -%}
+          </a>
+          <h3 class="pf-sc__nm"><a href="{{ p.url }}">{% render 'pf-short-title', title: p.title %}</a></h3>
+          <div class="pf-sc__price">
+            <span class="now">{{ p.price | money }}</span>
+            {%- if p.compare_at_price > p.price -%}<span class="was">{{ p.compare_at_price | money }}</span>{%- endif -%}
+          </div>
+          {% render 'pf-card-buttons', product: p, section_id: 'same-category' %}
+        </div>
+        {%- assign shown = shown | plus: 1 -%}
+      {%- endfor -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- if shown > 0 -%}
+  <div class="pf-sc page-width" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+    <div class="pf-sc__box">
+      <div class="pf-sc__head">
+        <h2 class="pf-sc__title">{{ section.settings.heading }}</h2>
+        <a class="pf-sc__cat" href="{{ pick.url }}">{{ pick.title }} <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="pf-sc__grid">{{ cards }}</div>
+      {%- if shown > initial -%}
+        <div class="pf-sc__morewrap">
+          <button type="button" class="pf-sc__more" data-pf-sc-more>{% if vi %}Xem thêm{% else %}View more{% endif %} <span aria-hidden="true">▾</span></button>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <style>
+    .pf-sc__box { background: #fff; border: 1px solid #ece3d4; border-radius: 22px; padding: clamp(2.2rem, 3.2vw, 3.6rem) clamp(1.6rem, 3vw, 3.2rem); box-shadow: 0 12px 32px rgba(120,100,70,.08); }
+    .pf-sc__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .6rem 1.6rem; margin-bottom: 2rem; }
+    .pf-sc__title { margin: 0; font-family: var(--font-heading-family, sans-serif); font-weight: 800; font-size: clamp(1.9rem, 2.4vw, 2.3rem); color: #2a2622; }
+    .pf-sc__cat { font-size: 1.4rem; font-weight: 700; color: #1f7a47; text-decoration: none; }
+    .pf-sc__cat:hover { text-decoration: underline; }
+    .pf-sc__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(1.4rem, 2vw, 2.2rem); }
+    .pf-sc__card { display: flex; flex-direction: column; min-width: 0; }
+    .pf-sc__card.is-hidden { display: none; }
+    .pf-sc__media { display: grid; place-items: center; aspect-ratio: 1; overflow: hidden; background: #fff; border: 1px solid #f0e8db; border-radius: 14px; position: relative; }
+    .pf-sc__media img { width: 100%; height: 100%; object-fit: contain; padding: 8px; transition: transform .3s ease; }
+    .pf-sc__card:hover .pf-sc__media img { transform: scale(1.05); }
+    .pf-sc__sale { position: absolute; top: .8rem; left: .8rem; z-index: 1; background: #d62828; color: #fff; font-weight: 800; font-size: 1.2rem; padding: .3rem .7rem; border-radius: 6px; }
+    .pf-sc__nm { margin: 1.1rem 0 .4rem; font-size: 1.5rem; font-weight: 700; line-height: 1.35; min-height: 2.7em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .pf-sc__nm a { color: #2a2622; text-decoration: none; }
+    .pf-sc__nm a:hover { color: #1e63c8; }
+    .pf-sc__price { margin-bottom: 1rem; }
+    .pf-sc__price .now { color: #1e63c8; font-weight: 800; font-size: 1.65rem; }
+    .pf-sc__price .was { color: #9a9184; text-decoration: line-through; font-size: 1.3rem; margin-left: .6rem; }
+    .pf-sc__morewrap { text-align: center; margin-top: 2.4rem; }
+    .pf-sc__more { display: inline-flex; align-items: center; gap: .6rem; cursor: pointer; background: #fff; color: #1f7a47; border: 2px solid #1f7a47; font-weight: 800; font-size: 1.45rem; padding: 1rem 2.4rem; border-radius: 999px; transition: background .18s, color .18s; }
+    .pf-sc__more:hover { background: #1f7a47; color: #fff; }
+    @media (max-width: 989px) { .pf-sc__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 749px) { .pf-sc__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  </style>
+  <script>
+    (function () {
+      document.querySelectorAll('[data-pf-sc-more]:not([data-bound])').forEach(function (btn) {
+        btn.setAttribute('data-bound', '1');
+        btn.addEventListener('click', function () {
+          var box = btn.closest('.pf-sc');
+          if (box) box.querySelectorAll('.pf-sc__card.is-hidden').forEach(function (c) { c.classList.remove('is-hidden'); });
+          btn.parentNode.style.display = 'none';
+        });
+      });
+    })();
+  </script>
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Sản phẩm cùng danh mục",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "paragraph", "content": "Tự lấy danh mục chính của sản phẩm đang xem và hiện các sản phẩm khác trong danh mục đó (còn hàng trước)." },
+    { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Sản phẩm cùng danh mục" },
+    { "type": "textarea", "id": "category_handles", "label": "Danh mục ưu tiên (mỗi dòng 1 handle bộ sưu tập)", "default": "bun-phở-kho\nmi-an-liền\nbột-gia-vị\ndồ-uống\nsữa-cac-loại\nbanh-kẹo-dồ-an-vặt\nthực-phẩm-chế-biến-sẵn\ngạo-nếp-cac-loại\nbanh-trang-cac-loại\ncombo" },
+    { "type": "textarea", "id": "exclude_handles", "label": "Bỏ qua các bộ sưu tập chung (mỗi dòng 1 handle)", "default": "ban-chay-nhat\nsieu-sale-10-10\nhang-dộc-quyền\nall\nfrontpage" },
+    { "type": "range", "id": "products_to_show", "label": "Số sản phẩm tối đa", "min": 4, "max": 24, "step": 4, "default": 12 },
+    { "type": "range", "id": "initial_count", "label": "Hiện trước (còn lại bấm Xem thêm)", "min": 4, "max": 12, "step": 4, "default": 8 },
+    { "type": "range", "id": "padding_top", "label": "Khoảng cách trên", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "label": "Khoảng cách dưới", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "presets": [ { "name": "Sản phẩm cùng danh mục" } ]
+}
+{% endschema %}

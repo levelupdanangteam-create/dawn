@@ -183,6 +183,10 @@
         "padding_top": 36,
         "padding_bottom": 28
       }
+    },
+    "pf_same_category": {
+      "type": "pf-same-category",
+      "settings": {}
     }
   },
   "order": [
@@ -192,6 +196,7 @@
     "pf_review_video",
     "pf_reviews",
     "disclosures",
-    "related-products"
+    "related-products",
+    "pf_same_category"
   ]
 }
