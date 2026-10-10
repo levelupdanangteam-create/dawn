@@ -21,8 +21,15 @@
   #main-cart-items cart-remove-button .button:hover { color: #c0392b; }
   #main-cart-items .cart-item__totals .price { font-size: 1.8rem; font-weight: 800; color: #2a2622; }
 
+  /* Ô tick nằm riêng bên trái ảnh, không đè lên ảnh */
+  #MainContent[data-template='cart'] #main-cart-items .cart-item__media { position: relative; padding-left: 3.4rem; }
+  #MainContent[data-template='cart'] #main-cart-items .cart-item__media .pf-cart-check {
+    position: absolute; left: 0; top: 50%; transform: translateY(-50%); margin: 0;
+    box-shadow: none; background: none; border-radius: 0;
+  }
+
   @media screen and (min-width: 990px) {
-    #main-cart-items .cart-item__media { width: 14rem; }
+    #main-cart-items .cart-item__media { width: 17.4rem; }
     #main-cart-items .cart-item__image { max-width: 12rem; }
     #main-cart-items .cart-item__details { padding-left: 2.4rem; }
   }
