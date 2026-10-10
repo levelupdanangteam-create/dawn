@@ -3,7 +3,7 @@
   Hàng trên: phí ship theo nước đang chọn + còn bao nhiêu để Freeship/giảm 10% (thanh tiến độ mảnh).
   Hàng dưới: Tổng tiền hàng + "Tiết kiệm €x" (giảm giá + giá gốc gạch) | nút Thanh toán (n).
   Render trong vùng .js-contents của main-cart-footer → tự cập nhật khi đổi số lượng.
-  Phí ship cố định theo nước (khớp bảng pf-ship-table); mốc ưu đãi 169 €.
+  Dòng phí ship được JS (pf-cart-totals + pf-ship-rates) điền lại theo nước + cân nặng giỏ; mốc ưu đãi 169 €.
 {%- endcomment -%}
 {%- unless cart == empty -%}
 {%- liquid
@@ -11,25 +11,6 @@
   assign goal = 16900
   assign sub = cart.total_price
   assign cc = localization.country.iso_code
-  assign fee = blank
-  case cc
-    when 'SK'
-      assign fee = 1100
-    when 'PL'
-      assign fee = 1200
-    when 'DE', 'HU', 'BG', 'RO'
-      assign fee = 1300
-    when 'AT'
-      assign fee = 1400
-    when 'IT', 'HR'
-      assign fee = 1600
-    when 'BE', 'FR', 'NL', 'ES', 'PT', 'GR'
-      assign fee = 1700
-    when 'IE'
-      assign fee = 2200
-    when 'DK', 'FI', 'SE'
-      assign fee = 4600
-  endcase
   assign perk_discount = false
   if cc == 'IE' or cc == 'DK' or cc == 'FI' or cc == 'SE'
     assign perk_discount = true
@@ -59,9 +40,8 @@
       {%- if reached and perk_discount == false -%}
         {% if vi %}<b>Miễn phí vận chuyển</b> đã áp dụng{% else %}<b>Free shipping</b> unlocked{% endif %}
       {%- elsif reached -%}
-        {% if vi %}Đã đạt <b>giảm 10%</b> · phí ship {{ fee | money }}{% else %}<b>10% off</b> unlocked · shipping {{ fee | money }}{% endif %}
+        {% if vi %}Đã đạt <b>giảm 10%</b>{% else %}<b>10% off</b> unlocked{% endif %}
       {%- else -%}
-        {%- if fee != blank -%}{% if vi %}Phí ship {{ fee | money }} · {% else %}Shipping {{ fee | money }} · {% endif %}{%- endif -%}
         {% if vi %}thêm <b>{{ rem | money }}</b> để {% if perk_discount %}giảm 10%{% else %}Freeship{% endif %}{% else %}add <b>{{ rem | money }}</b> for {% if perk_discount %}10% off{% else %}free shipping{% endif %}{% endif %}
       {%- endif -%}
     </span>

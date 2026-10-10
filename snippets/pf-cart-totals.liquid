@@ -9,7 +9,8 @@
   assign vi = true
   assign sub_before = cart.items_subtotal_price
 -%}
-<div class="pf-tot" data-pf-tot data-sub="{{ cart.total_price }}" data-cc="{{ localization.country.iso_code }}">
+{% render 'pf-ship-rates' %}
+<div class="pf-tot" data-pf-tot data-sub="{{ cart.total_price }}" data-weight="{{ cart.total_weight }}" data-cc="{{ localization.country.iso_code }}">
   <div class="pf-tot__row"><span>{% if vi %}Tạm tính{% else %}Subtotal{% endif %} ({{ cart.item_count }})</span><span>{{ sub_before | money }}</span></div>
   {%- if cart.total_discount > 0 -%}
     <div class="pf-tot__row pf-tot__row--green"><span>{% if vi %}Giảm giá{% else %}Discount{% endif %}</span><span>−{{ cart.total_discount | money }}</span></div>
@@ -20,45 +21,40 @@
 </div>
 <script>
   (function () {
-    // Phí ship (cent) + loại ưu đãi khi đạt mốc: 'free' = miễn ship, 'disc' = giảm 10%
-    var PF_SHIP_FEES = { SK:[1100,'free','Slovakia'], PL:[1200,'free','Ba Lan'], DE:[1300,'free','Đức'], HU:[1300,'free','Hungary'],
-      BG:[1300,'free','Bulgaria'], RO:[1300,'free','Romania'], AT:[1400,'free','Áo'], IT:[1600,'free','Ý'], HR:[1600,'free','Croatia'],
-      BE:[1700,'free','Bỉ'], FR:[1700,'free','Pháp'], NL:[1700,'free','Hà Lan'], ES:[1700,'free','Tây Ban Nha'], PT:[1700,'free','Bồ Đào Nha'],
-      GR:[1700,'free','Hy Lạp'], IE:[2200,'disc','Ireland'], DK:[4600,'disc','Đan Mạch'], FI:[4600,'disc','Phần Lan'], SE:[4600,'disc','Thụy Điển'] };
-    var GOAL = 16900, VI = {{ vi | json }};
-    function eur(c) { return '€' + (c / 100).toFixed(2).replace('.', ','); }
+    // Phí ship theo nước + CÂN NẶNG giỏ (bảng giá trong pf-ship-rates, khớp Shopify)
+    var R = window.pfRates, VI = {{ vi | json }};
+    var PF_SHIP_FEES = R.R, eur = R.eur;
     function getCc(fallback) { try { var s = sessionStorage.getItem('pf_ship_cc'); if (s && PF_SHIP_FEES[s]) return s; } catch (e) {} return fallback; }
-    // Tính theo nước + tổng giỏ (đã trừ mã giảm): trả về phí ship, giảm 10%, tổng cuối
-    function calc(cc, sub) {
-      var r = PF_SHIP_FEES[cc]; if (!r) return null;
-      var reached = sub >= GOAL, ship = (reached && r[1] === 'free') ? 0 : r[0];
-      var disc = (reached && r[1] === 'disc') ? Math.round(sub * 0.10) : 0;
-      return { name: r[2], fee: r[0], perk: r[1], ship: ship, disc: disc, total: sub + ship - disc, reached: reached, rem: GOAL - sub };
+    // Trả về phí ship, giảm 10% (nước 'disc' khi đạt €169), tổng cuối
+    function calc(cc, sub, grams) {
+      var q = R.quote(cc, grams, sub); if (!q) return null;
+      var ship = q.over ? 0 : q.ship;
+      var disc = (q.reached && q.perk === 'disc') ? Math.round(sub * 0.10) : 0;
+      q.disc = disc; q.total = sub + ship - disc; return q;
     }
     // Chỉ ghi khi giá trị đổi → tránh MutationObserver tự kích hoạt lặp vô hạn
     function setT(el, v) { if (el && el.textContent !== v) el.textContent = v; }
     function setH(el, v) { if (el && el.dataset.pfv !== v) { el.dataset.pfv = v; el.innerHTML = v; } }
     function update() {
       document.querySelectorAll('[data-pf-tot]').forEach(function (box) {
-        var sub = parseInt(box.dataset.sub, 10) || 0, cc = getCc(box.dataset.cc), c = calc(cc, sub);
+        var sub = parseInt(box.dataset.sub, 10) || 0, g = parseInt(box.dataset.weight, 10) || 0, cc = getCc(box.dataset.cc), c = calc(cc, sub, g);
         var q = function (s) { return box.querySelector(s); };
         if (!c) { setT(q('[data-pf-tot-ship]'), VI ? 'Tính khi thanh toán' : 'At checkout'); return; }
-        setT(q('[data-pf-tot-country]'), '(' + c.name + ')');
-        setT(q('[data-pf-tot-ship]'), c.ship === 0 ? (VI ? 'Miễn phí' : 'Free') : eur(c.ship));
+        setT(q('[data-pf-tot-country]'), '(' + c.name + ' · ' + R.kg(g) + ')');
+        setT(q('[data-pf-tot-ship]'), c.over ? 'Liên hệ shop' : (c.ship === 0 ? (VI ? 'Miễn phí' : 'Free') : eur(c.ship)));
         var dr = q('[data-pf-tot-discrow]'); if (dr.hidden !== !c.disc) dr.hidden = !c.disc;
         setT(q('[data-pf-tot-disc]'), '−' + eur(c.disc));
         setT(q('[data-pf-tot-total]'), eur(c.total));
         document.querySelectorAll('[data-pf-csb-total]').forEach(function (el) { setT(el, eur(c.total)); });
         document.querySelectorAll('[data-pf-csb-shipline]').forEach(function (el) {
-          var h;
-          if (c.reached) h = c.perk === 'free'
-            ? (VI ? '<b>Miễn phí vận chuyển</b> đến ' : '<b>Free shipping</b> to ') + c.name
-            : (VI ? 'Đã đạt <b>giảm 10%</b> · ship ' : '<b>10% off</b> unlocked · shipping ') + eur(c.fee);
-          else h = (VI ? 'Ship đến ' : 'Shipping to ') + c.name + ' ' + eur(c.fee) + ' · ' +
-            (VI ? 'thêm <b>' + eur(c.rem) + '</b> để ' + (c.perk === 'disc' ? 'giảm 10%' : 'Freeship')
-                : 'add <b>' + eur(c.rem) + '</b> for ' + (c.perk === 'disc' ? '10% off' : 'free shipping'));
+          var h, ok = c.free || (c.reached && c.perk === 'disc');
+          if (c.over) h = 'Đơn trên 40 kg · nhắn shop để báo phí ship';
+          else if (c.free) h = '<b>Miễn phí vận chuyển</b> đến ' + c.name;
+          else if (c.reached && c.perk === 'disc') h = 'Đã đạt <b>giảm 10%</b> · ship ' + eur(c.fee);
+          else if (c.reached) h = 'Ship đến ' + c.name + ' ' + eur(c.fee) + ' (đơn trên 30 kg)';
+          else h = 'Ship đến ' + c.name + ' ' + eur(c.fee) + ' · thêm <b>' + eur(c.rem) + '</b> để ' + (c.perk === 'disc' ? 'giảm 10%' : 'Freeship');
           setH(el, h);
-          var wrap = el.closest('.pf-csb__ship'); if (wrap && wrap.classList.contains('is-ok') !== c.reached) wrap.classList.toggle('is-ok', c.reached);
+          var wrap = el.closest('.pf-csb__ship'); if (wrap && wrap.classList.contains('is-ok') !== ok) wrap.classList.toggle('is-ok', ok);
         });
       });
     }

@@ -1,0 +1,42 @@
+{%- comment -%}
+  Bảng phí ship THEO CÂN NẶNG — chép từ Shopify (Settings → Shipping → General profile, phương thức "Express").
+  Khi đổi giá trên Shopify, sửa lại mảng R bên dưới cho khớp.
+  t = các bậc [cân tối đa (kg), phí (cent)]; free = số kg tối đa còn được Freeship khi đơn ≥ €169 (0 = không Freeship);
+  perk = 'free' (Freeship từ €169) hoặc 'disc' (giảm 10% từ €169).
+  Dùng chung: window.pfRates.quote(nước, gram, tổng giỏ cent) → { name, fee, ship, perk, reached, over, tiers }.
+{%- endcomment -%}
+<script>
+  (function () {
+    if (window.pfRates) return;
+    var GOAL = 16900;
+    var DE = { t: [[10, 973], [20, 1113], [30, 1265], [40, 973]], free: 30, perk: 'free' };
+    var WEST = { t: [[10, 1332], [20, 1532], [30, 1744], [40, 1332]], free: 30, perk: 'free' };
+    var IT = { t: [[10, 1212], [20, 1353], [30, 1565], [40, 1212]], free: 30, perk: 'free' };
+    var NORD = { t: [[10, 3008], [20, 4001], [30, 4631], [40, 6060]], free: 0, perk: 'disc' };
+    var R = {
+      DE: DE, CZ: DE, PL: DE, SK: DE, HU: DE, BG: DE, RO: DE,
+      AT: { t: [[10, 1120], [20, 1293], [30, 1445]], free: 30, perk: 'free' },
+      HR: { t: [[10, 1212], [30, 1565]], free: 30, perk: 'free' },
+      IT: IT,
+      BE: WEST, FR: WEST, NL: WEST, ES: WEST, PT: WEST, GR: WEST,
+      IE: { t: [[10, 1572], [20, 1832], [30, 2224], [40, 1572]], free: 0, perk: 'disc' },
+      DK: NORD, FI: NORD, SE: NORD
+    };
+    var NAMES = { DE: 'Đức', CZ: 'Séc', PL: 'Ba Lan', SK: 'Slovakia', HU: 'Hungary', BG: 'Bulgaria', RO: 'Romania', AT: 'Áo',
+      HR: 'Croatia', IT: 'Ý', BE: 'Bỉ', FR: 'Pháp', NL: 'Hà Lan', ES: 'Tây Ban Nha', PT: 'Bồ Đào Nha', GR: 'Hy Lạp',
+      IE: 'Ireland', DK: 'Đan Mạch', FI: 'Phần Lan', SE: 'Thụy Điển' };
+    var ORDER = ['DE', 'CZ', 'PL', 'SK', 'HU', 'BG', 'RO', 'AT', 'HR', 'IT', 'BE', 'FR', 'NL', 'ES', 'PT', 'GR', 'IE', 'DK', 'FI', 'SE'];
+    function eur(c) { return '€' + (c / 100).toFixed(2).replace('.', ','); }
+    function kg(g) { return (Math.round(g / 100) / 10).toString().replace('.', ',') + ' kg'; }
+    function quote(cc, grams, sub) {
+      var r = R[cc]; if (!r) return null;
+      var w = (grams || 0) / 1000, fee = null, maxKg = 0;
+      for (var i = 0; i < r.t.length; i++) { if (w <= r.t[i][0]) { fee = r.t[i][1]; maxKg = r.t[i][0]; break; } }
+      var reached = sub >= GOAL;
+      var free = reached && r.perk === 'free' && w <= r.free;
+      return { name: NAMES[cc] || cc, fee: fee, maxKg: maxKg, over: fee === null, perk: r.perk, reached: reached,
+        ship: fee === null ? null : (free ? 0 : fee), free: free, rem: GOAL - sub, tiers: r.t, weight: grams || 0 };
+    }
+    window.pfRates = { R: R, NAMES: NAMES, ORDER: ORDER, GOAL: GOAL, quote: quote, eur: eur, kg: kg };
+  })();
+</script>

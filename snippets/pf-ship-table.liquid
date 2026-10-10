@@ -1,70 +1,72 @@
 {%- comment -%}
-  Ô "Phí vận chuyển & ưu đãi" trên trang giỏ hàng: khách CHỌN QUỐC GIA → hiện phí ship cụ thể,
-  ưu đãi (Freeship hoặc giảm 10% từ €169) và số tiền còn thiếu theo giỏ hiện tại.
-  Mặc định chọn sẵn nước khách đang mua (localization.country). Phí ship cố định – sửa ở mảng ROWS bên dưới
-  (giữ khớp với pf-cart-stickybar và section "Shipping rates" ở trang chủ).
+  Ô "Phí vận chuyển" trên trang giỏ hàng: khách CHỌN QUỐC GIA → phí ship tính THEO CÂN NẶNG GIỎ HÀNG
+  (bảng giá giống Shopify, nằm trong snippet pf-ship-rates), kèm ưu đãi từ €169 và bảng giá các mốc cân.
+  Mặc định chọn sẵn nước khách đang mua (localization.country).
 {%- endcomment -%}
 {%- liquid
-  assign vi = true
-  assign rows = 'SK|Slovakia|11|free;PL|Ba Lan|12|free;DE|Đức|13|free;HU|Hungary|13|free;BG|Bulgaria|13|free;RO|Romania|13|free;AT|Áo|14|free;IT|Ý|16|free;HR|Croatia|16|free;BE|Bỉ|17|free;FR|Pháp|17|free;NL|Hà Lan|17|free;ES|Tây Ban Nha|17|free;PT|Bồ Đào Nha|17|free;GR|Hy Lạp|17|free;IE|Ireland|22|disc;DK|Đan Mạch|46|disc;FI|Phần Lan|46|disc;SE|Thụy Điển|46|disc' | split: ';'
+  assign rows = 'DE|Đức;CZ|Séc;PL|Ba Lan;SK|Slovakia;HU|Hungary;BG|Bulgaria;RO|Romania;AT|Áo;HR|Croatia;IT|Ý;BE|Bỉ;FR|Pháp;NL|Hà Lan;ES|Tây Ban Nha;PT|Bồ Đào Nha;GR|Hy Lạp;IE|Ireland;DK|Đan Mạch;FI|Phần Lan;SE|Thụy Điển' | split: ';'
   assign cur = localization.country.iso_code
 -%}
-<div class="pf-ship" data-pf-ship data-sub="{{ cart.total_price }}" data-goal="16900" data-vi="{{ vi }}">
-  <label class="pf-ship__lbl" for="PfShipCountry">🚚 {% if vi %}Phí vận chuyển{% else %}Shipping{% endif %}</label>
+{% render 'pf-ship-rates' %}
+<div class="pf-ship" data-pf-ship data-sub="{{ cart.total_price }}" data-weight="{{ cart.total_weight }}">
+  <label class="pf-ship__lbl" for="PfShipCountry">🚚 Phí vận chuyển</label>
   <div class="pf-ship__line">
     <div class="pf-ship__selwrap">
-      <select id="PfShipCountry" class="pf-ship__sel" data-pf-ship-sel aria-label="{% if vi %}Giao đến{% else %}Ship to{% endif %}">
+      <select id="PfShipCountry" class="pf-ship__sel" data-pf-ship-sel aria-label="Giao đến">
         {%- for r in rows -%}
           {%- assign p = r | split: '|' -%}
-          <option value="{{ p[0] }}" data-fee="{{ p[2] }}" data-perk="{{ p[3] }}"{% if p[0] == cur %} selected{% endif %}>{{ p[1] }}</option>
+          <option value="{{ p[0] }}"{% if p[0] == cur %} selected{% endif %}>{{ p[1] }}</option>
         {%- endfor -%}
       </select>
     </div>
     <span class="pf-ship__v" data-pf-ship-fee aria-live="polite">—</span>
   </div>
   <p class="pf-ship__note" data-pf-ship-note aria-live="polite"></p>
+  <div class="pf-ship__tiers" data-pf-ship-tiers></div>
 </div>
 <script>
   (function () {
     document.querySelectorAll('[data-pf-ship]').forEach(function (box) {
-      if (box.dataset.pfInit) return; box.dataset.pfInit = '1';
+      if (box.dataset.pfInit || !window.pfRates) return; box.dataset.pfInit = '1';
+      var R = window.pfRates, eur = R.eur;
       var sel = box.querySelector('[data-pf-ship-sel]');
-      var vi = box.dataset.vi === 'true';
-      var goal = parseInt(box.dataset.goal, 10) || 16900;
-      function eur(c) { return '€' + (c / 100).toFixed(2).replace('.', ','); }
       function render() {
-        var o = sel.options[sel.selectedIndex]; if (!o) return;
-        var fee = parseInt(o.dataset.fee, 10) * 100, disc = o.dataset.perk === 'disc';
-        var sub = parseInt(box.dataset.sub, 10) || 0, rem = goal - sub;
-        box.querySelector('[data-pf-ship-fee]').textContent = eur(fee);
-        var note = box.querySelector('[data-pf-ship-note]');
-        if (rem <= 0) {
-          note.innerHTML = disc
-            ? (vi ? '🎉 Giỏ đã đạt €169 — được <b>giảm 10%</b> (phí ship ' + eur(fee) + ').' : '🎉 Your cart reached €169 — you get <b>10% off</b> (shipping ' + eur(fee) + ').')
-            : (vi ? '🎉 Giỏ đã đạt €169 — <b>miễn phí ship</b>!' : '🎉 Your cart reached €169 — <b>free shipping</b>!');
+        var sub = parseInt(box.dataset.sub, 10) || 0, g = parseInt(box.dataset.weight, 10) || 0;
+        var q = R.quote(sel.value, g, sub); if (!q) return;
+        var feeEl = box.querySelector('[data-pf-ship-fee]'), note = box.querySelector('[data-pf-ship-note]');
+        feeEl.textContent = q.over ? 'Liên hệ' : (q.ship === 0 ? 'Miễn phí' : eur(q.ship));
+        feeEl.classList.toggle('is-free', q.ship === 0);
+        var h = 'Giỏ hàng nặng <b>' + R.kg(g) + '</b>';
+        if (q.over) h += ' — vượt 40 kg, vui lòng nhắn shop để báo phí ship.';
+        else if (q.perk === 'free') {
+          if (q.free) h += ' — 🎉 đơn đã đạt €169, được <b>miễn phí ship</b>!';
+          else if (q.reached) h += ' — đơn trên 30 kg nên tính phí ship ' + eur(q.fee) + '.';
+          else h += ' · mua thêm <b>' + eur(q.rem) + '</b> để được <b>miễn phí ship</b>.';
         } else {
-          note.innerHTML = vi
-            ? 'Mua thêm <b>' + eur(rem) + '</b> để được ' + (disc ? '<b>giảm 10%</b>' : '<b>miễn phí ship</b>') + '.'
-            : 'Add <b>' + eur(rem) + '</b> more to get ' + (disc ? '<b>10% off</b>' : '<b>free shipping</b>') + '.';
+          h += q.reached ? ' — 🎉 đơn đã đạt €169, được <b>giảm 10%</b>.' : ' · mua thêm <b>' + eur(q.rem) + '</b> để được <b>giảm 10%</b>.';
         }
+        note.innerHTML = h;
+        var t = '<span class="pf-ship__tiers-h">Bảng phí theo cân nặng:</span>', lo = 0;
+        q.tiers.forEach(function (x) {
+          t += '<span class="pf-ship__tier' + (x[0] === q.maxKg ? ' is-cur' : '') + '">' + lo + '–' + x[0] + ' kg: <b>' + eur(x[1]) + '</b></span>';
+          lo = x[0];
+        });
+        box.querySelector('[data-pf-ship-tiers]').innerHTML = t;
       }
       function refresh() {
         fetch(((window.Shopify && Shopify.routes && Shopify.routes.root) || '/') + 'cart.js', { headers: { Accept: 'application/json' } })
           .then(function (r) { return r.json(); })
-          .then(function (c) { box.dataset.sub = c.total_price; render(); }).catch(function () {});
+          .then(function (c) { box.dataset.sub = c.total_price; box.dataset.weight = c.total_weight; render(); if (window.pfShip) window.pfShip.update(); })
+          .catch(function () {});
       }
       try { var saved = sessionStorage.getItem('pf_ship_cc'); if (saved && sel.querySelector('option[value="' + saved + '"]')) sel.value = saved; } catch (e) {}
       sel.addEventListener('change', function () { render(); if (window.pfShip) window.pfShip.setCc(sel.value); });
-      // Giỏ đổi số lượng/xoá SP → cập nhật "còn thiếu bao nhiêu"
-      // (PUB_SUB_EVENTS là const nên không nằm trên window → kiểm tra bằng typeof)
+      // Giỏ đổi số lượng/xoá SP → lấy lại tổng tiền + cân nặng
       try { if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') subscribe(PUB_SUB_EVENTS.cartUpdate, refresh); } catch (e) {}
-      // Dự phòng: Dawn thay nội dung bảng/tổng giỏ sau khi thêm bớt → lấy lại tổng giỏ
-      var t; function later() { clearTimeout(t); t = setTimeout(refresh, 150); }
-      ['main-cart-items', 'main-cart-footer'].forEach(function (id) {
+      var tm; function later() { clearTimeout(tm); tm = setTimeout(refresh, 150); }
+      ['main-cart-items'].forEach(function (id) {
         var el = document.getElementById(id);
-        if (el) new MutationObserver(function (m) {
-          for (var i = 0; i < m.length; i++) { if (!box.contains(m[i].target)) { later(); return; } }
-        }).observe(el, { childList: true, subtree: true });
+        if (el) new MutationObserver(later).observe(el, { childList: true, subtree: true });
       });
       render();
     });
@@ -83,4 +85,9 @@
   .pf-ship__v { flex: none; min-width: 6.4rem; text-align: right; font-size: 1.7rem; font-weight: 900; color: #2a2622; }
   .pf-ship__note { margin: .6rem 0 0; font-size: 1.2rem; color: #6b665e; }
   .pf-ship__note b { color: #1e8541; }
+  .pf-ship__v.is-free { color: #1e8541; }
+  .pf-ship__tiers { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .9rem; font-size: 1.15rem; color: #6b665e; }
+  .pf-ship__tiers-h { flex-basis: 100%; font-weight: 700; color: #4a443c; }
+  .pf-ship__tier { padding: .3rem .8rem; border-radius: 999px; background: #f4f1ea; border: 1px solid #ece5d8; white-space: nowrap; }
+  .pf-ship__tier.is-cur { background: #eaf5ee; border-color: #1e8541; color: #14672f; }
 </style>
