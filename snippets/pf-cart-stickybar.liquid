@@ -1,0 +1,138 @@
+{%- comment -%}
+  Thanh tổng tiền CỐ ĐỊNH ở đáy màn hình trang giỏ hàng (kiểu Shopee) — điện thoại & máy tính bảng.
+  Hàng trên: phí ship theo nước đang chọn + còn bao nhiêu để Freeship/giảm 10% (thanh tiến độ mảnh).
+  Hàng dưới: Tổng tiền hàng + "Tiết kiệm €x" (giảm giá + giá gốc gạch) | nút Thanh toán (n).
+  Render trong vùng .js-contents của main-cart-footer → tự cập nhật khi đổi số lượng.
+  Phí ship cố định theo nước (khớp bảng pf-ship-table); mốc ưu đãi 169 €.
+{%- endcomment -%}
+{%- unless cart == empty -%}
+{%- liquid
+  assign vi = true
+  assign goal = 16900
+  assign sub = cart.total_price
+  assign cc = localization.country.iso_code
+  assign fee = blank
+  case cc
+    when 'SK'
+      assign fee = 1100
+    when 'PL'
+      assign fee = 1200
+    when 'DE', 'HU', 'BG', 'RO'
+      assign fee = 1300
+    when 'AT'
+      assign fee = 1400
+    when 'IT', 'HR'
+      assign fee = 1600
+    when 'BE', 'FR', 'NL', 'ES', 'PT', 'GR'
+      assign fee = 1700
+    when 'IE'
+      assign fee = 2200
+    when 'DK', 'FI', 'SE'
+      assign fee = 4600
+  endcase
+  assign perk_discount = false
+  if cc == 'IE' or cc == 'DK' or cc == 'FI' or cc == 'SE'
+    assign perk_discount = true
+  endif
+  assign reached = false
+  if sub >= goal
+    assign reached = true
+    assign pct = 100
+  else
+    assign pct = sub | times: 100 | divided_by: goal
+    assign rem = goal | minus: sub
+  endif
+  assign saved = cart.total_discount
+  for it in cart.items
+    if it.variant.compare_at_price > it.original_price
+      assign d = it.variant.compare_at_price | minus: it.original_price | times: it.quantity
+      assign saved = saved | plus: d
+    endif
+  endfor
+-%}
+<div class="pf-csb" id="pf-csb" role="region" aria-label="{% if vi %}Tóm tắt đơn hàng{% else %}Order summary{% endif %}">
+  <div class="pf-csb__prog" aria-hidden="true"><span style="width: {{ pct }}%;"></span></div>
+  <div class="pf-csb__in">
+  <div class="pf-csb__ship{% if reached %} is-ok{% endif %}">
+    <span aria-hidden="true">🚚</span>
+    <span class="pf-csb__ship-tx" data-pf-csb-shipline>
+      {%- if reached and perk_discount == false -%}
+        {% if vi %}<b>Miễn phí vận chuyển</b> đã áp dụng{% else %}<b>Free shipping</b> unlocked{% endif %}
+      {%- elsif reached -%}
+        {% if vi %}Đã đạt <b>giảm 10%</b> · phí ship {{ fee | money }}{% else %}<b>10% off</b> unlocked · shipping {{ fee | money }}{% endif %}
+      {%- else -%}
+        {%- if fee != blank -%}{% if vi %}Phí ship {{ fee | money }} · {% else %}Shipping {{ fee | money }} · {% endif %}{%- endif -%}
+        {% if vi %}thêm <b>{{ rem | money }}</b> để {% if perk_discount %}giảm 10%{% else %}Freeship{% endif %}{% else %}add <b>{{ rem | money }}</b> for {% if perk_discount %}10% off{% else %}free shipping{% endif %}{% endif %}
+      {%- endif -%}
+    </span>
+  </div>
+  <div class="pf-csb__row">
+    <div class="pf-csb__sum">
+      <div class="pf-csb__label">{% if vi %}Tổng (gồm ship){% else %}Total incl. shipping{% endif %} <span>({{ cart.item_count }})</span></div>
+      <div class="pf-csb__total" data-pf-csb-total>{{ sub | money }}</div>
+      {%- if saved > 0 -%}<div class="pf-csb__saved">{% if vi %}Tiết kiệm{% else %}You save{% endif %} {{ saved | money }}</div>{%- endif -%}
+    </div>
+    <button type="submit" form="cart" name="checkout" class="pf-csb__btn">
+      {% if vi %}Thanh toán{% else %}Checkout{% endif %} ({{ cart.item_count }})
+    </button>
+  </div>
+  </div>
+</div>
+<script>if (window.pfShip) window.pfShip.update();</script>
+<style>
+  /* Thanh cố định đáy màn hình — giống nhau trên điện thoại & máy tính */
+  .pf-csb {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 100;
+    background: #fff; border-top: 1px solid #ece3d4; box-shadow: 0 -8px 24px rgba(30, 40, 20, .1);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .pf-csb__prog { height: 3px; background: #efe7d6; }
+  .pf-csb__prog span { display: block; height: 100%; background: linear-gradient(90deg, #1e8541, #63c98a); transition: width .3s ease; }
+  .pf-csb__in { max-width: var(--page-width, 120rem); margin: 0 auto; padding: 0 1.6rem 1rem; }
+  .pf-csb__ship { display: flex; align-items: center; gap: .6rem; padding: .7rem 0; font-size: 1.25rem; color: #6a5c40; border-bottom: 1px dashed #efe7d6; }
+  .pf-csb__ship b { color: #d62828; }
+  .pf-csb__ship.is-ok, .pf-csb__ship.is-ok b { color: #14672f; }
+  .pf-csb__row { display: flex; align-items: center; justify-content: space-between; gap: 1.2rem; padding-top: .8rem; }
+  .pf-csb__sum { min-width: 0; text-align: right; flex: 1; }
+  .pf-csb__label { font-size: 1.25rem; color: #6b665e; }
+  .pf-csb__label span { color: #9a948a; }
+  .pf-csb__total { font-size: 2.2rem; font-weight: 900; line-height: 1.15; color: #d62828; }
+  .pf-csb__saved { font-size: 1.15rem; font-weight: 700; color: #1e8541; }
+  .pf-csb__btn {
+    flex: none; min-height: 4.8rem; padding: 0 2.4rem; border: 0; border-radius: 999px; cursor: pointer;
+    background: #1e8541; color: #fff; font: inherit; font-size: 1.5rem; font-weight: 800; white-space: nowrap;
+    box-shadow: 0 6px 16px rgba(30, 133, 65, .25);
+  }
+  .pf-csb__btn:hover { background: #14672f; }
+  /* Máy tính: cùng nội dung, xếp 1 hàng — dòng ship bên trái, tổng + nút bên phải */
+  @media screen and (min-width: 990px) {
+    .pf-csb__in { display: flex; align-items: center; gap: 2.4rem; padding: 1rem clamp(1.6rem, 3vw, 3rem); }
+    .pf-csb__ship { flex: 1; min-width: 0; padding: 0; border: 0; font-size: 1.35rem; }
+    .pf-csb__row { flex: none; gap: 2rem; padding: 0; }
+    .pf-csb__btn { min-height: 5rem; padding: 0 3.2rem; }
+  }
+  /* Khung chứa (.cart__footer.isolate = position relative + z-index 0) tạo lớp xếp chồng riêng → ảnh sản phẩm của
+     "You may also like" bên dưới đè lên thanh. Bỏ isolate để thanh nổi trên toàn trang. */
+  #main-cart-footer .cart__footer.isolate { z-index: auto; isolation: auto; }
+  /* Chừa chỗ cho thanh + nhấc nút WhatsApp/Messenger lên */
+  /* Chừa chỗ ở CUỐI TRANG (dưới footer), không chèn khoảng trắng giữa nội dung */
+  body:has(#pf-csb) { padding-bottom: 12.4rem; }
+  #MainContent[data-template='cart'] [id^='pfcr-'] { padding-bottom: 2.4rem !important; }
+  body:has(#pf-csb) .pf-fab { bottom: 15rem !important; }
+  @media screen and (min-width: 990px) {
+    body:has(#pf-csb) { padding-bottom: 7.6rem; }
+    body:has(#pf-csb) .pf-fab { bottom: 10rem !important; }
+  }
+  /* Tinh giản — áp dụng như nhau mọi màn hình: tổng & nút thanh toán đã nằm trên thanh cố định */
+  #main-cart-footer .pf-sum .totals,
+  #main-cart-footer .pf-sum .pf-shipbar,
+  #main-cart-footer .pf-sum .cart__dynamic-checkout-buttons { display: none !important; }
+  /* Ghi chú đơn hàng: nằm giữa Total và nút Checkout, gọn */
+  #main-cart-footer .pf-sum .pf-note { margin-top: 1.4rem; }
+  #main-cart-footer .pf-sum .pf-note .pf-disc__label { font-size: 1.4rem; margin-bottom: .6rem; }
+  #main-cart-footer .pf-sum .pf-note__input { min-height: 7.2rem; font-size: 1.35rem; }
+  /* Nút Checkout ngay dưới Total (thay cho PayPal / G Pay) */
+  #main-cart-footer .pf-sum .cart__ctas { display: block !important; margin-top: 1.2rem; }
+  #main-cart-footer .pf-sum .tax-note { font-size: 1.1rem; margin-bottom: 0; }
+</style>
+{%- endunless -%}

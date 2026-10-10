@@ -18,23 +18,32 @@
       "blocks": {
         "subtotal": {
           "type": "subtotal",
-          "settings": {
-          }
+          "settings": {}
         },
         "buttons": {
           "type": "buttons",
-          "settings": {
-          }
+          "settings": {}
         }
       },
       "block_order": [
         "subtotal",
         "buttons"
       ]
+    },
+    "cart-recs": {
+      "type": "pf-cart-recs",
+      "settings": {
+        "heading": "Có thể bạn quan tâm",
+        "collection": "ban-chay-nhat",
+        "limit": 10,
+        "padding_top": 16,
+        "padding_bottom": 48
+      }
     }
   },
   "order": [
     "cart-items",
-    "cart-footer"
+    "cart-footer",
+    "cart-recs"
   ]
 }

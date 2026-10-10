@@ -1,0 +1,21 @@
+{%- comment -%}
+  In ra giá gốc (đơn vị cent) của biến thể `v`, hoặc 0 nếu không giảm giá.
+  Shopify ẩn compare_at_price với khách EU/EEA → dùng metafield biến thể phomi.compare_at (EUR) làm dự phòng.
+  Dùng: {%- capture pf_c -%}{% render 'pf-cmp', v: variant %}{%- endcapture -%}{%- assign pf_c = pf_c | plus: 0 -%}
+{%- endcomment -%}
+{%- liquid
+  assign c = 0
+  if v.compare_at_price > v.price
+    assign c = v.compare_at_price
+  else
+    assign m = v.metafields.phomi.compare_at.value
+    if m != blank
+      assign c = m | times: 100 | round
+    endif
+  endif
+  if c > v.price
+    echo c
+  else
+    echo 0
+  endif
+-%}

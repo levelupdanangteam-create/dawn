@@ -24,20 +24,20 @@
 >
   <div class="page-width">
     <div class="cart__footer isolate section-{{ section.id }}-padding">
-      {%- if settings.show_cart_note -%}
-        <cart-note class="cart__note field">
-          <label for="Cart-note">{{ 'sections.cart.note' | t }}</label>
-          <textarea
-            class="text-area field__input"
-            name="note"
-            form="cart"
-            id="Cart-note"
-            placeholder="{{ 'sections.cart.note' | t }}"
-          >{{ cart.note }}</textarea>
-        </cart-note>
-      {%- endif -%}
 
-      <div class="cart__blocks">
+      <div class="pf-foot-left">
+        <div class="pf-disc">
+          <label class="pf-disc__label" for="PfDiscCode">{% render 'pf-ui', k: 'discounts' %}</label>
+          <div class="pf-disc__row">
+            <input type="text" id="PfDiscCode" class="pf-disc__input" autocomplete="off" placeholder="{% render 'pf-ui', k: 'disc_ph' %}">
+            <button type="button" class="pf-disc__btn" id="PfDiscApply">{% render 'pf-ui', k: 'apply' %}</button>
+          </div>
+        </div>
+        {% render 'pf-ship-table' %}
+      </div>
+
+      <div class="cart__blocks pf-sum">
+        <h2 class="pf-sum__title">{% render 'pf-ui', k: 'order_summary' %}</h2>
         {% for block in section.blocks %}
           {%- case block.type -%}
             {%- when '@app' -%}
@@ -47,7 +47,7 @@
                 <div>
                   {%- if cart.cart_level_discount_applications.size > 0 -%}
                     <div class="pf-applied">
-                      <div class="pf-applied__head">{% if request.locale.iso_code == 'vi' %}🎉 Ưu đãi đã được áp dụng!{% else %}🎉 Offers applied!{% endif %}</div>
+                      <div class="pf-applied__head">🎉 Ưu đãi đã được áp dụng!</div>
                       <ul class="pf-applied__list list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
                         {%- for discount in cart.cart_level_discount_applications -%}
                           <li class="pf-applied__item">
@@ -60,14 +60,15 @@
                   {%- endif -%}
                 </div>
 
-                {% render 'pf-order-timeline' %}
 
                 <div class="totals">
                   <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
-                  <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
+                  <p class="totals__total-value">{{ cart.total_price | money }}</p>
                 </div>
 
+                {% render 'pf-cart-totals' %}
                 {% render 'pf-cart-shipbar' %}
+                {% render 'pf-cart-stickybar' %}
 
                 <small class="tax-note caption-large rte">
                   {%- if cart.duties_included and cart.taxes_included -%}
@@ -109,12 +110,20 @@
                   {%- endif -%}
                 </small>
 
-                {% render 'pf-cart-total-weight' %}
-                <div class="pf-cart-ship pf-cart-ship--mob">{% render 'pf-ship-table' %}</div>
-                {% render 'pf-delivery-note' %}
               </div>
             {%- else -%}
-              {% render 'pf-checkout-countdown' %}
+              <cart-note class="pf-note">
+                <label class="pf-disc__label" for="Cart-note">{% render 'pf-ui', k: 'note' %}</label>
+                <textarea
+                  class="pf-note__input"
+                  name="note"
+                  form="cart"
+                  id="Cart-note"
+                  rows="4"
+                  maxlength="500"
+                  placeholder="{% render 'pf-ui', k: 'note_ph' %}"
+                >{{ cart.note }}</textarea>
+              </cart-note>
               <div class="cart__ctas" {{ block.shopify_attributes }}>
                 <button
                   type="submit"
@@ -144,17 +153,21 @@
         <div id="cart-errors"></div>
       </div>
 
-      <style>
-        .pf-cart-ship--mob{ display:none; }
-        @media (max-width:749px){
-          .pf-cart-ship--mob{ display:block; }
-          .pf-cart-ship--desk{ display:none; }
-        }
-      </style>
-      <div class="pf-cart-ship pf-cart-ship--desk">{% render 'pf-ship-table' %}</div>
+
     </div>
   </div>
 </div>
+
+<script>
+  // Ô "Mã giảm giá": áp mã qua đường dẫn /discount/MÃ rồi quay lại giỏ.
+  (function () {
+    var btn = document.getElementById('PfDiscApply'), inp = document.getElementById('PfDiscCode');
+    if (!btn || !inp) return;
+    function go(){ var c = inp.value.trim(); if (!c) { inp.focus(); return; } window.location.href = '/discount/' + encodeURIComponent(c) + '?redirect={{ routes.cart_url | url_encode }}'; }
+    btn.addEventListener('click', go);
+    inp.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); go(); } });
+  })();
+</script>
 
 <script>
   // Điền ngày cho box "Quy trình đơn hàng" trên trang giỏ — bền với việc

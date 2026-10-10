@@ -19,6 +19,8 @@
   }
 {%- endstyle -%}
 
+{% render 'pf-cart-layout' %}
+
 {%- unless settings.cart_type == 'drawer' -%}
   <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
 {%- endunless -%}
@@ -60,10 +62,11 @@
             <div class="pf-cartbulk">
               <label class="pf-cartbulk__all">
                 <input type="checkbox" id="pf-cart-selectall">
-                <span>Chọn tất cả</span>
+                <span>{% render 'pf-ui', k: 'select_all' %}</span>
               </label>
               <button type="button" class="pf-cartbulk__del" id="pf-cart-delsel" disabled>
-                🗑️ Xóa mục đã chọn (<span id="pf-cart-selcount">0</span>)
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></svg>
+                <span>{% render 'pf-ui', k: 'delete_selected' %} (<span id="pf-cart-selcount">0</span>)</span>
               </button>
             </div>
             <table class="cart-items">
@@ -204,28 +207,10 @@
                     <td class="cart-item__totals right medium-hide large-up-hide">
                       {%- render 'loading-spinner' -%}
                       <div class="cart-item__price-wrapper">
-                        {%- if item.original_line_price != item.final_line_price -%}
-                          <dl class="cart-item__discounted-prices">
-                            <dt class="visually-hidden">
-                              {{ 'products.product.price.regular_price' | t }}
-                            </dt>
-                            <dd>
-                              <s class="cart-item__old-price price price--end">
-                                {{ item.original_line_price | money }}
-                              </s>
-                            </dd>
-                            <dt class="visually-hidden">
-                              {{ 'products.product.price.sale_price' | t }}
-                            </dt>
-                            <dd class="price price--end">
-                              {{ item.final_line_price | money }}
-                            </dd>
-                          </dl>
-                        {%- else -%}
-                          <span class="price price--end">
-                            {{ item.original_line_price | money }}
-                          </span>
-                        {%- endif -%}
+                        {%- comment -%} Cột Total chỉ hiện giá cuối (đã trừ giảm giá) {%- endcomment -%}
+                        <span class="price price--end">
+                          {{ item.final_line_price | money }}
+                        </span>
 
                         {%- if item.variant.available and item.unit_price_measurement -%}
                           {% render 'unit-price', price: item.unit_price, measurement: item.unit_price_measurement %}
@@ -432,28 +417,10 @@
                     <td class="cart-item__totals right small-hide">
                       {%- render 'loading-spinner' -%}
                       <div class="cart-item__price-wrapper">
-                        {%- if item.original_line_price != item.final_line_price -%}
-                          <dl class="cart-item__discounted-prices">
-                            <dt class="visually-hidden">
-                              {{ 'products.product.price.regular_price' | t }}
-                            </dt>
-                            <dd>
-                              <s class="cart-item__old-price price price--end">
-                                {{ item.original_line_price | money }}
-                              </s>
-                            </dd>
-                            <dt class="visually-hidden">
-                              {{ 'products.product.price.sale_price' | t }}
-                            </dt>
-                            <dd class="price price--end">
-                              {{ item.final_line_price | money }}
-                            </dd>
-                          </dl>
-                        {%- else -%}
-                          <span class="price price--end">
-                            {{ item.original_line_price | money }}
-                          </span>
-                        {%- endif -%}
+                        {%- comment -%} Cột Total chỉ hiện giá cuối (đã trừ giảm giá) {%- endcomment -%}
+                        <span class="price price--end">
+                          {{ item.final_line_price | money }}
+                        </span>
 
                         {%- if item.variant.available and item.unit_price_measurement -%}
                           {% render 'unit-price', price: item.unit_price, measurement: item.unit_price_measurement %}

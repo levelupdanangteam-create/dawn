@@ -1,0 +1,83 @@
+{%- comment -%}
+  Bảng tổng tiền trong "Order summary" (trang giỏ hàng):
+    Subtotal · Discount · Shipping (theo nước đang chọn) · 10% off (IE/DK/FI/SE từ €169) · TOTAL (đã cộng ship).
+  Nước giao lấy từ ô chọn ở khung "Shipping" (pf-ship-table), mặc định = nước khách đang mua.
+  Dùng chung bảng phí với thanh cố định (pf-cart-stickybar) qua window.pfShip — đổi nước là cả 2 cập nhật.
+  Phí ship cố định theo nước + mốc €169: sửa ở PF_SHIP_FEES bên dưới (giữ khớp pf-ship-table).
+{%- endcomment -%}
+{%- liquid
+  assign vi = true
+  assign sub_before = cart.items_subtotal_price
+-%}
+<div class="pf-tot" data-pf-tot data-sub="{{ cart.total_price }}" data-cc="{{ localization.country.iso_code }}">
+  <div class="pf-tot__row"><span>{% if vi %}Tạm tính{% else %}Subtotal{% endif %} ({{ cart.item_count }})</span><span>{{ sub_before | money }}</span></div>
+  {%- if cart.total_discount > 0 -%}
+    <div class="pf-tot__row pf-tot__row--green"><span>{% if vi %}Giảm giá{% else %}Discount{% endif %}</span><span>−{{ cart.total_discount | money }}</span></div>
+  {%- endif -%}
+  <div class="pf-tot__row"><span>{% if vi %}Phí ship{% else %}Shipping{% endif %} <em data-pf-tot-country></em></span><span data-pf-tot-ship>—</span></div>
+  <div class="pf-tot__row pf-tot__row--green" data-pf-tot-discrow hidden><span>{% if vi %}Giảm 10% (từ €169){% else %}10% off (from €169){% endif %}</span><span data-pf-tot-disc></span></div>
+  <div class="pf-tot__total"><span>{% if vi %}Tổng cộng{% else %}Total{% endif %}</span><span data-pf-tot-total>{{ cart.total_price | money }}</span></div>
+</div>
+<script>
+  (function () {
+    // Phí ship (cent) + loại ưu đãi khi đạt mốc: 'free' = miễn ship, 'disc' = giảm 10%
+    var PF_SHIP_FEES = { SK:[1100,'free','Slovakia'], PL:[1200,'free','Ba Lan'], DE:[1300,'free','Đức'], HU:[1300,'free','Hungary'],
+      BG:[1300,'free','Bulgaria'], RO:[1300,'free','Romania'], AT:[1400,'free','Áo'], IT:[1600,'free','Ý'], HR:[1600,'free','Croatia'],
+      BE:[1700,'free','Bỉ'], FR:[1700,'free','Pháp'], NL:[1700,'free','Hà Lan'], ES:[1700,'free','Tây Ban Nha'], PT:[1700,'free','Bồ Đào Nha'],
+      GR:[1700,'free','Hy Lạp'], IE:[2200,'disc','Ireland'], DK:[4600,'disc','Đan Mạch'], FI:[4600,'disc','Phần Lan'], SE:[4600,'disc','Thụy Điển'] };
+    var GOAL = 16900, VI = {{ vi | json }};
+    function eur(c) { return '€' + (c / 100).toFixed(2).replace('.', ','); }
+    function getCc(fallback) { try { var s = sessionStorage.getItem('pf_ship_cc'); if (s && PF_SHIP_FEES[s]) return s; } catch (e) {} return fallback; }
+    // Tính theo nước + tổng giỏ (đã trừ mã giảm): trả về phí ship, giảm 10%, tổng cuối
+    function calc(cc, sub) {
+      var r = PF_SHIP_FEES[cc]; if (!r) return null;
+      var reached = sub >= GOAL, ship = (reached && r[1] === 'free') ? 0 : r[0];
+      var disc = (reached && r[1] === 'disc') ? Math.round(sub * 0.10) : 0;
+      return { name: r[2], fee: r[0], perk: r[1], ship: ship, disc: disc, total: sub + ship - disc, reached: reached, rem: GOAL - sub };
+    }
+    // Chỉ ghi khi giá trị đổi → tránh MutationObserver tự kích hoạt lặp vô hạn
+    function setT(el, v) { if (el && el.textContent !== v) el.textContent = v; }
+    function setH(el, v) { if (el && el.dataset.pfv !== v) { el.dataset.pfv = v; el.innerHTML = v; } }
+    function update() {
+      document.querySelectorAll('[data-pf-tot]').forEach(function (box) {
+        var sub = parseInt(box.dataset.sub, 10) || 0, cc = getCc(box.dataset.cc), c = calc(cc, sub);
+        var q = function (s) { return box.querySelector(s); };
+        if (!c) { setT(q('[data-pf-tot-ship]'), VI ? 'Tính khi thanh toán' : 'At checkout'); return; }
+        setT(q('[data-pf-tot-country]'), '(' + c.name + ')');
+        setT(q('[data-pf-tot-ship]'), c.ship === 0 ? (VI ? 'Miễn phí' : 'Free') : eur(c.ship));
+        var dr = q('[data-pf-tot-discrow]'); if (dr.hidden !== !c.disc) dr.hidden = !c.disc;
+        setT(q('[data-pf-tot-disc]'), '−' + eur(c.disc));
+        setT(q('[data-pf-tot-total]'), eur(c.total));
+        document.querySelectorAll('[data-pf-csb-total]').forEach(function (el) { setT(el, eur(c.total)); });
+        document.querySelectorAll('[data-pf-csb-shipline]').forEach(function (el) {
+          var h;
+          if (c.reached) h = c.perk === 'free'
+            ? (VI ? '<b>Miễn phí vận chuyển</b> đến ' : '<b>Free shipping</b> to ') + c.name
+            : (VI ? 'Đã đạt <b>giảm 10%</b> · ship ' : '<b>10% off</b> unlocked · shipping ') + eur(c.fee);
+          else h = (VI ? 'Ship đến ' : 'Shipping to ') + c.name + ' ' + eur(c.fee) + ' · ' +
+            (VI ? 'thêm <b>' + eur(c.rem) + '</b> để ' + (c.perk === 'disc' ? 'giảm 10%' : 'Freeship')
+                : 'add <b>' + eur(c.rem) + '</b> for ' + (c.perk === 'disc' ? '10% off' : 'free shipping'));
+          setH(el, h);
+          var wrap = el.closest('.pf-csb__ship'); if (wrap && wrap.classList.contains('is-ok') !== c.reached) wrap.classList.toggle('is-ok', c.reached);
+        });
+      });
+    }
+    window.pfShip = { fees: PF_SHIP_FEES, calc: calc, update: update, setCc: function (cc) { try { sessionStorage.setItem('pf_ship_cc', cc); } catch (e) {} update(); }, getCc: getCc };
+    update();
+    document.addEventListener('DOMContentLoaded', update);
+    // Giỏ đổi số lượng → Dawn thay nội dung khung tổng → tính lại
+    if (!window.__pfTotObs) {
+      var root = document.getElementById('main-cart-footer');
+      if (root) { window.__pfTotObs = new MutationObserver(function () { clearTimeout(window.__pfTotT); window.__pfTotT = setTimeout(update, 30); }); window.__pfTotObs.observe(root, { childList: true, subtree: true }); }
+    }
+  })();
+</script>
+<style>
+  .pf-tot { margin: .4rem 0 1rem; font-size: 1.4rem; color: #4a443c; }
+  .pf-tot__row { display: flex; justify-content: space-between; gap: 1rem; padding: .45rem 0; }
+  .pf-tot__row em { font-style: normal; color: #8a857c; font-size: 1.25rem; }
+  .pf-tot__row span:last-child { font-weight: 700; color: #2a2622; white-space: nowrap; }
+  .pf-tot__row--green span:last-child { color: #1e8541; }
+  .pf-tot__total { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-top: .6rem; padding-top: 1rem; border-top: 1px dashed #e2d9c9; font-size: 1.7rem; font-weight: 800; color: #2a2622; }
+  .pf-tot__total span:last-child { font-size: 2.4rem; font-weight: 900; color: #d62828; }
+</style>
