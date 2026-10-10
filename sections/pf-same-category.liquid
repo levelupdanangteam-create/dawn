@@ -5,53 +5,68 @@
     2) nếu không có → bộ sưu tập đầu tiên của sản phẩm, bỏ qua các bộ sưu tập
        chung (bán chạy, sale, độc quyền...) trong "Bỏ qua".
   Hiện các sản phẩm khác trong danh mục đó (còn hàng trước), nút Xem thêm.
+  Không tìm được danh mục → tự tải "Sản phẩm liên quan" do Shopify gợi ý, nên trang nào cũng có.
 {%- endcomment -%}
 {%- liquid
   assign vi = false
   if request.locale.iso_code == 'vi'
     assign vi = true
   endif
-  assign prio = section.settings.category_handles | newline_to_br | strip_newlines | split: '<br />'
-  assign skip = section.settings.exclude_handles | newline_to_br | strip_newlines | split: '<br />'
-  assign pick = nil
-  for h in prio
-    assign hh = h | strip
-    for c in product.collections
-      if c.handle == hh
-        assign pick = c
-        break
-      endif
-    endfor
-    if pick
-      break
-    endif
-  endfor
-  unless pick
-    for c in product.collections
-      assign is_skip = false
-      for s in skip
-        assign ss = s | strip
-        if ss != blank and c.handle == ss
-          assign is_skip = true
-        endif
-      endfor
-      if is_skip == false and c.products_count > 1
-        assign pick = c
-        break
-      endif
-    endfor
-  endunless
   assign limit = section.settings.products_to_show
   assign initial = section.settings.initial_count
+  assign heading = section.settings.heading
+  assign pick = nil
+  assign src = nil
+
+  if recommendations.performed
+    comment
+      Lần tải thứ 2 (qua JS) khi không tìm được danh mục: lấy "Sản phẩm liên quan" do Shopify gợi ý.
+    endcomment
+    assign src = recommendations.products
+    assign heading = section.settings.related_heading
+  else
+    assign prio = section.settings.category_handles | newline_to_br | strip_newlines | split: '<br />'
+    assign skip = section.settings.exclude_handles | newline_to_br | strip_newlines | split: '<br />'
+    for h in prio
+      assign hh = h | strip
+      for c in product.collections
+        if c.handle == hh and c.products_count > 1
+          assign pick = c
+          break
+        endif
+      endfor
+      if pick
+        break
+      endif
+    endfor
+    unless pick
+      for c in product.collections
+        assign is_skip = false
+        for s in skip
+          assign ss = s | strip
+          if ss != blank and c.handle == ss
+            assign is_skip = true
+          endif
+        endfor
+        if is_skip == false and c.products_count > 1
+          assign pick = c
+          break
+        endif
+      endfor
+    endunless
+    if pick
+      assign src = pick.products
+    endif
+  endif
 -%}
-{%- if pick and pick.products_count > 1 -%}
-  {%- capture cards -%}
-    {%- assign shown = 0 -%}
+{%- capture cards -%}
+  {%- assign shown = 0 -%}
+  {%- if src -%}
     {%- comment -%} Còn hàng trước, hết hàng sau. {%- endcomment -%}
     {%- for pass in (1..2) -%}
-      {%- for p in pick.products -%}
+      {%- for p in src -%}
         {%- if shown >= limit -%}{%- break -%}{%- endif -%}
-        {%- if p.id == product.id -%}{%- continue -%}{%- endif -%}
+        {%- if product and p.id == product.id -%}{%- continue -%}{%- endif -%}
         {%- if pass == 1 and p.available == false -%}{%- continue -%}{%- endif -%}
         {%- if pass == 2 and p.available -%}{%- continue -%}{%- endif -%}
         <div class="pf-sc__card{% if shown >= initial %} is-hidden{% endif %}">
@@ -73,14 +88,16 @@
         {%- assign shown = shown | plus: 1 -%}
       {%- endfor -%}
     {%- endfor -%}
-  {%- endcapture -%}
+  {%- endif -%}
+{%- endcapture -%}
 
+<div class="pf-sc-holder" data-pf-sc-holder>
   {%- if shown > 0 -%}
   <div class="pf-sc page-width" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
     <div class="pf-sc__box">
       <div class="pf-sc__head">
-        <h2 class="pf-sc__title">{{ section.settings.heading }}</h2>
-        <a class="pf-sc__cat" href="{{ pick.url }}">{{ pick.title }} <span aria-hidden="true">→</span></a>
+        <h2 class="pf-sc__title">{{ heading }}</h2>
+        {%- if pick -%}<a class="pf-sc__cat" href="{{ pick.url }}">{{ pick.title }} <span aria-hidden="true">→</span></a>{%- endif -%}
       </div>
       <div class="pf-sc__grid">{{ cards }}</div>
       {%- if shown > initial -%}
@@ -90,6 +107,11 @@
       {%- endif -%}
     </div>
   </div>
+  {%- elsif product and recommendations.performed != true -%}
+    {%- comment -%} Không có danh mục phù hợp → tải "Sản phẩm liên quan" của Shopify. {%- endcomment -%}
+    <div data-pf-sc-rec="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ limit }}&intent=related"></div>
+  {%- endif -%}
+</div>
 
   <style>
     .pf-sc__box { background: #fff; border: 1px solid #ece3d4; border-radius: 22px; padding: clamp(2.2rem, 3.2vw, 3.6rem) clamp(1.6rem, 3vw, 3.2rem); box-shadow: 0 12px 32px rgba(120,100,70,.08); }
@@ -118,18 +140,31 @@
   </style>
   <script>
     (function () {
-      document.querySelectorAll('[data-pf-sc-more]:not([data-bound])').forEach(function (btn) {
-        btn.setAttribute('data-bound', '1');
-        btn.addEventListener('click', function () {
-          var box = btn.closest('.pf-sc');
-          if (box) box.querySelectorAll('.pf-sc__card.is-hidden').forEach(function (c) { c.classList.remove('is-hidden'); });
-          btn.parentNode.style.display = 'none';
+      function bindMore(root) {
+        root.querySelectorAll('[data-pf-sc-more]:not([data-bound])').forEach(function (btn) {
+          btn.setAttribute('data-bound', '1');
+          btn.addEventListener('click', function () {
+            var box = btn.closest('.pf-sc');
+            if (box) box.querySelectorAll('.pf-sc__card.is-hidden').forEach(function (c) { c.classList.remove('is-hidden'); });
+            btn.parentNode.style.display = 'none';
+          });
         });
+      }
+      bindMore(document);
+      document.querySelectorAll('[data-pf-sc-rec]:not([data-bound])').forEach(function (el) {
+        el.setAttribute('data-bound', '1');
+        fetch(el.getAttribute('data-pf-sc-rec'))
+          .then(function (r) { return r.text(); })
+          .then(function (html) {
+            var doc = new DOMParser().parseFromString(html, 'text/html');
+            var box = doc.querySelector('.pf-sc');
+            var holder = el.closest('[data-pf-sc-holder]');
+            if (box && holder) { holder.innerHTML = ''; holder.appendChild(box); bindMore(holder); }
+          })
+          .catch(function () {});
       });
     })();
   </script>
-  {%- endif -%}
-{%- endif -%}
 
 {% schema %}
 {
@@ -139,6 +174,7 @@
   "settings": [
     { "type": "paragraph", "content": "Tự lấy danh mục chính của sản phẩm đang xem và hiện các sản phẩm khác trong danh mục đó (còn hàng trước)." },
     { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Sản phẩm cùng danh mục" },
+    { "type": "text", "id": "related_heading", "label": "Tiêu đề khi không có danh mục (Shopify gợi ý)", "default": "Sản phẩm liên quan" },
     { "type": "textarea", "id": "category_handles", "label": "Danh mục ưu tiên (mỗi dòng 1 handle bộ sưu tập)", "default": "bun-phở-kho\nmi-an-liền\nbột-gia-vị\ndồ-uống\nsữa-cac-loại\nbanh-kẹo-dồ-an-vặt\nthực-phẩm-chế-biến-sẵn\ngạo-nếp-cac-loại\nbanh-trang-cac-loại\ncombo" },
     { "type": "textarea", "id": "exclude_handles", "label": "Bỏ qua các bộ sưu tập chung (mỗi dòng 1 handle)", "default": "ban-chay-nhat\nsieu-sale-10-10\nhang-dộc-quyền\nall\nfrontpage" },
     { "type": "range", "id": "products_to_show", "label": "Số sản phẩm tối đa", "min": 4, "max": 24, "step": 4, "default": 12 },
