@@ -56,7 +56,16 @@
       try { var saved = sessionStorage.getItem('pf_ship_cc'); if (saved && sel.querySelector('option[value="' + saved + '"]')) sel.value = saved; } catch (e) {}
       sel.addEventListener('change', function () { render(); if (window.pfShip) window.pfShip.setCc(sel.value); });
       // Giỏ đổi số lượng/xoá SP → cập nhật "còn thiếu bao nhiêu"
-      if (window.subscribe && window.PUB_SUB_EVENTS) { try { subscribe(PUB_SUB_EVENTS.cartUpdate, refresh); } catch (e) {} }
+      // (PUB_SUB_EVENTS là const nên không nằm trên window → kiểm tra bằng typeof)
+      try { if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') subscribe(PUB_SUB_EVENTS.cartUpdate, refresh); } catch (e) {}
+      // Dự phòng: Dawn thay nội dung bảng/tổng giỏ sau khi thêm bớt → lấy lại tổng giỏ
+      var t; function later() { clearTimeout(t); t = setTimeout(refresh, 150); }
+      ['main-cart-items', 'main-cart-footer'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) new MutationObserver(function (m) {
+          for (var i = 0; i < m.length; i++) { if (!box.contains(m[i].target)) { later(); return; } }
+        }).observe(el, { childList: true, subtree: true });
+      });
       render();
     });
   })();
