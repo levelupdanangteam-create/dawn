@@ -186,7 +186,16 @@
     },
     "pf_same_category": {
       "type": "pf-same-category",
-      "settings": {}
+      "settings": {
+        "heading": "Sản phẩm cùng danh mục",
+        "related_heading": "Sản phẩm liên quan",
+        "category_handles": "bun-phở-kho\nmi-an-liền\nbột-gia-vị\ndồ-uống\nsữa-cac-loại\nbanh-kẹo-dồ-an-vặt\nthực-phẩm-chế-biến-sẵn\ngạo-nếp-cac-loại\nbanh-trang-cac-loại\ncombo",
+        "exclude_handles": "ban-chay-nhat\nsieu-sale-10-10\nhang-dộc-quyền\nall\nfrontpage",
+        "products_to_show": 12,
+        "initial_count": 8,
+        "padding_top": 24,
+        "padding_bottom": 40
+      }
     }
   },
   "order": [

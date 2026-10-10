@@ -19,9 +19,7 @@
   assign src = nil
 
   if recommendations.performed
-    comment
-      Lần tải thứ 2 (qua JS) khi không tìm được danh mục: lấy "Sản phẩm liên quan" do Shopify gợi ý.
-    endcomment
+    # Lần tải thứ 2 (qua JS) khi không tìm được danh mục: lấy "Sản phẩm liên quan" do Shopify gợi ý.
     assign src = recommendations.products
     assign heading = section.settings.related_heading
   else
