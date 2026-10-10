@@ -5,6 +5,7 @@
     2) nếu không có → bộ sưu tập đầu tiên của sản phẩm, bỏ qua các bộ sưu tập
        chung (bán chạy, sale, độc quyền...) trong "Bỏ qua".
   Hiện các sản phẩm khác trong danh mục đó (còn hàng trước), nút Xem thêm.
+  Chọn "Bộ sưu tập cố định" → luôn hiện bộ sưu tập đó (dùng cho "Sản phẩm đang được quan tâm").
   Không tìm được danh mục → tự tải "Sản phẩm liên quan" do Shopify gợi ý, nên trang nào cũng có.
 {%- endcomment -%}
 {%- liquid
@@ -18,7 +19,11 @@
   assign pick = nil
   assign src = nil
 
-  if recommendations.performed
+  if section.settings.fixed_collection != blank
+    # Bộ sưu tập cố định (VD: "Sản phẩm đang được quan tâm" = Bán chạy nhất).
+    assign pick = section.settings.fixed_collection
+    assign src = pick.products
+  elsif recommendations.performed
     # Lần tải thứ 2 (qua JS) khi không tìm được danh mục: lấy "Sản phẩm liên quan" do Shopify gợi ý.
     assign src = recommendations.products
     assign heading = section.settings.related_heading
@@ -105,7 +110,7 @@
       {%- endif -%}
     </div>
   </div>
-  {%- elsif product and recommendations.performed != true -%}
+  {%- elsif product and recommendations.performed != true and section.settings.fixed_collection == blank -%}
     {%- comment -%} Không có danh mục phù hợp → tải "Sản phẩm liên quan" của Shopify. {%- endcomment -%}
     <div data-pf-sc-rec="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ limit }}&intent=related"></div>
   {%- endif -%}
@@ -172,6 +177,7 @@
   "settings": [
     { "type": "paragraph", "content": "Tự lấy danh mục chính của sản phẩm đang xem và hiện các sản phẩm khác trong danh mục đó (còn hàng trước)." },
     { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Sản phẩm cùng danh mục" },
+    { "type": "collection", "id": "fixed_collection", "label": "Bộ sưu tập cố định (để trống = tự lấy danh mục của sản phẩm)" },
     { "type": "text", "id": "related_heading", "label": "Tiêu đề khi không có danh mục (Shopify gợi ý)", "default": "Sản phẩm liên quan" },
     { "type": "textarea", "id": "category_handles", "label": "Danh mục ưu tiên (mỗi dòng 1 handle bộ sưu tập)", "default": "bun-phở-kho\nmi-an-liền\nbột-gia-vị\ndồ-uống\nsữa-cac-loại\nbanh-kẹo-dồ-an-vặt\nthực-phẩm-chế-biến-sẵn\ngạo-nếp-cac-loại\nbanh-trang-cac-loại\ncombo" },
     { "type": "textarea", "id": "exclude_handles", "label": "Bỏ qua các bộ sưu tập chung (mỗi dòng 1 handle)", "default": "ban-chay-nhat\nsieu-sale-10-10\nhang-dộc-quyền\nall\nfrontpage" },

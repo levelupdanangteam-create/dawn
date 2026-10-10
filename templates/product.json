@@ -319,6 +319,20 @@
         "margin_top": 32,
         "speed": 40
       }
+    },
+    "pf_trending": {
+      "type": "pf-same-category",
+      "settings": {
+        "heading": "🔥 Sản phẩm đang được quan tâm",
+        "related_heading": "Sản phẩm liên quan",
+        "category_handles": "bun-phở-kho\nmi-an-liền\nbột-gia-vị\ndồ-uống\nsữa-cac-loại\nbanh-kẹo-dồ-an-vặt\nthực-phẩm-chế-biến-sẵn\ngạo-nếp-cac-loại\nbanh-trang-cac-loại\ncombo",
+        "exclude_handles": "ban-chay-nhat\nsieu-sale-10-10\nhang-dộc-quyền\nall\nfrontpage",
+        "products_to_show": 12,
+        "initial_count": 8,
+        "padding_top": 8,
+        "padding_bottom": 40,
+        "fixed_collection": "ban-chay-nhat"
+      }
     }
   },
   "order": [
@@ -329,6 +343,7 @@
     "pf_reviews",
     "pf_product_faq",
     "pf_same_category",
+    "pf_trending",
     "disclosures",
     "related-products",
     "pf_trust_strip"
