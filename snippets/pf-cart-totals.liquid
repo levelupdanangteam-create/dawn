@@ -40,7 +40,7 @@
         var sub = parseInt(box.dataset.sub, 10) || 0, g = parseInt(box.dataset.weight, 10) || 0, cc = getCc(box.dataset.cc), c = calc(cc, sub, g);
         var q = function (s) { return box.querySelector(s); };
         if (!c) { setT(q('[data-pf-tot-ship]'), VI ? 'Tính khi thanh toán' : 'At checkout'); return; }
-        setT(q('[data-pf-tot-country]'), '(' + c.name + ' · ' + R.kg(g) + ')');
+        setT(q('[data-pf-tot-country]'), '(' + c.name + ')');
         setT(q('[data-pf-tot-ship]'), c.over ? 'Liên hệ shop' : (c.ship === 0 ? (VI ? 'Miễn phí' : 'Free') : eur(c.ship)));
         var dr = q('[data-pf-tot-discrow]'); if (dr.hidden !== !c.disc) dr.hidden = !c.disc;
         setT(q('[data-pf-tot-disc]'), '−' + eur(c.disc));
@@ -48,10 +48,10 @@
         document.querySelectorAll('[data-pf-csb-total]').forEach(function (el) { setT(el, eur(c.total)); });
         document.querySelectorAll('[data-pf-csb-shipline]').forEach(function (el) {
           var h, ok = c.free || (c.reached && c.perk === 'disc');
-          if (c.over) h = 'Đơn trên 40 kg · nhắn shop để báo phí ship';
+          if (c.over) h = 'Nhắn shop để báo phí ship cho đơn này';
           else if (c.free) h = '<b>Miễn phí vận chuyển</b> đến ' + c.name;
           else if (c.reached && c.perk === 'disc') h = 'Đã đạt <b>giảm 10%</b> · ship ' + eur(c.fee);
-          else if (c.reached) h = 'Ship đến ' + c.name + ' ' + eur(c.fee) + ' (đơn trên 30 kg)';
+          else if (c.reached) h = 'Ship đến ' + c.name + ' ' + eur(c.fee) + '';
           else h = 'Ship đến ' + c.name + ' ' + eur(c.fee) + ' · thêm <b>' + eur(c.rem) + '</b> để ' + (c.perk === 'disc' ? 'giảm 10%' : 'Freeship');
           setH(el, h);
           var wrap = el.closest('.pf-csb__ship'); if (wrap && wrap.classList.contains('is-ok') !== ok) wrap.classList.toggle('is-ok', ok);
