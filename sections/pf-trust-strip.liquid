@@ -1,0 +1,51 @@
+{%- comment -%}
+  PHOMIFOOD — Dải cam kết màu xanh ngay trên footer (trang sản phẩm).
+  Mỗi ý là 1 block: tiêu đề đậm + dòng phụ.
+{%- endcomment -%}
+{%- if section.blocks.size > 0 -%}
+<div class="pf-tstrip" style="margin-top: {{ section.settings.margin_top }}px;">
+  <div class="page-width pf-tstrip__in">
+    {%- for block in section.blocks -%}
+      <div class="pf-tstrip__it" {{ block.shopify_attributes }}>
+        <span class="pf-tstrip__ic" aria-hidden="true">{{ block.settings.icon }}</span>
+        <span><b>{{ block.settings.title }}</b>{% if block.settings.text != blank %} <span class="pf-tstrip__s">{{ block.settings.text }}</span>{% endif %}</span>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+<style>
+  .pf-tstrip { background: #1e8541; color: #fff; }
+  .pf-tstrip__in { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.2rem 2.4rem; padding-top: 1.4rem; padding-bottom: 1.4rem; }
+  .pf-tstrip__it { display: flex; align-items: center; gap: 1rem; font-size: 1.4rem; line-height: 1.35; }
+  .pf-tstrip__ic { flex: none; width: 3.2rem; height: 3.2rem; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.16); font-size: 1.6rem; }
+  .pf-tstrip__s { opacity: .85; }
+  @media (max-width: 749px) {
+    .pf-tstrip__in { display: grid; grid-template-columns: 1fr 1fr; }
+    .pf-tstrip__it { font-size: 1.3rem; }
+    .pf-tstrip__s { display: block; }
+  }
+</style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Dải cam kết (trên footer)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "range", "id": "margin_top", "label": "Khoảng cách trên", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 32 }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Cam kết",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Biểu tượng (emoji)", "default": "✓" },
+        { "type": "text", "id": "title", "label": "Tiêu đề", "default": "Cam kết" },
+        { "type": "text", "id": "text", "label": "Dòng phụ" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Dải cam kết (trên footer)" } ]
+}
+{% endschema %}

@@ -1,0 +1,119 @@
+{%- comment -%}
+  PHOMIFOOD — "Thông tin giao hàng" trên trang sản phẩm (dưới khối Thường được mua kèm).
+  - Ngày gửi từ kho EU: ngày làm việc kế tiếp (JS, theo ngày khách xem).
+  - Dự kiến nhận hàng: 2–5 ngày làm việc sau ngày gửi.
+  - Thanh tiến độ Freeship / giảm 10% từ 169€ (cùng mốc với pf-cart-shipbar), cập nhật khi giỏ thay đổi.
+{%- endcomment -%}
+{%- assign vi = false -%}
+{%- if request.locale.iso_code == 'vi' -%}{%- assign vi = true -%}{%- endif -%}
+{%- assign pf_goal = 16900 -%}
+{%- assign pf_total = cart.total_price | default: 0 -%}
+{%- assign pf_rem = pf_goal | minus: pf_total -%}
+{%- assign pf_pct = pf_total | times: 100 | divided_by: pf_goal | floor -%}
+{%- if pf_pct > 100 -%}{%- assign pf_pct = 100 -%}{%- endif -%}
+
+<div class="pf-pd-wrap">
+  <section class="pf-dlv" data-pf-dlv data-goal="{{ pf_goal }}" data-money-format="{{ shop.money_format | escape }}" data-vi="{{ vi }}">
+    <h2 class="pf-pd-h">{% if vi %}Thông tin giao hàng{% else %}Delivery information{% endif %}</h2>
+    <div class="pf-dlv__box">
+      <div class="pf-dlv__cards">
+        <div class="pf-dlv__card">
+          <span class="pf-dlv__ic" aria-hidden="true">📦</span>
+          <div>
+            <p class="pf-dlv__k">{% if vi %}Gửi từ kho EU của chúng tôi{% else %}Ships from our EU warehouse{% endif %}</p>
+            <p class="pf-dlv__v" data-pf-ship>{% if vi %}Ngày làm việc kế tiếp{% else %}Next business day{% endif %}</p>
+            <p class="pf-dlv__s">{% if vi %}Đặt hôm nay — đóng gói trong ngày làm việc kế tiếp{% else %}Order today — we pack it next business day{% endif %}</p>
+          </div>
+        </div>
+        <div class="pf-dlv__card pf-dlv__card--eta">
+          <span class="pf-dlv__ic" aria-hidden="true">🚚</span>
+          <div>
+            <p class="pf-dlv__k">{% if vi %}Dự kiến nhận hàng{% else %}Estimated delivery{% endif %}</p>
+            <p class="pf-dlv__v" data-pf-eta>{% if vi %}2–5 ngày làm việc{% else %}2–5 business days{% endif %}</p>
+            <p class="pf-dlv__s">{% if vi %}Đến hầu hết các nước châu Âu{% else %}To most EU countries{% endif %}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="pf-dlv__ship">
+        <div class="pf-dlv__shiprow">
+          <span class="pf-dlv__shiptx" data-pf-ship-tx>
+            {%- if pf_rem > 0 -%}
+              {% if vi %}Mua thêm <b>{{ pf_rem | money }}</b> để được <b>Freeship</b> hoặc <b>giảm 10%</b>{% else %}Add <b>{{ pf_rem | money }}</b> more to unlock <b>free shipping</b> or <b>10% off</b>{% endif %}
+            {%- else -%}
+              🎉 {% if vi %}Giỏ hàng đã đạt <b>169€</b> — được <b>Freeship</b> hoặc <b>giảm 10%</b>!{% else %}Your cart reached <b>169€</b> — <b>free shipping</b> or <b>10% off</b>!{% endif %}
+            {%- endif -%}
+          </span>
+          <span class="pf-dlv__pct" data-pf-ship-pct>{{ pf_pct }}%</span>
+        </div>
+        <div class="pf-dlv__bar"><span data-pf-ship-bar style="width: {{ pf_pct }}%"></span></div>
+      </div>
+
+      <ul class="pf-dlv__trust">
+        <li>✓ {% if vi %}Thanh toán an toàn{% else %}Secure payment{% endif %}</li>
+        <li>✓ {% if vi %}Đóng gói cẩn thận{% else %}Carefully packed{% endif %}</li>
+        <li>✓ {% if vi %}Hỗ trợ tiếng Việt qua WhatsApp / Messenger{% else %}Support via WhatsApp / Messenger{% endif %}</li>
+      </ul>
+      <p class="pf-dlv__fine">{% if vi %}Ngày giao là dự kiến, không tính cuối tuần và ngày lễ.{% else %}Delivery dates are estimates and exclude weekends and public holidays.{% endif %}</p>
+    </div>
+  </section>
+</div>
+
+<script>
+  (function () {
+    var box = document.querySelector('[data-pf-dlv]:not([data-bound])');
+    if (!box) return;
+    box.setAttribute('data-bound', '1');
+    var vi = box.getAttribute('data-vi') === 'true';
+    var goal = parseInt(box.getAttribute('data-goal'), 10) || 16900;
+    var fmt = box.getAttribute('data-money-format') || ('€{' + '{amount_with_comma_separator}' + '}');
+
+    function addBiz(d, n) {
+      var r = new Date(d);
+      while (n > 0) { r.setDate(r.getDate() + 1); if (r.getDay() !== 0 && r.getDay() !== 6) n--; }
+      return r;
+    }
+    var DOW_VI = ['CN', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+    var DOW_EN = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    var MON_EN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    function fd(d) {
+      return vi ? DOW_VI[d.getDay()] + ', ' + d.getDate() + '/' + (d.getMonth() + 1)
+                : DOW_EN[d.getDay()] + ', ' + MON_EN[d.getMonth()] + ' ' + d.getDate();
+    }
+    var ship = addBiz(new Date(), 1);
+    box.querySelector('[data-pf-ship]').textContent = fd(ship);
+    box.querySelector('[data-pf-eta]').textContent = fd(addBiz(ship, 2)) + ' – ' + fd(addBiz(ship, 5));
+
+    function money(cents) {
+      var v = (cents / 100).toFixed(2);
+      var parts = v.split('.');
+      var withComma = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ',' + parts[1];
+      var withDot = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '.' + parts[1];
+      return fmt.replace(/\{\{\s*(\w+)\s*\}\}/, function (_, k) { return k.indexOf('comma') > -1 ? withComma : withDot; });
+    }
+    function render(total) {
+      var rem = goal - total;
+      var pct = Math.max(0, Math.min(100, Math.floor(total * 100 / goal)));
+      box.querySelector('[data-pf-ship-pct]').textContent = pct + '%';
+      box.querySelector('[data-pf-ship-bar]').style.width = pct + '%';
+      box.querySelector('[data-pf-ship-tx]').innerHTML = rem > 0
+        ? (vi ? 'Mua thêm <b>' + money(rem) + '</b> để được <b>Freeship</b> hoặc <b>giảm 10%</b>'
+              : 'Add <b>' + money(rem) + '</b> more to unlock <b>free shipping</b> or <b>10% off</b>')
+        : (vi ? '🎉 Giỏ hàng đã đạt <b>169€</b> — được <b>Freeship</b> hoặc <b>giảm 10%</b>!'
+              : '🎉 Your cart reached <b>169€</b> — <b>free shipping</b> or <b>10% off</b>!');
+    }
+    function refresh() {
+      fetch('/cart.js', { headers: { Accept: 'application/json' } })
+        .then(function (r) { return r.json(); })
+        .then(function (c) { render(c.total_price || 0); })
+        .catch(function () {});
+    }
+    document.addEventListener('pf:cart:added', refresh);
+    document.addEventListener('cart:updated', refresh);
+    // pubsub.js / constants.js của Dawn tải "defer" → đăng ký sau khi trang tải xong.
+    function hook() {
+      if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') subscribe(PUB_SUB_EVENTS.cartUpdate, refresh);
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', hook); else hook();
+  })();
+</script>

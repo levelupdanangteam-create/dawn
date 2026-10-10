@@ -10,6 +10,7 @@
   {% endif %}
 >
   {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+{{ 'pf-product-page.css' | asset_url | stylesheet_tag }}
   {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
   {{ 'component-price.css' | asset_url | stylesheet_tag }}
   {{ 'component-slider.css' | asset_url | stylesheet_tag }}
@@ -99,6 +100,11 @@
                     {{- block.settings.text -}}
                   </p>
                 {%- when 'title' -%}
+                  {%- comment -%} Dòng nhỏ trên tên: thương hiệu + nhãn SALE khi đang giảm giá. {%- endcomment -%}
+                  <div class="pf-pd-eyebrow">
+                    {%- if product.vendor != blank -%}<span class="pf-pd-eyebrow__brand">{{ product.vendor }}</span>{%- endif -%}
+                    {%- if product.compare_at_price > product.price -%}<span class="pf-pd-eyebrow__sale">SALE</span>{%- endif -%}
+                  </div>
                   <div class="product__title" {{ block.shopify_attributes }}>
                     <h1>{% render 'pf-short-title', title: product.title %}</h1>
                     <a href="{{ product.url }}" class="product__title">
@@ -503,6 +509,13 @@
                     section_id: section.id,
                     show_pickup_availability: true
                   -%}
+                  {%- if shop.enabled_payment_types.size > 0 -%}
+                    <ul class="pf-pd-pay" aria-label="{% if request.locale.iso_code == 'vi' %}Phương thức thanh toán{% else %}Payment methods{% endif %}">
+                      {%- for type in shop.enabled_payment_types -%}
+                        <li>{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
                 {%- when 'rating' -%}
                   {%- if product.metafields.reviews.rating.value != blank -%}
                     <div class="rating-wrapper">
@@ -694,8 +707,7 @@
                   {% render 'icon-with-text', block: block %}
               {%- endcase -%}
             {%- endfor -%}
-            {% render 'pf-delivery-note' %}
-            {% render 'pf-order-timeline' %}
+            {%- comment -%} Giao hàng + quy trình đơn đã chuyển xuống khối "Thông tin giao hàng" (pf-pd-delivery) bên dưới. Bật lại: render 'pf-delivery-note', render 'pf-order-timeline'. {%- endcomment -%}
             {%- comment -%}Box "mua 50 giảm 10%" chỉ hiện ở trang Chân gà bà Tuyết.{%- endcomment -%}
             {%- if product.handle contains 'chan-ga-ba-tuy' -%}
               {% render 'pf-qty-deal' %}
@@ -713,6 +725,10 @@
 
       {%- comment -%} Khối "Thường được mua kèm" đặt ngay dưới thông tin sản phẩm, TRÊN video sản phẩm. {%- endcomment -%}
       {% render 'pf-bought-together' %}
+
+      {%- comment -%} Concept trang SP: Thông tin giao hàng → Giới thiệu + Thông tin nổi bật + Lưu ý. {%- endcomment -%}
+      {% render 'pf-pd-delivery' %}
+      {% render 'pf-pd-details' %}
 
       {% render 'pf-product-videos' %}
 

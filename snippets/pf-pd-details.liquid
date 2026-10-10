@@ -1,0 +1,135 @@
+{%- comment -%}
+  PHOMIFOOD — Phần thông tin chi tiết trên trang sản phẩm (dưới "Thông tin giao hàng"):
+    1. Thẻ giới thiệu: nhãn, tên sản phẩm, mô tả (product.description), xuất xứ.
+    2. "Thông tin nổi bật": bảng danh mục / xuất xứ / quy cách / khối lượng / SKU / bảo quản / gửi từ.
+       Dòng nào không có dữ liệu thì ẩn. Khối lượng + SKU đổi theo loại khách chọn.
+    3. "Lưu ý sản phẩm": nhắc kiểm tra bao bì về thành phần, dị ứng.
+{%- endcomment -%}
+{%- liquid
+  assign vi = false
+  if request.locale.iso_code == 'vi'
+    assign vi = true
+  endif
+  assign v = product.selected_or_first_available_variant
+  assign pf_skip = 'ban-chay-nhat,sieu-sale-10-10,hang-dộc-quyền,all,frontpage' | split: ','
+  assign pf_cat = nil
+  for c in product.collections
+    unless pf_skip contains c.handle
+      if c.products_count > 1
+        assign pf_cat = c
+        break
+      endif
+    endunless
+  endfor
+  assign pf_countries = product.metafields.shopify.country.value
+  assign pf_has_variants = true
+  if product.has_only_default_variant
+    assign pf_has_variants = false
+  endif
+-%}
+
+<div class="pf-pd-wrap">
+  <section class="pf-story">
+    <span class="pf-story__badge">{% if vi %}Thực phẩm Việt &amp; châu Á chính hãng{% else %}Authentic Asian food{% endif %}</span>
+    <h2 class="pf-story__title">{% render 'pf-short-title', title: product.title %}</h2>
+    {%- if product.description != blank -%}
+      <div class="pf-story__desc rte" data-pf-story-desc>{{ product.description }}</div>
+      <button type="button" class="pf-story__more" data-pf-story-more hidden>{% if vi %}Xem thêm mô tả{% else %}Read more{% endif %} <span aria-hidden="true">▾</span></button>
+    {%- endif -%}
+    {%- if pf_countries != blank -%}
+      <p class="pf-story__origin">🌏 {% if vi %}Xuất xứ:{% else %}Origin:{% endif %} <b>{% for co in pf_countries %}{{ co.label | default: co.name }}{% unless forloop.last %}, {% endunless %}{% endfor %}</b></p>
+    {%- endif -%}
+  </section>
+
+  <section class="pf-hl">
+    <h2 class="pf-pd-h pf-pd-h--line">{% if vi %}Thông tin nổi bật{% else %}Highlights{% endif %}</h2>
+    <div class="pf-hl__table" role="table">
+      {%- if pf_cat or product.type != blank -%}
+        <div class="pf-hl__row" role="row">
+          <span class="pf-hl__k" role="rowheader">{% if vi %}Danh mục{% else %}Category{% endif %}</span>
+          <span class="pf-hl__v" role="cell">{% if pf_cat %}<a href="{{ pf_cat.url }}">{{ pf_cat.title }}</a>{% else %}{{ product.type }}{% endif %}</span>
+        </div>
+      {%- endif -%}
+      {%- if pf_countries != blank -%}
+        <div class="pf-hl__row" role="row">
+          <span class="pf-hl__k" role="rowheader">{% if vi %}Xuất xứ{% else %}Origin{% endif %}</span>
+          <span class="pf-hl__v" role="cell">{% for co in pf_countries %}{{ co.label | default: co.name }}{% unless forloop.last %}, {% endunless %}{% endfor %}</span>
+        </div>
+      {%- endif -%}
+      {%- if pf_has_variants -%}
+        <div class="pf-hl__row" role="row">
+          <span class="pf-hl__k" role="rowheader">{% if vi %}Quy cách{% else %}Pack options{% endif %}</span>
+          <span class="pf-hl__v pf-hl__pills" role="cell">
+            {%- for pv in product.variants -%}
+              <span class="pf-hl__pill{% unless pv.available %} is-out{% endunless %}">{{ pv.title }} · <b>{{ pv.price | money }}</b></span>
+            {%- endfor -%}
+          </span>
+        </div>
+      {%- endif -%}
+      <div class="pf-hl__row" role="row" data-pf-hl-weight{% if v.weight == 0 %} hidden{% endif %}>
+        <span class="pf-hl__k" role="rowheader">{% if vi %}Khối lượng{% else %}Weight{% endif %}</span>
+        <span class="pf-hl__v" role="cell" data-pf-hl-weight-v>{% if v.weight > 0 %}{{ v.weight | weight_with_unit }}{% endif %}</span>
+      </div>
+      <div class="pf-hl__row" role="row" data-pf-hl-sku{% if v.sku == blank %} hidden{% endif %}>
+        <span class="pf-hl__k" role="rowheader">SKU</span>
+        <span class="pf-hl__v" role="cell" data-pf-hl-sku-v>{{ v.sku }}</span>
+      </div>
+      <div class="pf-hl__row" role="row">
+        <span class="pf-hl__k" role="rowheader">{% if vi %}Bảo quản{% else %}Storage{% endif %}</span>
+        <span class="pf-hl__v" role="cell">{% if vi %}Nơi khô ráo, thoáng mát, tránh ánh nắng trực tiếp (hoặc theo hướng dẫn trên bao bì).{% else %}Store in a cool, dry place away from direct sunlight (or as stated on the pack).{% endif %}</span>
+      </div>
+      <div class="pf-hl__row" role="row">
+        <span class="pf-hl__k" role="rowheader">{% if vi %}Gửi từ{% else %}Ships from{% endif %}</span>
+        <span class="pf-hl__v" role="cell">{% if vi %}Kho EU của PHOMIFOOD — Praha, CH Séc{% else %}Our EU warehouse — Prague, Czechia{% endif %}</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="pf-pnote">
+    <h2 class="pf-pd-h pf-pd-h--line">{% if vi %}Lưu ý sản phẩm{% else %}Product information{% endif %}</h2>
+    <p class="pf-pnote__box">⚠️ {% if vi %}Vui lòng luôn kiểm tra bao bì để biết đầy đủ thành phần và thông tin dị ứng.{% else %}Please always check the packaging for the full ingredients list and allergen information.{% endif %}</p>
+  </section>
+</div>
+
+<script type="application/json" data-pf-hl-variants>
+  {
+    {%- for pv in product.variants -%}
+      "{{ pv.id }}": { "sku": {{ pv.sku | json }}, "weight": {% if pv.weight > 0 %}{{ pv.weight | weight_with_unit | json }}{% else %}""{% endif %} }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  }
+</script>
+<script>
+  (function () {
+    // Mô tả dài → thu gọn, bấm "Xem thêm mô tả" để mở.
+    var desc = document.querySelector('[data-pf-story-desc]:not([data-bound])');
+    if (desc) {
+      desc.setAttribute('data-bound', '1');
+      var btn = desc.parentNode.querySelector('[data-pf-story-more]');
+      if (desc.scrollHeight > 420 && btn) {
+        desc.classList.add('is-collapsed');
+        btn.hidden = false;
+        btn.addEventListener('click', function () { desc.classList.remove('is-collapsed'); btn.hidden = true; });
+      }
+    }
+    // Khối lượng + SKU theo loại đang chọn.
+    var mapEl = document.querySelector('[data-pf-hl-variants]');
+    if (!mapEl) return;
+    var map = {};
+    try { map = JSON.parse(mapEl.textContent); } catch (e) {}
+    function show(id) {
+      var d = map[String(id)];
+      if (!d) return;
+      var w = document.querySelector('[data-pf-hl-weight]'), s = document.querySelector('[data-pf-hl-sku]');
+      if (w) { w.hidden = !d.weight; w.querySelector('[data-pf-hl-weight-v]').textContent = d.weight; }
+      if (s) { s.hidden = !d.sku; s.querySelector('[data-pf-hl-sku-v]').textContent = d.sku || ''; }
+    }
+    function hook() {
+      if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
+        subscribe(PUB_SUB_EVENTS.variantChange, function (e) {
+          if (e && e.data && e.data.variant) show(e.data.variant.id);
+        });
+      }
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', hook); else hook();
+  })();
+</script>

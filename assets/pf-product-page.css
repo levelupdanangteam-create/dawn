@@ -1,0 +1,108 @@
+/* PHOMIFOOD — Trang sản phẩm chi tiết (concept mới).
+   Thẻ thông tin bên phải + các khối Thông tin giao hàng / Giới thiệu / Thông tin nổi bật / Lưu ý. */
+
+/* ---------- Thẻ thông tin bên phải ---------- */
+.pf-pd-eyebrow { display: flex; align-items: center; flex-wrap: wrap; gap: .6rem; margin: 0 0 .4rem; }
+.pf-pd-eyebrow__brand { font-size: 1.1rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #14672f; background: #eef7f0; border-radius: 6px; padding: .3rem .8rem; }
+.pf-pd-eyebrow__sale { font-size: 1.1rem; font-weight: 800; letter-spacing: .06em; color: #fff; background: #d62828; border-radius: 6px; padding: .3rem .8rem; }
+
+#MainContent[data-template='product'] .product__info-container .price--on-sale .price-item--sale,
+#MainContent[data-template='product'] .product__info-container .price--on-sale .price__sale .price-item--last {
+  color: #d62828 !important;
+}
+#MainContent[data-template='product'] .product__info-container .price__badge-sale {
+  background: #d62828; color: #fff; border: 0; border-radius: 999px; font-weight: 800; padding: .3rem 1rem;
+}
+#MainContent[data-template='product'] .product__info-container .product-form__submit {
+  background-color: #1e8541 !important; border-color: #1e8541 !important; color: #fff !important;
+  border-radius: 999px; min-height: 5rem; font-weight: 800; font-size: 1.6rem;
+  box-shadow: 0 8px 18px rgba(30, 133, 65, .22);
+}
+#MainContent[data-template='product'] .product__info-container .product-form__submit:not([disabled]):hover {
+  background-color: #166b34 !important; border-color: #166b34 !important;
+}
+#MainContent[data-template='product'] .product__info-container .product-form__submit::after { display: none; }
+#MainContent[data-template='product'] .product__info-container .shopify-payment-button__button--unbranded {
+  background-color: #ffc928 !important; border-color: #ffc928 !important; color: #2a2622 !important;
+  border-radius: 999px !important; min-height: 5rem; font-weight: 800; font-size: 1.6rem;
+}
+#MainContent[data-template='product'] .product__info-container .shopify-payment-button__button--unbranded:not([disabled]):hover {
+  background-color: #f2b705 !important; border-color: #f2b705 !important; color: #2a2622 !important;
+}
+#MainContent[data-template='product'] .product__info-container .shopify-payment-button__button { border-radius: 999px; overflow: hidden; }
+
+.pf-pd-pay { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem; margin: 1.4rem 0 0; padding: 0; list-style: none; }
+.pf-pd-pay li { line-height: 0; }
+.pf-pd-pay svg { width: 3.8rem; height: 2.4rem; }
+
+/* ---------- Khung chung các khối bên dưới ---------- */
+.pf-pd-wrap { max-width: 96rem; margin-left: auto; margin-right: auto; }
+.pf-pd-wrap + .pf-pd-wrap { margin-top: 0; }
+.pf-pd-h {
+  margin: 0 0 1.6rem; text-align: center; font-family: var(--font-heading-family, sans-serif);
+  font-weight: 800; font-size: clamp(1.9rem, 2.4vw, 2.3rem); color: #2a2622; text-wrap: balance;
+}
+.pf-pd-h--line { display: flex; align-items: center; justify-content: center; gap: 1.2rem; }
+.pf-pd-h--line::before, .pf-pd-h--line::after { content: ""; width: 3.2rem; height: 3px; border-radius: 3px; background: #ffc928; }
+
+/* ---------- Thông tin giao hàng ---------- */
+.pf-dlv { padding-top: clamp(3.2rem, 5vw, 5.6rem); }
+.pf-dlv__box { background: #fff; border: 1px solid #ece3d4; border-radius: 20px; padding: clamp(1.4rem, 2.4vw, 2.4rem); box-shadow: 0 12px 32px rgba(120, 100, 70, .08); }
+.pf-dlv__cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.pf-dlv__card { display: flex; align-items: flex-start; gap: 1.2rem; background: #eef7f0; border: 1px solid #cfe8d6; border-radius: 14px; padding: 1.4rem 1.6rem; }
+.pf-dlv__card--eta { background: #fff7dc; border-color: #f4e2a6; }
+.pf-dlv__ic { flex: none; width: 4rem; height: 4rem; border-radius: 50%; display: grid; place-items: center; background: #fff; font-size: 1.9rem; box-shadow: 0 4px 10px rgba(0, 0, 0, .06); }
+.pf-dlv__k { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; color: #6a6255; }
+.pf-dlv__v { margin: .2rem 0; font-size: 1.8rem; font-weight: 800; color: #14672f; }
+.pf-dlv__card--eta .pf-dlv__v { color: #a06a00; }
+.pf-dlv__s { margin: 0; font-size: 1.3rem; color: #6a6255; }
+.pf-dlv__ship { margin-top: 1.6rem; padding: 1.2rem 1.4rem; border: 1px solid #ece3d4; border-radius: 12px; background: #fdfbf7; }
+.pf-dlv__shiprow { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; font-size: 1.4rem; color: #3d3a33; }
+.pf-dlv__pct { font-weight: 800; color: #1e8541; font-variant-numeric: tabular-nums; }
+.pf-dlv__bar { margin-top: .8rem; height: 8px; border-radius: 999px; background: #ece3d4; overflow: hidden; }
+.pf-dlv__bar span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #1e8541, #3fb36a); transition: width .4s ease; }
+.pf-dlv__trust { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem 2rem; margin: 1.4rem 0 0; padding: 0; list-style: none; font-size: 1.3rem; font-weight: 700; color: #1e8541; }
+.pf-dlv__fine { margin: .8rem 0 0; text-align: center; font-size: 1.2rem; color: #8a8173; }
+
+/* ---------- Thẻ giới thiệu ---------- */
+.pf-story {
+  margin-top: clamp(3.2rem, 5vw, 5.6rem); position: relative;
+  background: linear-gradient(135deg, #fffdf3 0%, #f1f9f2 100%);
+  border: 1px solid #dcebd9; border-radius: 22px; padding: clamp(2rem, 3.4vw, 3.6rem);
+  box-shadow: 0 12px 32px rgba(120, 100, 70, .07);
+}
+.pf-story__badge { display: inline-block; font-size: 1.1rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; color: #14672f; background: #fff; border: 1px solid #cfe8d6; border-radius: 999px; padding: .4rem 1.2rem; }
+.pf-story__title { margin: 1.2rem 0 1.2rem; font-family: var(--font-heading-family, sans-serif); font-weight: 800; font-size: clamp(2.2rem, 3vw, 2.8rem); color: #2a2622; text-wrap: balance; }
+.pf-story__desc { font-size: 1.5rem; line-height: 1.7; color: #4a443b; max-width: 72ch; }
+.pf-story__desc.is-collapsed { max-height: 36rem; overflow: hidden; -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent); mask-image: linear-gradient(180deg, #000 70%, transparent); }
+.pf-story__desc img { border-radius: 12px; }
+.pf-story__more { margin-top: 1rem; background: none; border: 0; padding: .4rem 0; cursor: pointer; font-size: 1.4rem; font-weight: 800; color: #1e8541; }
+.pf-story__more:focus-visible { outline: 2px solid #1e8541; outline-offset: 2px; }
+.pf-story__origin { margin: 1.4rem 0 0; font-size: 1.4rem; color: #3d3a33; }
+
+/* ---------- Thông tin nổi bật ---------- */
+.pf-hl { margin-top: clamp(3.2rem, 5vw, 4.8rem); }
+.pf-hl__table { background: #fff; border: 1px solid #ece3d4; border-radius: 16px; overflow: hidden; }
+.pf-hl__row { display: grid; grid-template-columns: minmax(11rem, 30%) 1fr; }
+.pf-hl__row[hidden] { display: none; }
+.pf-hl__row + .pf-hl__row { border-top: 1px solid #f0e8db; }
+.pf-hl__k { padding: 1.2rem 1.6rem; background: #faf6ee; font-size: 1.35rem; font-weight: 800; color: #3d3a33; }
+.pf-hl__v { padding: 1.2rem 1.6rem; font-size: 1.4rem; color: #4a443b; overflow-wrap: anywhere; }
+.pf-hl__v a { color: #1e8541; font-weight: 700; text-decoration: none; }
+.pf-hl__v a:hover { text-decoration: underline; }
+.pf-hl__pills { display: flex; flex-wrap: wrap; gap: .6rem; }
+.pf-hl__pill { font-size: 1.3rem; background: #eef7f0; border: 1px solid #cfe8d6; border-radius: 999px; padding: .3rem 1rem; }
+.pf-hl__pill b { color: #1e8541; }
+.pf-hl__pill.is-out { opacity: .55; }
+
+/* ---------- Lưu ý sản phẩm ---------- */
+.pf-pnote { margin-top: clamp(3.2rem, 5vw, 4.8rem); }
+.pf-pnote__box { margin: 0; background: #fff7dc; border: 1px solid #f4e2a6; border-radius: 12px; padding: 1.2rem 1.6rem; font-size: 1.4rem; color: #6b5413; }
+
+@media (max-width: 749px) {
+  .pf-dlv__cards { grid-template-columns: 1fr; }
+  .pf-dlv__shiprow { font-size: 1.3rem; }
+  .pf-hl__row { grid-template-columns: 1fr; }
+  .pf-hl__k { padding-bottom: .4rem; background: #fff; font-size: 1.2rem; text-transform: uppercase; letter-spacing: .05em; color: #8a8173; }
+  .pf-hl__v { padding-top: 0; }
+}

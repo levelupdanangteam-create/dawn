@@ -104,7 +104,12 @@
     </div>
     {%- if show_badges -%}
       <span class="badge price__badge-sale color-{{ settings.sale_badge_color_scheme }}">
-        {{ 'products.product.on_sale' | t }}
+        {%- comment -%} PHOMIFOOD: nhãn giảm giá hiện % (VD: -27%) thay cho chữ "Giảm giá". {%- endcomment -%}
+        {%- if compare_at_price > price -%}
+          -{{ compare_at_price | minus: price | times: 100.0 | divided_by: compare_at_price | round }}%
+        {%- else -%}
+          {{ 'products.product.on_sale' | t }}
+        {%- endif -%}
       </span>
 
       <span class="badge price__badge-sold-out color-{{ settings.sold_out_badge_color_scheme }}">

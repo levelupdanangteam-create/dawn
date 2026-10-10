@@ -17,7 +17,8 @@
           "settings": {
             "text": "{{ product.vendor }}",
             "text_style": "uppercase"
-          }
+          },
+          "disabled": true
         },
         "title": {
           "type": "title",
@@ -47,7 +48,8 @@
         },
         "description": {
           "type": "description",
-          "settings": {}
+          "settings": {},
+          "disabled": true
         },
         "share": {
           "type": "share",
@@ -196,6 +198,126 @@
         "padding_top": 24,
         "padding_bottom": 40
       }
+    },
+    "pf_product_faq": {
+      "type": "pf-product-faq",
+      "blocks": {
+        "g1": {
+          "type": "group",
+          "settings": {
+            "title": "Vận chuyển & đơn hàng"
+          }
+        },
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "Bao lâu thì tôi nhận được hàng?",
+            "answer": "<p>Đơn được đóng gói trong <strong>ngày làm việc kế tiếp</strong> tại kho EU của PHOMIFOOD (Praha, CH Séc) và giao trong <strong>2–5 ngày làm việc</strong> đến hầu hết các nước châu Âu (không tính cuối tuần, ngày lễ).</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "Có miễn phí vận chuyển không?",
+            "answer": "<p>Có. Đơn từ <strong>169€</strong> được <strong>Freeship</strong> hoặc <strong>giảm 10%</strong>. Thanh tiến độ trong giỏ hàng cho biết bạn còn thiếu bao nhiêu.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "Tôi có thể mua nguyên thùng không?",
+            "answer": "<p>Được. Phần lớn sản phẩm có quy cách <strong>Thùng</strong> với giá tốt hơn mua lẻ — chọn ở mục quy cách phía trên. Cần số lượng lớn, nhắn PHOMIFOOD qua WhatsApp hoặc Messenger để được báo giá sỉ.</p>"
+          }
+        },
+        "q4": {
+          "type": "question",
+          "settings": {
+            "question": "Làm sao để theo dõi đơn hàng?",
+            "answer": "<p>Bấm <strong>Theo dõi đơn hàng</strong> ở đầu trang để nhắn PHOMIFOOD qua WhatsApp, hoặc nhắn qua Messenger — shop sẽ gửi tình trạng đơn cho bạn.</p>"
+          }
+        },
+        "g2": {
+          "type": "group",
+          "settings": {
+            "title": "Thanh toán & đổi trả"
+          }
+        },
+        "q5": {
+          "type": "question",
+          "settings": {
+            "question": "Hàng bị lỗi khi nhận thì sao?",
+            "answer": "<p>Sản phẩm bị lỗi khi giao nhận được <strong>hoàn tiền 100%</strong>. Nếu phát hiện hàng giả, PHOMIFOOD hoàn <strong>120%</strong> giá trị sản phẩm. Chụp ảnh tình trạng hàng và nhắn shop ngay khi nhận.</p>"
+          }
+        },
+        "q6": {
+          "type": "question",
+          "settings": {
+            "question": "Tôi có thể thanh toán bằng gì?",
+            "answer": "<p>Thanh toán trực tuyến an toàn qua Shopify. Các phương thức khả dụng (thẻ, ví điện tử…) hiển thị ở bước thanh toán.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "g1",
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "g2",
+        "q5",
+        "q6"
+      ],
+      "settings": {
+        "heading": "Câu hỏi thường gặp",
+        "padding_top": 32,
+        "padding_bottom": 24
+      }
+    },
+    "pf_trust_strip": {
+      "type": "pf-trust-strip",
+      "blocks": {
+        "t1": {
+          "type": "item",
+          "settings": {
+            "icon": "🚚",
+            "title": "Freeship từ 169€",
+            "text": "hoặc giảm 10% đơn hàng"
+          }
+        },
+        "t2": {
+          "type": "item",
+          "settings": {
+            "icon": "📦",
+            "title": "Gửi từ kho EU",
+            "text": "Praha, CH Séc"
+          }
+        },
+        "t3": {
+          "type": "item",
+          "settings": {
+            "icon": "🔒",
+            "title": "Thanh toán an toàn",
+            "text": "qua Shopify"
+          }
+        },
+        "t4": {
+          "type": "item",
+          "settings": {
+            "icon": "💬",
+            "title": "Hỗ trợ tiếng Việt",
+            "text": "WhatsApp / Messenger"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "settings": {
+        "margin_top": 32
+      }
     }
   },
   "order": [
@@ -204,8 +326,10 @@
     "custom_liquid_KJ6LNE",
     "pf_review_video",
     "pf_reviews",
+    "pf_product_faq",
     "pf_same_category",
     "disclosures",
-    "related-products"
+    "related-products",
+    "pf_trust_strip"
   ]
 }
