@@ -433,8 +433,7 @@
     {%- endunless -%}
 
     {% render 'pf-popups' %}
-    {%- comment -%} Popup "đã mua" — dùng đơn hàng thật, đã ẩn danh (pf-salespop.liquid). {%- endcomment -%}
-    {% render 'pf-salespop' %}
+    {%- comment -%} Popup "… đã mua …" (pf-salespop.liquid) — đã tắt. Bật lại: render 'pf-salespop'. {%- endcomment -%}
     {% render 'pf-contact-buttons' %}
     {% render 'pf-hide-widgets' %}
     {%- comment -%} Popup "Deal 0 Đồng / 0€" khi khách định rời trang — đã tắt. Bật lại: render 'pf-exit-intent'. {%- endcomment -%}
