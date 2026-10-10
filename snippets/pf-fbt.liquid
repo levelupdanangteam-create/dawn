@@ -13,7 +13,7 @@
   assign main_v = product.selected_or_first_available_variant
   assign picks = product.metafields.custom.bought_together.value
 -%}
-<div class="page-width"><div class="pf-fbt color-scheme-1" data-pf-fbt data-money-format="{{ shop.money_format | escape }}">
+<div class="page-width pf-fbt-wrap"><div class="pf-fbt color-scheme-1" data-pf-fbt data-money-format="{{ shop.money_format | escape }}">
   <h2 class="pf-fbt__title">{{ fbt_heading }}</h2>
   <div class="pf-fbt__body">
     <div class="pf-fbt__row">
@@ -66,7 +66,10 @@
 </div></div>
 
 <style>
-  .pf-fbt { margin: 2.4rem 0 1.2rem; background: #fff; border: 1px solid #ece3d4; border-radius: 22px; padding: clamp(2.2rem, 3.2vw, 3.6rem) clamp(1.6rem, 3vw, 3.2rem); box-shadow: 0 12px 32px rgba(120,100,70,.08); }
+  /* Khoảng cách rõ với thẻ thông tin sản phẩm (thẻ này sticky, z-index 2) — padding không bị "collapse" như margin,
+     và khối nằm lớp trên để thẻ sticky không bao giờ đè lên. */
+  .pf-fbt-wrap { clear: both; position: relative; z-index: 3; padding-top: clamp(3.2rem, 5vw, 5.6rem); padding-bottom: 1.2rem; }
+  .pf-fbt { margin: 0; background: #fff; border: 1px solid #ece3d4; border-radius: 22px; padding: clamp(2.2rem, 3.2vw, 3.6rem) clamp(1.6rem, 3vw, 3.2rem); box-shadow: 0 12px 32px rgba(120,100,70,.08); }
   .pf-fbt__title { margin: 0 0 1.6rem; font-family: var(--font-heading-family, sans-serif); font-weight: 800; font-size: clamp(1.9rem, 2.4vw, 2.3rem); line-height: 1.2; color: #2a2622; }
   .pf-fbt__body { display: grid; grid-template-columns: 1fr minmax(24rem, 30rem); gap: 2.4rem; align-items: center; }
   .pf-fbt__row { display: flex; align-items: flex-start; gap: 1rem; min-width: 0; }
