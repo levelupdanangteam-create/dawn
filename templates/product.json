@@ -316,7 +316,8 @@
         "t4"
       ],
       "settings": {
-        "margin_top": 32
+        "margin_top": 32,
+        "speed": 40
       }
     }
   },
