@@ -2,7 +2,8 @@
   Trang "Siêu Sale 10.10": header + đồng hồ đếm ngược tới mốc cố định + lưới sản phẩm.
   Bản riêng dựa trên pf-flash-deals (dùng lại class/CSS pf-flash__*), KHÔNG sửa pf-flash-deals.
   Params: deal_collection (collection), heading (string), badge (string),
-          end_at (ISO 8601, vd 2026-10-10T23:59:59+02:00), initial (int), uid (string, bắt buộc)
+          end_at (ISO 8601, vd 2026-10-10T23:59:59+02:00 — hoặc 'weekly' = tự đếm tới 23:59:59 Chủ nhật tuần hiện tại,
+          giờ châu Âu (Europe/Berlin); sang tuần mới tự đặt lại), label (chữ trên nhãn xanh), initial (int), uid (string, bắt buộc)
 {%- endcomment -%}
 {%- liquid
   assign col = deal_collection
@@ -19,7 +20,7 @@
     <div class="pf-flash__brand">
       <span class="pf-flash__badge">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>
-        SIÊU SALE 10.10
+        {{ label | default: 'ƯU ĐÃI TUẦN NÀY' }}
       </span>
       {%- if heading != blank -%}<span class="pf-flash__name">{{ heading }}</span>{%- endif -%}
     </div>
@@ -67,7 +68,7 @@
         </div>
       {%- endfor -%}
     {%- else -%}
-      <p>{% if request.locale.iso_code == 'vi' %}Chưa có sản phẩm trong danh mục Siêu Sale 10.10.{% else %}No products yet.{% endif %}</p>
+      <p>{% if request.locale.iso_code == 'vi' %}Chưa có sản phẩm ưu đãi tuần này.{% else %}No products yet.{% endif %}</p>
     {%- endif -%}
   </div>
 
@@ -97,14 +98,34 @@
     var el = box.querySelector('.pf-flash__timer');
     if (!el || el.dataset.pfInit) return;
     el.dataset.pfInit = '1';
-    // Mốc kết thúc cố định (giờ châu Âu), giống nhau cho mọi khách, không reset khi tải lại trang.
-    var end = Date.parse(el.getAttribute('data-end'));
+    // Mốc kết thúc: 'weekly' = 23:59:59 Chủ nhật tuần này theo giờ châu Âu (tự lặp lại mỗi tuần, giống nhau cho mọi khách);
+    // hoặc một mốc ISO cố định.
+    function berlin(ms) {
+      var P = {};
+      new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Berlin', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', weekday: 'short', hourCycle: 'h23' })
+        .formatToParts(new Date(ms)).forEach(function (x) { P[x.type] = x.value; });
+      P.off = Date.UTC(+P.year, +P.month - 1, +P.day, +P.hour, +P.minute, +P.second) - Math.floor(ms / 1000) * 1000;
+      return P;
+    }
+    function weeklyEnd() {
+      try {
+        var P = berlin(Date.now());
+        var dow = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(P.weekday);
+        var wall = Date.UTC(+P.year, +P.month - 1, +P.day + (7 - dow) % 7, 23, 59, 59);
+        var guess = wall - P.off;
+        return wall - berlin(guess).off; // dùng độ lệch giờ của chính Chủ nhật đó (đổi giờ mùa hè/đông)
+      } catch (e) { return NaN; }
+    }
+    var raw = el.getAttribute('data-end');
+    var weekly = raw === 'weekly';
+    var end = weekly ? weeklyEnd() : Date.parse(raw);
     if (isNaN(end)) return;
     var dd = el.querySelector('.dd'), hh = el.querySelector('.hh'), mm = el.querySelector('.mm'), ss = el.querySelector('.ss');
     function p(n) { return (n < 10 ? '0' : '') + n; }
     var timer;
     function tick() {
       var d = end - Date.now();
+      if (d <= 0 && weekly) { end = weeklyEnd(); d = end - Date.now(); }
       if (d <= 0) {
         d = 0;
         if (timer) clearInterval(timer);
