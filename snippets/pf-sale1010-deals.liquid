@@ -34,6 +34,8 @@
 
   <div class="pf-flash__row">
     {%- if col != blank and col.products_count > 0 -%}
+      {%- comment -%} Liquid chỉ trả tối đa 50 SP/vòng lặp nếu không paginate → paginate 250 để hiện đủ {%- endcomment -%}
+      {%- paginate col.products by 250 -%}
       {%- for product in col.products limit: lim -%}
         {%- liquid
           assign pf_v = product.selected_or_first_available_variant
@@ -67,6 +69,7 @@
           </div>
         </div>
       {%- endfor -%}
+      {%- endpaginate -%}
     {%- else -%}
       <p>{% if request.locale.iso_code == 'vi' %}Chưa có sản phẩm ưu đãi tuần này.{% else %}No products yet.{% endif %}</p>
     {%- endif -%}
