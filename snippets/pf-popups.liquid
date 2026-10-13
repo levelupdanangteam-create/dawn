@@ -27,6 +27,7 @@
   .pf-pop__backdrop {
     position: absolute; inset: 0; background: rgba(0, 0, 0, .62);
     backdrop-filter: blur(2px); animation: pf-pop-fade .25s ease;
+    cursor: pointer; /* iOS Safari chỉ phát sự kiện click trên phần tử có cursor:pointer */
   }
   .pf-pop__box {
     position: relative; width: min(90vw, 440px);
@@ -50,7 +51,7 @@
   @keyframes pf-pop-in { from { opacity: 0; transform: translateY(18px) scale(.94); } to { opacity: 1; transform: none; } }
   @media (max-width: 599px) {
     .pf-pop { padding: 1.6rem; }
-    .pf-pop__box { width: min(92vw, 400px); }
+    .pf-pop__box { width: min(80vw, 340px); }
     .pf-pop__x { top: -1rem; right: -1rem; width: 3.4rem; height: 3.4rem; font-size: 2.1rem; }
   }
 </style>
@@ -152,11 +153,15 @@
       }, delay);
     }
 
+    // Đóng khi bấm nút X hoặc bấm/chạm bất kỳ đâu bên ngoài ảnh popup.
     document.addEventListener('click', function (e) {
       var t = e.target;
-      if (t && t.closest && t.closest('[data-pf-pop-close]')) {
+      if (!t || !t.closest) return;
+      var pop = t.closest('.pf-pop');
+      if (!pop) return;
+      if (t.closest('[data-pf-pop-close]') || !t.closest('.pf-pop__box')) {
         e.preventDefault();
-        close(t.closest('.pf-pop'));
+        close(pop);
       }
     });
     document.addEventListener('keydown', function (e) {
