@@ -1,9 +1,21 @@
 {%- comment -%}
   Shelf-life (HSD) info box on the product detail page.
   Replaces the previous "wholesale contact" box.
+  Sản phẩm có tag PRE-ORDER: hiện thêm ô tím "Hàng PRE-ORDER" (thời gian chờ) ngay trên ô HSD.
+  Dùng: {% render 'pf-wholesale-contact', product: product %}
 {%- endcomment -%}
 {%- assign vi = false -%}
 {%- if request.locale.iso_code == 'vi' -%}{%- assign vi = true -%}{%- endif -%}
+{%- liquid
+  assign pf_po = false
+  for t in product.tags
+    assign t_up = t | upcase | strip
+    if t_up == 'PRE-ORDER' or t_up == 'PREORDER' or t_up == 'PRE ORDER'
+      assign pf_po = true
+      break
+    endif
+  endfor
+-%}
 <style>
   .pf-hsd {
     margin: 1.8rem 0 0; display: flex; align-items: center; gap: 1.3rem; flex-wrap: wrap;
@@ -22,8 +34,25 @@
     border-radius: 999px; padding: .5rem 1rem; font-size: 1.35rem; color: #3d3a33;
   }
   .pf-hsd__item b { color: #1e8541; font-weight: 800; white-space: nowrap; }
+  .pf-hsd--po { background: linear-gradient(180deg, #f5efff 0%, #fbf9ff 100%); border-color: #d9c6ff; border-left-color: #6c2bd9; }
+  .pf-hsd--po .pf-hsd__ico { background: #6c2bd9; box-shadow: 0 4px 10px rgba(108,43,217,.25); }
+  .pf-hsd--po .pf-hsd__t { color: #4b1fa3; }
+  .pf-hsd--po .pf-hsd__item { border-color: #e4d8fb; }
+  .pf-hsd--po .pf-hsd__item b { color: #6c2bd9; }
   @media (max-width: 599px) { .pf-hsd__item { flex: 1 1 100%; justify-content: center; } }
 </style>
+
+{%- if pf_po -%}
+<div class="pf-hsd pf-hsd--po">
+  <span class="pf-hsd__ico" aria-hidden="true">⏳</span>
+  <div class="pf-hsd__body">
+    <p class="pf-hsd__t">{% if vi %}Hàng PRE-ORDER (đặt trước){% else %}PRE-ORDER item{% endif %}</p>
+    <div class="pf-hsd__list">
+      <span class="pf-hsd__item">{% if vi %}Thời gian chờ:{% else %}Waiting time:{% endif %} <b>{% if vi %}10–15 ngày{% else %}10–15 days{% endif %}</b></span>
+    </div>
+  </div>
+</div>
+{%- endif -%}
 
 <div class="pf-hsd">
   <span class="pf-hsd__ico" aria-hidden="true">🗓️</span>
