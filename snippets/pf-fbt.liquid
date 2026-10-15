@@ -114,6 +114,24 @@
       var cbs = Array.prototype.slice.call(box.querySelectorAll('.pf-fbt__cb'));
       var root = (window.Shopify && Shopify.routes && Shopify.routes.root) || '/';
 
+      // Microsoft Clarity: custom event + tag (nếu Clarity chưa tải xong thì xếp hàng chờ, giống đoạn mã chuẩn của Clarity)
+      function ct() {
+        try {
+          window.clarity = window.clarity || function () { (window.clarity.q = window.clarity.q || []).push(arguments); };
+          window.clarity.apply(null, arguments);
+        } catch (_) {}
+      }
+      function track(ev, n) {
+        ct('event', ev);
+        if (n != null) ct('set', 'fbt_items', String(n));
+      }
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (es) {
+          if (es.some(function (e) { return e.isIntersecting; })) { track('fbt_view'); io.disconnect(); }
+        }, { threshold: 0.5 });
+        io.observe(box);
+      }
+
       function group(n, sep) { return n.replace(/\B(?=(\d{3})+(?!\d))/g, sep); }
       function money(cents) {
         var v = (cents / 100).toFixed(2), parts = v.split('.');
@@ -144,10 +162,17 @@
             t.innerHTML = (tmp.querySelector('#cart-icon-bubble') || tmp).innerHTML;
           }).catch(function () {});
       }
-      cbs.forEach(function (c) { c.addEventListener('change', update); });
+      cbs.forEach(function (c) {
+        c.addEventListener('change', function () {
+          update();
+          track(c.checked ? 'fbt_check' : 'fbt_uncheck', checked().length);
+        });
+      });
       btn.addEventListener('click', function () {
         var items = checked().map(function (c) { return { id: parseInt(c.getAttribute('data-id'), 10), quantity: 1 }; });
         if (!items.length) return;
+        track('fbt_add_click', items.length);
+        ct('set', 'fbt_all_selected', items.length === cbs.length ? 'yes' : 'no');
         btn.disabled = true; btn.textContent = btn.getAttribute('data-l-busy');
         fetch(root + 'cart/add.js', {
           method: 'POST',
@@ -158,12 +183,16 @@
           .then(function (res) {
             if (!res.ok) throw res.data;
             refreshBubble();
+            track('fbt_add_success', items.length);
+            ct('set', 'fbt_used', 'yes');
+            ct('upgrade', 'fbt_add_success');
             var first = res.data && res.data.items ? res.data.items[0] : res.data;
             try { document.dispatchEvent(new CustomEvent('pf:cart:added', { detail: first })); } catch (_) {}
             btn.textContent = btn.getAttribute('data-l-done');
             setTimeout(update, 1800);
           })
           .catch(function () {
+            track('fbt_add_error');
             btn.textContent = btn.getAttribute('data-l-err');
             setTimeout(update, 1800);
           });
