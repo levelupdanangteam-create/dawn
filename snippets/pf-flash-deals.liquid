@@ -57,6 +57,7 @@
         -%}
         <div class="pf-flash__card{% if init > 0 and forloop.index > init %} is-hidden{% endif %}">
           <a class="pf-flash__media" href="{{ product.url }}">
+            {% render 'pf-preorder-badge', product: product %}
             {%- if on_sale -%}<span class="pf-flash__disc">-{{ disc }}%</span>{%- endif -%}
             <span class="pf-flash__hot">HOT</span>
             {%- if product.featured_image -%}

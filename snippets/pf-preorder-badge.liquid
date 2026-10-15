@@ -1,0 +1,26 @@
+{%- comment -%}
+  Nhãn "PRE-ORDER" cho sản phẩm có tag PRE-ORDER (gắn tag trong Shopify admin là tự hiện, bỏ tag là tự ẩn).
+  Dùng: {% render 'pf-preorder-badge', product: product %}            → nhãn nổi góc trên-phải ảnh ở thẻ sản phẩm
+        {% render 'pf-preorder-badge', product: product, inline: true %} → nhãn nằm trong dòng (trang chi tiết)
+{%- endcomment -%}
+{%- liquid
+  assign pf_po = false
+  for t in product.tags
+    assign t_up = t | upcase | strip
+    if t_up == 'PRE-ORDER' or t_up == 'PREORDER' or t_up == 'PRE ORDER'
+      assign pf_po = true
+      break
+    endif
+  endfor
+-%}
+{%- if pf_po -%}
+  <span class="pf-po{% if inline %} pf-po--inline{% endif %}">PRE-ORDER</span>
+    <style>
+      .pf-deal__media, .pf-media { position: relative; }
+      .pf-po { position: absolute; bottom: .8rem; right: .8rem; top: auto; left: auto; z-index: 3; display: inline-flex; align-items: center;
+        padding: .35rem .8rem; border-radius: 999px; background: #6c2bd9; color: #fff; font-size: 1.1rem; font-weight: 800;
+        letter-spacing: .04em; line-height: 1.2; box-shadow: 0 2px 8px rgba(60, 20, 120, .3); pointer-events: none; white-space: nowrap; }
+      .pf-po--inline { position: static; font-size: 1.2rem; padding: .4rem 1rem; box-shadow: none; }
+      @media (max-width: 749px) { .pf-po:not(.pf-po--inline) { bottom: .5rem; right: .5rem; font-size: 1rem; padding: .3rem .6rem; } }
+    </style>
+{%- endif -%}

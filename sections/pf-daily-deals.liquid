@@ -32,6 +32,7 @@
         {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
           <div class="pf-card">
             <a class="pf-media" href="{{ product.url }}">
+              {% render 'pf-preorder-badge', product: product %}
               {%- if product.featured_image -%}
                 <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title | escape }}" loading="lazy" width="400" height="400">
               {%- else -%}

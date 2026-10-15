@@ -13,6 +13,7 @@
 <div class="pf-deal__card{% if is_gift %} pf-deal__card--gift{% endif %}"{% if block_attrs %} {{ block_attrs }}{% endif %}>
   <div class="pf-deal__ribbon{% if is_gift %} pf-deal__ribbon--gift{% endif %}">{% if is_gift %}🎁 {% if request.locale.iso_code == "vi" %}QUÀ{% else %}GIFT{% endif %}{% else %}DEAL{% endif %}</div>
   <a class="pf-deal__media" href="{{ p.url }}">
+    {% render 'pf-preorder-badge', product: p %}
     {%- if p.featured_image -%}
       <img src="{{ p.featured_image | image_url: width: 400 }}" alt="{{ p.title | escape }}" loading="lazy" width="200" height="200">
     {%- endif -%}

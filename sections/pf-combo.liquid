@@ -62,6 +62,7 @@
             {%- if pf_cmp == blank or pf_cmp <= pf_price -%}{%- assign pf_cmp = product.compare_at_price_max -%}{%- endif -%}
             <div class="pf-cb__card{% if forloop.index > initial %} is-hidden{% endif %}">
               <a class="pf-cb__media" href="{{ product.url }}">
+                {% render 'pf-preorder-badge', product: product %}
                 <span class="pf-cb__ribbon">🎁 {% if request.locale.iso_code == "vi" %}Combo{% else %}Combo{% endif %}</span>
                 {%- if pf_cmp > pf_price -%}
                   <span class="pf-cb__sale">-{{ pf_cmp | minus: pf_price | times: 100.0 | divided_by: pf_cmp | round }}%</span>

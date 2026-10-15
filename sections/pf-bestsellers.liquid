@@ -76,6 +76,7 @@
             <div class="pf-bs__card{% if forloop.index > initial %} is-hidden{% endif %}">
               <div class="pf-bs__rank r{{ rank }}">{{ rank }}</div>
               <a class="pf-bs__media" href="{{ product.url }}">
+                {% render 'pf-preorder-badge', product: product %}
                 {%- if pf_cmp > pf_price -%}
                   <span class="pf-bs__sale">-{{ pf_cmp | minus: pf_price | times: 100.0 | divided_by: pf_cmp | round }}%</span>
                 {%- endif -%}

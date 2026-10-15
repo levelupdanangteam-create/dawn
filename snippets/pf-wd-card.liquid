@@ -6,6 +6,7 @@
 {%- assign cmp = v.compare_at_price -%}
 <div class="pf-wd-card">
   <a class="pf-wd-card__media" href="{{ p.url }}">
+    {% render 'pf-preorder-badge', product: p %}
     {%- if cmp > price -%}
       {%- assign pct = cmp | minus: price | times: 100 | divided_by: cmp -%}
       <span class="pf-wd-card__badge">-{{ pct }}%</span>

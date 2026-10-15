@@ -9,6 +9,7 @@
 <div class="pf-ex__card{% if hidden %} pf-ex__card--hidden{% endif %}">
   <span class="pf-ex__badge">{% if request.locale.iso_code == "vi" %}⭐ Độc quyền{% else %}⭐ Exclusive{% endif %}</span>
   <a class="pf-ex__media" href="{{ product.url }}">
+    {% render 'pf-preorder-badge', product: product %}
     {%- if pf_cmp > pf_price -%}
       <span class="pf-ex__sale">-{{ pf_cmp | minus: pf_price | times: 100.0 | divided_by: pf_cmp | round }}%</span>
     {%- endif -%}

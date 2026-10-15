@@ -10,6 +10,7 @@
 <div class="pf-s10__card{% if hidden %} pf-s10__card--hidden{% endif %}">
   <span class="pf-s10__badge">🔥 {{ badge | default: 'Giảm 10%' }}</span>
   <a class="pf-s10__media" href="{{ product.url }}">
+    {% render 'pf-preorder-badge', product: product %}
     {%- if product.featured_image -%}
       <img src="{{ product.featured_image | image_url: width: 500 }}" alt="{{ product.title | escape }}" loading="lazy" width="500" height="500">
     {%- else -%}

@@ -104,6 +104,7 @@
                   <div class="pf-pd-eyebrow">
                     {%- if product.vendor != blank -%}<span class="pf-pd-eyebrow__brand">{{ product.vendor }}</span>{%- endif -%}
                     {%- if product.compare_at_price > product.price -%}<span class="pf-pd-eyebrow__sale">SALE</span>{%- endif -%}
+                    {%- render 'pf-preorder-badge', product: product, inline: true -%}
                   </div>
                   <div class="product__title" {{ block.shopify_attributes }}>
                     <h1>{% render 'pf-short-title', title: product.title %}</h1>
