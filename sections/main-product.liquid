@@ -731,6 +731,9 @@
       {% render 'pf-pd-delivery' %}
       {% render 'pf-pd-details' %}
 
+      {%- comment -%} Giấy chứng nhận (metafield custom.certificates) — nằm TRÊN video sản phẩm. {%- endcomment -%}
+      {% render 'pf-certificates', product: product %}
+
       {% render 'pf-product-videos' %}
 
       {% render 'product-media-modal', variant_images: variant_images %}
