@@ -27,6 +27,7 @@
       {%- endif -%}
     </div>
 
+    <div class="pf-deal__rail" id="pf-deal-rail-{{ section.id }}">
     <div class="pf-deal__grid">
       {%- if section.blocks.size > 0 -%}
         {%- comment -%}Danh sách tự thêm trong section này (mỗi khối = 1 sản phẩm).{%- endcomment -%}
@@ -48,6 +49,9 @@
           {%- endif -%}
         {%- endfor -%}
       {%- endif -%}
+    </div>
+      <button type="button" class="pf-deal__arrow pf-deal__arrow--prev" aria-label="Sản phẩm trước" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <button type="button" class="pf-deal__arrow pf-deal__arrow--next" aria-label="Xem thêm sản phẩm" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
     </div>
   </div>
 </div>
@@ -101,6 +105,7 @@
     text-decoration: none; transition: filter .15s ease;
   }
   .pf-deal__giftbtn:hover { filter: brightness(1.08); color: #fff; }
+  .pf-deal__arrow { display: none; }
   /* Mobile: horizontal scroll carousel */
   @media (max-width: 749px) {
     .pf-deal__grid {
@@ -108,6 +113,17 @@
       scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-bottom: 1.2rem;
       scrollbar-width: thin; scrollbar-color: #e0c98e transparent;
     }
+    .pf-deal__rail { position: relative; }
+    .pf-deal__arrow {
+      position: absolute; top: 20vw; z-index: 3; width: 3.8rem; height: 3.8rem; border-radius: 50%;
+      display: grid; place-items: center; padding: 0; cursor: pointer;
+      background: #d62828; color: #fff; border: 2px solid #fff; box-shadow: 0 4px 14px rgba(0,0,0,.25);
+    }
+    .pf-deal__arrow[hidden] { display: none; }
+    .pf-deal__arrow--next { right: -.4rem; animation: pf-deal-nudge 1.6s ease-in-out infinite; }
+    .pf-deal__arrow--prev { left: -.4rem; }
+    @keyframes pf-deal-nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(4px); } }
+    @media (prefers-reduced-motion: reduce) { .pf-deal__arrow--next { animation: none; } }
     .pf-deal__grid::-webkit-scrollbar { height: 8px; }
     .pf-deal__grid::-webkit-scrollbar-thumb { background: #e0c98e; border-radius: 999px; }
     /* Thẻ gọn: ~2 thẻ một màn hình, hé thẻ thứ 3 để khách biết vuốt được */
@@ -128,6 +144,31 @@
     .pf-deal__giftbtn { font-size: 1.2rem; padding: .75rem .5rem; }
   }
 </style>
+
+<script>
+  (function () {
+    var rail = document.getElementById('pf-deal-rail-{{ section.id }}');
+    if (!rail) return;
+    var grid = rail.querySelector('.pf-deal__grid');
+    var prev = rail.querySelector('.pf-deal__arrow--prev');
+    var next = rail.querySelector('.pf-deal__arrow--next');
+    var mq = window.matchMedia('(max-width: 749px)');
+    function step() { var c = grid.querySelector('.pf-deal__card'); return c ? c.offsetWidth + 12 : grid.clientWidth * .8; }
+    function update() {
+      var can = mq.matches && grid.scrollWidth > grid.clientWidth + 4;
+      var x = grid.scrollLeft, max = grid.scrollWidth - grid.clientWidth;
+      prev.hidden = !can || x < 8;
+      next.hidden = !can || x > max - 8;
+    }
+    next.addEventListener('click', function () { grid.scrollBy({ left: step(), behavior: 'smooth' }); });
+    prev.addEventListener('click', function () { grid.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    grid.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    if (mq.addEventListener) mq.addEventListener('change', update);
+    window.addEventListener('load', update);
+    update();
+  })();
+</script>
 
 {% schema %}
 {
