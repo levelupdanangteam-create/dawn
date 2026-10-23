@@ -1,7 +1,9 @@
 {%- comment -%}
   Hide the injected "Shop with AI" / Shopify store-assistant widget.
-  Uses CSS for known selectors + JS that pierces shadow DOM and matches
-  by visible text / aria-label, retrying for late/async injection.
+  Layer 1: CSS for known selectors (always on).
+  Layer 2: a light JS watcher that only inspects NEWLY ADDED nodes (and their
+  shadow roots) instead of re-scanning the whole page on every DOM change.
+  It stops watching after 15s, by which time the widget has been injected.
 {%- endcomment -%}
 <style>
   /* Known / likely selectors for the Shopify store-assistant pill */
@@ -25,76 +27,88 @@
     if (window.__pfHideWidgets) return;
     window.__pfHideWidgets = true;
 
-    var TARGETS = ['shop with ai'];
+    var TARGET = 'shop with ai';
+    var NAME_RE = /store-assistant|shop-assistant|shop-ai/i;
+    var WATCH_MS = 15000;
 
-    function matches(el) {
-      if (!el || el.__pfHidden) return false;
-      var aria = (el.getAttribute && (el.getAttribute('aria-label') || el.getAttribute('title')) || '').trim().toLowerCase();
-      if (aria && TARGETS.indexOf(aria) !== -1) return true;
-      var txt = (el.textContent || '').trim().toLowerCase();
-      return TARGETS.indexOf(txt) !== -1 && el.children.length <= 6;
+    function label(el) {
+      return ((el.getAttribute && (el.getAttribute('aria-label') || el.getAttribute('title'))) || '').trim().toLowerCase();
     }
 
     function hide(el) {
       // Climb to the outermost element that still holds only this text (whole pill).
       var target = el, txt = (el.textContent || '').trim().toLowerCase();
-      while (
-        target.parentElement &&
-        (target.parentElement.textContent || '').trim().toLowerCase() === txt
-      ) {
+      while (target.parentElement && target.parentElement !== document.body &&
+             (target.parentElement.textContent || '').trim().toLowerCase() === txt) {
         target = target.parentElement;
       }
       target.style.setProperty('display', 'none', 'important');
-      target.__pfHidden = true;
     }
 
-    function scan(root) {
-      var nodes;
-      try { nodes = root.querySelectorAll('button, a, [role="button"], div, span, [aria-label], [title]'); }
-      catch (e) { return; }
-      for (var i = 0; i < nodes.length; i++) {
-        var el = nodes[i];
-        if (matches(el)) hide(el);
-        // Recurse into shadow roots (Shopify widgets often use them).
-        if (el.shadowRoot) scan(el.shadowRoot);
+    // Inspect one added subtree: the node itself, its light-DOM descendants
+    // that could be the pill, and its shadow root (Shopify widgets use one).
+    function inspect(node, depth) {
+      if (!node || node.nodeType !== 1 || depth > 3) return;
+      var name = node.tagName + ' ' + (node.id || '') + ' ' + (typeof node.className === 'string' ? node.className : '');
+      if (NAME_RE.test(name) || label(node) === TARGET) { node.style.setProperty('display', 'none', 'important'); return; }
+
+      var cands;
+      try { cands = node.querySelectorAll('button, a, [role="button"], [aria-label], [title]'); } catch (e) { cands = []; }
+      for (var i = 0; i < cands.length; i++) {
+        var c = cands[i];
+        if (label(c) === TARGET || (c.textContent || '').trim().toLowerCase() === TARGET) { hide(c); }
+      }
+      if (node.shadowRoot) {
+        var kids = node.shadowRoot.children;
+        for (var k = 0; k < kids.length; k++) inspect(kids[k], depth + 1);
       }
     }
 
-    function run() {
-      scan(document);
-      var tries = 0;
-      var timer = setInterval(function () {
-        scan(document);
-        if (++tries >= 20) clearInterval(timer);
-      }, 600);
-      if (window.MutationObserver) {
-        new MutationObserver(function () { scan(document); }).observe(document.documentElement, { childList: true, subtree: true });
-      }
-    }
+    // Anything already on the page when this runs.
+    var existing = document.querySelectorAll('shopify-store-assistant, shop-store-assistant, [aria-label="Shop with AI" i]');
+    for (var j = 0; j < existing.length; j++) inspect(existing[j], 0);
 
-    run();
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+    if (!window.MutationObserver) return;
+    var mo = new MutationObserver(function (records) {
+      for (var r = 0; r < records.length; r++) {
+        var added = records[r].addedNodes;
+        for (var n = 0; n < added.length; n++) inspect(added[n], 0);
+      }
+    });
+    // Widgets are appended at the end of <body>; watch only direct children.
+    function start() {
+      mo.observe(document.body, { childList: true });
+      var kids = document.body.children;
+      for (var b = 0; b < kids.length; b++) {
+        if (kids[b].tagName.indexOf('-') > -1) inspect(kids[b], 0); // custom elements already present
+      }
+      setTimeout(function () { mo.disconnect(); }, WATCH_MS);
+    }
+    if (document.body) start();
+    else document.addEventListener('DOMContentLoaded', start);
   })();
 
   // Toggle body.pf-menu-open while the mobile menu drawer is open, so CSS can
   // hide the slideshow arrows/dots even in in-app browsers without :has().
+  // Watches only the drawer element's own "open" attribute.
   (function () {
     if (window.__pfMenuOpen) return;
     window.__pfMenuOpen = true;
 
-    function sync() {
-      var open = !!document.querySelector('.menu-drawer-container[open]');
-      document.body.classList.toggle('pf-menu-open', open);
-    }
-
     function bind() {
+      var drawers = document.querySelectorAll('.menu-drawer-container');
+      if (!drawers.length) return;
+      function sync() {
+        var open = false;
+        for (var i = 0; i < drawers.length; i++) { if (drawers[i].hasAttribute('open')) { open = true; break; } }
+        document.body.classList.toggle('pf-menu-open', open);
+      }
       sync();
       if (window.MutationObserver) {
-        new MutationObserver(sync).observe(document.documentElement, {
-          attributes: true, attributeFilter: ['open'], subtree: true
-        });
+        var mo = new MutationObserver(sync);
+        for (var d = 0; d < drawers.length; d++) mo.observe(drawers[d], { attributes: true, attributeFilter: ['open'] });
       }
-      document.addEventListener('click', function () { setTimeout(sync, 30); }, true);
+      for (var t = 0; t < drawers.length; t++) drawers[t].addEventListener('toggle', sync);
     }
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
