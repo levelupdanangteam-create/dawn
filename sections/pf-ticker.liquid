@@ -16,10 +16,10 @@
   #pf-tk-{{ section.id }} .pf-tk__half { display: flex; flex: none; }
   #pf-tk-{{ section.id }} .pf-tk__item {
     display: inline-flex; align-items: center; gap: .6rem; flex: none;
-    padding: 1rem 3.2rem; font-size: 1.5rem; line-height: 1.4; white-space: nowrap;
+    padding: .8rem 2.8rem; font-size: 1.3rem; line-height: 1.4; white-space: nowrap;
     color: inherit; text-decoration: none;
   }
-  #pf-tk-{{ section.id }} .pf-tk__item b { font-weight: 800; }
+  #pf-tk-{{ section.id }} .pf-tk__item b { font-weight: 700; }
   #pf-tk-{{ section.id }} .pf-tk__item span { opacity: .82; }
   #pf-tk-{{ section.id }} .pf-tk__dot {
     flex: none; width: .7rem; height: .7rem; border-radius: 50%; background: {{ section.settings.accent }};
@@ -29,7 +29,7 @@
     to { transform: translateX(-50%); }
   }
   @media screen and (max-width: 749px) {
-    #pf-tk-{{ section.id }} .pf-tk__item { font-size: 1.3rem; padding: .9rem 2.2rem; }
+    #pf-tk-{{ section.id }} .pf-tk__item { font-size: 1.2rem; padding: .7rem 2rem; }
   }
   @media (prefers-reduced-motion: reduce) {
     #pf-tk-{{ section.id }} .pf-tk__track { animation: none; }
@@ -71,7 +71,7 @@
     { "type": "color", "id": "bg_2", "label": "Màu nền (phải)", "default": "#1e8541" },
     { "type": "color", "id": "text_color", "label": "Màu chữ", "default": "#ffffff" },
     { "type": "color", "id": "accent", "label": "Màu chấm", "default": "#ffc61a" },
-    { "type": "range", "id": "duration", "min": 20, "max": 160, "step": 5, "unit": "s", "label": "Thời gian 1 vòng (càng lớn càng chậm)", "default": 80 }
+    { "type": "range", "id": "duration", "min": 20, "max": 240, "step": 5, "unit": "s", "label": "Thời gian 1 vòng (càng lớn càng chậm)", "default": 130 }
   ],
   "blocks": [
     {
