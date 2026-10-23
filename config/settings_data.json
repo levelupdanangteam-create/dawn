@@ -150,11 +150,6 @@
     },
     "content_for_index": [],
     "blocks": {
-      "2200952712151285029": {
-        "type": "shopify://apps/microsoft-clarity/blocks/brandAgents_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
-        "disabled": false,
-        "settings": {}
-      },
       "2567389343055140935": {
         "type": "shopify://apps/microsoft-clarity/blocks/clarity_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
         "disabled": false,
@@ -163,6 +158,11 @@
       "855628211100114053": {
         "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
         "disabled": false,
+        "settings": {}
+      },
+      "2200952712151285029": {
+        "type": "shopify://apps/microsoft-clarity/blocks/brandAgents_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
+        "disabled": true,
         "settings": {}
       }
     },
@@ -418,15 +418,15 @@
   },
   "platform_customizations": {
     "custom_css": [
-      ".pf-flash__disc,.pf-s10__badge,.pf-flash__badge{background:linear-gradient(135deg,#2e8b47,#1d6b35)!important;color:#fff!important;box-shadow:none!important}",
-      ".pf-flash__price .now,.pf-s10__price .now,.pf-s10__title{color:#1e8541!important}",
-      ".pf-s10__title:after{background:#1e8541!important}",
-      ".pf-flash__card,.pf-s10__card{border:1px solid #f0e6d8!important}",
-      ".pf-flash__card:hover,.pf-s10__card:hover{border-color:#a8d5b5!important;box-shadow:0 16px 34px rgba(30,133,65,.14)!important}",
-      ".pf-flash__nm a:hover,.pf-s10__nm a:hover{color:#1e8541!important}",
-      ".pf-s10__more,.pf-flash__more-btn{background:#fff!important;border:2px solid #1e8541!important;color:#1e8541!important}",
-      ".pf-s10__more:hover,.pf-flash__more-btn:hover{background:#1e8541!important;color:#fff!important}",
-      ":is(.pf-flash__card,.pf-s10__card):has(a[href*=banh-da-tr],a[href*=ca-du-gion],a[href*=\"/bun-bo-hu\"],a[href*=ca-gia-t],a[href*=\"-ba-ba-h\"],a[href*=bao-gion-v]) :is(.pf-flash__disc,.pf-s10__badge){background:linear-gradient(135deg,#7b2ff7,#f107a3)!important;box-shadow:0 0 0 2px #ffd400!important}"
+      ".pf-flash__disc,.pf-s10__badge,.pf-flash__badge {background: linear-gradient(135deg, #2e8b47, #1d6b35) !important; color: #fff !important; box-shadow: none !important;}",
+      ".pf-flash__price .now,.pf-s10__price .now,.pf-s10__title {color: #1e8541 !important;}",
+      ".pf-s10__title:after {background: #1e8541 !important;}",
+      ".pf-flash__card,.pf-s10__card {border: 1px solid #f0e6d8 !important;}",
+      ".pf-flash__card:hover,.pf-s10__card:hover {border-color: #a8d5b5 !important; box-shadow: 0 16px 34px rgba(30, 133, 65, 0.14) !important;}",
+      ".pf-flash__nm a:hover,.pf-s10__nm a:hover {color: #1e8541 !important;}",
+      ".pf-s10__more,.pf-flash__more-btn {background: #fff !important; border: 2px solid #1e8541 !important; color: #1e8541 !important;}",
+      ".pf-s10__more:hover,.pf-flash__more-btn:hover {background: #1e8541 !important; color: #fff !important;}",
+      ":is(.pf-flash__card, .pf-s10__card):has( a[href*=\"banh-da-tr\"], a[href*=\"ca-du-gion\"], a[href*=\"/bun-bo-hu\"], a[href*=\"ca-gia-t\"], a[href*=\"-ba-ba-h\"], a[href*=\"bao-gion-v\"] ) :is(.pf-flash__disc, .pf-s10__badge) {background: linear-gradient(135deg, #7b2ff7, #f107a3) !important; box-shadow: 0 0 0 2px #ffd400 !important;}"
     ]
   }
 }
