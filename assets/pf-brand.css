@@ -103,6 +103,21 @@ body.gradient {
 @media screen and (max-width: 749px) {
   .header__heading-link img,
   .header__heading-logo { max-height: 5.2rem; }
+  /* Điện thoại: logo thành huy hiệu tròn, cùng dạng nút tròn đỏ bên phải */
+  .header__heading-link,
+  .header__heading-link.link {
+    padding: 0 !important; width: 5.4rem; height: 5.4rem; border-radius: 50%; overflow: hidden;
+    justify-content: center;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, .28), 0 4px 12px rgba(0, 0, 0, .2);
+  }
+  .header__heading-link img,
+  .header__heading-logo {
+    max-height: none; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%;
+    transform: scale(1.05);
+  }
+  /* Nút menu 3 gạch màu trắng như các icon khác trên thanh xanh */
+  .header__icon--menu,
+  .header__icon--menu .icon { color: #ffffff !important; }
 }
 /* Animated white underline under each top-level menu label */
 .header__inline-menu .header__menu-item span {
