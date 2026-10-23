@@ -29,8 +29,6 @@
 
     {% render 'meta-tags' %}
 
-    {% render 'pf-geoblock' %}
-
     <script type="module">
       import * as StandardEvents from 'https://cdn.shopify.com/storefront/standard-events.js';
 
@@ -347,7 +345,6 @@
 
   <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
     {% render 'pf-force-vi' %}
-    {% render 'pf-geoblock' %}
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ 'accessibility.skip_to_text' | t }}
     </a>
