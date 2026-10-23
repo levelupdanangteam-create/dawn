@@ -54,11 +54,17 @@
   #pf-hf-{{ section.id }} .pf-hf__info {
     position: absolute; top: .6rem; right: .7rem; width: 1.6rem; height: 1.6rem; border-radius: 50%;
     background: var(--pf-hf-green); color: #fff; font: 800 1rem/1.6rem Georgia, serif; text-align: center; font-style: italic;
+  }
+  /* Ping ring: animates transform + opacity only (GPU-composited). */
+  #pf-hf-{{ section.id }} .pf-hf__stat--list { isolation: isolate; }
+  #pf-hf-{{ section.id }} .pf-hf__info::after {
+    content: ""; position: absolute; inset: 0; border-radius: 50%; z-index: -1;
+    background: var(--pf-hf-green); opacity: 0; pointer-events: none;
     animation: pf-hf-ping-{{ section.id }} 2.4s ease-out infinite;
   }
   @keyframes pf-hf-ping-{{ section.id }} {
-    0% { box-shadow: 0 0 0 0 rgba(31,138,67,.45); }
-    70%, 100% { box-shadow: 0 0 0 7px rgba(31,138,67,0); }
+    0% { transform: scale(1); opacity: .45; }
+    70%, 100% { transform: scale(1.9); opacity: 0; }
   }
   .pf-hf-pop--{{ section.id }} {
     position: fixed; z-index: 9999; display: none; pointer-events: none;
@@ -125,6 +131,7 @@
   }
   @media (prefers-reduced-motion: reduce) {
     #pf-hf-{{ section.id }} .pf-hf__card { animation: none; }
+    #pf-hf-{{ section.id }} .pf-hf__info::after { animation: none; }
   }
 </style>
 

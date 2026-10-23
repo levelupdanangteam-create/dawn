@@ -32,16 +32,18 @@
   .pf-fab__btn--wa { background: linear-gradient(145deg, #45d367, #1faf52); }
   .pf-fab__btn--mess { background: linear-gradient(145deg, #00c6ff, #0068ff); }
   /* Gentle attention pulse */
+  /* Pulse ring: animates transform + opacity only (GPU-composited). */
   .pf-fab__btn::after {
-    content: ""; position: absolute; inset: 0; border-radius: 50%;
-    box-shadow: 0 0 0 0 currentColor; opacity: .5; animation: pf-fab-pulse 2.4s infinite;
+    content: ""; position: absolute; inset: 0; border-radius: 50%; z-index: -1;
+    background: currentColor; opacity: 0; pointer-events: none;
+    animation: pf-fab-pulse 2.4s infinite;
   }
   .pf-fab__btn--wa::after { color: #25d366; }
   .pf-fab__btn--mess::after { color: #0084ff; }
   @keyframes pf-fab-pulse {
-    0% { box-shadow: 0 0 0 0 currentColor; opacity: .45; }
-    70% { box-shadow: 0 0 0 1.2rem currentColor; opacity: 0; }
-    100% { box-shadow: 0 0 0 0 currentColor; opacity: 0; }
+    0% { transform: scale(1); opacity: .45; }
+    70% { transform: scale(1.45); opacity: 0; }
+    100% { transform: scale(1.45); opacity: 0; }
   }
   /* Hover label */
   .pf-fab__label {
