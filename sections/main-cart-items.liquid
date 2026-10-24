@@ -59,16 +59,6 @@
       <div class="cart__items" id="main-cart-items" data-id="{{ section.id }}">
         <div class="js-contents">
           {%- if cart != empty -%}
-            <div class="pf-cartbulk">
-              <label class="pf-cartbulk__all">
-                <input type="checkbox" id="pf-cart-selectall">
-                <span>{% render 'pf-ui', k: 'select_all' %}</span>
-              </label>
-              <button type="button" class="pf-cartbulk__del" id="pf-cart-delsel" disabled>
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></svg>
-                <span>{% render 'pf-ui', k: 'delete_selected' %} (<span id="pf-cart-selcount">0</span>)</span>
-              </button>
-            </div>
             <table class="cart-items">
               <caption class="visually-hidden">
                 {{ 'sections.cart.title' | t }}
@@ -104,7 +94,6 @@
                     {% endif %}
                   >
                     <td class="cart-item__media">
-                      <input type="checkbox" class="pf-cart-check" data-key="{{ item.key }}" aria-label="Chọn {{ item.product.title | escape }}">
                       {% if item.image %}
                         {% comment %} Leave empty space due to a:empty CSS display: none rule {% endcomment %}
                         <a href="{{ item.url }}" class="cart-item__link" aria-hidden="true" tabindex="-1"> </a>
@@ -449,63 +438,6 @@
   </div>
 </cart-items>
 
-<script>
-  (function () {
-    if (window.__pfCartBulk) return;
-    window.__pfCartBulk = true;
-
-    function root() { return (window.Shopify && Shopify.routes ? Shopify.routes.root : '/'); }
-    function updateCount() {
-      var sel = document.querySelectorAll('.pf-cart-check:checked');
-      var cnt = document.getElementById('pf-cart-selcount');
-      var btn = document.getElementById('pf-cart-delsel');
-      var all = document.getElementById('pf-cart-selectall');
-      var boxes = document.querySelectorAll('.pf-cart-check');
-      if (cnt) cnt.textContent = sel.length;
-      if (btn) btn.disabled = sel.length === 0;
-      if (all) all.checked = boxes.length > 0 && sel.length === boxes.length;
-    }
-
-    // Capture phase: intercept our checkbox change events BEFORE they reach
-    // Dawn's <cart-items> change handler. Otherwise Dawn treats the checkbox
-    // as a quantity input, calls setCustomValidity() on it, and the invalid
-    // checkbox blocks the cart form from submitting (checkout stops working).
-    document.addEventListener('change', function (e) {
-      var t = e.target;
-      if (!t) return;
-      var isSelectAll = t.id === 'pf-cart-selectall';
-      var isCheck = t.classList && t.classList.contains('pf-cart-check');
-      if (!isSelectAll && !isCheck) return;
-      e.stopPropagation();
-      try { t.setCustomValidity(''); } catch (err) {}
-      if (isSelectAll) {
-        document.querySelectorAll('.pf-cart-check').forEach(function (c) {
-          c.checked = t.checked;
-          try { c.setCustomValidity(''); } catch (err) {}
-        });
-      }
-      updateCount();
-    }, true);
-
-    document.addEventListener('click', function (e) {
-      var btn = e.target.closest ? e.target.closest('#pf-cart-delsel') : null;
-      if (!btn) return;
-      var sel = document.querySelectorAll('.pf-cart-check:checked');
-      if (!sel.length) return;
-      if (!window.confirm('Xóa ' + sel.length + ' sản phẩm đã chọn khỏi giỏ hàng?')) return;
-      var updates = {};
-      sel.forEach(function (c) { updates[c.getAttribute('data-key')] = 0; });
-      btn.disabled = true;
-      btn.textContent = 'Đang xóa…';
-      fetch(root() + 'cart/update.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ updates: updates })
-      }).then(function () { window.location.reload(); })
-        .catch(function () { window.location.reload(); });
-    });
-  })();
-</script>
 
 {% schema %}
 {
