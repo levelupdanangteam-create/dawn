@@ -44,7 +44,23 @@
   #CartDrawer .pf-ctw { margin: .4rem 0 0; padding: 0; background: none; border-radius: 0; font-size: 1.35rem; }
   #CartDrawer .pf-ctw b { font-weight: 400; font-size: 1.35rem; color: #6a6255; }
   #CartDrawer .pf-ctw > span[aria-hidden] { display: none; }
-  #CartDrawer .pf-tax-incl { margin: .2rem 0 0; text-align: right; font-size: 1.2rem; color: #8a8273; line-height: 1.3; }
+  /* "Giá tạm tính (đã bao gồm thuế)" + số tiền trên CÙNG một dòng, kể cả điện thoại */
+  #CartDrawer .totals { display: flex; flex-wrap: nowrap; justify-content: space-between; align-items: baseline; gap: .8rem; }
+  #CartDrawer .totals > * + * { margin-left: 0; }
+  #CartDrawer .totals__total { white-space: nowrap; font-size: 1.6rem; line-height: 1.2; letter-spacing: 0; }
+  #CartDrawer .totals__total .pf-tax-note { font-size: 1.2rem; font-weight: 500; color: #8a8273; letter-spacing: 0; }
+  #CartDrawer .totals__total-value { white-space: nowrap; font-size: 2rem; line-height: 1.2; letter-spacing: 0; }
+  @media screen and (max-width: 420px) {
+    #CartDrawer .totals__total { font-size: 1.45rem; }
+    #CartDrawer .totals__total .pf-tax-note { font-size: 1.1rem; }
+    #CartDrawer .totals__total-value { font-size: 1.8rem; }
+  }
+  @media screen and (max-width: 359px) {
+    #CartDrawer .totals { gap: .5rem; }
+    #CartDrawer .totals__total { font-size: 1.25rem; }
+    #CartDrawer .totals__total .pf-tax-note { font-size: .95rem; }
+    #CartDrawer .totals__total-value { font-size: 1.6rem; }
+  }
   /* "Tạm tính" + số tiền in đậm */
   #CartDrawer .totals { margin-top: .6rem; }
   #CartDrawer .totals__total,
@@ -579,12 +595,12 @@
           {% render 'pf-cart-total-weight' %}
 
           <div class="totals" role="status">
-            <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
+            <h2 class="totals__total">
+              {%- if request.locale.iso_code == 'vi' -%}Giá tạm tính{%- else -%}Subtotal{%- endif -%}
+              {%- if cart.taxes_included %} <span class="pf-tax-note">{% if request.locale.iso_code == 'vi' %}(đã bao gồm thuế){% else %}(tax incl.){% endif %}</span>{%- endif -%}
+            </h2>
             <p class="totals__total-value">{{ cart.total_price | money }}</p>
           </div>
-          {%- if cart.taxes_included -%}
-            <p class="pf-tax-incl">{% if request.locale.iso_code == 'vi' %}Đã bao gồm thuế{% else %}Taxes included{% endif %}</p>
-          {%- endif -%}
           <a class="pf-ship-note" href="{{ routes.cart_url }}">
             <span class="pf-ship-note__ic" aria-hidden="true">🚚</span>
             <span>{% if request.locale.iso_code == 'vi' %}Ưu đãi <b>miễn phí ship</b> &amp; <b>giảm giá</b> tùy quốc gia — <u>xem chi tiết ở trang giỏ hàng</u>{% else %}<b>Free shipping</b> &amp; <b>discounts</b> vary by country — <u>see details on the cart page</u>{% endif %}</span>
