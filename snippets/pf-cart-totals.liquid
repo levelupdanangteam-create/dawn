@@ -1,6 +1,6 @@
 {%- comment -%}
   Bảng tổng tiền trong "Order summary" (trang giỏ hàng):
-    Subtotal · Discount · Shipping (theo nước đang chọn) · 10% off (IE/DK/FI/SE từ €169) · TOTAL (đã cộng ship).
+    Subtotal · Discount (mọi giảm giá Shopify đã áp, gồm UUDAI10% cho IE/DK/FI/SE từ €169) · Shipping (theo nước đang chọn) · TOTAL (đã cộng ship).
   Nước giao lấy từ ô chọn ở khung "Shipping" (pf-ship-table), mặc định = nước khách đang mua.
   Dùng chung bảng phí với thanh cố định (pf-cart-stickybar) qua window.pfShip — đổi nước là cả 2 cập nhật.
   Phí ship cố định theo nước + mốc €169: sửa ở PF_SHIP_FEES bên dưới (giữ khớp pf-ship-table).
@@ -10,7 +10,7 @@
   assign sub_before = cart.items_subtotal_price
 -%}
 {% render 'pf-ship-rates' %}
-<div class="pf-tot" data-pf-tot data-sub="{{ cart.total_price }}" data-weight="{{ cart.total_weight }}" data-cc="{{ localization.country.iso_code }}">
+<div class="pf-tot" data-pf-tot data-sub="{{ cart.total_price }}" data-goal="{{ cart.items_subtotal_price }}" data-weight="{{ cart.total_weight }}" data-cc="{{ localization.country.iso_code }}">
   <div class="pf-tot__row"><span>{% if vi %}Tạm tính{% else %}Subtotal{% endif %} ({{ cart.item_count }})</span><span>{{ sub_before | money }}</span></div>
   {%- if cart.total_discount > 0 -%}
     <div class="pf-tot__row pf-tot__row--green"><span>{% if vi %}Giảm giá{% else %}Discount{% endif %}</span><span>−{{ cart.total_discount | money }}</span></div>
@@ -25,19 +25,19 @@
     var R = window.pfRates, VI = {{ vi | json }};
     var PF_SHIP_FEES = R.R, eur = R.eur;
     function getCc(fallback) { try { var s = sessionStorage.getItem('pf_ship_cc'); if (s && PF_SHIP_FEES[s]) return s; } catch (e) {} return fallback; }
-    // Trả về phí ship, giảm 10% (nước 'disc' khi đạt €169), tổng cuối
-    function calc(cc, sub, grams) {
-      var q = R.quote(cc, grams, sub); if (!q) return null;
+    // Trả về phí ship + tổng cuối. sub = tổng giỏ SAU giảm giá (Shopify đã tự trừ mọi ưu đãi, gồm UUDAI10%
+    // cho IE/DK/FI/SE từ €169) → KHÔNG tự trừ thêm 10% ở đây. goal = tạm tính trước giảm, dùng để xét mốc €169.
+    function calc(cc, sub, grams, goal) {
+      var q = R.quote(cc, grams, goal == null ? sub : goal); if (!q) return null;
       var ship = q.over ? 0 : q.ship;
-      var disc = (q.reached && q.perk === 'disc') ? Math.round(sub * 0.10) : 0;
-      q.disc = disc; q.total = sub + ship - disc; return q;
+      q.disc = 0; q.total = sub + ship; return q;
     }
     // Chỉ ghi khi giá trị đổi → tránh MutationObserver tự kích hoạt lặp vô hạn
     function setT(el, v) { if (el && el.textContent !== v) el.textContent = v; }
     function setH(el, v) { if (el && el.dataset.pfv !== v) { el.dataset.pfv = v; el.innerHTML = v; } }
     function update() {
       document.querySelectorAll('[data-pf-tot]').forEach(function (box) {
-        var sub = parseInt(box.dataset.sub, 10) || 0, g = parseInt(box.dataset.weight, 10) || 0, cc = getCc(box.dataset.cc), c = calc(cc, sub, g);
+        var sub = parseInt(box.dataset.sub, 10) || 0, goal = parseInt(box.dataset.goal, 10) || sub, g = parseInt(box.dataset.weight, 10) || 0, cc = getCc(box.dataset.cc), c = calc(cc, sub, g, goal);
         var q = function (s) { return box.querySelector(s); };
         if (!c) { setT(q('[data-pf-tot-ship]'), VI ? 'Tính khi thanh toán' : 'At checkout'); return; }
         setT(q('[data-pf-tot-country]'), '(' + c.name + ')');

@@ -8,7 +8,7 @@
   assign cur = localization.country.iso_code
 -%}
 {% render 'pf-ship-rates' %}
-<div class="pf-ship" data-pf-ship data-sub="{{ cart.total_price }}" data-weight="{{ cart.total_weight }}">
+<div class="pf-ship" data-pf-ship data-sub="{{ cart.items_subtotal_price }}" data-weight="{{ cart.total_weight }}">
   <label class="pf-ship__lbl" for="PfShipCountry">🚚 Phí vận chuyển</label>
   <div class="pf-ship__line">
     <div class="pf-ship__selwrap">
@@ -51,7 +51,7 @@
       function refresh() {
         fetch(((window.Shopify && Shopify.routes && Shopify.routes.root) || '/') + 'cart.js', { headers: { Accept: 'application/json' } })
           .then(function (r) { return r.json(); })
-          .then(function (c) { box.dataset.sub = c.total_price; box.dataset.weight = c.total_weight; render(); if (window.pfShip) window.pfShip.update(); })
+          .then(function (c) { box.dataset.sub = c.items_subtotal_price; box.dataset.weight = c.total_weight; render(); if (window.pfShip) window.pfShip.update(); })
           .catch(function () {});
       }
       try { var saved = sessionStorage.getItem('pf_ship_cc'); if (saved && sel.querySelector('option[value="' + saved + '"]')) sel.value = saved; } catch (e) {}
