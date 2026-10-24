@@ -2,11 +2,11 @@
   PHOMIFOOD — "Thông tin giao hàng" trên trang sản phẩm (dưới khối Thường được mua kèm).
   - Ngày gửi từ kho EU: ngày làm việc kế tiếp (JS, theo ngày khách xem).
   - Dự kiến nhận hàng: 2–5 ngày làm việc sau ngày gửi.
-  - Thanh tiến độ Freeship / giảm 10% từ 169€ (cùng mốc với pf-cart-shipbar), cập nhật khi giỏ thay đổi.
+  - Thanh tiến độ Freeship / giảm 10% từ 139€ (cùng mốc với pf-cart-shipbar), cập nhật khi giỏ thay đổi.
 {%- endcomment -%}
 {%- assign vi = false -%}
 {%- if request.locale.iso_code == 'vi' -%}{%- assign vi = true -%}{%- endif -%}
-{%- assign pf_goal = 16900 -%}
+{%- assign pf_goal = 13900 -%}
 {%- assign pf_total = cart.total_price | default: 0 -%}
 {%- assign pf_rem = pf_goal | minus: pf_total -%}
 {%- assign pf_pct = pf_total | times: 100 | divided_by: pf_goal | floor -%}
@@ -41,7 +41,7 @@
             {%- if pf_rem > 0 -%}
               {% if vi %}Mua thêm <b>{{ pf_rem | money }}</b> để được <b>Freeship</b> hoặc <b>giảm 10%</b>{% else %}Add <b>{{ pf_rem | money }}</b> more to unlock <b>free shipping</b> or <b>10% off</b>{% endif %}
             {%- else -%}
-              🎉 {% if vi %}Giỏ hàng đã đạt <b>169€</b> — được <b>Freeship</b> hoặc <b>giảm 10%</b>!{% else %}Your cart reached <b>169€</b> — <b>free shipping</b> or <b>10% off</b>!{% endif %}
+              🎉 {% if vi %}Giỏ hàng đã đạt <b>139€</b> — được <b>Freeship</b> hoặc <b>giảm 10%</b>!{% else %}Your cart reached <b>139€</b> — <b>free shipping</b> or <b>10% off</b>!{% endif %}
             {%- endif -%}
           </span>
           <span class="pf-dlv__pct" data-pf-ship-pct>{{ pf_pct }}%</span>
@@ -65,7 +65,7 @@
     if (!box) return;
     box.setAttribute('data-bound', '1');
     var vi = box.getAttribute('data-vi') === 'true';
-    var goal = parseInt(box.getAttribute('data-goal'), 10) || 16900;
+    var goal = parseInt(box.getAttribute('data-goal'), 10) || 13900;
     var fmt = box.getAttribute('data-money-format') || ('€{' + '{amount_with_comma_separator}' + '}');
 
     function addBiz(d, n) {
@@ -99,8 +99,8 @@
       box.querySelector('[data-pf-ship-tx]').innerHTML = rem > 0
         ? (vi ? 'Mua thêm <b>' + money(rem) + '</b> để được <b>Freeship</b> hoặc <b>giảm 10%</b>'
               : 'Add <b>' + money(rem) + '</b> more to unlock <b>free shipping</b> or <b>10% off</b>')
-        : (vi ? '🎉 Giỏ hàng đã đạt <b>169€</b> — được <b>Freeship</b> hoặc <b>giảm 10%</b>!'
-              : '🎉 Your cart reached <b>169€</b> — <b>free shipping</b> or <b>10% off</b>!');
+        : (vi ? '🎉 Giỏ hàng đã đạt <b>139€</b> — được <b>Freeship</b> hoặc <b>giảm 10%</b>!'
+              : '🎉 Your cart reached <b>139€</b> — <b>free shipping</b> or <b>10% off</b>!');
     }
     function refresh() {
       fetch('/cart.js', { headers: { Accept: 'application/json' } })
