@@ -7,7 +7,7 @@
 {%- endcomment -%}
 
 {%- assign pf_deal_url = '/pages/deal-0-euro' -%}
-{%- assign pf_ei_rows = settings.pf_deal_rows | split: ";;" -%}
+{%- assign pf_ei_rows = settings.pf_deal_rows | remove: 'canh-chua-isoup||3,9€;;' | split: ";;" -%}
 
 {%- unless page.handle contains 'deal-0' -%}
 <div class="pf-ei" id="pf-exit-intent" hidden aria-hidden="true">

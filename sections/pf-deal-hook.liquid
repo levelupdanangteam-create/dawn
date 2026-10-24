@@ -10,7 +10,7 @@
   2) Nếu không có khối nào → tự động dùng danh sách chung ở Theme settings
      (pf_deal_rows) để không phá các trang khác.
 {%- endcomment -%}
-{%- assign pf_dh_rows = settings.pf_deal_rows | split: ';;' -%}
+{%- assign pf_dh_rows = settings.pf_deal_rows | remove: 'canh-chua-isoup||3,9€;;' | split: ';;' -%}
 {%- assign pf_gm = settings.pf_gift_min | default: 100 -%}
 {%- if section.blocks.size > 0 -%}
   {%- assign pf_dh_count = section.blocks.size -%}

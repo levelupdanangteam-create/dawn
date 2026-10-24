@@ -3,7 +3,7 @@
   cart unlocks the deal price. Single source: Theme settings → pf_deal_rows
   (handle||deal_price, rows split by ;;).
 {%- endcomment -%}
-{%- assign pf_deal_rows = settings.pf_deal_rows | split: ";;" -%}
+{%- assign pf_deal_rows = settings.pf_deal_rows | remove: 'canh-chua-isoup||3,9€;;' | split: ";;" -%}
 {%- assign pf_deal_price = "" -%}
 {%- assign pf_deal_note = "" -%}
 {%- for row in pf_deal_rows -%}

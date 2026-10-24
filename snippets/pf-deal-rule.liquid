@@ -9,7 +9,7 @@
 {%- endcomment -%}
 {%- comment -%}Handles derived from the single source: Theme settings → pf_deal_rows.{%- endcomment -%}
 {%- assign pf_deal_handles = "" -%}
-{%- assign pf_dr_rows = settings.pf_deal_rows | split: ";;" -%}
+{%- assign pf_dr_rows = settings.pf_deal_rows | remove: 'canh-chua-isoup||3,9€;;' | split: ";;" -%}
 {%- for row in pf_dr_rows -%}
   {%- assign pf_dr_parts = row | split: "||" -%}
   {%- comment -%}Skip the gift product — it's a normal, freely purchasable item.{%- endcomment -%}

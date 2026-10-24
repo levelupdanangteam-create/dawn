@@ -4,7 +4,7 @@
   a page (e.g. handle "deal-0-dong") in Admin.
   rows: handle||deal_price_text
 {%- endcomment -%}
-{%- assign pf_rows = settings.pf_deal_rows | split: ";;" -%}
+{%- assign pf_rows = settings.pf_deal_rows | remove: 'canh-chua-isoup||3,9€;;' | split: ";;" -%}
 {%- assign pf_d0_count = pf_rows.size -%}
 
 <div class="pf-d0 color-scheme-1">
