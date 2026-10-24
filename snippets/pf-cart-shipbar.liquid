@@ -27,6 +27,9 @@
         {% if vi %}Thêm <b>{{ pf_rem | money }}</b> để <b>FREESHIP / GIẢM 10%</b>{% else %}Add <b>{{ pf_rem | money }}</b> to unlock <b>FREE SHIPPING / 10% OFF</b>{% endif %}
       {%- endif -%}
     </p>
+    {%- unless pf_reached -%}
+      <p class="pf-shipbar__hint">{% if vi %}Đơn đạt 139€ hưởng ưu đãi{% else %}Orders from 139€ get the offer{% endif %}</p>
+    {%- endunless -%}
   </div>
 
   <style>
@@ -36,6 +39,7 @@
     .pf-shipbar__fill{ display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,#1e8541,#63c98a); transition:width .35s ease; }
     .pf-shipbar__status{ margin:.55rem 0 0; font-size:1.25rem; font-weight:600; color:#8a7b5c; line-height:1.4; }
     .pf-shipbar__status b{ color:#d62828; font-weight:800; }
+    .pf-shipbar__hint{ margin:.4rem 0 0; font-size:1.15rem; color:#8a8273; line-height:1.3; }
     .pf-shipbar--max{ background:#eef7f0; border-color:#bfe0c7; }
     .pf-shipbar--max .pf-shipbar__head{ color:#14672f; }
     .pf-shipbar--max .pf-shipbar__fill{ background:linear-gradient(90deg,#1e8541,#14672f); }
