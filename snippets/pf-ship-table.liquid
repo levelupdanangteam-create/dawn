@@ -4,7 +4,7 @@
   Mặc định chọn sẵn nước khách đang mua (localization.country).
 {%- endcomment -%}
 {%- liquid
-  assign rows = 'DE|Đức;CZ|Séc;PL|Ba Lan;SK|Slovakia;HU|Hungary;BG|Bulgaria;RO|Romania;AT|Áo;HR|Croatia;IT|Ý;BE|Bỉ;FR|Pháp;NL|Hà Lan;ES|Tây Ban Nha;PT|Bồ Đào Nha;GR|Hy Lạp;IE|Ireland;DK|Đan Mạch;FI|Phần Lan;SE|Thụy Điển' | split: ';'
+  assign rows = 'DE|Đức;CZ|Séc;PL|Ba Lan;SK|Slovakia;HU|Hungary;BG|Bulgaria;RO|Romania;AT|Áo;HR|Croatia;IT|Ý;BE|Bỉ;FR|Pháp;NL|Hà Lan;ES|Tây Ban Nha;PT|Bồ Đào Nha;GR|Hy Lạp;LU|Luxembourg;SI|Slovenia;IE|Ireland;DK|Đan Mạch;FI|Phần Lan;SE|Thụy Điển;EE|Estonia;LV|Latvia;LT|Litva' | split: ';'
   assign cur = localization.country.iso_code
 -%}
 {% render 'pf-ship-rates' %}
@@ -41,6 +41,8 @@
           if (q.free) h = '🎉 Giỏ đã đạt €169 — <b>miễn phí ship</b>!';
           else if (q.reached) h = 'Giỏ đã đạt €169 nhưng đơn quá lớn nên vẫn tính phí ship.';
           else h = 'Mua thêm <b>' + eur(q.rem) + '</b> để được <b>miễn phí ship</b>.';
+        } else if (q.perk === 'none') {
+          h = 'Nước này chưa áp dụng ưu đãi đơn từ €169.';
         } else {
           h = q.reached ? '🎉 Giỏ đã đạt €169 — được <b>giảm 10%</b> (phí ship ' + eur(q.fee) + ').' : 'Mua thêm <b>' + eur(q.rem) + '</b> để được <b>giảm 10%</b>.';
         }

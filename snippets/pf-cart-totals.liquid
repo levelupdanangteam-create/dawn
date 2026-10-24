@@ -51,7 +51,7 @@
           if (c.over) h = 'Nhắn shop để báo phí ship cho đơn này';
           else if (c.free) h = '<b>Miễn phí vận chuyển</b> đến ' + c.name;
           else if (c.reached && c.perk === 'disc') h = 'Đã đạt <b>giảm 10%</b> · ship ' + eur(c.fee);
-          else if (c.reached) h = 'Ship đến ' + c.name + ' ' + eur(c.fee) + '';
+          else if (c.reached || c.perk === 'none') h = 'Ship đến ' + c.name + ' ' + eur(c.fee) + '';
           else h = 'Ship đến ' + c.name + ' ' + eur(c.fee) + ' · thêm <b>' + eur(c.rem) + '</b> để ' + (c.perk === 'disc' ? 'giảm 10%' : 'Freeship');
           setH(el, h);
           var wrap = el.closest('.pf-csb__ship'); if (wrap && wrap.classList.contains('is-ok') !== ok) wrap.classList.toggle('is-ok', ok);
@@ -74,6 +74,7 @@
   .pf-tot__row em { font-style: normal; color: #8a857c; font-size: 1.25rem; }
   .pf-tot__row span:last-child { font-weight: 700; color: #2a2622; white-space: nowrap; }
   .pf-tot__row--green span:last-child { color: #1e8541; }
+  .pf-tot__row[hidden] { display: none; }
   .pf-tot__total { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-top: .6rem; padding-top: 1rem; border-top: 1px dashed #e2d9c9; font-size: 1.7rem; font-weight: 800; color: #2a2622; }
   .pf-tot__total span:last-child { font-size: 2.4rem; font-weight: 900; color: #d62828; }
 </style>

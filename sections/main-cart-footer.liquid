@@ -24,8 +24,13 @@
 >
   <div class="page-width">
     <div class="cart__footer isolate section-{{ section.id }}-padding">
+      {%- comment -%}
+        Khung "Tóm tắt đơn hàng" (cột phải trên máy tính, xếp dưới bảng SP trên điện thoại):
+        Mã giảm giá → Phí ship theo nước → Ưu đãi đã áp → Tạm tính / Giảm / Ship → Tổng → Ghi chú → Thanh toán.
+      {%- endcomment -%}
+      <div class="cart__blocks pf-sum">
+        <h2 class="pf-sum__title">{% render 'pf-ui', k: 'order_summary' %}</h2>
 
-      <div class="pf-foot-left">
         <div class="pf-disc">
           <label class="pf-disc__label" for="PfDiscCode">{% render 'pf-ui', k: 'discounts' %}</label>
           <div class="pf-disc__row">
@@ -33,11 +38,9 @@
             <button type="button" class="pf-disc__btn" id="PfDiscApply">{% render 'pf-ui', k: 'apply' %}</button>
           </div>
         </div>
-        {% render 'pf-ship-table' %}
-      </div>
 
-      <div class="cart__blocks pf-sum">
-        <h2 class="pf-sum__title">{% render 'pf-ui', k: 'order_summary' %}</h2>
+        {% render 'pf-ship-table' %}
+
         {% for block in section.blocks %}
           {%- case block.type -%}
             {%- when '@app' -%}
@@ -60,14 +63,7 @@
                   {%- endif -%}
                 </div>
 
-
-                <div class="totals">
-                  <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
-                  <p class="totals__total-value">{{ cart.total_price | money }}</p>
-                </div>
-
                 {% render 'pf-cart-totals' %}
-                {% render 'pf-cart-shipbar' %}
                 {% render 'pf-cart-stickybar' %}
 
                 <small class="tax-note caption-large rte">
@@ -152,8 +148,6 @@
 
         <div id="cart-errors"></div>
       </div>
-
-
     </div>
   </div>
 </div>

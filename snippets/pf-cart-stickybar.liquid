@@ -60,7 +60,7 @@
 </div>
 <script>if (window.pfShip) window.pfShip.update();</script>
 <style>
-  /* Thanh cố định đáy màn hình — giống nhau trên điện thoại & máy tính */
+  /* Thanh cố định đáy màn hình — điện thoại & máy tính bảng (máy tính: ẩn, xem cuối khối CSS) */
   .pf-csb {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 100;
     background: #fff; border-top: 1px solid #ece3d4; box-shadow: 0 -8px 24px rgba(30, 40, 20, .1);
@@ -99,9 +99,11 @@
   body:has(#pf-csb) { padding-bottom: 12.4rem; }
   #MainContent[data-template='cart'] [id^='pfcr-'] { padding-bottom: 2.4rem !important; }
   body:has(#pf-csb) .pf-fab { bottom: 15rem !important; }
+  /* Máy tính: khung "Tóm tắt đơn hàng" cột phải đã có tổng + nút thanh toán → ẩn thanh cố định */
   @media screen and (min-width: 990px) {
-    body:has(#pf-csb) { padding-bottom: 7.6rem; }
-    body:has(#pf-csb) .pf-fab { bottom: 10rem !important; }
+    .pf-csb { display: none; }
+    body:has(#pf-csb) { padding-bottom: 0; }
+    body:has(#pf-csb) .pf-fab { bottom: 1.6rem !important; }
   }
   /* Tinh giản — áp dụng như nhau mọi màn hình: tổng & nút thanh toán đã nằm trên thanh cố định */
   #main-cart-footer .pf-sum .totals,
