@@ -1,28 +1,40 @@
 {%- comment -%}
-  Bảng phí ship THEO CÂN NẶNG — chép từ Shopify (Settings → Shipping → General profile, phương thức "Express").
-  Khi đổi giá trên Shopify, sửa lại mảng R bên dưới cho khớp.
-  t = các bậc [cân tối đa (kg), phí (cent)]; free = số kg tối đa còn được Freeship khi đơn ≥ €169 (0 = không Freeship);
-  perk = 'free' (Freeship từ €169), 'disc' (giảm 10% từ €169) hoặc 'none' (không có ưu đãi 169€: Estonia, Latvia, Litva).
-  Dùng chung: window.pfRates.quote(nước, gram, tổng giỏ cent) → { name, fee, ship, perk, reached, over, tiers }.
+  Bảng phí ship THEO CÂN NẶNG — chép NGUYÊN XI từ Shopify (Settings → Shipping and delivery → General profile,
+  phương thức "Express", kho Praha). Cập nhật 24/10/2026. Khi đổi giá/bậc cân trên Shopify, sửa lại mảng bên dưới cho khớp.
+
+  Mỗi bậc: [cân từ (kg), cân đến (kg), phí (cent), 1 = bậc này về 0€ khi đơn đạt €169 / 0 = không].
+  Giữ đúng cả các KHOẢNG HỞ của Shopify (vd. 10–10,1 kg): đơn rơi vào khoảng hở → Shopify không có phương thức giao.
+  perk = 'free' (Freeship bằng phí ship 0€ khi tổng đơn SAU giảm giá ≥ €169 — Shopify xét giá theo tổng sau giảm)
+       | 'disc' (mã tự động UUDAI10%: giảm 10% khi tạm tính tiền hàng ≥ €169 — market "ưu đãi 5 %": IE, DK, FI, SE)
+       | 'none' (không có ưu đãi 169€: Estonia, Latvia, Litva).
+  Dùng chung: window.pfRates.quote(nước, gram, tổng sau giảm (cent), tạm tính trước giảm (cent))
+    → { name, fee, ship, perk, reached, free, over, rem, tiers }.
 {%- endcomment -%}
 <script>
   (function () {
     if (window.pfRates) return;
     var GOAL = 16900;
-    var DE = { t: [[10, 973], [20, 1113], [30, 1265], [40, 973]], free: 30, perk: 'free' };
-    var WEST = { t: [[10, 1332], [20, 1532], [30, 1744], [40, 1332]], free: 30, perk: 'free' };
-    var IT = { t: [[10, 1212], [20, 1353], [30, 1565], [40, 1212]], free: 30, perk: 'free' };
-    var BALT = { t: [[10, 1572], [20, 1832], [30, 2224], [40, 1572]], free: 0, perk: 'none' };
-    var NORD = { t: [[10, 3008], [20, 4001], [30, 4631], [40, 6060]], free: 0, perk: 'disc' };
+    // Vùng "Germany": CZ DE PL RO SK HU BG
+    var DE = { t: [[0, 10, 973, 1], [10.1, 20, 1113, 1], [20.1, 30, 1265, 1], [30.1, 40, 973, 0]], perk: 'free' };
+    // Vùng "nether": FR NL ES GR PT LU SI
+    var WEST = { t: [[0, 10, 1332, 1], [10.1, 20, 1532, 1], [20.1, 30, 1744, 1], [30.1, 40, 1332, 0]], perk: 'free' };
+    // Vùng "Belgium" (bậc cuối bắt đầu từ 30,5 kg)
+    var BE = { t: [[0, 10, 1332, 1], [10.1, 20, 1532, 1], [20.1, 30, 1744, 1], [30.5, 40, 1332, 0]], perk: 'free' };
+    var IT = { t: [[0, 10, 1212, 1], [10.1, 20, 1353, 1], [20.1, 30, 1565, 1], [30.1, 40, 1212, 0]], perk: 'free' };
+    // Áo: chỉ tới 30 kg
+    var AT = { t: [[0, 10, 1120, 1], [10.1, 20, 1293, 1], [20.1, 30, 1445, 1]], perk: 'free' };
+    // Croatia: 2 bậc, tới 30 kg
+    var HR = { t: [[0, 10, 1212, 1], [10.1, 30, 1565, 1]], perk: 'free' };
+    // Vùng "IRELAND": IE EE LT LV (bậc 2 bắt đầu từ 10,2 kg)
+    var IEZ = [[0, 10, 1572, 0], [10.2, 20, 1832, 0], [20.1, 30, 2224, 0], [30.1, 40, 1572, 0]];
+    // Vùng "Denmark": DK FI SE
+    var NORD = { t: [[0, 10, 3008, 0], [10.1, 20, 4001, 0], [20.1, 30, 4631, 0], [30.1, 40, 6060, 0]], perk: 'disc' };
     var R = {
       DE: DE, CZ: DE, PL: DE, SK: DE, HU: DE, BG: DE, RO: DE,
-      AT: { t: [[10, 1120], [20, 1293], [30, 1445]], free: 30, perk: 'free' },
-      HR: { t: [[10, 1212], [30, 1565]], free: 30, perk: 'free' },
-      IT: IT,
-      BE: WEST, FR: WEST, NL: WEST, ES: WEST, PT: WEST, GR: WEST,
-      LU: WEST, SI: WEST,
-      IE: { t: [[10, 1572], [20, 1832], [30, 2224], [40, 1572]], free: 0, perk: 'disc' },
-      EE: BALT, LV: BALT, LT: BALT,
+      AT: AT, HR: HR, IT: IT, BE: BE,
+      FR: WEST, NL: WEST, ES: WEST, PT: WEST, GR: WEST, LU: WEST, SI: WEST,
+      IE: { t: IEZ, perk: 'disc' },
+      EE: { t: IEZ, perk: 'none' }, LV: { t: IEZ, perk: 'none' }, LT: { t: IEZ, perk: 'none' },
       DK: NORD, FI: NORD, SE: NORD
     };
     var NAMES = { DE: 'Đức', CZ: 'Séc', PL: 'Ba Lan', SK: 'Slovakia', HU: 'Hungary', BG: 'Bulgaria', RO: 'Romania', AT: 'Áo',
@@ -32,14 +44,20 @@
     var ORDER = ['DE', 'CZ', 'PL', 'SK', 'HU', 'BG', 'RO', 'AT', 'HR', 'IT', 'BE', 'FR', 'NL', 'ES', 'PT', 'GR', 'LU', 'SI', 'IE', 'DK', 'FI', 'SE', 'EE', 'LV', 'LT'];
     function eur(c) { return '€' + (c / 100).toFixed(2).replace('.', ','); }
     function kg(g) { return (Math.round(g / 100) / 10).toString().replace('.', ',') + ' kg'; }
-    function quote(cc, grams, sub) {
+    // total = tổng giỏ SAU giảm giá; before = tạm tính tiền hàng TRƯỚC giảm giá cấp đơn (mặc định = total)
+    function quote(cc, grams, total, before) {
       var r = R[cc]; if (!r) return null;
-      var w = (grams || 0) / 1000, fee = null, maxKg = 0;
-      for (var i = 0; i < r.t.length; i++) { if (w <= r.t[i][0]) { fee = r.t[i][1]; maxKg = r.t[i][0]; break; } }
-      var reached = sub >= GOAL;
-      var free = reached && r.perk === 'free' && w <= r.free;
-      return { name: NAMES[cc] || cc, fee: fee, maxKg: maxKg, over: fee === null, perk: r.perk, reached: reached,
-        ship: fee === null ? null : (free ? 0 : fee), free: free, rem: GOAL - sub, tiers: r.t, weight: grams || 0 };
+      if (before == null) before = total;
+      var w = (grams || 0) / 1000, tier = null;
+      for (var i = 0; i < r.t.length; i++) { if (w >= r.t[i][0] && w <= r.t[i][1]) { tier = r.t[i]; break; } }
+      var base = r.perk === 'disc' ? before : total;          // mỗi loại ưu đãi Shopify xét trên một con số khác nhau
+      var reached = r.perk !== 'none' && base >= GOAL;
+      var fee = tier ? tier[2] : null;
+      var free = !!(tier && reached && r.perk === 'free' && tier[3] === 1);
+      var maxKg = r.t[r.t.length - 1][1];
+      return { name: NAMES[cc] || cc, fee: fee, over: fee === null, gap: fee === null && w <= maxKg, maxKg: maxKg,
+        perk: r.perk, reached: reached, ship: fee === null ? null : (free ? 0 : fee), free: free,
+        rem: Math.max(0, GOAL - base), tiers: r.t, weight: grams || 0 };
     }
     window.pfRates = { R: R, NAMES: NAMES, ORDER: ORDER, GOAL: GOAL, quote: quote, eur: eur, kg: kg };
   })();

@@ -8,7 +8,7 @@
   assign cur = localization.country.iso_code
 -%}
 {% render 'pf-ship-rates' %}
-<div class="pf-ship" data-pf-ship data-sub="{{ cart.items_subtotal_price }}" data-weight="{{ cart.total_weight }}">
+<div class="pf-ship" data-pf-ship data-sub="{{ cart.items_subtotal_price }}" data-total="{{ cart.total_price }}" data-weight="{{ cart.total_weight }}">
   <label class="pf-ship__lbl" for="PfShipCountry">🚚 Phí vận chuyển</label>
   <div class="pf-ship__line">
     <div class="pf-ship__selwrap">
@@ -31,15 +31,16 @@
       var sel = box.querySelector('[data-pf-ship-sel]');
       function render() {
         var sub = parseInt(box.dataset.sub, 10) || 0, g = parseInt(box.dataset.weight, 10) || 0;
-        var q = R.quote(sel.value, g, sub); if (!q) return;
+        var tot = parseInt(box.dataset.total, 10); if (isNaN(tot)) tot = sub;
+        var q = R.quote(sel.value, g, tot, sub); if (!q) return;
         var feeEl = box.querySelector('[data-pf-ship-fee]'), note = box.querySelector('[data-pf-ship-note]');
         feeEl.textContent = q.over ? 'Liên hệ' : (q.ship === 0 ? 'Miễn phí' : eur(q.ship));
         feeEl.classList.toggle('is-free', q.ship === 0);
         var h;
-        if (q.over) h = 'Vui lòng nhắn shop để báo phí ship cho đơn này.';
+        if (q.over) h = 'Chưa có phí ship cho đơn ' + R.kg(q.weight) + ' đến ' + q.name + ' — vui lòng nhắn shop để được báo phí.';
         else if (q.perk === 'free') {
           if (q.free) h = '🎉 Giỏ đã đạt €169 — <b>miễn phí ship</b>!';
-          else if (q.reached) h = 'Giỏ đã đạt €169 nhưng đơn quá lớn nên vẫn tính phí ship.';
+          else if (q.reached) h = 'Giỏ đã đạt €169 nhưng đơn trên 30 kg nên vẫn tính phí ship.';
           else h = 'Mua thêm <b>' + eur(q.rem) + '</b> để được <b>miễn phí ship</b>.';
         } else if (q.perk === 'none') {
           h = 'Nước này chưa áp dụng ưu đãi đơn từ €169.';
@@ -51,7 +52,7 @@
       function refresh() {
         fetch(((window.Shopify && Shopify.routes && Shopify.routes.root) || '/') + 'cart.js', { headers: { Accept: 'application/json' } })
           .then(function (r) { return r.json(); })
-          .then(function (c) { box.dataset.sub = c.items_subtotal_price; box.dataset.weight = c.total_weight; render(); if (window.pfShip) window.pfShip.update(); })
+          .then(function (c) { box.dataset.sub = c.items_subtotal_price; box.dataset.total = c.total_price; box.dataset.weight = c.total_weight; render(); if (window.pfShip) window.pfShip.update(); })
           .catch(function () {});
       }
       try { var saved = sessionStorage.getItem('pf_ship_cc'); if (saved && sel.querySelector('option[value="' + saved + '"]')) sel.value = saved; } catch (e) {}

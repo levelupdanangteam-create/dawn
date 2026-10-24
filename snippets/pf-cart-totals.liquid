@@ -28,7 +28,7 @@
     // Trả về phí ship + tổng cuối. sub = tổng giỏ SAU giảm giá (Shopify đã tự trừ mọi ưu đãi, gồm UUDAI10%
     // cho IE/DK/FI/SE từ €169) → KHÔNG tự trừ thêm 10% ở đây. goal = tạm tính trước giảm, dùng để xét mốc €169.
     function calc(cc, sub, grams, goal) {
-      var q = R.quote(cc, grams, goal == null ? sub : goal); if (!q) return null;
+      var q = R.quote(cc, grams, sub, goal); if (!q) return null;
       var ship = q.over ? 0 : q.ship;
       q.disc = 0; q.total = sub + ship; return q;
     }
@@ -48,7 +48,7 @@
         document.querySelectorAll('[data-pf-csb-total]').forEach(function (el) { setT(el, eur(c.total)); });
         document.querySelectorAll('[data-pf-csb-shipline]').forEach(function (el) {
           var h, ok = c.free || (c.reached && c.perk === 'disc');
-          if (c.over) h = 'Nhắn shop để báo phí ship cho đơn này';
+          if (c.over) h = 'Chưa có phí ship cho đơn ' + R.kg(c.weight) + ' đến ' + c.name + ' — nhắn shop để được báo phí';
           else if (c.free) h = '<b>Miễn phí vận chuyển</b> đến ' + c.name;
           else if (c.reached && c.perk === 'disc') h = 'Đã đạt <b>giảm 10%</b> · ship ' + eur(c.fee);
           else if (c.reached || c.perk === 'none') h = 'Ship đến ' + c.name + ' ' + eur(c.fee) + '';
