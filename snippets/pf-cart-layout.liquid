@@ -143,20 +143,9 @@
     #MainContent[data-template='cart']:has(#main-cart-footer:not(.is-empty)) .pf-cart-items-wrapper .page-width,
     #MainContent[data-template='cart']:has(#main-cart-footer:not(.is-empty)) .cart__footer-wrapper .page-width { max-width: none; padding-inline: 0; }
     #MainContent[data-template='cart']:has(#main-cart-footer:not(.is-empty)) [id^='pfcr-'] .pfcr__wrap { padding-inline: 0; }
-    /* Khung tóm tắt thẳng hàng với tiêu đề "Giỏ hàng"; lề dưới bằng lề dưới của cột trái */
+    /* Khung tóm tắt thẳng hàng với tiêu đề "Giỏ hàng"; mỗi cột cao vừa nội dung (không kéo dài → không có khoảng trắng thừa) */
     #MainContent[data-template='cart'] #main-cart-footer .cart__footer { padding-top: 3.6rem; padding-bottom: 3.6rem; }
 
-    /* Hai cột cao bằng nhau: kéo dài thẻ bảng SP (trái) và thẻ tóm tắt (phải) tới cùng một đáy */
-    #MainContent[data-template='cart']:has(#main-cart-footer:not(.is-empty)) > .pf-cart-items-wrapper,
-    #MainContent[data-template='cart']:has(#main-cart-footer:not(.is-empty)) > .cart__footer-wrapper { align-self: stretch; display: flex; flex-direction: column; }
-    #MainContent[data-template='cart']:has(#main-cart-footer:not(.is-empty)) .pf-cart-items-wrapper cart-items,
-    #MainContent[data-template='cart']:has(#main-cart-footer:not(.is-empty)) .pf-cart-items-wrapper .page-width,
-    #MainContent[data-template='cart']:has(#main-cart-footer:not(.is-empty)) .pf-cart-items-wrapper #cart,
-    #MainContent[data-template='cart']:has(#main-cart-footer:not(.is-empty)) #main-cart-footer,
-    #MainContent[data-template='cart']:has(#main-cart-footer:not(.is-empty)) #main-cart-footer .page-width,
-    #MainContent[data-template='cart']:has(#main-cart-footer:not(.is-empty)) #main-cart-footer .cart__footer { flex: 1 1 auto; display: flex; flex-direction: column; }
-    #MainContent[data-template='cart']:has(#main-cart-footer:not(.is-empty)) .pf-cart-items-wrapper .cart__items,
-    #MainContent[data-template='cart']:has(#main-cart-footer:not(.is-empty)) #main-cart-footer .cart__blocks.pf-sum { flex: 1 1 auto; }
 
     /* Bảng sản phẩm gọn lại cho vừa cột trái: thu khoảng cách giữa các cột của Dawn (4–6rem) để tên SP có chỗ */
     #MainContent[data-template='cart'] .cart__items { padding: 2.2rem 2.4rem 1.2rem; }
