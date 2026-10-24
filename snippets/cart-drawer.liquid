@@ -40,6 +40,13 @@
   #CartDrawer .pf-drawer-deal .pf-shipbar { display: flex; flex-direction: column; }
   #CartDrawer .pf-drawer-deal .pf-shipbar--max .pf-shipbar__track { display: none; }
   #CartDrawer .pf-drawer-deal .pf-shipbar--max .pf-shipbar__status b { color: #1e8541; }
+  /* Tổng khối lượng: dòng chữ thường (không khung, số không đậm), nằm trên "Tạm tính" */
+  #CartDrawer .pf-ctw { margin: .4rem 0 0; padding: 0; background: none; border-radius: 0; font-size: 1.35rem; }
+  #CartDrawer .pf-ctw b { font-weight: 400; font-size: 1.35rem; color: #6a6255; }
+  /* "Tạm tính" + số tiền in đậm */
+  #CartDrawer .totals { margin-top: .6rem; }
+  #CartDrawer .totals__total,
+  #CartDrawer .totals__total-value { font-weight: 800; color: #2a2622; }
   /* Danh sách SP cuộn riêng, phần tổng tiền + nút luôn ở đáy */
   #CartDrawer cart-drawer-items { overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #c9bfae transparent; }
   #CartDrawer cart-drawer-items::-webkit-scrollbar { width: 6px; }
@@ -567,12 +574,12 @@
             {%- endif -%}
           </div>
 
+          {% render 'pf-cart-total-weight' %}
+
           <div class="totals" role="status">
             <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
-            <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
+            <p class="totals__total-value">{{ cart.total_price | money }}</p>
           </div>
-
-          {% render 'pf-cart-total-weight' %}
           <a class="pf-ship-note" href="{{ routes.cart_url }}">
             <span class="pf-ship-note__ic" aria-hidden="true">🚚</span>
             <span>{% if request.locale.iso_code == 'vi' %}Ưu đãi <b>miễn phí ship</b> &amp; <b>giảm giá</b> tùy quốc gia — <u>xem chi tiết ở trang giỏ hàng</u>{% else %}<b>Free shipping</b> &amp; <b>discounts</b> vary by country — <u>see details on the cart page</u>{% endif %}</span>
