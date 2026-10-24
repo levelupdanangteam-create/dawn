@@ -44,6 +44,7 @@
   #CartDrawer .pf-ctw { margin: .4rem 0 0; padding: 0; background: none; border-radius: 0; font-size: 1.35rem; }
   #CartDrawer .pf-ctw b { font-weight: 400; font-size: 1.35rem; color: #6a6255; }
   #CartDrawer .pf-ctw > span[aria-hidden] { display: none; }
+  #CartDrawer .pf-tax-incl { margin: .2rem 0 0; text-align: right; font-size: 1.2rem; color: #8a8273; line-height: 1.3; }
   /* "Tạm tính" + số tiền in đậm */
   #CartDrawer .totals { margin-top: .6rem; }
   #CartDrawer .totals__total,
@@ -581,50 +582,14 @@
             <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
             <p class="totals__total-value">{{ cart.total_price | money }}</p>
           </div>
+          {%- if cart.taxes_included -%}
+            <p class="pf-tax-incl">{% if request.locale.iso_code == 'vi' %}Đã bao gồm thuế{% else %}Taxes included{% endif %}</p>
+          {%- endif -%}
           <a class="pf-ship-note" href="{{ routes.cart_url }}">
             <span class="pf-ship-note__ic" aria-hidden="true">🚚</span>
             <span>{% if request.locale.iso_code == 'vi' %}Ưu đãi <b>miễn phí ship</b> &amp; <b>giảm giá</b> tùy quốc gia — <u>xem chi tiết ở trang giỏ hàng</u>{% else %}<b>Free shipping</b> &amp; <b>discounts</b> vary by country — <u>see details on the cart page</u>{% endif %}</span>
           </a>
 
-          <small class="tax-note caption-large rte">
-            {%- if cart.duties_included and cart.taxes_included -%}
-              {%- if shop.shipping_policy.body == blank -%}
-                {{ 'sections.cart.duties_and_taxes_included_shipping_at_checkout_without_policy' | t }}
-              {%- else -%}
-                {{
-                  'sections.cart.duties_and_taxes_included_shipping_at_checkout_with_policy_html'
-                  | t: link: shop.shipping_policy.url
-                }}
-              {%- endif -%}
-            {%- elsif cart.duties_included == false and cart.taxes_included -%}
-              {%- if shop.shipping_policy.body == blank -%}
-                {{ 'sections.cart.taxes_included_shipping_at_checkout_without_policy' | t }}
-              {%- else -%}
-                {{
-                  'sections.cart.taxes_included_shipping_at_checkout_with_policy_html'
-                  | t: link: shop.shipping_policy.url
-                }}
-              {%- endif -%}
-            {%- elsif cart.duties_included and cart.taxes_included == false -%}
-              {%- if shop.shipping_policy.body == blank -%}
-                {{ 'sections.cart.duties_included_taxes_at_checkout_shipping_at_checkout_without_policy' | t }}
-              {%- else -%}
-                {{
-                  'sections.cart.duties_included_taxes_at_checkout_shipping_at_checkout_with_policy_html'
-                  | t: link: shop.shipping_policy.url
-                }}
-              {%- endif -%}
-            {%- elsif cart.duties_included == false and cart.taxes_included == false -%}
-              {%- if shop.shipping_policy.body == blank -%}
-                {{ 'sections.cart.taxes_at_checkout_shipping_at_checkout_without_policy' | t }}
-              {%- else -%}
-                {{
-                  'sections.cart.taxes_at_checkout_shipping_at_checkout_with_policy_html'
-                  | t: link: shop.shipping_policy.url
-                }}
-              {%- endif -%}
-            {%- endif -%}
-          </small>
         </div>
 
         <!-- CTAs -->
