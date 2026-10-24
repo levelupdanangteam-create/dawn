@@ -22,9 +22,9 @@
     <div class="pf-shipbar__track"><span class="pf-shipbar__fill" style="width: {{ pf_pct }}%;"></span></div>
     <p class="pf-shipbar__status">
       {%- if pf_reached -%}
-        🎉 {% if vi %}Đơn của bạn đã đạt <b>139€</b> — được <b>Freeship / giảm 10%</b>!{% else %}Your order reached <b>139€</b> — enjoy <b>free shipping / 10% off</b>!{% endif %}
+        🎉 {% if vi %}Bạn đã được <b>FREESHIP / GIẢM 10%</b>!{% else %}You've unlocked <b>FREE SHIPPING / 10% OFF</b>!{% endif %}
       {%- else -%}
-        {% if vi %}Mua thêm <b>{{ pf_rem | money }}</b> để đạt <b>139€</b> — hưởng <b>Freeship / giảm 10%</b>{% else %}Add <b>{{ pf_rem | money }}</b> to reach <b>139€</b> — get <b>free shipping / 10% off</b>{% endif %}
+        {% if vi %}Thêm <b>{{ pf_rem | money }}</b> để <b>FREESHIP / GIẢM 10%</b>{% else %}Add <b>{{ pf_rem | money }}</b> to unlock <b>FREE SHIPPING / 10% OFF</b>{% endif %}
       {%- endif -%}
     </p>
   </div>
