@@ -283,11 +283,11 @@
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 
     {%- if settings.cart_type == 'drawer' -%}
-      <link rel="stylesheet" href="{{ 'component-cart-drawer.css' | asset_url }}" media="print" onload="this.media='all'">
-      <link rel="stylesheet" href="{{ 'component-cart.css' | asset_url }}" media="print" onload="this.media='all'">
-      <link rel="stylesheet" href="{{ 'component-totals.css' | asset_url }}" media="print" onload="this.media='all'">
+      {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
+      {{ 'component-cart.css' | asset_url | stylesheet_tag }}
+      {{ 'component-totals.css' | asset_url | stylesheet_tag }}
       {{ 'component-price.css' | asset_url | stylesheet_tag }}
-      <link rel="stylesheet" href="{{ 'component-discounts.css' | asset_url }}" media="print" onload="this.media='all'">
+      {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
     {%- endif -%}
 
     {%- comment -%}PF speed: removed preload of Assistant font (unused, Montserrat overrides it).{%- endcomment -%}
@@ -315,9 +315,7 @@
     {%- comment -%}PHOMIFOOD: force Montserrat across the whole site.{%- endcomment -%}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"></noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap">
     <style>
       :root {
         --font-body-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
