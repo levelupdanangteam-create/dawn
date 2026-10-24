@@ -39,13 +39,13 @@
         var h;
         if (q.over) h = 'Chưa có phí ship cho đơn ' + R.kg(q.weight) + ' đến ' + q.name + ' — vui lòng nhắn shop để được báo phí.';
         else if (q.perk === 'free') {
-          if (q.free) h = '🎉 Giỏ đã đạt €169 — <b>miễn phí ship</b>!';
-          else if (q.reached) h = 'Giỏ đã đạt €169 nhưng đơn trên 30 kg nên vẫn tính phí ship.';
+          if (q.free) h = '🎉 Giỏ đã đạt €139 — <b>miễn phí ship</b>!';
+          else if (q.reached) h = 'Giỏ đã đạt €139 nhưng đơn trên 30 kg nên vẫn tính phí ship.';
           else h = 'Mua thêm <b>' + eur(q.rem) + '</b> để được <b>miễn phí ship</b>.';
         } else if (q.perk === 'none') {
-          h = 'Nước này chưa áp dụng ưu đãi đơn từ €169.';
+          h = 'Nước này chưa áp dụng ưu đãi đơn từ €139.';
         } else {
-          h = q.reached ? '🎉 Giỏ đã đạt €169 — được <b>giảm 10%</b> (phí ship ' + eur(q.fee) + ').' : 'Mua thêm <b>' + eur(q.rem) + '</b> để được <b>giảm 10%</b>.';
+          h = q.reached ? '🎉 Giỏ đã đạt €139 — được <b>giảm 10%</b> (phí ship ' + eur(q.fee) + ').' : 'Mua thêm <b>' + eur(q.rem) + '</b> để được <b>giảm 10%</b>.';
         }
         note.innerHTML = h;
       }

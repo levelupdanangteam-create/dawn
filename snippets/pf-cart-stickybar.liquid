@@ -3,12 +3,12 @@
   Hàng trên: phí ship theo nước đang chọn + còn bao nhiêu để Freeship/giảm 10% (thanh tiến độ mảnh).
   Hàng dưới: Tổng tiền hàng + "Tiết kiệm €x" (giảm giá + giá gốc gạch) | nút Thanh toán (n).
   Render trong vùng .js-contents của main-cart-footer → tự cập nhật khi đổi số lượng.
-  Dòng phí ship được JS (pf-cart-totals + pf-ship-rates) điền lại theo nước + cân nặng giỏ; mốc ưu đãi 169 €.
+  Dòng phí ship được JS (pf-cart-totals + pf-ship-rates) điền lại theo nước + cân nặng giỏ; mốc ưu đãi 139 €.
 {%- endcomment -%}
 {%- unless cart == empty -%}
 {%- liquid
   assign vi = true
-  assign goal = 16900
+  assign goal = 13900
   assign sub = cart.total_price
   assign cc = localization.country.iso_code
   assign perk_discount = false

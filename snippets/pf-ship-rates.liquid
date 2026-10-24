@@ -2,18 +2,18 @@
   Bảng phí ship THEO CÂN NẶNG — chép NGUYÊN XI từ Shopify (Settings → Shipping and delivery → General profile,
   phương thức "Express", kho Praha). Cập nhật 24/10/2026. Khi đổi giá/bậc cân trên Shopify, sửa lại mảng bên dưới cho khớp.
 
-  Mỗi bậc: [cân từ (kg), cân đến (kg), phí (cent), 1 = bậc này về 0€ khi đơn đạt €169 / 0 = không].
+  Mỗi bậc: [cân từ (kg), cân đến (kg), phí (cent), 1 = bậc này về 0€ khi đơn đạt €139 / 0 = không].
   Giữ đúng cả các KHOẢNG HỞ của Shopify (vd. 10–10,1 kg): đơn rơi vào khoảng hở → Shopify không có phương thức giao.
-  perk = 'free' (Freeship bằng phí ship 0€ khi tổng đơn SAU giảm giá ≥ €169 — Shopify xét giá theo tổng sau giảm)
-       | 'disc' (mã tự động UUDAI10%: giảm 10% khi tạm tính tiền hàng ≥ €169 — market "ưu đãi 5 %": IE, DK, FI, SE)
-       | 'none' (không có ưu đãi 169€: Estonia, Latvia, Litva).
+  perk = 'free' (Freeship bằng phí ship 0€ khi tổng đơn SAU giảm giá ≥ €139 — Shopify xét giá theo tổng sau giảm)
+       | 'disc' (mã tự động UUDAI10%: giảm 10% khi tạm tính tiền hàng ≥ €139 — market "ưu đãi 5 %": IE, DK, FI, SE)
+       | 'none' (không có ưu đãi 139€: Estonia, Latvia, Litva).
   Dùng chung: window.pfRates.quote(nước, gram, tổng sau giảm (cent), tạm tính trước giảm (cent))
     → { name, fee, ship, perk, reached, free, over, rem, tiers }.
 {%- endcomment -%}
 <script>
   (function () {
     if (window.pfRates) return;
-    var GOAL = 16900;
+    var GOAL = 13900;
     // Vùng "Germany": CZ DE PL RO SK HU BG
     var DE = { t: [[0, 10, 973, 1], [10.1, 20, 1113, 1], [20.1, 30, 1265, 1], [30.1, 40, 973, 0]], perk: 'free' };
     // Vùng "nether": FR NL ES GR PT LU SI

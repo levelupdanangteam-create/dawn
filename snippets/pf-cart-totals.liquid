@@ -1,9 +1,9 @@
 {%- comment -%}
   Bảng tổng tiền trong "Order summary" (trang giỏ hàng):
-    Subtotal · Discount (mọi giảm giá Shopify đã áp, gồm UUDAI10% cho IE/DK/FI/SE từ €169) · Shipping (theo nước đang chọn) · TOTAL (đã cộng ship).
+    Subtotal · Discount (mọi giảm giá Shopify đã áp, gồm UUDAI10% cho IE/DK/FI/SE từ €139) · Shipping (theo nước đang chọn) · TOTAL (đã cộng ship).
   Nước giao lấy từ ô chọn ở khung "Shipping" (pf-ship-table), mặc định = nước khách đang mua.
   Dùng chung bảng phí với thanh cố định (pf-cart-stickybar) qua window.pfShip — đổi nước là cả 2 cập nhật.
-  Phí ship cố định theo nước + mốc €169: sửa ở PF_SHIP_FEES bên dưới (giữ khớp pf-ship-table).
+  Phí ship cố định theo nước + mốc €139: sửa ở PF_SHIP_FEES bên dưới (giữ khớp pf-ship-table).
 {%- endcomment -%}
 {%- liquid
   assign vi = true
@@ -16,7 +16,7 @@
     <div class="pf-tot__row pf-tot__row--green"><span>{% if vi %}Giảm giá{% else %}Discount{% endif %}</span><span>−{{ cart.total_discount | money }}</span></div>
   {%- endif -%}
   <div class="pf-tot__row"><span>{% if vi %}Phí ship{% else %}Shipping{% endif %} <em data-pf-tot-country></em></span><span data-pf-tot-ship>—</span></div>
-  <div class="pf-tot__row pf-tot__row--green" data-pf-tot-discrow hidden><span>{% if vi %}Giảm 10% (từ €169){% else %}10% off (from €169){% endif %}</span><span data-pf-tot-disc></span></div>
+  <div class="pf-tot__row pf-tot__row--green" data-pf-tot-discrow hidden><span>{% if vi %}Giảm 10% (từ €139){% else %}10% off (from €139){% endif %}</span><span data-pf-tot-disc></span></div>
   <div class="pf-tot__total"><span>{% if vi %}Tổng cộng{% else %}Total{% endif %}</span><span data-pf-tot-total>{{ cart.total_price | money }}</span></div>
 </div>
 <script>
@@ -26,7 +26,7 @@
     var PF_SHIP_FEES = R.R, eur = R.eur;
     function getCc(fallback) { try { var s = sessionStorage.getItem('pf_ship_cc'); if (s && PF_SHIP_FEES[s]) return s; } catch (e) {} return fallback; }
     // Trả về phí ship + tổng cuối. sub = tổng giỏ SAU giảm giá (Shopify đã tự trừ mọi ưu đãi, gồm UUDAI10%
-    // cho IE/DK/FI/SE từ €169) → KHÔNG tự trừ thêm 10% ở đây. goal = tạm tính trước giảm, dùng để xét mốc €169.
+    // cho IE/DK/FI/SE từ €139) → KHÔNG tự trừ thêm 10% ở đây. goal = tạm tính trước giảm, dùng để xét mốc €139.
     function calc(cc, sub, grams, goal) {
       var q = R.quote(cc, grams, sub, goal); if (!q) return null;
       var ship = q.over ? 0 : q.ship;

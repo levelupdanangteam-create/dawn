@@ -209,7 +209,7 @@
           "type": "question",
           "settings": {
             "question": "Có miễn phí vận chuyển không?",
-            "answer": "<p>Có. Đơn từ <strong>169€</strong> được <strong>Freeship</strong> hoặc <strong>giảm 10%</strong>. Thanh tiến độ trong giỏ hàng cho biết bạn còn thiếu bao nhiêu.</p>"
+            "answer": "<p>Có. Đơn từ <strong>139€</strong> được <strong>Freeship</strong> hoặc <strong>giảm 10%</strong>. Thanh tiến độ trong giỏ hàng cho biết bạn còn thiếu bao nhiêu.</p>"
           }
         },
         "q3": {
@@ -270,7 +270,7 @@
           "type": "item",
           "settings": {
             "icon": "🚚",
-            "title": "Freeship từ 169€",
+            "title": "Freeship từ 139€",
             "text": "hoặc giảm 10% đơn hàng"
           }
         },

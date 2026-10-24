@@ -1,11 +1,11 @@
 {%- comment -%}
-  PHOMIFOOD — Thanh tiến độ ưu đãi giỏ hàng (1 mốc duy nhất: 169€).
-  Mua thêm X để đạt 169€ → hưởng ưu đãi (Freeship / giảm 10%).
+  PHOMIFOOD — Thanh tiến độ ưu đãi giỏ hàng (1 mốc duy nhất: 139€).
+  Mua thêm X để đạt 139€ → hưởng ưu đãi (Freeship / giảm 10%).
   Dùng chung cho trang giỏ hàng và giỏ hàng drawer; nằm trong vùng js-contents
   nên tự cập nhật ngay khi số lượng / giỏ thay đổi.
 {%- endcomment -%}
 {%- unless cart == empty -%}
-  {%- assign pf_goal = 16900 -%}
+  {%- assign pf_goal = 13900 -%}
   {%- assign pf_sub = cart.total_price -%}
   {%- assign vi = false -%}{%- if request.locale.iso_code == 'vi' -%}{%- assign vi = true -%}{%- endif -%}
   {%- if pf_sub >= pf_goal -%}
@@ -22,9 +22,9 @@
     <div class="pf-shipbar__track"><span class="pf-shipbar__fill" style="width: {{ pf_pct }}%;"></span></div>
     <p class="pf-shipbar__status">
       {%- if pf_reached -%}
-        🎉 {% if vi %}Đơn của bạn đã đạt <b>169€</b> — được <b>Freeship / giảm 10%</b>!{% else %}Your order reached <b>169€</b> — enjoy <b>free shipping / 10% off</b>!{% endif %}
+        🎉 {% if vi %}Đơn của bạn đã đạt <b>139€</b> — được <b>Freeship / giảm 10%</b>!{% else %}Your order reached <b>139€</b> — enjoy <b>free shipping / 10% off</b>!{% endif %}
       {%- else -%}
-        {% if vi %}Mua thêm <b>{{ pf_rem | money }}</b> để đạt <b>169€</b> — hưởng <b>Freeship / giảm 10%</b>{% else %}Add <b>{{ pf_rem | money }}</b> to reach <b>169€</b> — get <b>free shipping / 10% off</b>{% endif %}
+        {% if vi %}Mua thêm <b>{{ pf_rem | money }}</b> để đạt <b>139€</b> — hưởng <b>Freeship / giảm 10%</b>{% else %}Add <b>{{ pf_rem | money }}</b> to reach <b>139€</b> — get <b>free shipping / 10% off</b>{% endif %}
       {%- endif -%}
     </p>
   </div>
