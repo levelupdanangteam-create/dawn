@@ -73,7 +73,10 @@
             {%- assign pf_price = pf_v.price -%}
             {%- assign pf_cmp = pf_v.compare_at_price -%}
             {%- if pf_cmp == blank or pf_cmp <= pf_price -%}{%- assign pf_cmp = product.compare_at_price_max -%}{%- endif -%}
-            <div class="pf-bs__card{% if forloop.index > initial %} is-hidden{% endif %}">
+            {%- comment -%}PF speed: cards after the first ones go in a <template> so they are not built into the page until "Xem thêm" is clicked.{%- endcomment -%}
+            {%- assign pf_first_hidden = initial | plus: 1 -%}
+            {%- if forloop.index == pf_first_hidden -%}<template class="pf-bs__rest">{%- endif -%}
+            <div class="pf-bs__card">
               <div class="pf-bs__rank r{{ rank }}">{{ rank }}</div>
               <a class="pf-bs__media" href="{{ product.url }}">
                 {% render 'pf-preorder-badge', product: product %}
@@ -81,7 +84,7 @@
                   <span class="pf-bs__sale">-{{ pf_cmp | minus: pf_price | times: 100.0 | divided_by: pf_cmp | round }}%</span>
                 {%- endif -%}
                 {%- if product.featured_image -%}
-                  <img src="{{ product.featured_image | image_url: width: 500 }}" alt="{{ product.title | escape }}" loading="lazy" width="500" height="500">
+                  {{ product.featured_image | image_url: width: 500 | image_tag: loading: 'lazy', widths: '200,300,400,500', sizes: '(max-width: 749px) 46vw, 250px', alt: product.title }}
                 {%- else -%}
                   {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
                 {%- endif -%}
@@ -101,6 +104,7 @@
                 {% render 'pf-card-buttons', product: product, section_id: section.id %}
               </div>
             </div>
+            {%- if forloop.last and forloop.index >= pf_first_hidden -%}</template>{%- endif -%}
           {%- endfor -%}
           {%- endpaginate -%}
         {%- else -%}
@@ -147,6 +151,8 @@
     if (!btn || btn.dataset.pfInit) return;
     btn.dataset.pfInit = '1';
     btn.addEventListener('click', function () {
+      var tpl = root.querySelector('template.pf-bs__rest');
+      if (tpl) { tpl.parentNode.insertBefore(tpl.content.cloneNode(true), tpl); tpl.remove(); }
       root.querySelectorAll('.pf-bs__card.is-hidden').forEach(function (c) { c.classList.remove('is-hidden'); });
       var wrap = btn.closest('.pf-bs__morewrap');
       if (wrap) wrap.remove();

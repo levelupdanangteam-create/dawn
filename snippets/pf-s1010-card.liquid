@@ -12,7 +12,7 @@
   <a class="pf-s10__media" href="{{ product.url }}">
     {% render 'pf-preorder-badge', product: product %}
     {%- if product.featured_image -%}
-      <img src="{{ product.featured_image | image_url: width: 500 }}" alt="{{ product.title | escape }}" loading="lazy" width="500" height="500">
+      {{ product.featured_image | image_url: width: 500 | image_tag: loading: 'lazy', widths: '200,300,400,500', sizes: '(max-width: 749px) 46vw, 250px', alt: product.title }}
     {%- else -%}
       {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
     {%- endif -%}

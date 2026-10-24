@@ -111,11 +111,15 @@
           </div>
           <div class="pf-cat2__img">
             {%- if block.settings.image_url != blank -%}
-              <img src="{{ block.settings.image_url }}" alt="{{ cat_label | escape }}" loading="lazy">
+              {%- assign pf_src = block.settings.image_url -%}
+              {%- if pf_src contains 'cdn.shopify.com' or pf_src contains '/cdn/shop/' -%}
+                {%- if pf_src contains '?' -%}{%- assign pf_src = pf_src | append: '&width=240' -%}{%- else -%}{%- assign pf_src = pf_src | append: '?width=240' -%}{%- endif -%}
+              {%- endif -%}
+              <img src="{{ pf_src }}" alt="{{ cat_label | escape }}" loading="lazy" width="240" height="240">
             {%- elsif block.settings.image != blank -%}
-              <img src="{{ block.settings.image | image_url: width: 400 }}" alt="{{ cat_label | escape }}" loading="lazy">
+              <img src="{{ block.settings.image | image_url: width: 240 }}" alt="{{ cat_label | escape }}" loading="lazy" width="240" height="240">
             {%- elsif col != blank and col.image -%}
-              <img src="{{ col.image | image_url: width: 400 }}" alt="{{ cat_label | escape }}" loading="lazy">
+              <img src="{{ col.image | image_url: width: 240 }}" alt="{{ cat_label | escape }}" loading="lazy" width="240" height="240">
             {%- else -%}
               {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
             {%- endif -%}
