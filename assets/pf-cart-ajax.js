@@ -1,8 +1,9 @@
 /*
   Phomifood — AJAX add-to-cart for product-card buttons.
   Intercepts the ".pf-card-actions__form" submit so clicking "Thêm vào giỏ"
-  adds the item in the background (no redirect to the cart page) and refreshes
-  the header cart bubble. Vanilla JS, single delegated listener.
+  adds the item in the background (no redirect to the cart page), refreshes
+  the header cart bubble and OPENS THE CART DRAWER (any successful /cart/add on
+  the site opens it, except on the cart page). Vanilla JS, single delegated listener.
 */
 (function () {
   if (window.__pfCartAjax) return;
@@ -36,7 +37,9 @@
     if (hid) hid.textContent = n + ' sản phẩm';
   }
 
-  function refreshBubble() {
+  function isCartPage() { return !!document.querySelector('main[data-template="cart"]'); }
+
+  function refreshBubble(openDrawer) {
     var bust = '&_=' + Date.now();
     // 1) Số lượng chắc chắn đúng từ cart.js
     fetch(root() + 'cart.js?' + bust.slice(1), { headers: { Accept: 'application/json' }, cache: 'no-store' })
@@ -64,6 +67,12 @@
           var inner = drawer.querySelector('#CartDrawer'), freshInner = fresh && fresh.querySelector('#CartDrawer');
           if (inner && freshInner) inner.innerHTML = freshInner.innerHTML;
           if (fresh) drawer.classList.toggle('is-empty', fresh.classList.contains('is-empty'));
+          // Vừa thêm SP → mở giỏ trượt (như phomifood.com). Nội dung vừa thay nên gắn lại sự kiện bấm nền để đóng.
+          if (openDrawer && !isCartPage() && typeof drawer.open === 'function') {
+            var ov = drawer.querySelector('#CartDrawer-Overlay');
+            if (ov && !ov.__pfBound) { ov.__pfBound = true; ov.addEventListener('click', function () { drawer.close(); }); }
+            drawer.open();
+          }
         }
       })
       .catch(function () {});
@@ -71,16 +80,21 @@
   window.pfRefreshCartIcon = refreshBubble;
 
   // Mọi nút thêm giỏ khác trên trang (gợi ý, mua kèm, quà tặng…) cũng cập nhật icon giỏ.
-  var tmr;
-  function later() { clearTimeout(tmr); tmr = setTimeout(refreshBubble, 250); }
+  var tmr, wantOpen = false;
+  function later(open) {
+    if (open === true) wantOpen = true;
+    clearTimeout(tmr);
+    tmr = setTimeout(function () { var o = wantOpen; wantOpen = false; refreshBubble(o); }, 250);
+  }
   var origFetch = window.fetch;
   if (origFetch && !origFetch.__pfIcon) {
     var wrapped = function (input) {
       var p = origFetch.apply(this, arguments);
       try {
         var u = (typeof input === 'string') ? input : (input && input.url) || '';
-        if (u.indexOf('/cart/add') > -1 || u.indexOf('/cart/change') > -1 || u.indexOf('/cart/update') > -1 || u.indexOf('/cart/clear') > -1) {
-          p.then(later, function () {});
+        var isAdd = u.indexOf('/cart/add') > -1;
+        if (isAdd || u.indexOf('/cart/change') > -1 || u.indexOf('/cart/update') > -1 || u.indexOf('/cart/clear') > -1) {
+          p.then(function (res) { later(isAdd && !!(res && res.ok)); }, function () {});
         }
       } catch (e) {}
       return p;
