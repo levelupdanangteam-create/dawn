@@ -144,7 +144,9 @@
     #MainContent[data-template='cart']:has(#main-cart-footer:not(.is-empty)) .cart__footer-wrapper .page-width { max-width: none; padding-inline: 0; }
     #MainContent[data-template='cart']:has(#main-cart-footer:not(.is-empty)) [id^='pfcr-'] .pfcr__wrap { padding-inline: 0; }
     /* Khung tóm tắt "dính" theo khi cuộn: luôn thấy tổng tiền + nút Thanh toán (vị trí top do script bên dưới tính) */
-    #MainContent[data-template='cart']:has(#main-cart-footer:not(.is-empty)) > .cart__footer-wrapper { position: sticky; top: var(--pf-sum-top, 0px); transition: top .2s ease; }
+    /* Cột phải kéo dài đúng bằng hàng của bảng SP; chỉ khung bên trong dính → dừng lại trước phần "Có thể bạn quan tâm" */
+    #MainContent[data-template='cart']:has(#main-cart-footer:not(.is-empty)) > .cart__footer-wrapper { align-self: stretch; }
+    #MainContent[data-template='cart']:has(#main-cart-footer:not(.is-empty)) > .cart__footer-wrapper > #main-cart-footer { position: sticky; top: var(--pf-sum-top, 0px); transition: top .2s ease; }
     /* Khung tóm tắt thẳng hàng với tiêu đề "Giỏ hàng"; mỗi cột cao vừa nội dung (không kéo dài → không có khoảng trắng thừa) */
     #MainContent[data-template='cart'] #main-cart-footer .cart__footer { padding-top: 3.6rem; padding-bottom: 3.6rem; }
 
@@ -181,7 +183,8 @@
       if (!mq.matches) { wrap.style.removeProperty('--pf-sum-top'); return; }
       var hdr = document.querySelector('.section-header, sticky-header');
       var hb = hdr ? Math.max(0, hdr.getBoundingClientRect().bottom) : 0;
-      var pad = sum.getBoundingClientRect().top - wrap.getBoundingClientRect().top;   // lề trên của khung trong section
+      var st = document.getElementById('main-cart-footer') || wrap;                    // phần tử dính
+      var pad = sum.getBoundingClientRect().top - st.getBoundingClientRect().top;     // lề trên của khung trong phần tử dính
       var want = hb + GAP - pad;                                                     // mép trên khung ngay dưới header
       var fit = window.innerHeight - GAP - pad - sum.offsetHeight;                   // giữ đáy khung trong màn hình
       wrap.style.setProperty('--pf-sum-top', Math.round(Math.min(want, fit)) + 'px');
