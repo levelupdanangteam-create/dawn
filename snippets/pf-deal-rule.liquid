@@ -26,7 +26,9 @@
     if (window.__pfDealRule) return;
     window.__pfDealRule = true;
 
-    var DEAL = "{{ pf_deal_handles }}".split(',');
+    // Sản phẩm vẫn là deal nhưng KHÔNG bắt mua kèm (được thanh toán một mình). Thêm handle vào đây nếu cần.
+    var NO_RULE = ['canh-chua-isoup'];
+    var DEAL = "{{ pf_deal_handles }}".split(',').filter(function (h) { return NO_RULE.indexOf(h) === -1; });
     var CUR = "{{ product.handle }}";
     var PFLANG = '{{ request.locale.iso_code }}';
     var MSG = (PFLANG === 'vi')
