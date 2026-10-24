@@ -143,6 +143,8 @@
     #MainContent[data-template='cart']:has(#main-cart-footer:not(.is-empty)) .pf-cart-items-wrapper .page-width,
     #MainContent[data-template='cart']:has(#main-cart-footer:not(.is-empty)) .cart__footer-wrapper .page-width { max-width: none; padding-inline: 0; }
     #MainContent[data-template='cart']:has(#main-cart-footer:not(.is-empty)) [id^='pfcr-'] .pfcr__wrap { padding-inline: 0; }
+    /* Khung tóm tắt "dính" theo khi cuộn: luôn thấy tổng tiền + nút Thanh toán (vị trí top do script bên dưới tính) */
+    #MainContent[data-template='cart']:has(#main-cart-footer:not(.is-empty)) > .cart__footer-wrapper { position: sticky; top: var(--pf-sum-top, 0px); transition: top .2s ease; }
     /* Khung tóm tắt thẳng hàng với tiêu đề "Giỏ hàng"; mỗi cột cao vừa nội dung (không kéo dài → không có khoảng trắng thừa) */
     #MainContent[data-template='cart'] #main-cart-footer .cart__footer { padding-top: 3.6rem; padding-bottom: 3.6rem; }
 
@@ -163,3 +165,37 @@
     #main-cart-items .pf-cw { white-space: nowrap; }
   }
 </style>
+
+<script>
+  // Khung "Tóm tắt đơn hàng" dính theo khi cuộn (máy tính ≥ 1200px).
+  // top = ngay dưới header (nếu header đang hiện); nếu khung cao hơn màn hình thì đẩy lên sao cho
+  // ĐÁY khung (tổng tiền + nút Thanh toán) luôn nằm trong màn hình.
+  (function () {
+    if (window.__pfSumSticky) return; window.__pfSumSticky = true;
+    var mq = window.matchMedia('(min-width: 1200px)'), raf = 0, GAP = 16;
+    function calc() {
+      raf = 0;
+      var wrap = document.querySelector('#MainContent[data-template="cart"] > .cart__footer-wrapper');
+      var sum = wrap && wrap.querySelector('.pf-sum');
+      if (!wrap || !sum) return;
+      if (!mq.matches) { wrap.style.removeProperty('--pf-sum-top'); return; }
+      var hdr = document.querySelector('.section-header, sticky-header');
+      var hb = hdr ? Math.max(0, hdr.getBoundingClientRect().bottom) : 0;
+      var pad = sum.getBoundingClientRect().top - wrap.getBoundingClientRect().top;   // lề trên của khung trong section
+      var want = hb + GAP - pad;                                                     // mép trên khung ngay dưới header
+      var fit = window.innerHeight - GAP - pad - sum.offsetHeight;                   // giữ đáy khung trong màn hình
+      wrap.style.setProperty('--pf-sum-top', Math.round(Math.min(want, fit)) + 'px');
+    }
+    function later() { if (!raf) raf = requestAnimationFrame(calc); }
+    window.addEventListener('scroll', later, { passive: true });
+    window.addEventListener('resize', later);
+    if (mq.addEventListener) mq.addEventListener('change', later);
+    // Giỏ đổi số lượng / mã giảm giá → khung đổi chiều cao → tính lại
+    document.addEventListener('DOMContentLoaded', function () {
+      var f = document.getElementById('main-cart-footer');
+      if (f && window.MutationObserver) new MutationObserver(later).observe(f, { childList: true, subtree: true });
+      later();
+    });
+    later();
+  })();
+</script>
