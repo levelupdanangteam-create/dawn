@@ -25,6 +25,7 @@
       "block_order": [
         "announcement_freeship"
       ],
+      "disabled": true,
       "settings": {
         "auto_rotate": false,
         "change_slides_speed": 5,
@@ -33,8 +34,48 @@
         "show_social": false,
         "enable_country_selector": false,
         "enable_language_selector": false
+      }
+    },
+    "pf_ticker": {
+      "type": "pf-ticker",
+      "blocks": {
+        "t1": {
+          "type": "item",
+          "settings": {
+            "bold": "Tổng kho tại EU",
+            "sub": "không chờ hàng từ Việt Nam",
+            "link": ""
+          }
+        },
+        "t2": {
+          "type": "item",
+          "settings": {
+            "bold": "Hàng độc quyền",
+            "sub": "chỉ có tại Phomifood",
+            "link": ""
+          }
+        },
+        "t3": {
+          "type": "item",
+          "settings": {
+            "bold": "Freeship đơn từ 139€",
+            "sub": "hoặc giảm 10%",
+            "link": ""
+          }
+        }
       },
-      "disabled": true
+      "block_order": [
+        "t1",
+        "t2",
+        "t3"
+      ],
+      "settings": {
+        "bg": "#14672f",
+        "bg_2": "#1e8541",
+        "text_color": "#ffffff",
+        "accent": "#ffc61a",
+        "duration": 130
+      }
     },
     "header": {
       "type": "header",
@@ -64,47 +105,6 @@
         "height_mobile": 300,
         "text_align": "left",
         "fallback_asset": "pf-hero.jpg"
-      }
-    },
-    "pf_ticker": {
-      "type": "pf-ticker",
-      "blocks": {
-        "t1": {
-          "type": "item",
-          "settings": {
-            "bold": "Tổng kho tại EU",
-            "sub": "không chờ hàng từ Việt Nam",
-            "link": ""
-          }
-        },
-        "t2": {
-          "type": "item",
-          "settings": {
-            "bold": "Hàng độc quyền",
-            "sub": "chỉ có tại Phomifood",
-            "link": ""
-          }
-        },
-        "t3": {
-          "type": "item",
-          "settings": {
-            "bold": "Freeship đơn từ 169€",
-            "sub": "hoặc giảm 10%",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "t1",
-        "t2",
-        "t3"
-      ],
-      "settings": {
-        "bg": "#14672f",
-        "bg_2": "#1e8541",
-        "text_color": "#ffffff",
-        "accent": "#ffc61a",
-        "duration": 130
       }
     }
   },

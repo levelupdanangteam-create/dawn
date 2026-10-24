@@ -59,7 +59,7 @@
         "pill": "Tổng kho tại EU - Giao khắp Châu Âu",
         "badge": "Ưu đãi mới mỗi tuần",
         "heading_1": "Freeship",
-        "heading_2": "đơn từ 169€",
+        "heading_2": "đơn từ 139€",
         "text": "<p>Hoặc <strong>giảm 10%</strong> đơn hàng — hương vị Việt chuẩn vị, từ phở đến cà phê, giao tận cửa nhà bạn.</p>",
         "stat_1_title": "15 quốc gia",
         "stat_1_sub": "Miễn phí vận chuyển",
@@ -69,7 +69,7 @@
         "pop_1_countries": "sk|Slovakia\npl|Ba Lan\nde|Đức\nhu|Hungary\nbg|Bulgaria\nro|Romania\nat|Áo\nit|Ý\nhr|Croatia\nbe|Bỉ\nfr|Pháp\nnl|Hà Lan\nes|Tây Ban Nha\npt|Bồ Đào Nha\ngr|Hy Lạp",
         "pop_2_title": "Áp dụng cho 4 quốc gia sau:",
         "pop_2_countries": "ie|Ireland\ndk|Đan Mạch\nfi|Phần Lan\nse|Thụy Điển",
-        "stat_3": "Áp dụng đơn từ 169€",
+        "stat_3": "Áp dụng đơn từ 139€",
         "button_label": "Đi chợ ngay",
         "button_link": "shopify://collections/all",
         "padding_top": 48,
@@ -496,7 +496,7 @@
     "pf_promo_image": {
       "type": "pf-promo-image",
       "settings": {
-        "image": "shopify://shop_images/d2f7698f-d327-4686-9a04-cd0b7686c525.png",
+        "image": "shopify://shop_images/40d4fbab-dabf-4309-bcb5-3349148fc772.png",
         "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/a206d210-2d7b-4262-8930-5d659a92e314_1.png?v=1784527901",
         "alt": "Ưu đãi vận chuyển PHOMIFOOD",
         "link": "",
