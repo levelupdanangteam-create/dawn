@@ -565,20 +565,6 @@ body.gradient {
     border-radius: 16px;
   }
 }
-/* Desktop: cột ảnh và cột thông tin rộng bằng nhau (50/50) */
-@media screen and (min-width: 990px) {
-  #MainContent[data-template='product'] .product:not(.product--no-media) .product__media-wrapper,
-  #MainContent[data-template='product'] .product:not(.product--no-media) .product__info-wrapper {
-    max-width: 50%;
-    width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2);
-  }
-  #MainContent[data-template='product'] .product:not(.product--no-media) .product__info-wrapper {
-    padding: 0 0 0 2rem;
-  }
-  #MainContent[data-template='product'] .product:not(.product--no-media).product--right .product__info-wrapper {
-    padding: 0 2rem 0 0;
-  }
-}
 /* Prominent product title */
 #MainContent[data-template='product'] .product__title,
 #MainContent[data-template='product'] .product__title > * {
@@ -910,25 +896,7 @@ body:has(.menu-drawer-container[open]) .slideshow__control {
 /* Nút "Xem giỏ hàng & thanh toán" được style trực tiếp trong snippets/cart-drawer.liquid
    để áp ngay khi render (tránh nháy trắng do thứ tự tải CSS). */
 
-/* ===== Ảnh sản phẩm (desktop/tablet): 1 ảnh lớn ở trên, các ảnh nhỏ (thumbnail) xếp hàng bên dưới =====
-   Ép bố cục bất kể kiểu "Desktop layout" đang chọn trong theme editor. */
+/* ===== Ảnh sản phẩm: thumbnail 3 cột (ảnh chính trên, 3 thumbnail dưới) ===== */
 @media screen and (min-width: 750px){
-  #MainContent[data-template='product'] .product__media-wrapper .product__media-list .product__media-item:not(.is-active){ display: none !important; }
-  #MainContent[data-template='product'] .product__media-wrapper .product__media-list .product__media-item.is-active{ width: 100% !important; max-width: 100% !important; }
-  #MainContent[data-template='product'] .product__media-wrapper .thumbnail-slider{ display: block !important; margin-top: 1rem; }
-  #MainContent[data-template='product'] .product__media-wrapper .thumbnail-slider .slider-button{ display: none !important; }
-  #MainContent[data-template='product'] .product__media-wrapper .thumbnail-list{
-    display: grid !important;
-    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-    gap: .8rem !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: visible !important;
-  }
-  #MainContent[data-template='product'] .product__media-wrapper .thumbnail-list::after{ display: none !important; }
-  #MainContent[data-template='product'] .product__media-wrapper .thumbnail-list .thumbnail-list__item{
-    width: auto !important;
-    max-width: none !important;
-    margin: 0 !important;
-  }
+  .product--thumbnail .thumbnail-list{ grid-template-columns: repeat(3, 1fr) !important; }
 }

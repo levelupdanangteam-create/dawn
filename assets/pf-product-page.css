@@ -106,3 +106,20 @@
   .pf-hl__k { padding-bottom: .4rem; background: #fff; font-size: 1.2rem; text-transform: uppercase; letter-spacing: .05em; color: #8a8173; }
   .pf-hl__v { padding-top: 0; }
 }
+
+/* ---------- Hai cột Ảnh / Thông tin: cùng mép trên, cùng chiều cao (máy tính + tablet) ----------
+   - Khung thông tin bị đẩy xuống 30px do top:30px còn sót từ kiểu sticky của Dawn → đưa về 0.
+   - Khung ảnh trắng kéo dài bằng khung thông tin, ảnh nằm giữa theo chiều dọc. */
+@media screen and (min-width: 750px) {
+  #MainContent[data-template='product'] .product { align-items: stretch; }
+  #MainContent[data-template='product'] .product__info-container { top: 0 !important; }
+  #MainContent[data-template='product'] .product__media-wrapper > media-gallery.product__column-sticky {
+    position: static; height: 100%; display: flex; flex-direction: column; gap: 1.2rem;
+  }
+  #MainContent[data-template='product'] .product__media-wrapper slider-component.slider-mobile-gutter {
+    flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0;
+  }
+  #MainContent[data-template='product'] .product__media-wrapper .product__media-list { flex: 1 1 auto; align-items: stretch; margin-bottom: 0; }
+  #MainContent[data-template='product'] .product__media-wrapper .product__media-item { display: flex; flex-direction: column; justify-content: center; }
+  #MainContent[data-template='product'] .product__media-wrapper .product__media-item > * { width: 100%; }
+}
