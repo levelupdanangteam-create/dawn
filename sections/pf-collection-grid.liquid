@@ -1,0 +1,126 @@
+{%- comment -%}
+  Trang danh mục (/collections/...) kiểu trang chủ (26/10): đường dẫn nhỏ, tiêu đề xanh căn trái + số sản phẩm + ô sắp xếp,
+  lưới thẻ pf-flash-card (6/5/3/2 cột), phân trang. CSS chung ở snippet pf-flash-card (.pf-simple).
+  Thay cho main-collection-product-grid (Dawn) trong templates/collection.json; giữ key "product-grid" để pf-catalog
+  vẫn ẩn được lưới này trên /collections/all.
+{%- endcomment -%}
+{%- liquid
+  assign vi = false
+  if request.locale.iso_code == 'vi'
+    assign vi = true
+  endif
+  assign per_page = section.settings.products_per_page
+  assign title = collection.title
+  if section.settings.sentence_case
+    assign t_first = title | slice: 0 | upcase
+    assign t_rest = title | slice: 1, 200 | downcase
+    assign title = t_first | append: t_rest
+  endif
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+-%}
+
+<div id="pf-cg-{{ section.id }}" class="pf-simple" style="--cols: {{ section.settings.columns_desktop }}; padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
+  <div class="page-width pf-simple__full">
+    <nav class="pf-cg__crumb" aria-label="{% if vi %}Đường dẫn{% else %}Breadcrumb{% endif %}">
+      <a href="{{ routes.root_url }}">{% if vi %}Trang chủ{% else %}Home{% endif %}</a>
+      <span aria-hidden="true">/</span>
+      <span>{{ title }}</span>
+    </nav>
+
+    {%- paginate collection.products by per_page -%}
+      <div class="pf-simple__head">
+        <h1 class="pf-cg__title pf-simple__title">{{ title }}</h1>
+        <span class="pf-cg__count">{{ collection.products_count }} {% if vi %}sản phẩm{% else %}products{% endif %}</span>
+        {%- if section.settings.show_sort and collection.products_count > 1 -%}
+          <form class="pf-cg__sort" method="get" action="{{ collection.url }}">
+            <label for="pf-cg-sort-{{ section.id }}">{% if vi %}Sắp xếp{% else %}Sort{% endif %}</label>
+            <select id="pf-cg-sort-{{ section.id }}" name="sort_by" onchange="this.form.submit()">
+              {%- for option in collection.sort_options -%}
+                <option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name | escape }}</option>
+              {%- endfor -%}
+            </select>
+            <noscript><button type="submit">OK</button></noscript>
+          </form>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.show_description and collection.description != blank -%}
+        <div class="pf-simple__sub pf-cg__desc">{{ collection.description }}</div>
+      {%- endif -%}
+
+      {%- if collection.products.size > 0 -%}
+        <div class="pf-simple__grid pf-cg__grid">
+          {%- for p in collection.products -%}
+            {%- render 'pf-flash-card', p: p, section_id: section.id, extra_class: 'pf-cg__card', low_stock: section.settings.low_stock -%}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <p class="pf-cg__empty">{% if vi %}Danh mục này chưa có sản phẩm.{% else %}No products in this collection yet.{% endif %}</p>
+      {%- endif -%}
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="pf-cg__pages" aria-label="{% if vi %}Phân trang{% else %}Pagination{% endif %}">
+          {%- if paginate.previous -%}<a class="pf-cg__pg pf-cg__pg--nav" href="{{ paginate.previous.url }}" aria-label="{% if vi %}Trang trước{% else %}Previous{% endif %}">‹</a>{%- endif -%}
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}
+              <a class="pf-cg__pg" href="{{ part.url }}">{{ part.title }}</a>
+            {%- elsif part.title == paginate.current_page -%}
+              <span class="pf-cg__pg pf-cg__pg--on" aria-current="page">{{ part.title }}</span>
+            {%- else -%}
+              <span class="pf-cg__pg pf-cg__pg--gap">{{ part.title }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if paginate.next -%}<a class="pf-cg__pg pf-cg__pg--nav" href="{{ paginate.next.url }}" aria-label="{% if vi %}Trang sau{% else %}Next{% endif %}">›</a>{%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+<style>
+  #pf-cg-{{ section.id }} .pf-cg__crumb { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin: 0 0 1.6rem; font-size: 1.3rem; color: #8a8173; }
+  #pf-cg-{{ section.id }} .pf-cg__crumb a { color: #14672f; text-decoration: none; font-weight: 700; }
+  #pf-cg-{{ section.id }} .pf-cg__crumb a:hover { text-decoration: underline; }
+  #pf-cg-{{ section.id }} .pf-cg__title { margin: 0; }
+  #pf-cg-{{ section.id }} .pf-cg__count { font-size: 1.35rem; font-weight: 700; color: #14672f; background: #eef6f0; padding: .45rem 1.1rem; border-radius: 999px; }
+  #pf-cg-{{ section.id }} .pf-cg__sort { margin-left: auto; display: inline-flex; align-items: center; gap: .8rem; }
+  #pf-cg-{{ section.id }} .pf-cg__sort label { font-size: 1.35rem; color: #8a8173; }
+  #pf-cg-{{ section.id }} .pf-cg__sort select {
+    font: inherit; font-size: 1.4rem; font-weight: 700; color: #14672f; background: #fff; cursor: pointer;
+    border: 1.5px solid #1e8541; border-radius: 999px; padding: .7rem 3.2rem .7rem 1.6rem;
+    -webkit-appearance: none; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2314672f' stroke-width='2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 1.2rem center;
+  }
+  #pf-cg-{{ section.id }} .pf-cg__desc { margin-top: 1rem; }
+  #pf-cg-{{ section.id }} .pf-cg__empty { margin: 3rem 0; font-size: 1.5rem; color: #8a8173; }
+  #pf-cg-{{ section.id }} .pf-cg__pages { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem; margin-top: 3.2rem; }
+  #pf-cg-{{ section.id }} .pf-cg__pg { min-width: 4rem; height: 4rem; padding: 0 1rem; display: inline-grid; place-items: center; border-radius: 999px; border: 1.5px solid #ececec; background: #fff; color: #2a2622; font-size: 1.45rem; font-weight: 700; text-decoration: none; }
+  #pf-cg-{{ section.id }} a.pf-cg__pg:hover { border-color: #1e8541; color: #14672f; }
+  #pf-cg-{{ section.id }} .pf-cg__pg--on { background: #1e8541; border-color: #1e8541; color: #fff; }
+  #pf-cg-{{ section.id }} .pf-cg__pg--gap { border-color: transparent; background: transparent; }
+  #pf-cg-{{ section.id }} .pf-cg__pg--nav { font-size: 2rem; }
+  @media (max-width: 749px) {
+    #pf-cg-{{ section.id }} .pf-cg__crumb { margin-bottom: 1rem; font-size: 1.2rem; }
+    #pf-cg-{{ section.id }} .pf-cg__count { font-size: 1.15rem; padding: .35rem .9rem; }
+    #pf-cg-{{ section.id }} .pf-cg__sort { width: 100%; margin-left: 0; }
+    #pf-cg-{{ section.id }} .pf-cg__sort select { flex: 1; font-size: 1.3rem; }
+    #pf-cg-{{ section.id }} .pf-cg__pg { min-width: 3.6rem; height: 3.6rem; font-size: 1.3rem; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Lưới danh mục kiểu trang chủ",
+  "tag": "section",
+  "settings": [
+    { "type": "range", "id": "products_per_page", "min": 12, "max": 48, "step": 6, "label": "Số sản phẩm mỗi trang", "default": 36 },
+    { "type": "range", "id": "columns_desktop", "min": 3, "max": 6, "step": 1, "label": "Số cột (desktop)", "default": 6 },
+    { "type": "checkbox", "id": "sentence_case", "label": "Viết tên danh mục dạng câu (MÌ ĂN LIỀN → Mì ăn liền)", "default": true },
+    { "type": "checkbox", "id": "show_sort", "label": "Hiện ô sắp xếp", "default": true },
+    { "type": "checkbox", "id": "show_description", "label": "Hiện mô tả danh mục", "default": false },
+    { "type": "range", "id": "low_stock", "min": 0, "max": 50, "step": 1, "label": "Hiện \"Chỉ còn N\" khi tồn kho ≤", "info": "0 = tắt", "default": 10 },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 40 }
+  ]
+}
+{% endschema %}
