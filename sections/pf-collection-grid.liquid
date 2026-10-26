@@ -19,6 +19,8 @@
   assign sort_by = collection.sort_by | default: collection.default_sort_by
 -%}
 
+{%- comment -%} /collections/all dùng bố cục pf-catalog: không dựng lưới này ở đó (tránh hiện thoáng qua + đỡ nặng trang) {%- endcomment -%}
+{%- unless collection.handle == 'all' -%}
 <div id="pf-cg-{{ section.id }}" class="pf-simple" style="--cols: {{ section.settings.columns_desktop }}; padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
   <div class="page-width pf-simple__full">
     <nav class="pf-cg__crumb" aria-label="{% if vi %}Đường dẫn{% else %}Breadcrumb{% endif %}">
@@ -121,6 +123,7 @@
     #pf-cg-{{ section.id }} .pf-cg__more-btn { width: 100%; justify-content: center; font-size: 1.45rem; padding: 1.1rem 1.6rem; }
   }
 </style>
+{%- endunless -%}
 
 {% schema %}
 {
