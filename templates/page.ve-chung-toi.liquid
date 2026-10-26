@@ -1,14 +1,14 @@
 {%- comment -%}
   PHOMIFOOD — trang "Về chúng tôi" (/pages/ve-chung-toi), thiết kế lại 26/10 theo file "Về chúng tôi 1.pdf":
-  Hero → 01 Chúng tôi là ai (video) → 02 Triết lý → 03 Sản phẩm → 04 Kho Praha (6 ảnh kho) → 05 Vì sao chọn
-  → 06 Ưu đãi → 07 Khách nói gì → CTA cuối.
+  Hero → 01 Chúng tôi là ai (video) → 02 Triết lý → 03 Sản phẩm → 04 Kho Praha (6 ảnh kho) → 05 Đối tác (hàng logo + tên)
+  → 06 Vì sao chọn → 07 Ưu đãi → 08 Khách nói gì → CTA cuối.
   Nhẹ: chỉ CSS + SVG nội tuyến, không thư viện/JS; ảnh lazy + srcset theo bề ngang; video preload="none" có ảnh poster.
   Bản cũ xem trong lịch sử git của file này.
 {%- endcomment -%}
 {%- liquid
   assign pfa_cdn = 'https://cdn.shopify.com/s/files/1/0749/9353/3018/files/'
   assign pfa_kho = '759881151_122141535231179229_3801021190243726628_n.jpg?v=1787036177,764774570_122142676821179229_5406358648784605218_n.jpg?v=1787036177,764800600_122142677025179229_3432164435546363149_n.jpg?v=1787036177,779019196_122144936703179229_7436146164322467373_n.jpg?v=1787036177,764661354_122142676899179229_3503208907088839976_n.jpg?v=1787036176,778869910_122144937135179229_2084264640343354086_n.jpg?v=1787036177' | split: ','
-  assign pfa_kho_cap = 'Kho hàng tại Praha,Hàng Việt chính hãng,Sẵn hàng tại kho,Đóng gói cẩn thận,Kho Phomifood,Giao khắp Châu Âu' | split: ','
+  assign pfa_brands = 'Acecook|acecook-mi-tom-hao-hao-vi-tom-chua-cay-75g-x-30-goi;Vifon|vifon-pho-bo-65g-x-30-goi;Chinsu|chinsu-pho-story-truyen-thong-nuoc-trong;Omachi|mi-tom-omachi-bo-ham;Nam Ngư|nuoc-mam-nam-ngu-750ml;Trung Nguyên|tn-ca-phe-g7-21-goi-x-16-g-x-24-hop;Ông Thọ|sua-dac-ong-tho-lon-do-380g-x-48-hop;TH true MILK|sua-th-true-milk-it-duong-180ml-x-48-hop;Orion Choco-Pie|banh-chocopie-classic-396g-x-8-goi;Oishi|chip-oishi-ngo-80-goi-32g-x-80-goi-bich;Knorr|hat-nem-knor-900g-x-8-goi;Ajinomoto|ajinomoto-mi-chinh-454g;Vinamit|mit-say-vinamit-210g-x-20-goi;Tufoco|tufoco-banh-trang-cuon-tron-size-22-340g-x-44-goi;Vĩnh Thuận|bot-nang-vinh-thuan-400g-x-20;C2|nuoc-tra-xanh-c2-455mlx24-chai' | split: ';'
   assign pfa_fb = '765158470_122111552733396579_5765327748659751309_n.jpg,765818079_122111552829396579_5401768943136104717_n.jpg,764800463_122111552685396579_4072291594541595060_n.jpg' | split: ','
   assign pfa_cats = 'gạo-nếp-cac-loại|Gạo & Nếp|ST25, Jasmine, gạo nếp các loại;bun-phở-kho|Bún – Phở – Bánh tráng|Bún bò Huế, bánh phở, bánh tráng;bột-gia-vị|Gia vị & Nguyên liệu|Nước mắm, nước tương, sa tế, hạt nêm;mi-an-liền|Mì ăn liền|Hảo Hảo, Omachi, Vifon, Kokomi;banh-kẹo-dồ-an-vặt|Đồ ăn vặt|Bánh, kẹo, snack, thạch, socola;dồ-uống|Cà phê & Đồ uống|Cà phê G7, trà, nước ngọt;hang-dộc-quyền|Chỉ có tại Phomifood|Hàng độc quyền, chọn lọc' | split: ';'
 -%}
@@ -122,18 +122,42 @@
       <div class="pfa-kho">
         {%- for f in pfa_kho -%}
           <figure>
-            <img src="{{ pfa_cdn }}{{ f }}&width=480" srcset="{{ pfa_cdn }}{{ f }}&width=320 320w, {{ pfa_cdn }}{{ f }}&width=480 480w, {{ pfa_cdn }}{{ f }}&width=720 720w" sizes="(max-width: 749px) 50vw, 33vw" loading="lazy" decoding="async" alt="Kho Phomifood tại Praha – {{ pfa_kho_cap[forloop.index0] }}" width="720" height="540">
-            <figcaption>{{ pfa_kho_cap[forloop.index0] }}</figcaption>
+            <img src="{{ pfa_cdn }}{{ f }}&width=480" srcset="{{ pfa_cdn }}{{ f }}&width=320 320w, {{ pfa_cdn }}{{ f }}&width=480 480w, {{ pfa_cdn }}{{ f }}&width=720 720w" sizes="(max-width: 749px) 50vw, 33vw" loading="lazy" decoding="async" alt="Kho Phomifood tại Praha {{ forloop.index }}" width="720" height="540">
           </figure>
         {%- endfor -%}
       </div>
     </div>
   </section>
 
-  {%- comment -%}============ 05 · VÌ SAO ============{%- endcomment -%}
+  {%- comment -%}============ 05 · ĐỐI TÁC (thương hiệu có tại kho; ảnh = 1 sản phẩm tiêu biểu của hãng) ============{%- endcomment -%}
+  <section class="pfa-sec pfa-sec--mint">
+    <div class="pfa-wrap">
+      <p class="pfa-kicker">05 · Đối tác</p>
+      <h2 class="pfa-h2">Đối tác của Phomifood</h2>
+      <p class="pfa-p">Những thương hiệu Việt quen thuộc luôn có sẵn tại kho Phomifood.</p>
+      <ul class="pfa-brands">
+        {%- for row in pfa_brands -%}
+          {%- assign parts = row | split: '|' -%}
+          {%- assign bp = all_products[parts[1]] -%}
+          <li>
+            <a href="{{ routes.search_url }}?q={{ parts[0] | url_encode }}&type=product">
+              <span class="pfa-brand__logo">
+                {%- if bp.featured_image -%}
+                  {{ bp.featured_image | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80, 160', sizes: '80px', alt: parts[0] }}
+                {%- endif -%}
+              </span>
+              <b>{{ parts[0] }}</b>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </section>
+
+  {%- comment -%}============ 06 · VÌ SAO ============{%- endcomment -%}
   <section class="pfa-sec pfa-sec--cream">
     <div class="pfa-wrap">
-      <p class="pfa-kicker">05 · Vì sao</p>
+      <p class="pfa-kicker">06 · Vì sao</p>
       <h2 class="pfa-h2">Vì sao chọn Phomifood</h2>
       <div class="pfa-grid pfa-grid--4">
         <div class="pfa-card">
@@ -166,7 +190,7 @@
   {%- comment -%}============ 06 · ƯU ĐÃI ============{%- endcomment -%}
   <section class="pfa-sec pfa-sec--rose">
     <div class="pfa-wrap pfa-center">
-      <p class="pfa-kicker">06 · Ưu đãi</p>
+      <p class="pfa-kicker">07 · Ưu đãi</p>
       <h2 class="pfa-h2 pfa-h2--red">Nhẹ ví hơn cùng Phomifood</h2>
       <p class="pfa-p">Freeship, giảm giá, combo: mua cho cả nhà mà không lo xót ví.</p>
       <div class="pfa-grid pfa-grid--3">
@@ -195,7 +219,7 @@
   {%- comment -%}============ 07 · KHÁCH HÀNG ============{%- endcomment -%}
   <section class="pfa-sec">
     <div class="pfa-wrap">
-      <p class="pfa-kicker">07 · Khách hàng</p>
+      <p class="pfa-kicker">08 · Khách hàng</p>
       <h2 class="pfa-h2">Khách nói gì</h2>
       <p class="pfa-p">Mỗi đơn là một hành trình từ kho Praha đến bếp nhà khách.</p>
       <div class="pfa-grid pfa-grid--3">
@@ -218,7 +242,6 @@
         <a class="pfa-btn pfa-btn--white" href="{{ routes.all_products_collection_url }}">Đi chợ ngay</a>
         <a class="pfa-btn pfa-btn--line" href="{% if pfa_combo != blank %}{{ pfa_combo.url }}{% else %}{{ routes.all_products_collection_url }}{% endif %}">Xem combo tiết kiệm</a>
       </div>
-      <p class="pfa-cta__note">Vào nhóm Phomifood để nhận ưu đãi và gợi ý món mỗi tuần.</p>
     </div>
   </section>
 </div>
@@ -281,9 +304,16 @@
   .pfa-steps small { display: block; font-size: 1.15rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--red); }
   .pfa-steps b { display: block; margin-top: .3rem; font-size: 1.5rem; color: var(--ink); }
   .pfa-kho { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; }
-  .pfa-kho figure { position: relative; margin: 0; border-radius: 14px; overflow: hidden; aspect-ratio: 4 / 3; background: #efe8da; }
+  .pfa-kho figure { margin: 0; border-radius: 14px; overflow: hidden; aspect-ratio: 4 / 3; background: #efe8da; }
   .pfa-kho img { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .pfa-kho figcaption { position: absolute; inset: auto 0 0 0; padding: 2.4rem 1.2rem .9rem; background: linear-gradient(transparent, rgba(0, 0, 0, .62)); color: #fff; font-size: 1.3rem; font-weight: 700; }
+
+  .pfa-brands { display: flex; gap: 1.2rem; margin: 2.4rem 0 0; padding: .4rem .2rem 1.2rem; list-style: none; overflow-x: auto; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
+  .pfa-brands li { flex: 0 0 auto; scroll-snap-align: start; }
+  .pfa-brands a { display: flex; flex-direction: column; align-items: center; gap: .8rem; width: 11.6rem; padding: 1.4rem .8rem 1.2rem; border: 1px solid var(--line); border-radius: 16px; background: #fff; text-decoration: none; color: var(--ink); transition: transform .15s ease, box-shadow .15s ease; }
+  .pfa-brands a:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(47, 43, 37, .1); }
+  .pfa-brand__logo { display: block; width: 7.2rem; height: 7.2rem; border-radius: 50%; overflow: hidden; background: #fff; border: 1px solid var(--line); }
+  .pfa-brand__logo img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .pfa-brands b { font-size: 1.35rem; font-weight: 800; line-height: 1.25; text-align: center; }
 
   .pfa-offer { padding: 2.6rem 2.2rem; border: 1.5px solid #f2c4b4; border-radius: 18px; background: #fff; }
   .pfa-pill { display: inline-block; padding: .5rem 1.4rem; border-radius: 999px; background: var(--rose); color: var(--red); font-size: 1.25rem; font-weight: 800; }
@@ -299,12 +329,11 @@
   .pfa-cta { padding: clamp(5rem, 8vw, 8rem) 0; background: var(--g-d); color: #fff; }
   .pfa-cta h2 { margin: 0 0 1.2rem; font-size: clamp(3rem, 4.4vw, 4.8rem); font-weight: 900; color: #fff; }
   .pfa-cta p { margin: 0 auto; max-width: 46rem; font-size: 1.7rem; line-height: 1.6; color: rgba(255, 255, 255, .9); }
-  .pfa-cta__btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.2rem; margin: 2.6rem 0 2rem; }
+  .pfa-cta__btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.2rem; margin: 2.6rem 0 0; }
   .pfa-btn--white { background: #fff; color: var(--g-d); }
   .pfa-btn--white:hover { background: #ffc61a; color: var(--g-d); }
   .pfa-btn--line { background: transparent; border: 2px solid #fff; color: #fff; }
   .pfa-btn--line:hover { background: rgba(255, 255, 255, .12); }
-  .pfa-cta .pfa-cta__note { font-size: 1.3rem; color: rgba(255, 255, 255, .75); }
 
   @media (max-width: 989px) {
     .pfa-grid--4, .pfa-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -317,8 +346,11 @@
     .pfa-cat b { font-size: 1.4rem; }
     .pfa-cat--all { padding: 1.8rem; }
     .pfa-cat--all b { font-size: 1.6rem; }
-    .pfa-kho figcaption { font-size: 1.15rem; padding: 2rem .9rem .7rem; }
     .pfa-fb { aspect-ratio: 1 / 1; }
+    .pfa-brands { gap: .8rem; }
+    .pfa-brands a { width: 9.6rem; padding: 1.1rem .6rem 1rem; }
+    .pfa-brand__logo { width: 6rem; height: 6rem; }
+    .pfa-brands b { font-size: 1.2rem; }
   }
-  @media (prefers-reduced-motion: reduce) { .pfa-cat, .pfa-btn { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .pfa-cat, .pfa-btn, .pfa-brands a { transition: none; } }
 </style>
