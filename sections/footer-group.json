@@ -24,7 +24,7 @@
           "type": "text",
           "settings": {
             "heading": "Chính sách & Hỗ trợ",
-            "subtext": "<p><a href=\"/pages/chinh-sach-mua-sam\">Chính sách mua sắm & vận chuyển</a></p><p><a href=\"/pages/tra-cuu-phi-ship\">Tra cứu phí ship</a></p><p><a href=\"/pages/contact\">Liên hệ</a></p>"
+            "subtext": "<p><a href=\"/pages/chinh-sach-mua-s%E1%BA%AFm-v%E1%BA%ADn-chuy%E1%BB%83n\">Chính sách mua sắm & vận chuyển</a></p><p><a href=\"/pages/tra-cuu-phi-ship\">Tra cứu phí ship</a></p><p><a href=\"/pages/contact\">Liên hệ</a></p>"
           }
         },
         "business_info": {
