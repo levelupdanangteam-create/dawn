@@ -838,6 +838,15 @@
             "title": "Sữa các loại",
             "subtitle": ""
           }
+        },
+        "banner_xa_kho": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/uu-dai-xa-kho-banner.webp",
+            "image_mobile": "",
+            "link": "shopify://pages/flash-sale",
+            "alt": "Ưu đãi xả kho - giảm sốc tới 17%"
+          }
         }
       },
       "block_order": [
@@ -846,6 +855,7 @@
         "c3",
         "c4",
         "c5",
+        "banner_xa_kho",
         "c6",
         "c7",
         "c8",
