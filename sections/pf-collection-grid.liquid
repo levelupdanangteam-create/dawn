@@ -1,6 +1,6 @@
 {%- comment -%}
   Trang danh mục (/collections/...) kiểu trang chủ (26/10): đường dẫn nhỏ, tiêu đề xanh căn trái + số sản phẩm + ô sắp xếp,
-  lưới thẻ pf-flash-card (6/5/3/2 cột), phân trang. CSS chung ở snippet pf-flash-card (.pf-simple).
+  lưới thẻ pf-flash-card (6/5/3/2 cột), phân trang, nút "Khám phá các sản phẩm khác" → /collections/all. CSS chung ở snippet pf-flash-card (.pf-simple).
   Thay cho main-collection-product-grid (Dawn) trong templates/collection.json; giữ key "product-grid" để pf-catalog
   vẫn ẩn được lưới này trên /collections/all.
 {%- endcomment -%}
@@ -73,6 +73,12 @@
         </nav>
       {%- endif -%}
     {%- endpaginate -%}
+
+    {%- if section.settings.more_label != blank and collection.handle != 'all' -%}
+      <div class="pf-cg__more">
+        <a class="pf-cg__more-btn" href="{{ section.settings.more_link | default: routes.all_products_collection_url }}">{{ section.settings.more_label }} <span aria-hidden="true">›</span></a>
+      </div>
+    {%- endif -%}
   </div>
 </div>
 
@@ -99,12 +105,20 @@
   #pf-cg-{{ section.id }} .pf-cg__pg--on { background: #1e8541; border-color: #1e8541; color: #fff; }
   #pf-cg-{{ section.id }} .pf-cg__pg--gap { border-color: transparent; background: transparent; }
   #pf-cg-{{ section.id }} .pf-cg__pg--nav { font-size: 2rem; }
+  #pf-cg-{{ section.id }} .pf-cg__more { display: flex; justify-content: center; margin-top: 3.2rem; }
+  #pf-cg-{{ section.id }} .pf-cg__more-btn {
+    display: inline-flex; align-items: center; gap: .6rem; text-decoration: none; background: #1e8541; color: #fff;
+    font-size: 1.6rem; font-weight: 800; padding: 1.2rem 3.2rem; border-radius: 999px; transition: background .15s ease;
+  }
+  #pf-cg-{{ section.id }} .pf-cg__more-btn:hover { background: #14672f; color: #fff; }
+  #pf-cg-{{ section.id }} .pf-cg__more-btn span { font-size: 2rem; line-height: 1; }
   @media (max-width: 749px) {
     #pf-cg-{{ section.id }} .pf-cg__crumb { margin-bottom: 1rem; font-size: 1.2rem; }
     #pf-cg-{{ section.id }} .pf-cg__count { font-size: 1.15rem; padding: .35rem .9rem; }
     #pf-cg-{{ section.id }} .pf-cg__sort { width: 100%; margin-left: 0; }
     #pf-cg-{{ section.id }} .pf-cg__sort select { flex: 1; font-size: 1.3rem; }
     #pf-cg-{{ section.id }} .pf-cg__pg { min-width: 3.6rem; height: 3.6rem; font-size: 1.3rem; }
+    #pf-cg-{{ section.id }} .pf-cg__more-btn { width: 100%; justify-content: center; font-size: 1.45rem; padding: 1.1rem 1.6rem; }
   }
 </style>
 
@@ -118,6 +132,8 @@
     { "type": "checkbox", "id": "sentence_case", "label": "Viết tên danh mục dạng câu (MÌ ĂN LIỀN → Mì ăn liền)", "default": true },
     { "type": "checkbox", "id": "show_sort", "label": "Hiện ô sắp xếp", "default": true },
     { "type": "checkbox", "id": "show_description", "label": "Hiện mô tả danh mục", "default": false },
+    { "type": "text", "id": "more_label", "label": "Nút cuối trang", "default": "Khám phá các sản phẩm khác" },
+    { "type": "url", "id": "more_link", "label": "Link nút cuối trang (để trống = Danh sách sản phẩm)" },
     { "type": "range", "id": "low_stock", "min": 0, "max": 50, "step": 1, "label": "Hiện \"Chỉ còn N\" khi tồn kho ≤", "info": "0 = tắt", "default": 10 },
     { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 24 },
     { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 40 }

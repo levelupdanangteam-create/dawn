@@ -149,7 +149,9 @@
         "show_description": false,
         "low_stock": 10,
         "padding_top": 24,
-        "padding_bottom": 40
+        "padding_bottom": 40,
+        "more_label": "Khám phá các sản phẩm khác",
+        "more_link": ""
       }
     },
     "pf_combo_cta": {
