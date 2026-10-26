@@ -120,6 +120,8 @@
     flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0;
   }
   #MainContent[data-template='product'] .product__media-wrapper .product__media-list { flex: 1 1 auto; align-items: stretch; margin-bottom: 0; }
-  #MainContent[data-template='product'] .product__media-wrapper .product__media-item { display: flex; flex-direction: column; justify-content: center; }
+  /* Chỉ ảnh đang chọn (.is-active) mới hiện; ảnh khác vẫn ẩn để giữ kiểu 1 ảnh lớn + thumbnail */
+  #MainContent[data-template='product'] .product--thumbnail .product__media-wrapper .product__media-item.is-active,
+  #MainContent[data-template='product'] .product--thumbnail_slider .product__media-wrapper .product__media-item.is-active { display: flex; flex-direction: column; justify-content: center; }
   #MainContent[data-template='product'] .product__media-wrapper .product__media-item > * { width: 100%; }
 }
