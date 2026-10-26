@@ -565,6 +565,20 @@ body.gradient {
     border-radius: 16px;
   }
 }
+/* Desktop: cột ảnh và cột thông tin rộng bằng nhau (50/50) */
+@media screen and (min-width: 990px) {
+  #MainContent[data-template='product'] .product:not(.product--no-media) .product__media-wrapper,
+  #MainContent[data-template='product'] .product:not(.product--no-media) .product__info-wrapper {
+    max-width: 50%;
+    width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2);
+  }
+  #MainContent[data-template='product'] .product:not(.product--no-media) .product__info-wrapper {
+    padding: 0 0 0 2rem;
+  }
+  #MainContent[data-template='product'] .product:not(.product--no-media).product--right .product__info-wrapper {
+    padding: 0 2rem 0 0;
+  }
+}
 /* Prominent product title */
 #MainContent[data-template='product'] .product__title,
 #MainContent[data-template='product'] .product__title > * {
