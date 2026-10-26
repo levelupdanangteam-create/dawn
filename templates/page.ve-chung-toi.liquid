@@ -2,14 +2,13 @@
   PHOMIFOOD — trang "Về chúng tôi" (/pages/ve-chung-toi), thiết kế lại 26/10 theo file "Về chúng tôi 1.pdf":
   Hero → 01 Chúng tôi là ai (video) → 02 Triết lý → 03 Sản phẩm → 04 Kho Praha (6 ảnh kho) → 05 Đối tác (hàng logo + tên)
   → 06 Vì sao chọn → 07 Ưu đãi → 08 Khách nói gì → CTA cuối.
-  Nhẹ: chỉ CSS + SVG nội tuyến, không thư viện/JS; ảnh lazy + srcset theo bề ngang; video preload="none" có ảnh poster.
+  Nhẹ: CSS + SVG nội tuyến, không thư viện, JS chỉ vài dòng cho chấm Đối tác; ảnh lazy + srcset theo bề ngang; video preload="none" có ảnh poster.
   Bản cũ xem trong lịch sử git của file này.
 {%- endcomment -%}
 {%- liquid
   assign pfa_cdn = 'https://cdn.shopify.com/s/files/1/0749/9353/3018/files/'
   assign pfa_kho = '759881151_122141535231179229_3801021190243726628_n.jpg?v=1787036177,764774570_122142676821179229_5406358648784605218_n.jpg?v=1787036177,764800600_122142677025179229_3432164435546363149_n.jpg?v=1787036177,779019196_122144936703179229_7436146164322467373_n.jpg?v=1787036177,764661354_122142676899179229_3503208907088839976_n.jpg?v=1787036176,778869910_122144937135179229_2084264640343354086_n.jpg?v=1787036177' | split: ','
   assign pfa_brands = 'Acecook|acecook-mi-tom-hao-hao-vi-tom-chua-cay-75g-x-30-goi;Vifon|vifon-pho-bo-65g-x-30-goi;Chinsu|chinsu-pho-story-truyen-thong-nuoc-trong;Omachi|mi-tom-omachi-bo-ham;Nam Ngư|nuoc-mam-nam-ngu-750ml;Trung Nguyên|tn-ca-phe-g7-21-goi-x-16-g-x-24-hop;Ông Thọ|sua-dac-ong-tho-lon-do-380g-x-48-hop;TH true MILK|sua-th-true-milk-it-duong-180ml-x-48-hop;Orion Choco-Pie|banh-chocopie-classic-396g-x-8-goi;Oishi|chip-oishi-ngo-80-goi-32g-x-80-goi-bich;Knorr|hat-nem-knor-900g-x-8-goi;Ajinomoto|ajinomoto-mi-chinh-454g;Vinamit|mit-say-vinamit-210g-x-20-goi;Tufoco|tufoco-banh-trang-cuon-tron-size-22-340g-x-44-goi;Vĩnh Thuận|bot-nang-vinh-thuan-400g-x-20;C2|nuoc-tra-xanh-c2-455mlx24-chai' | split: ';'
-  assign pfa_fb = '765158470_122111552733396579_5765327748659751309_n.jpg,765818079_122111552829396579_5401768943136104717_n.jpg,764800463_122111552685396579_4072291594541595060_n.jpg' | split: ','
   assign pfa_cats = 'gạo-nếp-cac-loại|Gạo & Nếp|ST25, Jasmine, gạo nếp các loại;bun-phở-kho|Bún – Phở – Bánh tráng|Bún bò Huế, bánh phở, bánh tráng;bột-gia-vị|Gia vị & Nguyên liệu|Nước mắm, nước tương, sa tế, hạt nêm;mi-an-liền|Mì ăn liền|Hảo Hảo, Omachi, Vifon, Kokomi;banh-kẹo-dồ-an-vặt|Đồ ăn vặt|Bánh, kẹo, snack, thạch, socola;dồ-uống|Cà phê & Đồ uống|Cà phê G7, trà, nước ngọt;hang-dộc-quyền|Chỉ có tại Phomifood|Hàng độc quyền, chọn lọc' | split: ';'
 -%}
 
@@ -135,7 +134,7 @@
       <p class="pfa-kicker">05 · Đối tác</p>
       <h2 class="pfa-h2">Đối tác của Phomifood</h2>
       <p class="pfa-p">Những thương hiệu Việt quen thuộc luôn có sẵn tại kho Phomifood.</p>
-      <ul class="pfa-brands">
+      <ul class="pfa-brands" data-pfa-brands>
         {%- for row in pfa_brands -%}
           {%- assign parts = row | split: '|' -%}
           {%- assign bp = all_products[parts[1]] -%}
@@ -151,6 +150,7 @@
           </li>
         {%- endfor -%}
       </ul>
+      <div class="pfa-dots" data-pfa-dots hidden></div>
     </div>
   </section>
 
@@ -187,7 +187,7 @@
     </div>
   </section>
 
-  {%- comment -%}============ 06 · ƯU ĐÃI ============{%- endcomment -%}
+  {%- comment -%}============ 07 · ƯU ĐÃI ============{%- endcomment -%}
   <section class="pfa-sec pfa-sec--rose">
     <div class="pfa-wrap pfa-center">
       <p class="pfa-kicker">07 · Ưu đãi</p>
@@ -216,22 +216,110 @@
     </div>
   </section>
 
-  {%- comment -%}============ 07 · KHÁCH HÀNG ============{%- endcomment -%}
-  <section class="pfa-sec">
-    <div class="pfa-wrap">
-      <p class="pfa-kicker">08 · Khách hàng</p>
-      <h2 class="pfa-h2">Khách nói gì</h2>
-      <p class="pfa-p">Mỗi đơn là một hành trình từ kho Praha đến bếp nhà khách.</p>
-      <div class="pfa-grid pfa-grid--3">
-        {%- for f in pfa_fb -%}
-          <figure class="pfa-fb">
-            <img src="{{ pfa_cdn }}{{ f }}?width=600" srcset="{{ pfa_cdn }}{{ f }}?width=400 400w, {{ pfa_cdn }}{{ f }}?width=600 600w" sizes="(max-width: 749px) 100vw, 33vw" loading="lazy" decoding="async" alt="Phản hồi thật của khách hàng Phomifood {{ forloop.index }}">
-          </figure>
-        {%- endfor -%}
+  {%- comment -%}============ 08 · KHÁCH HÀNG — giống section "Khách hàng nói gì" trang chủ (pf-testimonials) ============{%- endcomment -%}
+{%- assign pf_imgs = 'https://cdn.shopify.com/s/files/1/0749/9353/3018/files/765158470_122111552733396579_5765327748659751309_n.jpg,https://cdn.shopify.com/s/files/1/0749/9353/3018/files/765818079_122111552829396579_5401768943136104717_n.jpg,https://cdn.shopify.com/s/files/1/0749/9353/3018/files/764800463_122111552685396579_4072291594541595060_n.jpg,https://cdn.shopify.com/s/files/1/0749/9353/3018/files/763671755_122111552835396579_3096848449742426825_n.jpg,https://cdn.shopify.com/s/files/1/0749/9353/3018/files/764752298_122111552739396579_7507345758427458679_n.jpg,https://cdn.shopify.com/s/files/1/0749/9353/3018/files/image.png' | split: ',' -%}
+{%- assign pf_n = 0 -%}
+{%- capture pf_cards -%}
+  {%- for u in pf_imgs -%}
+    {%- assign u = u | strip -%}
+    {%- if u != blank -%}
+      {%- assign pf_n = pf_n | plus: 1 -%}
+      {%- assign base = u | split: '?' | first -%}
+      <figure class="pf-tm__card"><img src="{{ base }}?width=800" loading="lazy" alt="Feedback khách hàng Phomifood {{ forloop.index }}"></figure>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- capture pf_cards_rev -%}
+  {%- for u in pf_imgs reversed -%}
+    {%- assign u = u | strip -%}
+    {%- if u != blank -%}
+      {%- assign base = u | split: '?' | first -%}
+      <figure class="pf-tm__card"><img src="{{ base }}?width=800" loading="lazy" alt="Feedback khách hàng Phomifood"></figure>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+<style>
+  #pf-tm-about {
+    --g: #1e8541; --g-d: #14672f; --y: #ffc61a;
+    position: relative; overflow: hidden; padding: 56px 0 56px;
+    background: linear-gradient(180deg, #eef7f0 0%, #f7f1e9 100%);
+  }
+  #pf-tm-about .pf-tm__wrap { max-width: var(--page-width, 120rem); margin-inline: auto; padding-inline: clamp(1.6rem, 4vw, 5rem); }
+  #pf-tm-about .pf-tm__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 2.4rem; margin-bottom: clamp(2.4rem, 4vw, 3.6rem); }
+  #pf-tm-about .pf-tm__rating { display: inline-flex; align-items: center; gap: .8rem; margin: 0 0 1rem; padding: .5rem 1.2rem .5rem .8rem; border-radius: 999px; background: #fff; box-shadow: 0 4px 12px rgba(20, 90, 45, .08); font-size: 1.25rem; font-weight: 800; color: var(--g-d); }
+  #pf-tm-about .pf-tm__stars { color: var(--y); font-size: 1.5rem; letter-spacing: 2px; }
+  #pf-tm-about .pf-tm__title { margin: 0; font-family: var(--font-heading-family, sans-serif); font-weight: 900; font-size: clamp(2.6rem, 3.6vw, 4rem); line-height: 1.12; color: var(--g-d); }
+  #pf-tm-about .pf-tm__title span { color: var(--g); position: relative; white-space: nowrap; }
+  #pf-tm-about .pf-tm__title span::after { content: ""; position: absolute; left: 0; right: 0; bottom: .06em; height: .28em; background: var(--y); opacity: .55; z-index: -1; border-radius: 4px; }
+  #pf-tm-about .pf-tm__title { position: relative; z-index: 0; }
+  #pf-tm-about .pf-tm__sub { margin: 1rem 0 0; font-size: 1.6rem; line-height: 1.5; color: #5a5346; max-width: 56rem; }
+  #pf-tm-about .pf-tm__btn {
+    flex: none; display: inline-flex; align-items: center; gap: .8rem; white-space: nowrap; text-decoration: none;
+    padding: 1.5rem 3rem; border-radius: 999px; background: linear-gradient(90deg, var(--g), var(--g-d)); color: #fff;
+    font-weight: 800; font-size: 1.6rem; box-shadow: 0 10px 22px rgba(20, 103, 47, .28); transition: transform .15s ease, box-shadow .15s ease;
+  }
+  #pf-tm-about .pf-tm__btn:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(20, 103, 47, .36); color: #fff; }
+  #pf-tm-about .pf-tm__btn .pf-tm__arr { display: inline-grid; place-items: center; width: 2.4rem; height: 2.4rem; border-radius: 50%; background: var(--y); color: var(--g-d); font-size: 1.4rem; }
+
+  /* Dải ảnh chạy */
+  #pf-tm-about .pf-tm__rows { display: grid; gap: 0; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+  #pf-tm-about .pf-tm__row { overflow: hidden; }
+  #pf-tm-about .pf-tm__track { display: flex; width: max-content; gap: 1.6rem; padding: 1.8rem 0 1.2rem; animation: pf-tm-about-l 60s linear infinite; }
+  #pf-tm-about .pf-tm__row--rev .pf-tm__track { animation-name: pf-tm-about-r; }
+  #pf-tm-about .pf-tm__row:hover .pf-tm__track { animation-play-state: paused; }
+  @keyframes pf-tm-about-l { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes pf-tm-about-r { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+  #pf-tm-about .pf-tm__card {
+    flex: none; margin: 0; height: 14rem; padding: 1rem; border-radius: 18px; background: #fff;
+    border: 1px solid #e6eadf; box-shadow: 0 8px 20px rgba(20, 90, 45, .08); position: relative;
+  }
+  #pf-tm-about .pf-tm__card::before {
+    content: "“"; position: absolute; top: -1.4rem; left: 1.2rem; width: 3rem; height: 3rem; border-radius: 50%;
+    background: var(--y); color: var(--g-d); font: 900 2.8rem/3.6rem Georgia, serif; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,.08);
+  }
+  #pf-tm-about .pf-tm__card img { display: block; height: 100%; width: auto; max-width: 52rem; object-fit: contain; border-radius: 10px; }
+
+  @media screen and (max-width: 749px) {
+    #pf-tm-about .pf-tm__head { display: block; text-align: left; }
+    #pf-tm-about .pf-tm__sub { font-size: 1.45rem; }
+    #pf-tm-about .pf-tm__card { height: 10rem; padding: .7rem; border-radius: 14px; }
+    #pf-tm-about .pf-tm__card img { max-width: 32rem; }
+    #pf-tm-about .pf-tm__track { gap: 1.1rem; }
+    #pf-tm-about .pf-tm__foot { display: block; margin-top: 2rem; padding-inline: clamp(1.6rem, 4vw, 5rem); }
+    #pf-tm-about .pf-tm__foot .pf-tm__btn { display: flex; justify-content: center; }
+    #pf-tm-about .pf-tm__head .pf-tm__btn { display: none; }
+  }
+  @media screen and (min-width: 750px) { #pf-tm-about .pf-tm__foot { display: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    #pf-tm-about .pf-tm__track { animation: none; }
+    #pf-tm-about .pf-tm__row { overflow-x: auto; }
+  }
+</style>
+
+<div id="pf-tm-about">
+  <div class="pf-tm__wrap">
+    <div class="pf-tm__head">
+      <div>
+        <p class="pf-tm__rating"><span class="pf-tm__stars" aria-hidden="true">★★★★★</span>Feedback thật từ khách hàng</p>
+        <h2 class="pf-tm__title">Khách hàng nói gì về <span>Phomifood?</span></h2>
+        <p class="pf-tm__sub">Những phản hồi thật từ khách hàng đã mua sắm tại Phomifood. Cảm ơn cả nhà đã tin tưởng và ủng hộ!</p>
       </div>
-      <a class="pfa-link" href="/pages/feedback-khach-hang">Xem tất cả đánh giá →</a>
+      {%- capture pf_btn -%}<a class="pf-tm__btn" href="/pages/feedback-khach-hang">Xem ngay <span class="pf-tm__arr" aria-hidden="true">→</span></a>{%- endcapture -%}
+      {{ pf_btn }}
     </div>
-  </section>
+  </div>
+
+  {%- if pf_n > 0 -%}
+    <div class="pf-tm__rows">
+      <div class="pf-tm__row"><div class="pf-tm__track">{{ pf_cards }}{{ pf_cards | replace: '<figure ', '<figure aria-hidden="true" ' }}</div></div>
+      {%- if pf_n > 2 -%}
+        <div class="pf-tm__row pf-tm__row--rev"><div class="pf-tm__track">{{ pf_cards_rev | replace: '<figure ', '<figure aria-hidden="true" ' }}{{ pf_cards_rev | replace: '<figure ', '<figure aria-hidden="true" ' }}</div></div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="pf-tm__foot">{{ pf_btn }}</div>
+</div>
 
   {%- comment -%}============ CTA CUỐI ============{%- endcomment -%}
   <section class="pfa-cta">
@@ -307,7 +395,12 @@
   .pfa-kho figure { margin: 0; border-radius: 14px; overflow: hidden; aspect-ratio: 4 / 3; background: #efe8da; }
   .pfa-kho img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
-  .pfa-brands { display: flex; gap: 1.2rem; margin: 2.4rem 0 0; padding: .4rem .2rem 1.2rem; list-style: none; overflow-x: auto; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
+  .pfa-brands { display: flex; gap: 1.2rem; margin: 2.4rem 0 0; padding: .4rem .2rem 1.2rem; list-style: none; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .pfa-brands::-webkit-scrollbar { display: none; }
+  .pfa-dots { display: flex; justify-content: center; gap: .8rem; margin-top: 1.2rem; }
+  .pfa-dots[hidden] { display: none; }
+  .pfa-dots button { width: .9rem; height: .9rem; padding: 0; border: 0; border-radius: 999px; background: #c9d8cd; cursor: pointer; transition: width .2s ease, background .2s ease; }
+  .pfa-dots button[aria-current="true"] { width: 2.6rem; background: var(--g); }
   .pfa-brands li { flex: 0 0 auto; scroll-snap-align: start; }
   .pfa-brands a { display: flex; flex-direction: column; align-items: center; gap: .8rem; width: 11.6rem; padding: 1.4rem .8rem 1.2rem; border: 1px solid var(--line); border-radius: 16px; background: #fff; text-decoration: none; color: var(--ink); transition: transform .15s ease, box-shadow .15s ease; }
   .pfa-brands a:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(47, 43, 37, .1); }
@@ -323,8 +416,6 @@
   .pfa-link { display: inline-block; margin-top: 1.4rem; font-size: 1.45rem; font-weight: 800; color: var(--g-d); text-decoration: none; }
   .pfa-link:hover { text-decoration: underline; }
 
-  .pfa-fb { margin: 0; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: var(--cream); aspect-ratio: 4 / 5; }
-  .pfa-fb img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
   .pfa-cta { padding: clamp(5rem, 8vw, 8rem) 0; background: var(--g-d); color: #fff; }
   .pfa-cta h2 { margin: 0 0 1.2rem; font-size: clamp(3rem, 4.4vw, 4.8rem); font-weight: 900; color: #fff; }
@@ -346,11 +437,40 @@
     .pfa-cat b { font-size: 1.4rem; }
     .pfa-cat--all { padding: 1.8rem; }
     .pfa-cat--all b { font-size: 1.6rem; }
-    .pfa-fb { aspect-ratio: 1 / 1; }
     .pfa-brands { gap: .8rem; }
     .pfa-brands a { width: 9.6rem; padding: 1.1rem .6rem 1rem; }
     .pfa-brand__logo { width: 6rem; height: 6rem; }
     .pfa-brands b { font-size: 1.2rem; }
   }
-  @media (prefers-reduced-motion: reduce) { .pfa-cat, .pfa-btn, .pfa-brands a { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .pfa-cat, .pfa-btn, .pfa-brands a, .pfa-dots button { transition: none; } .pfa-brands { scroll-behavior: auto; } }
 </style>
+
+<script>
+  /* Đối tác: chấm phân trang thay thanh cuộn */
+  (function () {
+    var list = document.querySelector('[data-pfa-brands]'), dots = document.querySelector('[data-pfa-dots]');
+    if (!list || !dots) return;
+    var pages = 0;
+    var mark = function () {
+      var max = list.scrollWidth - list.clientWidth;
+      var k = list.scrollLeft >= max - 4 ? pages - 1 : Math.round(list.scrollLeft / list.clientWidth);
+      Array.prototype.forEach.call(dots.children, function (d, i) { d.setAttribute('aria-current', i === k ? 'true' : 'false'); });
+    };
+    var build = function () {
+      var n = Math.ceil((list.scrollWidth - 4) / list.clientWidth);
+      if (n === pages) return;
+      pages = n; dots.innerHTML = ''; dots.hidden = n < 2;
+      for (var i = 0; i < n; i++) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.setAttribute('aria-label', 'Trang ' + (i + 1));
+        b.addEventListener('click', (function (k) { return function () { list.scrollTo({ left: k * list.clientWidth }); }; })(i));
+        dots.appendChild(b);
+      }
+      mark();
+    };
+    var t;
+    list.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(mark, 60); }, { passive: true });
+    window.addEventListener('resize', build);
+    build();
+  })();
+</script>
