@@ -188,7 +188,11 @@
     #pf-hd-{{ section.id }} .pf-fs__add svg { width: 19px; height: 19px; }
     #pf-hd-{{ section.id }} .pf-fs__bar { height: 1.8rem; margin-top: .8rem; }
     #pf-hd-{{ section.id }} .pf-fs__bar span { font-size: 1.05rem; line-height: 1.8rem; }
-    #pf-hd-{{ section.id }} .pf-fs__arrow { display: none !important; }
+    /* Mobile: vẫn hiện nút trước/sau, nhỏ hơn và nằm trong khung */
+    #pf-hd-{{ section.id }} .pf-fs__arrow { top: 34%; width: 3.4rem; height: 3.4rem; box-shadow: 0 2px 10px rgba(0,0,0,.22); }
+    #pf-hd-{{ section.id }} .pf-fs__arrow svg { width: 16px; height: 16px; }
+    #pf-hd-{{ section.id }} .pf-fs__arrow--prev { left: .2rem; }
+    #pf-hd-{{ section.id }} .pf-fs__arrow--next { right: .2rem; }
   }
   /* Trang riêng /pages/uu-dai-hom-nay: hiện hết sản phẩm dạng lưới thay vì 1 hàng trượt */
   #pf-hd-{{ section.id }}.pf-fs--page .pf-fs__track { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); overflow: visible; scroll-snap-type: none; }
