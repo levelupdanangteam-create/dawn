@@ -1,0 +1,159 @@
+{%- comment -%}
+  "Giao hàng toàn châu Âu" — bảng phí ship theo nước cho trang chủ.
+  Số liệu lấy từ snippet pf-ship-rates (chép nguyên từ Shopify Shipping), nên khi đổi phí chỉ cần sửa snippet đó.
+  Cột trái: nước được Freeship khi đơn từ 139€. Cột phải: nước được giảm 10% khi đơn từ 139€.
+  Phí hiển thị là bậc thấp nhất (đơn tới 10 kg), ghi "từ".
+{%- endcomment -%}
+{% render 'pf-ship-rates' %}
+{%- liquid
+  assign vi = false
+  if request.locale.iso_code == 'vi'
+    assign vi = true
+  endif
+-%}
+<div id="pf-se-{{ section.id }}" class="pf-se" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+  <div class="pf-se__wrap">
+    <div class="pf-se__head">
+      {%- if section.settings.eyebrow != blank -%}<span class="pf-se__eyebrow">🚚 {% render 'pf-tr', s: section.settings.eyebrow %}</span>{%- endif -%}
+      <h2 class="pf-se__title">{% render 'pf-tr', s: section.settings.heading %}</h2>
+      {%- if section.settings.subheading != blank -%}<p class="pf-se__sub">{% render 'pf-tr', s: section.settings.subheading %}</p>{%- endif -%}
+    </div>
+
+    <div class="pf-se__grid">
+      <div class="pf-se__box pf-se__box--free">
+        <div class="pf-se__boxhead">
+          <span class="pf-se__pill pf-se__pill--g">🚚 {% if vi %}Freeship đơn từ 139€{% else %}Free shipping from €139{% endif %}</span>
+          <span class="pf-se__hint">{% if vi %}Phí ship khi đơn dưới 139€{% else %}Shipping fee below €139{% endif %}</span>
+        </div>
+        <div class="pf-se__list pf-se__list--3" data-pf-se-list="free"></div>
+      </div>
+      <div class="pf-se__box pf-se__box--disc">
+        <div class="pf-se__boxhead pf-se__boxhead--stack">
+          <span class="pf-se__pill pf-se__pill--y">🎁 {% if vi %}Giảm 10% đơn từ 139€{% else %}10% off from €139{% endif %}</span>
+          <span class="pf-se__hint">{% if vi %}Phí ship khi đơn dưới 139€{% else %}Shipping fee below €139{% endif %}</span>
+        </div>
+        <div class="pf-se__list" data-pf-se-list="disc"></div>
+        <p class="pf-se__other" data-pf-se-other hidden></p>
+      </div>
+    </div>
+
+    <p class="pf-se__foot">
+      {%- if vi -%}
+        Đơn từ <b>139€</b> được <b>Freeship</b> hoặc <b>giảm 10%</b> tùy nước — gom đơn để tiết kiệm hơn! Phí trên áp dụng cho đơn tới 10 kg.
+      {%- else -%}
+        Reach <b>€139</b> to get <b>free shipping</b> or <b>10% off</b> — combine your orders and save! Fees shown apply to orders up to 10 kg.
+      {%- endif -%}
+    </p>
+    {%- if section.settings.button_label != blank -%}
+      <div class="pf-se__cta"><a class="pf-se__btn" href="{{ section.settings.button_link | default: '/pages/tra-cuu-phi-ship' }}">{% render 'pf-tr', s: section.settings.button_label %} <span aria-hidden="true">→</span></a></div>
+    {%- endif -%}
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('pf-se-{{ section.id }}');
+    if (!root || !window.pfRates) return;
+    var R = window.pfRates, vi = {{ vi | json }};
+    var EN = { DE: 'Germany', CZ: 'Czechia', PL: 'Poland', SK: 'Slovakia', HU: 'Hungary', BG: 'Bulgaria', RO: 'Romania', AT: 'Austria',
+      HR: 'Croatia', IT: 'Italy', BE: 'Belgium', FR: 'France', NL: 'Netherlands', ES: 'Spain', PT: 'Portugal', GR: 'Greece',
+      IE: 'Ireland', DK: 'Denmark', FI: 'Finland', SE: 'Sweden', LU: 'Luxembourg', SI: 'Slovenia', EE: 'Estonia', LV: 'Latvia', LT: 'Lithuania' };
+    var name = function (cc) { return vi ? (R.NAMES[cc] || cc) : (EN[cc] || cc); };
+    var groups = { free: [], disc: [], none: [] };
+    R.ORDER.forEach(function (cc, i) {
+      var r = R.R[cc]; if (!r || !groups[r.perk]) return;
+      groups[r.perk].push({ cc: cc, fee: r.t[0][2], i: i });
+    });
+    var byFee = function (a, b) { return a.fee - b.fee || a.i - b.i; };
+    var row = function (c) {
+      return '<div class="pf-se__row"><img class="pf-se__flag" src="https://flagcdn.com/w40/' + c.cc.toLowerCase() + '.png" alt="" width="28" height="20" loading="lazy">' +
+        '<span class="pf-se__name">' + name(c.cc) + '</span><span class="pf-se__fee"><small>' + (vi ? 'từ' : 'from') + '</small>' + R.eur(c.fee) + '</span></div>';
+    };
+    ['free', 'disc'].forEach(function (k) {
+      var el = root.querySelector('[data-pf-se-list="' + k + '"]');
+      if (el) el.innerHTML = groups[k].sort(byFee).map(row).join('');
+    });
+    var other = root.querySelector('[data-pf-se-other]');
+    if (other && groups.none.length) {
+      var min = groups.none.sort(byFee)[0].fee;
+      other.textContent = groups.none.map(function (c) { return name(c.cc); }).join(', ') + ': ' +
+        (vi ? 'phí từ ' + R.eur(min) + ', chưa áp dụng ưu đãi 139€.' : 'fee from ' + R.eur(min) + ', no €139 offer yet.');
+      other.hidden = false;
+    }
+  })();
+</script>
+
+<style>
+  #pf-se-{{ section.id }} { --g: #1e8541; --g-d: #14672f; --y: #ffc61a; --ink: #2a2622; --mut: #6b6357; --tile: #faf6ef; }
+  #pf-se-{{ section.id }} .pf-se__wrap { max-width: var(--page-width, 120rem); margin-inline: auto; padding-inline: clamp(1.6rem, 3vw, 3rem); }
+  {%- if section.settings.full_width %}
+  #pf-se-{{ section.id }} .pf-se__wrap { max-width: none; padding-inline: clamp(1.6rem, 2.4vw, 3.2rem); }
+  {%- endif %}
+  #pf-se-{{ section.id }} .pf-se__head { text-align: center; margin-bottom: 3rem; }
+  #pf-se-{{ section.id }} .pf-se__eyebrow { display: inline-block; margin-bottom: .8rem; font-size: 1.25rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--g); }
+  #pf-se-{{ section.id }} .pf-se__title { margin: 0; font-family: var(--font-heading-family, sans-serif); font-weight: 900; font-size: clamp(2.6rem, 3.6vw, 4rem); line-height: 1.15; color: var(--g); }
+  #pf-se-{{ section.id }} .pf-se__title::after { content: ""; display: block; width: 6rem; height: 4px; border-radius: 4px; margin: 1.2rem auto 0; background: linear-gradient(90deg, var(--g), var(--y)); }
+  #pf-se-{{ section.id }} .pf-se__sub { margin: 1.2rem auto 0; max-width: 60ch; font-size: 1.6rem; line-height: 1.6; color: var(--mut); }
+
+  #pf-se-{{ section.id }} .pf-se__grid { display: grid; grid-template-columns: minmax(0, 2.6fr) minmax(0, 1fr); gap: 2.4rem; align-items: start; }
+  #pf-se-{{ section.id }} .pf-se__box { background: #fff; border: 1px solid #ece4d8; border-radius: 20px; padding: 2.6rem; box-shadow: 0 10px 30px rgba(60, 40, 20, .05); }
+  #pf-se-{{ section.id }} .pf-se__boxhead { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem 1.4rem; margin-bottom: 2rem; }
+  #pf-se-{{ section.id }} .pf-se__boxhead--stack { flex-direction: column; align-items: flex-start; }
+  #pf-se-{{ section.id }} .pf-se__pill { display: inline-flex; align-items: center; gap: .6rem; padding: .9rem 1.8rem; border-radius: 999px; font-size: 1.5rem; font-weight: 800; }
+  #pf-se-{{ section.id }} .pf-se__pill--g { background: #e4f4e9; color: var(--g-d); }
+  #pf-se-{{ section.id }} .pf-se__pill--y { background: #fff3c4; color: #8a5a00; }
+  #pf-se-{{ section.id }} .pf-se__hint { font-size: 1.4rem; color: var(--mut); }
+
+  #pf-se-{{ section.id }} .pf-se__list { display: grid; grid-template-columns: 1fr; gap: 1.2rem; }
+  #pf-se-{{ section.id }} .pf-se__list--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  #pf-se-{{ section.id }} .pf-se__row { display: flex; align-items: center; gap: 1.2rem; min-width: 0; background: var(--tile); border-radius: 12px; padding: 1.5rem 1.6rem; }
+  #pf-se-{{ section.id }} .pf-se__flag { flex: none; width: 2.8rem; height: 2rem; object-fit: cover; border-radius: 4px; box-shadow: 0 0 0 1px rgba(0,0,0,.08); }
+  #pf-se-{{ section.id }} .pf-se__name { flex: 1; min-width: 0; font-size: 1.55rem; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #pf-se-{{ section.id }} .pf-se__fee { flex: none; font-size: 1.6rem; font-weight: 900; color: var(--ink); font-variant-numeric: tabular-nums; }
+  #pf-se-{{ section.id }} .pf-se__fee small { margin-right: .4rem; font-size: 1.15rem; font-weight: 600; color: var(--mut); }
+  #pf-se-{{ section.id }} .pf-se__other { margin: 1.6rem 0 0; font-size: 1.3rem; line-height: 1.5; color: var(--mut); }
+
+  #pf-se-{{ section.id }} .pf-se__foot { margin: 2.8rem auto 0; max-width: 80ch; text-align: center; font-size: 1.55rem; line-height: 1.6; color: var(--mut); }
+  #pf-se-{{ section.id }} .pf-se__foot b { color: var(--g); }
+  #pf-se-{{ section.id }} .pf-se__cta { text-align: center; margin-top: 1.8rem; }
+  #pf-se-{{ section.id }} .pf-se__btn {
+    display: inline-flex; align-items: center; gap: .6rem; text-decoration: none; background: #fff; border: 2px solid var(--g); color: var(--g-d);
+    font-weight: 800; font-size: 1.5rem; padding: 1rem 2.6rem; border-radius: 999px; transition: background .18s ease, color .18s ease;
+  }
+  #pf-se-{{ section.id }} .pf-se__btn:hover { background: var(--g); color: #fff; }
+
+  @media (max-width: 1199px) {
+    #pf-se-{{ section.id }} .pf-se__grid { grid-template-columns: 1fr; }
+    #pf-se-{{ section.id }} .pf-se__box--disc .pf-se__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 749px) {
+    #pf-se-{{ section.id }} .pf-se__box { padding: 1.8rem 1.4rem; border-radius: 16px; }
+    #pf-se-{{ section.id }} .pf-se__list--3, #pf-se-{{ section.id }} .pf-se__box--disc .pf-se__list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; }
+    #pf-se-{{ section.id }} .pf-se__row { padding: 1.1rem 1rem; gap: .8rem; }
+    #pf-se-{{ section.id }} .pf-se__flag { width: 2.2rem; height: 1.6rem; }
+    #pf-se-{{ section.id }} .pf-se__name { font-size: 1.3rem; }
+    #pf-se-{{ section.id }} .pf-se__fee { font-size: 1.35rem; }
+    #pf-se-{{ section.id }} .pf-se__fee small { display: none; }
+    #pf-se-{{ section.id }} .pf-se__pill { font-size: 1.3rem; padding: .7rem 1.4rem; }
+    #pf-se-{{ section.id }} .pf-se__sub, #pf-se-{{ section.id }} .pf-se__foot { font-size: 1.4rem; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Phí ship châu Âu",
+  "tag": "section",
+  "settings": [
+    { "type": "paragraph", "content": "Phí ship lấy tự động từ snippet pf-ship-rates (khớp bảng phí Shopify). Đổi phí ở đó, bảng này tự cập nhật." },
+    { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "Giao hàng tận nhà" },
+    { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Giao hàng toàn châu Âu" },
+    { "type": "text", "id": "subheading", "label": "Mô tả ngắn", "default": "Phí ship rõ ràng cho từng nước — đơn từ 139€ được Freeship hoặc giảm 10%." },
+    { "type": "text", "id": "button_label", "label": "Chữ nút (để trống = ẩn nút)", "default": "Tra cứu phí ship chi tiết" },
+    { "type": "url", "id": "button_link", "label": "Link nút (để trống = trang Tra cứu phí ship)" },
+    { "type": "checkbox", "id": "full_width", "label": "Tràn hết chiều ngang màn hình", "default": true },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 48 }
+  ],
+  "presets": [ { "name": "Phí ship châu Âu" } ]
+}
+{% endschema %}

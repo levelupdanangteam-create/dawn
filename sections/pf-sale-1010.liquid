@@ -1,63 +1,10 @@
 {%- comment -%}
-  "SIÊU SALE 10.10" — lưới sản phẩm giảm giá đợt 10.10.
-  Lấy sản phẩm từ Danh mục (mặc định: sieu-sale-10-10). Section riêng, CSS/JS
-  đều gắn với id section nên không ảnh hưởng các section khác trên trang.
+  "Xả kho – Giá sâu nhất tuần" (26/10): cùng kiểu với section "Ưu đãi duy nhất hôm nay".
+  Hàng tiêu đề nền trắng chữ xanh (tia sét + tiêu đề + nhãn "Giảm đến -x%" + đồng hồ tới hết Chủ nhật + nút Xem tất cả),
+  bên dưới là lưới thẻ pf-flash-card, hiện trước N sản phẩm, còn lại sau nút "Xem thêm".
+  Giữ các class pf-s10__grid / pf-s10__card / pf-s10__more để script "Xem thêm" trên mobile (custom liquid trang chủ) vẫn chạy.
+  Bản cũ (nền vàng, 3 ô nổi bật, thẻ pf-s1010-card) lưu ở scratchpad: pf-sale-1010.pre-flash.liquid.
 {%- endcomment -%}
-<style>
-  #pf-s10-{{ section.id }} { padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px; }
-  #pf-s10-{{ section.id }} .pf-wrap { max-width: var(--page-width, 120rem); margin-inline: auto; padding-inline: clamp(1.6rem, 3vw, 3rem); }
-  #pf-s10-{{ section.id }} .pf-s10 { --cols: {{ section.settings.columns_desktop }}; }
-  #pf-s10-{{ section.id }} .pf-s10__head { text-align: center; margin-bottom: 2.8rem; }
-  #pf-s10-{{ section.id }} .pf-s10__eyebrow {
-    display: inline-flex; align-items: center; gap: .5rem; font-size: 1.2rem; font-weight: 800;
-    letter-spacing: .14em; text-transform: uppercase; color: #c0261f;
-    background: #fff0ee; border: 1px solid #f6c3bd; padding: .4rem 1rem; border-radius: 999px; margin-bottom: 1rem;
-  }
-  #pf-s10-{{ section.id }} .pf-s10__title { font-family: var(--font-heading-family, sans-serif); font-weight: 900; font-size: clamp(2.4rem, 3.8vw, 3.6rem); color: #d62828; margin: 0; line-height: 1.15; letter-spacing: .02em; }
-  #pf-s10-{{ section.id }} .pf-s10__title::after { content: ""; display: block; width: 6rem; height: 4px; border-radius: 4px; margin: 1.2rem auto 0; background: linear-gradient(90deg, #d62828, #f4a261); }
-  #pf-s10-{{ section.id }} .pf-s10__sub { margin: 1rem auto 0; max-width: 56ch; color: #6b6357; font-size: 1.5rem; font-weight: 600; }
-
-  #pf-s10-{{ section.id }} .pf-s10__grid { display: grid; grid-template-columns: repeat(var(--cols), 1fr); gap: 1.8rem; }
-  #pf-s10-{{ section.id }} .pf-s10__card {
-    position: relative; background: #fff; border: 1px solid #ece4d8; border-radius: 16px; overflow: hidden;
-    display: flex; flex-direction: column; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-  }
-  #pf-s10-{{ section.id }} .pf-s10__card:hover { transform: translateY(-5px); box-shadow: 0 16px 36px rgba(214,40,40,.14); border-color: #f6c3bd; }
-  #pf-s10-{{ section.id }} .pf-s10__badge {
-    position: absolute; top: 0; left: 0; z-index: 3;
-    display: inline-flex; align-items: center; gap: .3rem; font-weight: 800; font-size: 1.1rem; color: #fff;
-    background: linear-gradient(135deg, #e63946, #c0261f); padding: .45rem .9rem; border-radius: 16px 0 16px 0;
-    box-shadow: 0 4px 10px rgba(0,0,0,.15);
-  }
-  #pf-s10-{{ section.id }} .pf-s10__media { position: relative; aspect-ratio: 1; background: #f7f1e9; display: grid; place-items: center; overflow: hidden; }
-  #pf-s10-{{ section.id }} .pf-s10__media img, #pf-s10-{{ section.id }} .pf-s10__media svg { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
-  #pf-s10-{{ section.id }} .pf-s10__card:hover .pf-s10__media img { transform: scale(1.06); }
-
-  #pf-s10-{{ section.id }} .pf-s10__info { padding: 1.3rem 1.4rem 1.6rem; display: flex; flex-direction: column; gap: .6rem; flex: 1; }
-  #pf-s10-{{ section.id }} .pf-s10__info .pf-card-actions { margin-top: auto; }
-  #pf-s10-{{ section.id }} .pf-s10__nm { margin: 0; font-size: 1.4rem; font-weight: 600; line-height: 1.35; color: #2a2622; }
-  #pf-s10-{{ section.id }} .pf-s10__nm a { color: inherit; text-decoration: none; }
-  #pf-s10-{{ section.id }} .pf-s10__nm a:hover { color: #d62828; }
-  #pf-s10-{{ section.id }} .pf-s10__price { display: flex; align-items: baseline; gap: .8rem; font-variant-numeric: tabular-nums; }
-  #pf-s10-{{ section.id }} .pf-s10__price .now { font-size: 1.65rem; font-weight: 800; color: #d62828; }
-  #pf-s10-{{ section.id }} .pf-s10__price .was { font-size: 1.2rem; color: #a79c8e; text-decoration: line-through; }
-
-  #pf-s10-{{ section.id }} .pf-s10__card--hidden { display: none; }
-  #pf-s10-{{ section.id }} .pf-s10.is-expanded .pf-s10__card--hidden { display: flex; }
-  #pf-s10-{{ section.id }} .pf-s10__more-wrap { text-align: center; margin-top: 2.6rem; }
-  #pf-s10-{{ section.id }} .pf-s10__more {
-    display: inline-flex; align-items: center; gap: .6rem; cursor: pointer;
-    background: #fff; border: 2px solid #d62828; color: #c0261f; font-weight: 800; font-size: 1.5rem;
-    padding: 1rem 2.6rem; border-radius: 999px; transition: background .18s ease, color .18s ease;
-  }
-  #pf-s10-{{ section.id }} .pf-s10__more:hover { background: #d62828; color: #fff; }
-  #pf-s10-{{ section.id }} .pf-s10__more .arw { transition: transform .2s ease; }
-  #pf-s10-{{ section.id }} .pf-s10.is-expanded .pf-s10__more .arw { transform: rotate(180deg); }
-
-  @media (max-width: 989px) { #pf-s10-{{ section.id }} .pf-s10__grid { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 599px) { #pf-s10-{{ section.id }} .pf-s10__grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; } }
-</style>
-
 {%- assign pf_initial = section.settings.pf_initial | default: 10 -%}
 {%- assign pf_col = section.settings.collection -%}
 {%- if pf_col == blank -%}{%- assign pf_col = collections['sieu-sale-10-10'] -%}{%- endif -%}
@@ -65,33 +12,68 @@
 {%- if pf_col != blank -%}{%- assign pf_valid = pf_col.products_count -%}{%- endif -%}
 
 {%- if pf_valid > 0 -%}
-<div id="pf-s10-{{ section.id }}" class="pf-boxed-section">
-  <div class="pf-wrap">
-    <div class="pf-s10">
-      <div class="pf-s10__head">
-        {%- if section.settings.eyebrow != blank -%}<span class="pf-s10__eyebrow">🔥 {{ section.settings.eyebrow }}</span>{%- endif -%}
-        <h2 class="pf-s10__title">{{ section.settings.heading }}</h2>
-        {%- if section.settings.subheading != blank -%}<p class="pf-s10__sub">{{ section.settings.subheading }}</p>{%- endif -%}
+{%- liquid
+  assign pf_max = 0
+  for product in pf_col.products limit: 50
+    assign v = product.selected_or_first_available_variant
+    assign c = v.compare_at_price
+    if c == blank or c <= v.price
+      assign c = product.compare_at_price_max
+    endif
+    if c > v.price
+      assign p = c | minus: v.price | times: 100.0 | divided_by: c | round
+      if p > pf_max
+        assign pf_max = p
+      endif
+    endif
+  endfor
+  assign vi = false
+  if request.locale.iso_code == 'vi'
+    assign vi = true
+  endif
+-%}
+<div id="pf-s10-{{ section.id }}" class="pf-xk">
+  <div class="page-width pf-xk__full">
+    <div class="pf-s10" style="--cols: {{ section.settings.columns_desktop }};">
+      <div class="pf-xk__head">
+        <div class="pf-xk__title-wrap">
+          <svg class="pf-xk__bolt" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M13.5 2 4 13.5h6.2L9 22l10-12.4h-6.3L13.5 2z" fill="currentColor"/></svg>
+          <h2 class="pf-s10__title pf-xk__title">{{ section.settings.heading }}</h2>
+          {%- if pf_max > 0 -%}<span class="pf-xk__max">{% if vi %}Giảm đến{% else %}Up to{% endif %} -{{ pf_max }}%</span>{%- endif -%}
+        </div>
+        {%- if section.settings.show_countdown -%}
+          <div class="pf-xk__timer" data-pf-s10-timer hidden>
+            <span class="pf-xk__timer-label">{{ section.settings.countdown_label }}</span>
+            <b data-d>0</b><span class="pf-xk__unit">{% if vi %}ngày{% else %}d{% endif %}</span>
+            <b data-h>00</b><span class="pf-xk__colon" aria-hidden="true">:</span><b data-m>00</b><span class="pf-xk__colon" aria-hidden="true">:</span><b data-s>00</b>
+          </div>
+        {%- endif -%}
+        <a class="pf-xk__all" href="{{ pf_col.url }}">{% if vi %}Xem tất cả{% else %}View all{% endif %}</a>
       </div>
+      {%- if section.settings.subheading != blank or section.settings.stock_note != blank -%}
+        <p class="pf-xk__sub">
+          {{- section.settings.subheading -}}
+          {%- if section.settings.subheading != blank and section.settings.stock_note != blank %} · {% endif -%}
+          {%- if section.settings.stock_note != blank -%}<b>{{ section.settings.stock_note }}</b>{%- endif -%}
+        </p>
+      {%- endif -%}
 
       {%- assign pf_shown = 0 -%}
-      <div class="pf-s10__grid">
+      <div class="pf-s10__grid pf-xk__grid">
         {%- for product in pf_col.products limit: 50 -%}
           {%- if product != blank and product.id -%}
             {%- assign pf_shown = pf_shown | plus: 1 -%}
-            {%- if pf_shown > pf_initial -%}
-              {% render 'pf-s1010-card', product: product, section_id: section.id, hidden: true, badge: section.settings.badge %}
-            {%- else -%}
-              {% render 'pf-s1010-card', product: product, section_id: section.id, badge: section.settings.badge %}
-            {%- endif -%}
+            {%- assign pf_hide = false -%}
+            {%- if pf_shown > pf_initial -%}{%- assign pf_hide = true -%}{%- endif -%}
+            {%- render 'pf-flash-card', p: product, section_id: section.id, extra_class: 'pf-s10__card', hidden: pf_hide, low_stock: section.settings.low_stock -%}
           {%- endif -%}
         {%- endfor -%}
       </div>
 
       {%- if pf_shown > pf_initial -%}
         <div class="pf-s10__more-wrap">
-          <button type="button" class="pf-s10__more" data-pf-s10-more>
-            <span class="pf-s10__more-txt">{% if request.locale.iso_code == "vi" %}Xem thêm{% else %}View more{% endif %}</span>
+          <button type="button" class="pf-s10__more">
+            <span class="pf-s10__more-txt">{% if vi %}Xem thêm{% else %}View more{% endif %}</span>
             <span class="arw" aria-hidden="true">▾</span>
           </button>
         </div>
@@ -100,12 +82,131 @@
   </div>
 </div>
 
+<style>
+  #pf-s10-{{ section.id }} { --fs-r: #d62828; --g: #1e8541; --g-d: #14672f; --g-soft: #eef6f0; --fs-line: #ececec; --ink: #2a2622; --mut: #8a8173; padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px; }
+
+  /* Full màn hình: bỏ giới hạn page-width, chỉ chừa lề hai bên */
+  #pf-s10-{{ section.id }} .pf-xk__full { max-width: none; padding-inline: clamp(1.6rem, 3vw, 4.8rem); }
+
+  /* Hàng tiêu đề: nền trắng, chữ xanh — giống "Ưu đãi duy nhất hôm nay" */
+  #pf-s10-{{ section.id }} .pf-xk__head { display: flex; align-items: center; gap: 1.6rem 2.4rem; flex-wrap: wrap; padding: 0 0 1.4rem; border-bottom: 1px solid var(--fs-line); }
+  #pf-s10-{{ section.id }} .pf-xk__title-wrap { display: inline-flex; align-items: center; gap: .8rem 1rem; flex-wrap: wrap; min-width: 0; }
+  #pf-s10-{{ section.id }} .pf-xk__bolt { flex: 0 0 auto; color: var(--g); }
+  #pf-s10-{{ section.id }} .pf-s10__title.pf-xk__title {
+    margin: 0; color: var(--g) !important; font-weight: 900 !important; font-size: clamp(2.4rem, 2.8vw, 3.4rem) !important;
+    line-height: 1.15 !important; text-transform: none !important; letter-spacing: 0 !important; white-space: nowrap; text-align: left;
+  }
+  #pf-s10-{{ section.id }} .pf-xk__title::after { content: none !important; }
+  #pf-s10-{{ section.id }} .pf-xk__max { font-size: 1.3rem; font-weight: 700; color: var(--fs-r); background: #fdecec; padding: .45rem .9rem; border-radius: 999px; white-space: nowrap; }
+  #pf-s10-{{ section.id }} .pf-xk__timer { display: inline-flex; align-items: center; gap: .5rem; }
+  #pf-s10-{{ section.id }} .pf-xk__timer[hidden] { display: none; }
+  #pf-s10-{{ section.id }} .pf-xk__timer-label { font-size: 1.4rem; font-weight: 600; color: var(--mut); margin-right: .4rem; white-space: nowrap; }
+  #pf-s10-{{ section.id }} .pf-xk__timer b {
+    min-width: 3.6rem; text-align: center; background: var(--g); color: #fff; border-radius: 8px;
+    font-size: 1.8rem; font-weight: 800; line-height: 1; padding: .6rem .5rem; font-variant-numeric: tabular-nums;
+  }
+  #pf-s10-{{ section.id }} .pf-xk__unit { font-size: 1.3rem; font-weight: 700; color: var(--g-d); margin-right: .3rem; }
+  #pf-s10-{{ section.id }} .pf-xk__colon { font-size: 1.8rem; font-weight: 800; color: var(--g); }
+  #pf-s10-{{ section.id }} .pf-xk__all {
+    margin-left: auto; background: #fff; color: var(--g-d); border: 1.5px solid var(--g); text-decoration: none; font-size: 1.4rem; font-weight: 700;
+    padding: .8rem 2rem; border-radius: 999px; white-space: nowrap; transition: background .15s ease;
+  }
+  #pf-s10-{{ section.id }} .pf-xk__all:hover { background: var(--g); color: #fff; }
+  #pf-s10-{{ section.id }} .pf-xk__sub { margin: 1rem 0 0; font-size: 1.4rem; color: var(--mut); }
+  #pf-s10-{{ section.id }} .pf-xk__sub b { color: var(--g-d); font-weight: 700; }
+
+  /* Lưới thẻ */
+  #pf-s10-{{ section.id }} .pf-xk__grid { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 1.2rem; margin-top: 1.6rem; }
+  #pf-s10-{{ section.id }} .pf-fs__card { display: flex; flex-direction: column; min-width: 0; background: #fff; border: 1px solid var(--fs-line); border-radius: 12px; padding: 1rem 1rem 1.1rem; }
+  #pf-s10-{{ section.id }} .pf-s10__card--hidden { display: none; }
+  #pf-s10-{{ section.id }} .pf-s10.is-expanded .pf-s10__card--hidden { display: flex; }
+  #pf-s10-{{ section.id }} .pf-fs__media { position: relative; display: block; aspect-ratio: 1 / 1; border-radius: 8px; overflow: hidden; background: #fff; }
+  #pf-s10-{{ section.id }} .pf-fs__media img, #pf-s10-{{ section.id }} .pf-fs__media svg { width: 100%; height: 100%; object-fit: contain; display: block; transition: transform .3s ease; }
+  #pf-s10-{{ section.id }} .pf-fs__card:hover .pf-fs__media img { transform: scale(1.04); }
+  #pf-s10-{{ section.id }} .pf-fs__badge { position: absolute; top: .4rem; left: .4rem; background: #fdecec; color: var(--fs-r); font-size: 1.2rem; font-weight: 700; line-height: 1; padding: .45rem .6rem; border-radius: 6px; }
+  #pf-s10-{{ section.id }} .pf-fs__name { margin-top: 1rem; font-size: 1.5rem; line-height: 1.35; color: var(--ink); text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #pf-s10-{{ section.id }} .pf-fs__name:hover { color: var(--g); }
+  #pf-s10-{{ section.id }} .pf-fs__row { display: flex; align-items: flex-end; justify-content: space-between; gap: .6rem; margin-top: .6rem; }
+  #pf-s10-{{ section.id }} .pf-fs__price { display: flex; flex-direction: column; min-width: 0; }
+  #pf-s10-{{ section.id }} .pf-fs__now { font-size: 2rem; font-weight: 800; color: var(--g); line-height: 1.2; white-space: nowrap; }
+  #pf-s10-{{ section.id }} .pf-fs__was { font-size: 1.3rem; color: var(--mut); line-height: 1.3; white-space: nowrap; }
+  #pf-s10-{{ section.id }} .pf-fs__addform { margin: 0; flex: 0 0 auto; }
+  #pf-s10-{{ section.id }} .pf-fs__add {
+    position: relative; width: 4rem; height: 4rem; padding: 0; border: 1px solid var(--fs-line); border-radius: 10px; cursor: pointer;
+    display: grid; place-items: center; background: #fff; color: var(--ink); font-size: 0; overflow: hidden; transition: background .15s ease, color .15s ease;
+  }
+  #pf-s10-{{ section.id }} .pf-fs__add:hover { background: var(--g); color: #fff; border-color: var(--g); }
+  #pf-s10-{{ section.id }} .pf-fs__add[disabled] { background: var(--g); color: #fff; border-color: var(--g); }
+  #pf-s10-{{ section.id }} .pf-fs__add[disabled]::after { content: "✓"; font-size: 1.8rem; font-weight: 800; }
+  #pf-s10-{{ section.id }} .pf-fs__bar { position: relative; margin-top: 1rem; height: 2rem; border-radius: 999px; background: var(--g-soft); overflow: hidden; }
+  #pf-s10-{{ section.id }} .pf-fs__bar i { position: absolute; inset: 0 auto 0 0; border-radius: 999px; background: #cfe8d6; }
+  #pf-s10-{{ section.id }} .pf-fs__bar span { position: relative; display: block; text-align: center; font-size: 1.2rem; font-weight: 700; line-height: 2rem; color: var(--g-d); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 .6rem; }
+  #pf-s10-{{ section.id }} .pf-fs__bar--out { background: #f0f0f0; }
+  #pf-s10-{{ section.id }} .pf-fs__bar--out i { background: #e0e0e0; }
+  #pf-s10-{{ section.id }} .pf-fs__bar--out span { color: var(--mut); }
+
+  /* Nút Xem thêm */
+  #pf-s10-{{ section.id }} .pf-s10__more-wrap { text-align: center; margin-top: 2.4rem; }
+  #pf-s10-{{ section.id }} .pf-s10__more {
+    display: inline-flex; align-items: center; gap: .6rem; cursor: pointer; font-family: inherit;
+    background: #fff; border: 1.5px solid var(--g); color: var(--g-d); font-weight: 700; font-size: 1.5rem;
+    padding: .9rem 2.6rem; border-radius: 999px; transition: background .15s ease, color .15s ease;
+  }
+  #pf-s10-{{ section.id }} .pf-s10__more:hover { background: var(--g); color: #fff; }
+  #pf-s10-{{ section.id }} .pf-s10__more .arw { transition: transform .2s ease; }
+  #pf-s10-{{ section.id }} .pf-s10.is-expanded .pf-s10__more .arw { transform: rotate(180deg); }
+
+  @media (min-width: 1600px) { #pf-s10-{{ section.id }} .pf-xk__grid { gap: 1.6rem; } }
+  @media (max-width: 1199px) { #pf-s10-{{ section.id }} .pf-xk__grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+  @media (max-width: 989px) { #pf-s10-{{ section.id }} .pf-xk__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 749px) {
+    #pf-s10-{{ section.id }} .pf-xk__head { padding: 0 0 1rem; gap: .8rem 1rem; }
+    #pf-s10-{{ section.id }} .pf-xk__bolt { width: 20px; height: 20px; }
+    #pf-s10-{{ section.id }} .pf-s10__title.pf-xk__title { font-size: 2.1rem !important; }
+    #pf-s10-{{ section.id }} .pf-xk__max { font-size: 1.1rem; padding: .35rem .7rem; }
+    #pf-s10-{{ section.id }} .pf-xk__all { font-size: 1.2rem; padding: .5rem 1.2rem; }
+    #pf-s10-{{ section.id }} .pf-xk__timer { order: 3; width: 100%; }
+    #pf-s10-{{ section.id }} .pf-xk__timer-label { font-size: 1.15rem; }
+    #pf-s10-{{ section.id }} .pf-xk__timer b { min-width: 3rem; font-size: 1.5rem; padding: .45rem .4rem; border-radius: 6px; }
+    #pf-s10-{{ section.id }} .pf-xk__colon { font-size: 1.5rem; }
+    #pf-s10-{{ section.id }} .pf-xk__sub { margin: .8rem 0 0; font-size: 1.25rem; }
+    #pf-s10-{{ section.id }} .pf-xk__grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: .8rem !important; margin-top: 1.2rem; }
+    #pf-s10-{{ section.id }} .pf-fs__card { padding: .7rem .7rem .8rem; }
+    #pf-s10-{{ section.id }} .pf-fs__badge { font-size: 1.05rem; padding: .35rem .45rem; }
+    #pf-s10-{{ section.id }} .pf-fs__name { font-size: 1.3rem; margin-top: .7rem; }
+    #pf-s10-{{ section.id }} .pf-fs__now { font-size: 1.6rem; }
+    #pf-s10-{{ section.id }} .pf-fs__was { font-size: 1.15rem; }
+    #pf-s10-{{ section.id }} .pf-fs__add { width: 3.4rem; height: 3.4rem; border-radius: 8px; }
+    #pf-s10-{{ section.id }} .pf-fs__add svg { width: 19px; height: 19px; }
+    #pf-s10-{{ section.id }} .pf-fs__bar { height: 1.8rem; margin-top: .8rem; }
+    #pf-s10-{{ section.id }} .pf-fs__bar span { font-size: 1.05rem; line-height: 1.8rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { #pf-s10-{{ section.id }} .pf-fs__media img { transition: none; } }
+</style>
+
 <script>
   (function () {
     var root = document.getElementById('pf-s10-{{ section.id }}');
     if (!root) return;
+    // Đồng hồ đếm ngược tới 23:59:59 Chủ nhật (giờ trên máy khách), sang tuần mới tự chạy lại
+    var t = root.querySelector('[data-pf-s10-timer]');
+    if (t) {
+      var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+      var q = function (k) { return t.querySelector('[data-' + k + ']'); };
+      var tick = function () {
+        var now = new Date(), end = new Date(now);
+        end.setDate(now.getDate() + ((7 - now.getDay()) % 7));
+        end.setHours(23, 59, 59, 999);
+        var left = Math.max(0, Math.floor((end - now) / 1000));
+        q('d').textContent = Math.floor(left / 86400);
+        q('h').textContent = pad(Math.floor(left % 86400 / 3600));
+        q('m').textContent = pad(Math.floor(left % 3600 / 60));
+        q('s').textContent = pad(left % 60);
+      };
+      tick(); t.hidden = false; setInterval(tick, 1000);
+    }
     var box = root.querySelector('.pf-s10');
-    var btn = root.querySelector('[data-pf-s10-more]');
+    var btn = root.querySelector('.pf-s10__more');
     if (!box || !btn) return;
     var txt = btn.querySelector('.pf-s10__more-txt');
     var vi = '{{ request.locale.iso_code }}' === 'vi';
@@ -125,7 +226,11 @@
     { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "Chỉ trong dịp 10.10" },
     { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "SIÊU SALE 10.10" },
     { "type": "text", "id": "subheading", "label": "Câu hook", "default": "Thêm vào giỏ là có hời – Chốt đơn kẻo lỡ!" },
-    { "type": "text", "id": "badge", "label": "Tag trên mỗi sản phẩm", "default": "Giảm 10%" },
+    { "type": "checkbox", "id": "show_countdown", "label": "Hiện đồng hồ đếm ngược (tới hết Chủ nhật)", "default": true },
+    { "type": "text", "id": "countdown_label", "label": "Chữ trên đồng hồ", "default": "Kết thúc sau" },
+    { "type": "text", "id": "stock_note", "label": "Ô thứ 3 (để trống = ẩn)", "default": "Số lượng có hạn" },
+    { "type": "range", "id": "low_stock", "min": 0, "max": 50, "step": 1, "label": "Hiện \"Chỉ còn N\" khi tồn kho ≤", "info": "0 = tắt. Chỉ áp dụng sản phẩm có theo dõi tồn kho.", "default": 10 },
+    { "type": "text", "id": "badge", "label": "Nhãn góc trái mỗi sản phẩm", "default": "Ưu đãi", "info": "VD: Ưu đãi, Hot deal. % giảm tự tính từ giá gạch và hiện ở ô đỏ góc phải — không cần ghi % ở đây." },
     { "type": "collection", "id": "collection", "label": "Danh mục sản phẩm sale", "info": "Để trống = dùng danh mục 'Siêu Sale 10.10' (sieu-sale-10-10). Section tự ẩn nếu danh mục trống." },
     { "type": "range", "id": "columns_desktop", "min": 3, "max": 6, "step": 1, "label": "Số cột (desktop)", "default": 5 },
     { "type": "range", "id": "pf_initial", "min": 3, "max": 30, "step": 1, "label": "Số sản phẩm hiện ban đầu (còn lại ẩn sau nút Xem thêm)", "default": 10 },

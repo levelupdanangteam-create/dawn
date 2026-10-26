@@ -9,7 +9,7 @@
  */
 {
   "current": {
-    "pf_deal_rows": "chip-oishi-ngo-80-goi-32g-x-80-goi-bich||0€;;banh-da-nem-totaco-250g-x-80-goi||0,9€;;ngoc-lien-ca-phao-trang-365g-x-24-lo||1,9€;;mỳ-quảng-hội-an-an-liền-cathifood-4-vị||2,9€;;pate-cot-den-hai-phong-150g-48||2,9€||áp dụng cho 1 hộp lẻ — mua thêm sẽ tính theo giá gốc;;gia-vị-nấu-nước-dung-hoan-chỉnh-barona-phở-bo||3,9€||áp dụng cho 1 sản phẩm — mua thêm sẽ tính theo giá gốc",
+    "pf_deal_rows": "chip-oishi-ngo-80-goi-32g-x-80-goi-bich||0€;;banh-da-nem-totaco-250g-x-80-goi||0,9€;;ngoc-lien-ca-phao-trang-365g-x-24-lo||1,9€;;mỳ-quảng-hội-an-an-liền-cathifood-4-vị||2,9€;;canh-chua-isoup||3,9€;;pate-cot-den-hai-phong-150g-48||2,9€||áp dụng cho 1 hộp lẻ — mua thêm sẽ tính theo giá gốc;;gia-vị-nấu-nước-dung-hoan-chỉnh-barona-phở-bo||3,9€||áp dụng cho 1 sản phẩm — mua thêm sẽ tính theo giá gốc",
     "pf_gift_enable": false,
     "pf_gift_handle": "",
     "logo": "shopify://shop_images/ChatGPT_Image_Jun_23_2026_03_41_00_PM.png",
@@ -426,7 +426,10 @@
       ".pf-flash__nm a:hover,.pf-s10__nm a:hover {color: #1e8541 !important;}",
       ".pf-s10__more,.pf-flash__more-btn {background: #fff !important; border: 2px solid #1e8541 !important; color: #1e8541 !important;}",
       ".pf-s10__more:hover,.pf-flash__more-btn:hover {background: #1e8541 !important; color: #fff !important;}",
-      ":is(.pf-flash__card, .pf-s10__card):has( a[href*=\"banh-da-tr\"], a[href*=\"ca-du-gion\"], a[href*=\"/bun-bo-hu\"], a[href*=\"ca-gia-t\"], a[href*=\"-ba-ba-h\"], a[href*=\"bao-gion-v\"] ) :is(.pf-flash__disc, .pf-s10__badge) {background: linear-gradient(135deg, #7b2ff7, #f107a3) !important; box-shadow: 0 0 0 2px #ffd400 !important;}"
+      ".pf-hd__tag--sale,.pf-deal__ribbon {background: linear-gradient(135deg, #2e8b47, #1d6b35) !important; color: #fff !important;}",
+      ".pf-po {background: #fff !important; color: #1e8541 !important; border: 1.5px solid #1e8541 !important; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12) !important;}",
+      "#MainContent[data-template=\"index\"] .pf-boxed-section .pf-wrap {max-width: none !important; margin-inline: clamp(0.8rem, 1.2vw, 1.6rem) !important; padding-inline: clamp(1.6rem, 2.4vw, 3.2rem) !important;}",
+      "#MainContent[data-template=\"index\"] .pf-hd > .page-width {max-width: none !important; padding-inline: clamp(1.6rem, 2.4vw, 3.2rem) !important;}"
     ]
   }
 }

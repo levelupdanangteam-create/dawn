@@ -21,7 +21,146 @@
     visibility: hidden !important;
     pointer-events: none !important;
   }
+
+  /* PF 26/10 — Hạn chế rớt dòng (trang chủ + trang Flash sale).
+     Tiêu đề: chia dòng cân đối, mobile nhỏ lại theo bề ngang màn hình.
+     Nhãn / ghi chú ngắn: luôn 1 dòng. */
+  .pf-it__title, .pf-hd__title, .pf-s10__title, .pf-ex__title, .pf-cb__title, .pf-bs__title,
+  .pf-cr__title, .pf-se__title, .pf-os__title, .pf-tm__title, .pf-lo__title, .pf-hd__sub, .pf-s10__sub { text-wrap: balance; }
+  .pf-hd__note { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .pf-hd__save, .pf-s10__save, .pf-sold, .pf-hd__eyebrow, .pf-hd__tag { white-space: nowrap; }
+  @media (max-width: 749px) {
+    .pf-it__title, .pf-hd__title, .pf-s10__title, .pf-ex__title, .pf-cb__title, .pf-bs__title,
+    .pf-cr__title, .pf-se__title, .pf-os__title, #pf-s10-flashpage .pf-s10__title {
+      font-size: clamp(2rem, 5.4vw, 2.4rem) !important;
+    }
+  }
+
+  /* PF 26/10 — Thẻ sản phẩm chuẩn (trang danh mục, tìm kiếm, các trang dùng card-product):
+     mọi phần có chiều cao CỐ ĐỊNH để giá + 2 nút luôn thẳng hàng ngang giữa các thẻ:
+     tên = đúng 2 dòng; ô "Đã bán" luôn giữ chỗ (kể cả khi sản phẩm không có nhãn); giá = 1 dòng.
+     Nút dạng viên thuốc xanh lá + giá xanh như thẻ ở trang chủ. */
+  .grid__item > .card-wrapper { height: 100%; }
+  .card-wrapper .card__heading {
+    height: 2.7em !important; min-height: 0 !important; line-height: 1.35 !important; overflow: hidden;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: .6rem;
+  }
+  .card-wrapper .card-information { position: relative; padding-top: 3.6rem !important; }
+  .card-wrapper .card-information > .pf-sold { position: absolute !important; top: .2rem; left: 0; margin: 0 !important; }
+  .card-wrapper .card-information > .caption-large:empty { display: none; }
+  .card-wrapper .card-information .price {
+    display: flex; align-items: baseline; flex-wrap: nowrap; white-space: nowrap; overflow: hidden;
+    height: 3rem; margin: 0 !important; padding: 0 !important;
+  }
+  .card-wrapper .card__information > .pf-card-actions { margin-top: 1rem !important; width: 100%; }
+  .card-wrapper .price .price-item--sale,
+  .card-wrapper .price .price__regular .price-item--regular,
+  .card-wrapper .price .price-item--last { color: #1e8541 !important; font-weight: 800 !important; }
+  .card-wrapper .price--on-sale .price__sale .price-item--regular,
+  .card-wrapper .price--on-sale s.price-item { color: #a79c8e !important; font-weight: 400 !important; font-size: 1.3rem; }
+  .card-wrapper .pf-card-actions .pf-btn-cart,
+  .card-wrapper .pf-card-actions .pf-btn-view {
+    border-radius: 999px !important; border: 1.5px solid #1e8541 !important; min-height: 4.2rem;
+    font-size: 1.3rem !important; font-weight: 700 !important; padding: .9rem .6rem !important; text-decoration: none !important;
+  }
+  .card-wrapper .pf-card-actions .pf-btn-cart { background: #1e8541 !important; color: #fff !important; }
+  .card-wrapper .pf-card-actions .pf-btn-cart:hover:not([disabled]) { background: #14672f !important; border-color: #14672f !important; }
+  .card-wrapper .pf-card-actions .pf-btn-cart[disabled] { background: #b9b3a8 !important; border-color: #b9b3a8 !important; opacity: 1 !important; }
+  .card-wrapper .pf-card-actions .pf-btn-view { background: #fff !important; color: #14672f !important; }
+  .card-wrapper .pf-card-actions .pf-btn-view:hover { background: #e9f5ed !important; color: #14672f !important; }
+  @media (max-width: 749px) {
+    .card-wrapper .card-information { padding-top: 3.2rem !important; }
+    .card-wrapper .card-information .price { height: 2.6rem; }
+  }
+
+  /* PF 26/10 — GIAO DIỆN TỐI GIẢN: nền trắng toàn trang, bỏ bóng đổ / nền chuyển màu trang trí,
+     khung & thẻ dùng viền xám mảnh #ececec. Màu thương hiệu (xanh lá) chỉ còn ở nút, giá, tiêu đề. */
+  html body.gradient { background: #ffffff !important; background-image: none !important; }
+  html body .header-wrapper { background: #1e8541 !important; box-shadow: none !important; }
+  html body .header-wrapper::after { display: none !important; }
+  html body .pf-boxed-section .pf-wrap,
+  html body .pf-flash,
+  html body .pf-se__box,
+  html body .pf-os__card,
+  html body [id^="pf-cbox-"],
+  html body #MainContent[data-template='cart'] .cart__items,
+  html body #MainContent[data-template='cart'] .cart__footer,
+  html body #MainContent[data-template='product'] .related-products {
+    background: #ffffff !important; border: 1px solid #ececec !important; box-shadow: none !important;
+  }
+  html body .pf-flash::before { display: none !important; }
+  html body .pf-it__tile { background: #f7f7f7 !important; border-color: #ececec !important; box-shadow: none !important; }
+  html body .pf-hd__card,
+  html body .pf-hd__card:hover { box-shadow: none !important; border-color: #ececec !important; transform: none !important; }
+  html body .pf-hd__eyebrow, html body .pf-sc__eyebrow { box-shadow: none !important; }
+  /* Trang sản phẩm: 2 khung (ảnh + thông tin) viền mảnh, bỏ dải màu trên đầu, bỏ bóng */
+  html body #MainContent[data-template='product'] .product__info-container { border-color: #ececec !important; box-shadow: none !important; }
+  html body #MainContent[data-template='product'] .product__info-container::before { display: none !important; }
+  html body #MainContent[data-template='product'] .product__media-list .product__media-item { border-color: #ececec !important; box-shadow: none !important; }
+  html body .pf-ptrust { background: #fafafa !important; border-color: #ececec !important; }
+  html body .pf-ptrust__item + .pf-ptrust__item { border-left-color: #ececec !important; }
+  html body .pf-ptrust__ic { box-shadow: 0 0 0 1px #e4e4e4 !important; }
+  html body .pf-fbt__sum, html body .pf-fbt__item, html body .pf-fbt__item:hover { box-shadow: none !important; }
+  html body .pf-fbt__hico { box-shadow: none !important; }
+  html body .product__info-container .product-form__buttons .pf-buy-now { box-shadow: none; }
+  html body .pf-sc__card:hover, html body .card-wrapper:hover { box-shadow: none !important; }
 </style>
+{%- if template.name == 'index' -%}
+<style>
+  /* PF 26/10 — Khoảng cách giữa các section trang chủ theo một chuẩn chung
+     (ghi đè "Khoảng cách trên/dưới" riêng của từng section).
+     Máy tính: 20px trên + 20px dưới = 40px giữa 2 section. Điện thoại: 12px + 12px = 24px.
+     Khoảng giữa các khung danh mục (pf-cat-rows) cũng đúng bằng đó để mọi khe đều nhau. */
+  #MainContent[data-template="index"] > .shopify-section > [id^="pf-usp-"],
+  #MainContent[data-template="index"] > .shopify-section > [id^="pf-os-"],
+  #MainContent[data-template="index"] > .shopify-section > [id^="pf-it-"],
+  #MainContent[data-template="index"] > .shopify-section > [id^="pf-hd-"],
+  #MainContent[data-template="index"] > .shopify-section > [id^="pf-s10-"],
+  #MainContent[data-template="index"] > .shopify-section > [id^="pf-ex-"],
+  #MainContent[data-template="index"] > .shopify-section > [id^="pf-cb-"],
+  #MainContent[data-template="index"] > .shopify-section > [id^="pf-bs-"],
+  #MainContent[data-template="index"] > .shopify-section > [id^="pf-cr-"],
+  #MainContent[data-template="index"] > .shopify-section > [id^="pf-promo-"],
+  #MainContent[data-template="index"] > .shopify-section > [id^="pf-se-"],
+  #MainContent[data-template="index"] > .shopify-section > [id^="pf-tm-"],
+  #MainContent[data-template="index"] > .shopify-section > [id^="pf-lo-"] {
+    padding-top: 2rem !important; padding-bottom: 2rem !important;
+  }
+  #MainContent[data-template="index"] > .shopify-section > [id^="pf-hf-"] { padding-bottom: 2rem !important; }
+  #MainContent[data-template="index"] .pf-cr__row + .pf-cr__row { margin-top: 4rem !important; }
+  @media (max-width: 749px) {
+    #MainContent[data-template="index"] > .shopify-section > [id^="pf-usp-"],
+    #MainContent[data-template="index"] > .shopify-section > [id^="pf-os-"],
+    #MainContent[data-template="index"] > .shopify-section > [id^="pf-it-"],
+    #MainContent[data-template="index"] > .shopify-section > [id^="pf-hd-"],
+    #MainContent[data-template="index"] > .shopify-section > [id^="pf-s10-"],
+    #MainContent[data-template="index"] > .shopify-section > [id^="pf-ex-"],
+    #MainContent[data-template="index"] > .shopify-section > [id^="pf-cb-"],
+    #MainContent[data-template="index"] > .shopify-section > [id^="pf-bs-"],
+    #MainContent[data-template="index"] > .shopify-section > [id^="pf-cr-"],
+    #MainContent[data-template="index"] > .shopify-section > [id^="pf-promo-"],
+    #MainContent[data-template="index"] > .shopify-section > [id^="pf-se-"],
+    #MainContent[data-template="index"] > .shopify-section > [id^="pf-tm-"],
+    #MainContent[data-template="index"] > .shopify-section > [id^="pf-lo-"] {
+      padding-top: 1.2rem !important; padding-bottom: 1.2rem !important;
+    }
+    #MainContent[data-template="index"] > .shopify-section > [id^="pf-hf-"] { padding-bottom: 1.2rem !important; }
+    #MainContent[data-template="index"] .pf-cr__row + .pf-cr__row { margin-top: 2.4rem !important; }
+  }
+
+  /* PF 26/10 — "Câu chuyện Phomifood" + "Danh mục sản phẩm": bỏ nền khối và bóng đổ,
+     nội dung nằm phẳng trên nền của trang (thẻ trắng bên trong dùng viền mảnh thay bóng). */
+  #MainContent[data-template="index"] .pf-os__box {
+    background: transparent !important; border: 0 !important; box-shadow: none !important;
+  }
+  #MainContent[data-template="index"] .pf-os__box::before,
+  #MainContent[data-template="index"] .pf-os__box::after { display: none !important; }
+  #MainContent[data-template="index"] .pf-os__card { box-shadow: none !important; border: 1px solid #ececec; }
+  #MainContent[data-template="index"] .pf-it__tile,
+  #MainContent[data-template="index"] .pf-it__tile:hover { box-shadow: none !important; }
+  #MainContent[data-template="index"] .pf-it__tile { border: 1px solid #ececec; }
+</style>
+{%- endif -%}
 <script>
   (function () {
     if (window.__pfHideWidgets) return;

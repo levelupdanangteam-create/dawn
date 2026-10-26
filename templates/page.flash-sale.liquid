@@ -1,13 +1,213 @@
-<div class="pf-section color-scheme-1" style="padding: 40px 0 56px;">
-  <div class="page-width">
-    {% render 'pf-sale1010-deals',
-      deal_collection: collections['sieu-sale-10-10'],
-      heading: 'Thêm vào giỏ là có hời – Chốt đơn kẻo lỡ!',
-      badge: 'Giảm 20%',
-      end_at: 'weekly',
-      label: 'ƯU ĐÃI TUẦN NÀY',
-      initial: 100,
-      uid: 'flashpage'
-    %}
+{%- comment -%}
+  Trang "Giá xả kho" (/pages/flash-sale), 26/10: cùng giao diện section "Giá Siêu Rẻ" trang chủ (pf-sale-1010, thẻ pf-flash-card),
+  hiện TẤT CẢ sản phẩm danh mục gia-xa-kho (cùng danh mục trang chủ). Đổi chữ: sửa các biến pf_* bên dưới.
+  Bản cũ (nền vàng, danh mục sieu-sale-10-10) lưu ở scratchpad: page.flash-sale.orig-live.liquid.
+{%- endcomment -%}
+{%- liquid
+  assign pf_col = collections['gia-xa-kho']
+  if pf_col == blank or pf_col.products_count == 0
+    assign pf_col = collections['sieu-sale-10-10']
+  endif
+  assign pf_heading = 'Giá Siêu Rẻ'
+  assign pf_sub = 'Giá đáy cho hàng xả kho — mua ngay kẻo hết, hết là thôi!'
+  assign pf_countdown_label = 'Kết thúc sau'
+  assign pf_low_stock = 10
+  assign vi = false
+  if request.locale.iso_code == 'vi'
+    assign vi = true
+  endif
+-%}
+{%- if pf_col != blank and pf_col.products_count > 0 -%}
+<div id="pf-s10-flashpage" class="pf-xk">
+  <div class="page-width pf-xk__full">
+    <div class="pf-s10" style="--cols: 6;">
+      {%- paginate pf_col.products by 250 -%}
+      {%- liquid
+        assign pf_max = 0
+        for product in pf_col.products
+          assign v = product.selected_or_first_available_variant
+          assign c = v.compare_at_price
+          if c == blank or c <= v.price
+            assign c = product.compare_at_price_max
+          endif
+          if c > v.price
+            assign p = c | minus: v.price | times: 100.0 | divided_by: c | round
+            if p > pf_max
+              assign pf_max = p
+            endif
+          endif
+        endfor
+      -%}
+      <div class="pf-xk__head">
+        <div class="pf-xk__title-wrap">
+          <h1 class="pf-s10__title pf-xk__title">{{ pf_heading }}</h1>
+          {%- if pf_max > 0 -%}<span class="pf-xk__max">{% if vi %}Giảm đến{% else %}Up to{% endif %} -{{ pf_max }}%</span>{%- endif -%}
+        </div>
+        <div class="pf-xk__timer" data-pf-s10-timer hidden>
+          <span class="pf-xk__timer-label">{{ pf_countdown_label }}</span>
+          <b data-d>0</b><span class="pf-xk__unit">{% if vi %}ngày{% else %}d{% endif %}</span>
+          <b data-h>00</b><span class="pf-xk__colon" aria-hidden="true">:</span><b data-m>00</b><span class="pf-xk__colon" aria-hidden="true">:</span><b data-s>00</b>
+        </div>
+      </div>
+      <p class="pf-xk__sub">{{ pf_sub }} · {% if vi %}<b>{{ pf_col.products_count }}</b> sản phẩm đang xả kho{% else %}<b>{{ pf_col.products_count }}</b> clearance products{% endif %}</p>
+
+      <div class="pf-s10__grid pf-xk__grid">
+        {%- for product in pf_col.products -%}
+          {%- if product != blank and product.id -%}
+            {%- render 'pf-flash-card', p: product, section_id: 'flashpage', extra_class: 'pf-s10__card', low_stock: pf_low_stock -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      {%- endpaginate -%}
+
+      <div class="pf-xk__allwrap">
+        <p class="pf-xk__allnote">{% if vi %}Chưa tìm thấy món bạn cần? Hơn 240 món Việt đang chờ bạn trong cửa hàng.{% else %}Didn't find what you need? Browse all our Vietnamese products.{% endif %}</p>
+        <a class="pf-xk__more" href="{{ routes.all_products_collection_url }}">{% if vi %}Xem các sản phẩm khác{% else %}See more products{% endif %} <span aria-hidden="true">›</span></a>
+      </div>
+    </div>
   </div>
 </div>
+
+<style>
+  #pf-s10-flashpage { --fs-r: #d62828; --g: #1e8541; --g-d: #14672f; --g-soft: #eef6f0; --fs-line: #ececec; --ink: #2a2622; --mut: #8a8173; padding: 24px 0 56px; }
+
+  /* Full màn hình: bỏ giới hạn page-width, chỉ chừa lề hai bên */
+  #pf-s10-flashpage .pf-xk__full { max-width: none; padding-inline: clamp(1.6rem, 3vw, 4.8rem); }
+
+  /* Hàng tiêu đề: nền trắng, chữ xanh — giống "Ưu đãi duy nhất hôm nay" */
+  #pf-s10-flashpage .pf-xk__head { display: flex; align-items: center; gap: 1.6rem 2.4rem; flex-wrap: wrap; padding: 0 0 1.4rem; border-bottom: 1px solid var(--fs-line); }
+  #pf-s10-flashpage .pf-xk__title-wrap { display: inline-flex; align-items: center; gap: .8rem 1rem; flex-wrap: wrap; min-width: 0; }
+  #pf-s10-flashpage .pf-xk__bolt { flex: 0 0 auto; color: var(--g); }
+  #pf-s10-flashpage .pf-s10__title.pf-xk__title {
+    margin: 0; color: var(--g) !important; font-weight: 900 !important; font-size: clamp(2.4rem, 2.8vw, 3.4rem) !important;
+    line-height: 1.15 !important; text-transform: none !important; letter-spacing: 0 !important; white-space: nowrap; text-align: left;
+  }
+  #pf-s10-flashpage .pf-xk__title::after { content: none !important; }
+  #pf-s10-flashpage .pf-xk__max { font-size: 1.3rem; font-weight: 700; color: var(--fs-r); background: #fdecec; padding: .45rem .9rem; border-radius: 999px; white-space: nowrap; }
+  #pf-s10-flashpage .pf-xk__timer { display: inline-flex; align-items: center; gap: .5rem; }
+  #pf-s10-flashpage .pf-xk__timer[hidden] { display: none; }
+  #pf-s10-flashpage .pf-xk__timer-label { font-size: 1.4rem; font-weight: 600; color: var(--mut); margin-right: .4rem; white-space: nowrap; }
+  #pf-s10-flashpage .pf-xk__timer b {
+    min-width: 3.6rem; text-align: center; background: var(--g); color: #fff; border-radius: 8px;
+    font-size: 1.8rem; font-weight: 800; line-height: 1; padding: .6rem .5rem; font-variant-numeric: tabular-nums;
+  }
+  #pf-s10-flashpage .pf-xk__unit { font-size: 1.3rem; font-weight: 700; color: var(--g-d); margin-right: .3rem; }
+  #pf-s10-flashpage .pf-xk__colon { font-size: 1.8rem; font-weight: 800; color: var(--g); }
+  #pf-s10-flashpage .pf-xk__all {
+    margin-left: auto; background: #fff; color: var(--g-d); border: 1.5px solid var(--g); text-decoration: none; font-size: 1.4rem; font-weight: 700;
+    padding: .8rem 2rem; border-radius: 999px; white-space: nowrap; transition: background .15s ease;
+  }
+  #pf-s10-flashpage .pf-xk__all:hover { background: var(--g); color: #fff; }
+  #pf-s10-flashpage .pf-xk__sub { margin: 1rem 0 0; font-size: 1.4rem; color: var(--mut); }
+  #pf-s10-flashpage .pf-xk__sub b { color: var(--g-d); font-weight: 700; }
+
+  /* Lưới thẻ */
+  #pf-s10-flashpage .pf-xk__grid { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 1.2rem; margin-top: 1.6rem; }
+  #pf-s10-flashpage .pf-fs__card { display: flex; flex-direction: column; min-width: 0; background: #fff; border: 1px solid var(--fs-line); border-radius: 12px; padding: 1rem 1rem 1.1rem; }
+  #pf-s10-flashpage .pf-s10__card--hidden { display: none; }
+  #pf-s10-flashpage .pf-s10.is-expanded .pf-s10__card--hidden { display: flex; }
+  #pf-s10-flashpage .pf-fs__media { position: relative; display: block; aspect-ratio: 1 / 1; border-radius: 8px; overflow: hidden; background: #fff; }
+  #pf-s10-flashpage .pf-fs__media img, #pf-s10-flashpage .pf-fs__media svg { width: 100%; height: 100%; object-fit: contain; display: block; transition: transform .3s ease; }
+  #pf-s10-flashpage .pf-fs__card:hover .pf-fs__media img { transform: scale(1.04); }
+  #pf-s10-flashpage .pf-fs__badge { position: absolute; top: .4rem; left: .4rem; background: #fdecec; color: var(--fs-r); font-size: 1.2rem; font-weight: 700; line-height: 1; padding: .45rem .6rem; border-radius: 6px; }
+  #pf-s10-flashpage .pf-fs__name { margin-top: 1rem; font-size: 1.5rem; line-height: 1.35; color: var(--ink); text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #pf-s10-flashpage .pf-fs__name:hover { color: var(--g); }
+  #pf-s10-flashpage .pf-fs__row { display: flex; align-items: flex-end; justify-content: space-between; gap: .6rem; margin-top: .6rem; }
+  #pf-s10-flashpage .pf-fs__price { display: flex; flex-direction: column; min-width: 0; }
+  #pf-s10-flashpage .pf-fs__now { font-size: 2rem; font-weight: 800; color: var(--g); line-height: 1.2; white-space: nowrap; }
+  #pf-s10-flashpage .pf-fs__was { font-size: 1.3rem; color: var(--mut); line-height: 1.3; white-space: nowrap; }
+  #pf-s10-flashpage .pf-fs__addform { margin: 0; flex: 0 0 auto; }
+  #pf-s10-flashpage .pf-fs__add {
+    position: relative; width: 4rem; height: 4rem; padding: 0; border: 1px solid var(--fs-line); border-radius: 10px; cursor: pointer;
+    display: grid; place-items: center; background: #fff; color: var(--ink); font-size: 0; overflow: hidden; transition: background .15s ease, color .15s ease;
+  }
+  #pf-s10-flashpage .pf-fs__add:hover { background: var(--g); color: #fff; border-color: var(--g); }
+  #pf-s10-flashpage .pf-fs__add[disabled] { background: var(--g); color: #fff; border-color: var(--g); }
+  #pf-s10-flashpage .pf-fs__add[disabled]::after { content: "✓"; font-size: 1.8rem; font-weight: 800; }
+  #pf-s10-flashpage .pf-fs__bar { position: relative; margin-top: 1rem; height: 2rem; border-radius: 999px; background: var(--g-soft); overflow: hidden; }
+  #pf-s10-flashpage .pf-fs__bar i { position: absolute; inset: 0 auto 0 0; border-radius: 999px; background: #cfe8d6; }
+  #pf-s10-flashpage .pf-fs__bar span { position: relative; display: block; text-align: center; font-size: 1.2rem; font-weight: 700; line-height: 2rem; color: var(--g-d); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 .6rem; }
+  #pf-s10-flashpage .pf-fs__bar--out { background: #f0f0f0; }
+  #pf-s10-flashpage .pf-fs__bar--out i { background: #e0e0e0; }
+  #pf-s10-flashpage .pf-fs__bar--out span { color: var(--mut); }
+
+  /* Nút Xem thêm */
+  #pf-s10-flashpage .pf-s10__more-wrap { text-align: center; margin-top: 2.4rem; }
+  #pf-s10-flashpage .pf-s10__more {
+    display: inline-flex; align-items: center; gap: .6rem; cursor: pointer; font-family: inherit;
+    background: #fff; border: 1.5px solid var(--g); color: var(--g-d); font-weight: 700; font-size: 1.5rem;
+    padding: .9rem 2.6rem; border-radius: 999px; transition: background .15s ease, color .15s ease;
+  }
+  #pf-s10-flashpage .pf-s10__more:hover { background: var(--g); color: #fff; }
+  #pf-s10-flashpage .pf-s10__more .arw { transition: transform .2s ease; }
+  #pf-s10-flashpage .pf-s10.is-expanded .pf-s10__more .arw { transform: rotate(180deg); }
+
+  @media (min-width: 1600px) { #pf-s10-flashpage .pf-xk__grid { gap: 1.6rem; } }
+  @media (max-width: 1199px) { #pf-s10-flashpage .pf-xk__grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+  @media (max-width: 989px) { #pf-s10-flashpage .pf-xk__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 749px) {
+    #pf-s10-flashpage .pf-xk__head { padding: 0 0 1rem; gap: .8rem 1rem; }
+    #pf-s10-flashpage .pf-xk__bolt { width: 20px; height: 20px; }
+    #pf-s10-flashpage .pf-s10__title.pf-xk__title { font-size: 2.1rem !important; }
+    #pf-s10-flashpage .pf-xk__max { font-size: 1.1rem; padding: .35rem .7rem; }
+    #pf-s10-flashpage .pf-xk__all { font-size: 1.2rem; padding: .5rem 1.2rem; }
+    #pf-s10-flashpage .pf-xk__timer { order: 3; width: 100%; }
+    #pf-s10-flashpage .pf-xk__timer-label { font-size: 1.15rem; }
+    #pf-s10-flashpage .pf-xk__timer b { min-width: 3rem; font-size: 1.5rem; padding: .45rem .4rem; border-radius: 6px; }
+    #pf-s10-flashpage .pf-xk__colon { font-size: 1.5rem; }
+    #pf-s10-flashpage .pf-xk__sub { margin: .8rem 0 0; font-size: 1.25rem; }
+    #pf-s10-flashpage .pf-xk__grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: .8rem !important; margin-top: 1.2rem; }
+    #pf-s10-flashpage .pf-fs__card { padding: .7rem .7rem .8rem; }
+    #pf-s10-flashpage .pf-fs__badge { font-size: 1.05rem; padding: .35rem .45rem; }
+    #pf-s10-flashpage .pf-fs__name { font-size: 1.3rem; margin-top: .7rem; }
+    #pf-s10-flashpage .pf-fs__now { font-size: 1.6rem; }
+    #pf-s10-flashpage .pf-fs__was { font-size: 1.15rem; }
+    #pf-s10-flashpage .pf-fs__add { width: 3.4rem; height: 3.4rem; border-radius: 8px; }
+    #pf-s10-flashpage .pf-fs__add svg { width: 19px; height: 19px; }
+    #pf-s10-flashpage .pf-fs__bar { height: 1.8rem; margin-top: .8rem; }
+    #pf-s10-flashpage .pf-fs__bar span { font-size: 1.05rem; line-height: 1.8rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { #pf-s10-flashpage .pf-fs__media img { transition: none; } }
+  /* Trang riêng: tiêu đề h1, nút xem các sản phẩm khác */
+  #pf-s10-flashpage .pf-xk__count { margin: 1rem 0 0; font-size: 1.4rem; color: var(--mut); }
+  #pf-s10-flashpage .pf-xk__count b { color: var(--g-d); }
+  #pf-s10-flashpage .pf-xk__allwrap { margin-top: 3.2rem; text-align: center; }
+  #pf-s10-flashpage .pf-xk__allnote { margin: 0 0 1.2rem; font-size: 1.45rem; color: var(--mut); }
+  #pf-s10-flashpage .pf-xk__more {
+    display: inline-flex; align-items: center; gap: .6rem; text-decoration: none; background: var(--g); color: #fff;
+    font-size: 1.6rem; font-weight: 800; padding: 1.2rem 3.2rem; border-radius: 999px; transition: background .15s ease;
+  }
+  #pf-s10-flashpage .pf-xk__more:hover { background: var(--g-d); color: #fff; }
+  #pf-s10-flashpage .pf-xk__more span { font-size: 2rem; line-height: 1; }
+  @media (max-width: 749px) {
+    #pf-s10-flashpage .pf-xk__allnote { font-size: 1.3rem; }
+    #pf-s10-flashpage .pf-xk__more { display: flex; justify-content: center; font-size: 1.45rem; padding: 1.1rem 1.6rem; }
+  }
+</style>
+
+<script>
+  (function () {
+    var root = document.getElementById('pf-s10-flashpage');
+    if (!root) return;
+    // Đồng hồ đếm ngược tới 23:59:59 Chủ nhật (giờ trên máy khách), sang tuần mới tự chạy lại
+    var t = root.querySelector('[data-pf-s10-timer]');
+    if (t) {
+      var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+      var q = function (k) { return t.querySelector('[data-' + k + ']'); };
+      var tick = function () {
+        var now = new Date(), end = new Date(now);
+        end.setDate(now.getDate() + ((7 - now.getDay()) % 7));
+        end.setHours(23, 59, 59, 999);
+        var left = Math.max(0, Math.floor((end - now) / 1000));
+        q('d').textContent = Math.floor(left / 86400);
+        q('h').textContent = pad(Math.floor(left % 86400 / 3600));
+        q('m').textContent = pad(Math.floor(left % 3600 / 60));
+        q('s').textContent = pad(left % 60);
+      };
+      tick(); t.hidden = false; setInterval(tick, 1000);
+    }
+  })();
+</script>
+{%- else -%}
+  <div class="page-width" style="padding: 56px 0; text-align: center;"><p>{% if vi %}Chưa có sản phẩm xả kho tuần này.{% else %}No products yet.{% endif %}</p></div>
+{%- endif -%}

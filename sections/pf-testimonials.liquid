@@ -1,0 +1,129 @@
+{%- comment -%}
+  "Khách hàng nói gì về Phomifood?" — 2 dải ảnh feedback thật chạy ngang (ngược chiều nhau) + nút Xem ngay.
+  Ảnh: dán link ảnh feedback vào ô "Ảnh feedback", mỗi dòng 1 link (cùng bộ ảnh với trang Feedback khách hàng).
+  Rê chuột vào dải ảnh thì dừng chạy; ai tắt hiệu ứng chuyển động thì dải ảnh vuốt ngang bằng tay.
+{%- endcomment -%}
+{%- assign pf_imgs = section.settings.images | strip | newline_to_br | split: '<br />' -%}
+{%- assign pf_n = 0 -%}
+{%- capture pf_cards -%}
+  {%- for u in pf_imgs -%}
+    {%- assign u = u | strip -%}
+    {%- if u != blank -%}
+      {%- assign pf_n = pf_n | plus: 1 -%}
+      {%- assign base = u | split: '?' | first -%}
+      <figure class="pf-tm__card"><img src="{{ base }}?width=800" loading="lazy" alt="Feedback khách hàng Phomifood {{ forloop.index }}"></figure>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- capture pf_cards_rev -%}
+  {%- for u in pf_imgs reversed -%}
+    {%- assign u = u | strip -%}
+    {%- if u != blank -%}
+      {%- assign base = u | split: '?' | first -%}
+      <figure class="pf-tm__card"><img src="{{ base }}?width=800" loading="lazy" alt="Feedback khách hàng Phomifood"></figure>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+<style>
+  #pf-tm-{{ section.id }} {
+    --g: #1e8541; --g-d: #14672f; --y: #ffc61a;
+    position: relative; overflow: hidden; padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    background: linear-gradient(180deg, #eef7f0 0%, #f7f1e9 100%);
+  }
+  #pf-tm-{{ section.id }} .pf-tm__wrap { max-width: var(--page-width, 120rem); margin-inline: auto; padding-inline: clamp(1.6rem, 4vw, 5rem); }
+  #pf-tm-{{ section.id }} .pf-tm__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 2.4rem; margin-bottom: clamp(2.4rem, 4vw, 3.6rem); }
+  #pf-tm-{{ section.id }} .pf-tm__rating { display: inline-flex; align-items: center; gap: .8rem; margin: 0 0 1rem; padding: .5rem 1.2rem .5rem .8rem; border-radius: 999px; background: #fff; box-shadow: 0 4px 12px rgba(20, 90, 45, .08); font-size: 1.25rem; font-weight: 800; color: var(--g-d); }
+  #pf-tm-{{ section.id }} .pf-tm__stars { color: var(--y); font-size: 1.5rem; letter-spacing: 2px; }
+  #pf-tm-{{ section.id }} .pf-tm__title { margin: 0; font-family: var(--font-heading-family, sans-serif); font-weight: 900; font-size: clamp(2.6rem, 3.6vw, 4rem); line-height: 1.12; color: var(--g-d); }
+  #pf-tm-{{ section.id }} .pf-tm__title span { color: var(--g); position: relative; white-space: nowrap; }
+  #pf-tm-{{ section.id }} .pf-tm__title span::after { content: ""; position: absolute; left: 0; right: 0; bottom: .06em; height: .28em; background: var(--y); opacity: .55; z-index: -1; border-radius: 4px; }
+  #pf-tm-{{ section.id }} .pf-tm__title { position: relative; z-index: 0; }
+  #pf-tm-{{ section.id }} .pf-tm__sub { margin: 1rem 0 0; font-size: 1.6rem; line-height: 1.5; color: #5a5346; max-width: 56rem; }
+  #pf-tm-{{ section.id }} .pf-tm__btn {
+    flex: none; display: inline-flex; align-items: center; gap: .8rem; white-space: nowrap; text-decoration: none;
+    padding: 1.5rem 3rem; border-radius: 999px; background: linear-gradient(90deg, var(--g), var(--g-d)); color: #fff;
+    font-weight: 800; font-size: 1.6rem; box-shadow: 0 10px 22px rgba(20, 103, 47, .28); transition: transform .15s ease, box-shadow .15s ease;
+  }
+  #pf-tm-{{ section.id }} .pf-tm__btn:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(20, 103, 47, .36); color: #fff; }
+  #pf-tm-{{ section.id }} .pf-tm__btn .pf-tm__arr { display: inline-grid; place-items: center; width: 2.4rem; height: 2.4rem; border-radius: 50%; background: var(--y); color: var(--g-d); font-size: 1.4rem; }
+
+  /* Dải ảnh chạy */
+  #pf-tm-{{ section.id }} .pf-tm__rows { display: grid; gap: 0; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+  #pf-tm-{{ section.id }} .pf-tm__row { overflow: hidden; }
+  #pf-tm-{{ section.id }} .pf-tm__track { display: flex; width: max-content; gap: 1.6rem; padding: 1.8rem 0 1.2rem; animation: pf-tm-{{ section.id }}-l {{ section.settings.speed }}s linear infinite; }
+  #pf-tm-{{ section.id }} .pf-tm__row--rev .pf-tm__track { animation-name: pf-tm-{{ section.id }}-r; }
+  #pf-tm-{{ section.id }} .pf-tm__row:hover .pf-tm__track { animation-play-state: paused; }
+  @keyframes pf-tm-{{ section.id }}-l { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes pf-tm-{{ section.id }}-r { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+  #pf-tm-{{ section.id }} .pf-tm__card {
+    flex: none; margin: 0; height: 14rem; padding: 1rem; border-radius: 18px; background: #fff;
+    border: 1px solid #e6eadf; box-shadow: 0 8px 20px rgba(20, 90, 45, .08); position: relative;
+  }
+  #pf-tm-{{ section.id }} .pf-tm__card::before {
+    content: "“"; position: absolute; top: -1.4rem; left: 1.2rem; width: 3rem; height: 3rem; border-radius: 50%;
+    background: var(--y); color: var(--g-d); font: 900 2.8rem/3.6rem Georgia, serif; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,.08);
+  }
+  #pf-tm-{{ section.id }} .pf-tm__card img { display: block; height: 100%; width: auto; max-width: 52rem; object-fit: contain; border-radius: 10px; }
+
+  @media screen and (max-width: 749px) {
+    #pf-tm-{{ section.id }} .pf-tm__head { display: block; text-align: left; }
+    #pf-tm-{{ section.id }} .pf-tm__sub { font-size: 1.45rem; }
+    #pf-tm-{{ section.id }} .pf-tm__card { height: 10rem; padding: .7rem; border-radius: 14px; }
+    #pf-tm-{{ section.id }} .pf-tm__card img { max-width: 32rem; }
+    #pf-tm-{{ section.id }} .pf-tm__track { gap: 1.1rem; }
+    #pf-tm-{{ section.id }} .pf-tm__foot { display: block; margin-top: 2rem; padding-inline: clamp(1.6rem, 4vw, 5rem); }
+    #pf-tm-{{ section.id }} .pf-tm__foot .pf-tm__btn { display: flex; justify-content: center; }
+    #pf-tm-{{ section.id }} .pf-tm__head .pf-tm__btn { display: none; }
+  }
+  @media screen and (min-width: 750px) { #pf-tm-{{ section.id }} .pf-tm__foot { display: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    #pf-tm-{{ section.id }} .pf-tm__track { animation: none; }
+    #pf-tm-{{ section.id }} .pf-tm__row { overflow-x: auto; }
+  }
+</style>
+
+<div id="pf-tm-{{ section.id }}">
+  <div class="pf-tm__wrap">
+    <div class="pf-tm__head">
+      <div>
+        <p class="pf-tm__rating"><span class="pf-tm__stars" aria-hidden="true">★★★★★</span>{{ section.settings.badge }}</p>
+        <h2 class="pf-tm__title">{{ section.settings.heading_1 }} <span>{{ section.settings.heading_2 }}</span></h2>
+        {%- if section.settings.subheading != blank -%}<p class="pf-tm__sub">{{ section.settings.subheading }}</p>{%- endif -%}
+      </div>
+      {%- capture pf_btn -%}<a class="pf-tm__btn" href="{{ section.settings.button_link | default: '/pages/feedback-khach-hang' }}">{{ section.settings.button_label }} <span class="pf-tm__arr" aria-hidden="true">→</span></a>{%- endcapture -%}
+      {%- if section.settings.button_label != blank -%}{{ pf_btn }}{%- endif -%}
+    </div>
+  </div>
+
+  {%- if pf_n > 0 -%}
+    <div class="pf-tm__rows">
+      <div class="pf-tm__row"><div class="pf-tm__track">{{ pf_cards }}{{ pf_cards | replace: '<figure ', '<figure aria-hidden="true" ' }}</div></div>
+      {%- if pf_n > 2 -%}
+        <div class="pf-tm__row pf-tm__row--rev"><div class="pf-tm__track">{{ pf_cards_rev | replace: '<figure ', '<figure aria-hidden="true" ' }}{{ pf_cards_rev | replace: '<figure ', '<figure aria-hidden="true" ' }}</div></div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.button_label != blank -%}<div class="pf-tm__foot">{{ pf_btn }}</div>{%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Khách hàng nói gì",
+  "tag": "section",
+  "class": "pf-testimonials-section",
+  "settings": [
+    { "type": "text", "id": "badge", "label": "Nhãn nhỏ cạnh 5 sao", "default": "Feedback thật từ khách hàng" },
+    { "type": "text", "id": "heading_1", "label": "Tiêu đề (phần đầu)", "default": "Khách hàng nói gì về" },
+    { "type": "text", "id": "heading_2", "label": "Tiêu đề (phần nhấn)", "default": "Phomifood?" },
+    { "type": "textarea", "id": "subheading", "label": "Mô tả ngắn" },
+    { "type": "text", "id": "button_label", "label": "Chữ nút", "default": "Xem ngay" },
+    { "type": "url", "id": "button_link", "label": "Liên kết nút (để trống = trang Feedback khách hàng)" },
+    { "type": "textarea", "id": "images", "label": "Ảnh feedback (mỗi dòng 1 link ảnh)" },
+    { "type": "range", "id": "speed", "min": 20, "max": 120, "step": 5, "unit": "s", "label": "Tốc độ chạy (giây/vòng, càng lớn càng chậm)", "default": 60 },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 56 }
+  ],
+  "presets": [ { "name": "Khách hàng nói gì" } ]
+}
+{% endschema %}

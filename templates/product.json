@@ -14,11 +14,11 @@
       "blocks": {
         "vendor": {
           "type": "text",
+          "disabled": true,
           "settings": {
             "text": "{{ product.vendor }}",
             "text_style": "uppercase"
-          },
-          "disabled": true
+          }
         },
         "title": {
           "type": "title",
@@ -48,8 +48,8 @@
         },
         "description": {
           "type": "description",
-          "settings": {},
-          "disabled": true
+          "disabled": true,
+          "settings": {}
         },
         "share": {
           "type": "share",
@@ -83,6 +83,11 @@
         "padding_top": 36,
         "padding_bottom": 12
       }
+    },
+    "pf_frequently_bought": {
+      "type": "pf-frequently-bought",
+      "disabled": true,
+      "settings": {}
     },
     "pf_review_video": {
       "type": "pf-review-video",
@@ -138,54 +143,6 @@
         "subheading": "Đánh giá thật từ khách hàng PHOMIFOOD",
         "show_summary": true,
         "padding_top": 40,
-        "padding_bottom": 40
-      }
-    },
-    "pf_frequently_bought": {
-      "type": "pf-frequently-bought",
-      "disabled": true,
-      "settings": {}
-    },
-    "disclosures": {
-      "type": "disclosures",
-      "settings": {
-        "heading": "Disclosures",
-        "heading_size": "h2",
-        "open_by_default": false,
-        "color_scheme": "",
-        "padding_top": 36,
-        "padding_bottom": 0
-      }
-    },
-    "related-products": {
-      "type": "related-products",
-      "disabled": true,
-      "settings": {
-        "heading": "Thường Được Mua Kèm",
-        "heading_size": "h2",
-        "products_to_show": 4,
-        "columns_desktop": 4,
-        "columns_mobile": "2",
-        "color_scheme": "scheme-1",
-        "image_ratio": "square",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "padding_top": 36,
-        "padding_bottom": 28
-      }
-    },
-    "pf_same_category": {
-      "type": "pf-same-category",
-      "settings": {
-        "heading": "Sản phẩm cùng danh mục",
-        "related_heading": "Sản phẩm liên quan",
-        "category_handles": "bun-phở-kho\nmi-an-liền\nbột-gia-vị\ndồ-uống\nsữa-cac-loại\nbanh-kẹo-dồ-an-vặt\nthực-phẩm-chế-biến-sẵn\ngạo-nếp-cac-loại\nbanh-trang-cac-loại\ncombo",
-        "exclude_handles": "ban-chay-nhat\nsieu-sale-10-10\nhang-dộc-quyền\nall\nfrontpage",
-        "products_to_show": 12,
-        "initial_count": 8,
-        "padding_top": 24,
         "padding_bottom": 40
       }
     },
@@ -263,6 +220,50 @@
         "padding_bottom": 24
       }
     },
+    "pf_same_category": {
+      "type": "pf-same-category",
+      "settings": {
+        "heading": "Sản phẩm cùng danh mục",
+        "fixed_collection": "",
+        "related_heading": "Sản phẩm liên quan",
+        "category_handles": "bun-phở-kho\nmi-an-liền\nbột-gia-vị\ndồ-uống\nsữa-cac-loại\nbanh-kẹo-dồ-an-vặt\nthực-phẩm-chế-biến-sẵn\ngạo-nếp-cac-loại\nbanh-trang-cac-loại\ncombo",
+        "exclude_handles": "ban-chay-nhat\nsieu-sale-10-10\nhang-dộc-quyền\nall\nfrontpage",
+        "products_to_show": 12,
+        "initial_count": 8,
+        "padding_top": 24,
+        "padding_bottom": 40
+      }
+    },
+    "disclosures": {
+      "type": "disclosures",
+      "settings": {
+        "heading": "Disclosures",
+        "heading_size": "h2",
+        "open_by_default": false,
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 0
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "settings": {
+        "heading": "Thường Được Mua Kèm",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    },
     "pf_trust_strip": {
       "type": "pf-trust-strip",
       "blocks": {
@@ -309,20 +310,6 @@
         "margin_top": 32,
         "speed": 40
       }
-    },
-    "pf_trending": {
-      "type": "pf-same-category",
-      "settings": {
-        "heading": "🔥 Sản phẩm đang được quan tâm",
-        "related_heading": "Sản phẩm liên quan",
-        "category_handles": "bun-phở-kho\nmi-an-liền\nbột-gia-vị\ndồ-uống\nsữa-cac-loại\nbanh-kẹo-dồ-an-vặt\nthực-phẩm-chế-biến-sẵn\ngạo-nếp-cac-loại\nbanh-trang-cac-loại\ncombo",
-        "exclude_handles": "ban-chay-nhat\nsieu-sale-10-10\nhang-dộc-quyền\nall\nfrontpage",
-        "products_to_show": 12,
-        "initial_count": 8,
-        "padding_top": 8,
-        "padding_bottom": 40,
-        "fixed_collection": "ban-chay-nhat"
-      }
     }
   },
   "order": [
@@ -332,7 +319,6 @@
     "pf_reviews",
     "pf_product_faq",
     "pf_same_category",
-    "pf_trending",
     "disclosures",
     "related-products",
     "pf_trust_strip"

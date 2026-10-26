@@ -414,8 +414,8 @@
     {%- endif -%}
 
     {%- unless request.page_type == 'cart' -%}
-      {%- comment -%} Thanh giỏ nhỏ ở đáy màn hình — chỉ dùng khi KHÔNG bật giỏ trượt (giỏ trượt đã tự mở khi thêm SP) {%- endcomment -%}
-      {%- unless settings.cart_type == 'drawer' -%}{% render 'pf-sticky-cart' %}{%- endunless -%}
+      {%- comment -%} Thanh giỏ cố định ở đáy màn hình — hiện trên mọi trang khi giỏ có hàng; bấm "Xem giỏ hàng" mở giỏ trượt (nếu bật) {%- endcomment -%}
+      {% render 'pf-sticky-cart' %}
     {%- endunless -%}
 
     {% render 'pf-popups' %}

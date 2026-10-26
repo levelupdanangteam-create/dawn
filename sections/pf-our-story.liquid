@@ -1,0 +1,243 @@
+{%- comment -%}
+  "Câu chuyện Phomifood": khung kem bo góc, bên trái nhãn vàng + tiêu đề xanh + đoạn giới thiệu + 3 ý chính + nút,
+  bên phải thẻ trắng: ảnh lớn (vd. ảnh kho) + đường đi "Tổng kho → Bếp nhà bạn" (chấm chạy) + các ô nhóm hàng (block, tuỳ chọn).
+  Điện thoại/tablet: thẻ ảnh nằm trên cùng.
+  Ảnh mỗi ô: ảnh tự chọn → link ảnh → ảnh danh mục → ảnh sản phẩm đầu tiên của danh mục → emoji.
+{%- endcomment -%}
+{%- liquid
+  assign vi = false
+  if request.locale.iso_code == 'vi'
+    assign vi = true
+  endif
+-%}
+<div id="pf-os-{{ section.id }}" class="pf-os" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+  <div class="pf-os__wrap">
+    <div class="pf-os__box">
+      <div class="pf-os__copy">
+        {%- if section.settings.eyebrow != blank -%}<span class="pf-os__pill">{% render 'pf-tr', s: section.settings.eyebrow %}</span>{%- endif -%}
+        <h2 class="pf-os__title">{% render 'pf-tr', s: section.settings.heading %}</h2>
+        {%- if section.settings.text != blank -%}<div class="pf-os__text">{{ section.settings.text }}</div>{%- endif -%}
+        <ul class="pf-os__checks">
+          {%- for n in (1..4) -%}
+            {%- assign key = 'point_' | append: n -%}
+            {%- assign pt = section.settings[key] -%}
+            {%- if pt != blank -%}
+              <li><span class="pf-os__tick" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span>{% render 'pf-tr', s: pt %}</li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+        {%- if section.settings.button_label != blank -%}
+          <a class="pf-os__btn" href="{{ section.settings.button_link | default: '/pages/ve-chung-toi' }}">{% render 'pf-tr', s: section.settings.button_label %} <span aria-hidden="true">→</span></a>
+        {%- endif -%}
+      </div>
+
+      <div class="pf-os__card">
+        {%- assign pf_hero = section.settings.card_image -%}
+        {%- if pf_hero != blank -%}
+          <div class="pf-os__hero">{{ pf_hero | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400,600,800,1000', sizes: '(max-width: 989px) 92vw, 44vw', alt: section.settings.card_image_alt }}</div>
+        {%- elsif section.settings.card_image_url != blank -%}
+          <div class="pf-os__hero"><img src="{{ section.settings.card_image_url }}" alt="{{ section.settings.card_image_alt | escape }}" loading="lazy" width="1000" height="560"></div>
+        {%- endif -%}
+        <div class="pf-os__route">
+          <span class="pf-os__stop pf-os__stop--from">{% render 'pf-tr', s: section.settings.route_from %}</span>
+          <span class="pf-os__line" aria-hidden="true"><i></i></span>
+          <span class="pf-os__stop pf-os__stop--to">{% render 'pf-tr', s: section.settings.route_to %}</span>
+        </div>
+        {%- if section.blocks.size > 0 -%}
+        <div class="pf-os__tiles">
+          {%- for block in section.blocks -%}
+            {%- assign t_link = block.settings.link -%}
+            {%- if t_link == blank and block.settings.collection != blank -%}{%- assign t_link = block.settings.collection.url -%}{%- endif -%}
+            {%- assign tag = 'div' -%}
+            {%- if t_link != blank -%}{%- assign tag = 'a' -%}{%- endif -%}
+            <{{ tag }} class="pf-os__tile"{% if tag == 'a' %} href="{{ t_link }}"{% endif %} {{ block.shopify_attributes }}>
+              {%- liquid
+                assign t_img = block.settings.image
+                assign t_url = block.settings.image_url
+                assign t_col = block.settings.collection
+                if t_img == blank and t_url == blank and t_col != blank
+                  if t_col.image
+                    assign t_img = t_col.image
+                  elsif t_col.products.first.featured_image
+                    assign t_img = t_col.products.first.featured_image
+                  endif
+                endif
+              -%}
+              {%- if t_img != blank -%}
+                <span class="pf-os__photo">{{ t_img | image_url: width: 400 | image_tag: loading: 'lazy', widths: '200,300,400', sizes: '160px', alt: block.settings.title }}</span>
+              {%- elsif t_url != blank -%}
+                <span class="pf-os__photo"><img src="{{ t_url }}" alt="{{ block.settings.title | escape }}" loading="lazy" width="400" height="300"></span>
+              {%- else -%}
+                <span class="pf-os__ico"><span aria-hidden="true">{{ block.settings.icon }}</span></span>
+              {%- endif -%}
+              <b>{% render 'pf-tr', s: block.settings.title %}</b>
+              {%- if block.settings.subtitle != blank -%}<small>{% render 'pf-tr', s: block.settings.subtitle %}</small>{%- endif -%}
+            </{{ tag }}>
+          {%- endfor -%}
+        </div>
+        {%- endif -%}
+        {%- if section.settings.card_note != blank -%}<div class="pf-os__note">{{ section.settings.card_note }}</div>{%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  #pf-os-{{ section.id }} { --g: #1e8541; --g-d: #14672f; --y: #ffc61a; --ink: #2a2622; --mut: #6b6357; }
+  #pf-os-{{ section.id }} .pf-os__wrap { max-width: var(--page-width, 120rem); margin-inline: auto; padding-inline: clamp(1.6rem, 3vw, 3rem); }
+  {%- if section.settings.full_width %}
+  #pf-os-{{ section.id }} .pf-os__wrap { max-width: none; padding-inline: clamp(0.8rem, 1.2vw, 1.6rem); }
+  {%- endif %}
+  #pf-os-{{ section.id }} .pf-os__box {
+    position: relative; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: clamp(2.4rem, 4vw, 5rem); align-items: center;
+    padding: clamp(3rem, 4.4vw, 5.4rem) clamp(2rem, 4.4vw, 5.4rem);
+    background: linear-gradient(120deg, #fffaf0 0%, #fbf8ef 55%, #eef7ef 100%);
+    border: 1px solid #efe6d2; border-radius: 28px; box-shadow: 0 12px 34px rgba(60, 40, 20, .05);
+  }
+  #pf-os-{{ section.id }} .pf-os__box::before {
+    content: ""; position: absolute; top: -8rem; right: -6rem; width: 26rem; height: 26rem; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 198, 26, .22), rgba(255, 198, 26, 0) 70%); pointer-events: none;
+  }
+  #pf-os-{{ section.id }} .pf-os__copy { position: relative; display: flex; flex-direction: column; align-items: flex-start; }
+  #pf-os-{{ section.id }} .pf-os__pill {
+    display: inline-flex; align-items: center; gap: .7rem; background: var(--y); color: var(--ink);
+    font-size: 1.3rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; padding: .7rem 1.6rem; border-radius: 999px;
+  }
+  #pf-os-{{ section.id }} .pf-os__pill::before { content: ""; width: .7rem; height: .7rem; border-radius: 50%; background: var(--g); }
+  #pf-os-{{ section.id }} .pf-os__title {
+    margin: 1.8rem 0 0; font-family: var(--font-heading-family, sans-serif); font-weight: 900;
+    font-size: clamp(2.8rem, 3.8vw, 4.6rem); line-height: 1.12; color: var(--g);
+  }
+  #pf-os-{{ section.id }} .pf-os__text { margin-top: 1.6rem; max-width: 60ch; font-size: 1.7rem; line-height: 1.75; color: #57534b; }
+  #pf-os-{{ section.id }} .pf-os__text p { margin: 0; }
+  #pf-os-{{ section.id }} .pf-os__text strong, #pf-os-{{ section.id }} .pf-os__text b { color: var(--g); font-weight: 800; }
+  #pf-os-{{ section.id }} .pf-os__checks { list-style: none; margin: 2.2rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 1rem; }
+  #pf-os-{{ section.id }} .pf-os__checks li {
+    display: inline-flex; align-items: center; gap: .8rem; background: #fff; border: 1px solid #ece4d8; border-radius: 999px;
+    padding: .8rem 1.6rem .8rem .9rem; font-size: 1.5rem; font-weight: 700; color: var(--ink);
+  }
+  #pf-os-{{ section.id }} .pf-os__tick { flex: none; width: 2.4rem; height: 2.4rem; border-radius: 50%; display: grid; place-items: center; background: var(--g); color: #fff; }
+  #pf-os-{{ section.id }} .pf-os__btn {
+    margin-top: 2.6rem; display: inline-flex; align-items: center; gap: .7rem; text-decoration: none;
+    background: var(--g); color: #fff; font-size: 1.6rem; font-weight: 800; padding: 1.4rem 3rem; border-radius: 999px;
+    box-shadow: 0 10px 22px rgba(30, 133, 65, .28); transition: background .18s ease, transform .18s ease;
+  }
+  #pf-os-{{ section.id }} .pf-os__btn:hover { background: var(--g-d); transform: translateY(-2px); color: #fff; }
+
+  #pf-os-{{ section.id }} .pf-os__card {
+    position: relative; background: #fff; border-radius: 22px; padding: clamp(2rem, 2.4vw, 2.8rem);
+    box-shadow: 0 18px 44px rgba(60, 40, 20, .08);
+  }
+  #pf-os-{{ section.id }} .pf-os__hero { margin: 0 0 2rem; border-radius: 16px; overflow: hidden; aspect-ratio: 4 / 3; background: #f3eee4; }
+  #pf-os-{{ section.id }} .pf-os__hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #pf-os-{{ section.id }} .pf-os__route { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 2rem; }
+  #pf-os-{{ section.id }} .pf-os__stop { flex: none; padding: .8rem 1.4rem; border-radius: 999px; font-size: 1.45rem; font-weight: 800; white-space: nowrap; }
+  #pf-os-{{ section.id }} .pf-os__stop--from { background: #fff3c4; color: #7a5300; }
+  #pf-os-{{ section.id }} .pf-os__stop--to { background: #e4f4e9; color: var(--g-d); }
+  #pf-os-{{ section.id }} .pf-os__line { position: relative; flex: 1; min-width: 3rem; height: 2px; background: repeating-linear-gradient(90deg, #9fd3b0 0 6px, transparent 6px 12px); }
+  #pf-os-{{ section.id }} .pf-os__line i {
+    position: absolute; top: 50%; left: 0; width: 1.2rem; height: 1.2rem; margin-top: -.6rem; border-radius: 50%;
+    background: var(--g); box-shadow: 0 0 0 4px rgba(30, 133, 65, .18); animation: pf-os-move-{{ section.id }} 3.2s ease-in-out infinite;
+  }
+  @keyframes pf-os-move-{{ section.id }} { 0% { left: 0; } 50% { left: calc(100% - 1.2rem); } 100% { left: 0; } }
+  #pf-os-{{ section.id }} .pf-os__tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: 1.2rem; }
+  #pf-os-{{ section.id }} .pf-os__tile {
+    display: flex; flex-direction: column; align-items: center; text-align: center; gap: .5rem; text-decoration: none; color: inherit;
+    background: #fbf7ef; border: 1px solid #efe6d2; border-radius: 16px; padding: 1rem 1rem 1.6rem; transition: transform .18s ease, border-color .18s ease;
+  }
+  #pf-os-{{ section.id }} a.pf-os__tile:hover { transform: translateY(-3px); border-color: #bfe0c7; }
+  #pf-os-{{ section.id }} .pf-os__ico { width: 5.2rem; height: 5.2rem; display: grid; place-items: center; font-size: 3.4rem; line-height: 1; margin-bottom: .4rem; }
+  #pf-os-{{ section.id }} .pf-os__photo { width: 100%; aspect-ratio: 4 / 3; border-radius: 12px; overflow: hidden; background: #fff; margin-bottom: .6rem; }
+  #pf-os-{{ section.id }} .pf-os__photo img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .3s ease; }
+  #pf-os-{{ section.id }} a.pf-os__tile:hover .pf-os__photo img { transform: scale(1.05); }
+  #pf-os-{{ section.id }} .pf-os__tile b { font-size: 1.6rem; font-weight: 800; color: var(--ink); }
+  #pf-os-{{ section.id }} .pf-os__tile small { font-size: 1.3rem; line-height: 1.4; color: var(--mut); }
+  #pf-os-{{ section.id }} .pf-os__note p { margin: 0; }
+  #pf-os-{{ section.id }} .pf-os__note { margin: 2rem 0 0; text-align: center; font-size: 1.5rem; color: var(--mut); }
+  #pf-os-{{ section.id }} .pf-os__note strong, #pf-os-{{ section.id }} .pf-os__note b { color: var(--g); font-weight: 800; }
+
+  @media (max-width: 989px) {
+    #pf-os-{{ section.id }} .pf-os__box { grid-template-columns: 1fr; }
+    /* Điện thoại / tablet: thẻ ảnh kho lên trên cùng */
+    #pf-os-{{ section.id }} .pf-os__card { order: -1; }
+  }
+  @media (max-width: 749px) {
+    #pf-os-{{ section.id }} .pf-os__wrap { padding-inline: 1.2rem; }
+    #pf-os-{{ section.id }} .pf-os__box { gap: 2.4rem; padding: 2.4rem 1.4rem 1.6rem; border-radius: 20px; }
+    #pf-os-{{ section.id }} .pf-os__box::before { width: 16rem; height: 16rem; top: -5rem; right: -5rem; }
+    #pf-os-{{ section.id }} .pf-os__copy { align-items: stretch; }
+    #pf-os-{{ section.id }} .pf-os__pill { align-self: flex-start; font-size: 1.1rem; padding: .55rem 1.2rem; letter-spacing: .1em; }
+    #pf-os-{{ section.id }} .pf-os__title { margin-top: 1.2rem; font-size: 2.5rem; line-height: 1.18; }
+    #pf-os-{{ section.id }} .pf-os__text { margin-top: 1.2rem; font-size: 1.45rem; line-height: 1.65; }
+    #pf-os-{{ section.id }} .pf-os__checks { margin-top: 1.6rem; flex-direction: column; gap: .6rem; }
+    #pf-os-{{ section.id }} .pf-os__checks li { font-size: 1.35rem; padding: .6rem 1.2rem .6rem .6rem; background: rgba(255,255,255,.85); }
+    #pf-os-{{ section.id }} .pf-os__tick { width: 2.1rem; height: 2.1rem; }
+    #pf-os-{{ section.id }} .pf-os__btn { margin-top: 2rem; justify-content: center; font-size: 1.45rem; padding: 1.25rem 2rem; }
+    #pf-os-{{ section.id }} .pf-os__card { padding: 1.2rem; border-radius: 18px; }
+    #pf-os-{{ section.id }} .pf-os__hero { aspect-ratio: 16 / 9; margin-bottom: 1.4rem; border-radius: 12px; }
+    #pf-os-{{ section.id }} .pf-os__route { gap: .6rem; margin-bottom: 1.4rem; }
+    #pf-os-{{ section.id }} .pf-os__stop { flex: 0 1 auto; min-width: 0; white-space: normal; text-align: center; line-height: 1.25; font-size: 1.2rem; padding: .55rem .9rem; }
+    #pf-os-{{ section.id }} .pf-os__line { min-width: 2.4rem; }
+    #pf-os-{{ section.id }} .pf-os__tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .7rem; }
+    #pf-os-{{ section.id }} .pf-os__tile { padding: .5rem .5rem 1rem; gap: .3rem; border-radius: 12px; }
+    #pf-os-{{ section.id }} .pf-os__photo { aspect-ratio: 1 / 1; border-radius: 9px; margin-bottom: .4rem; }
+    #pf-os-{{ section.id }} .pf-os__ico { width: 4rem; height: 4rem; font-size: 2.6rem; }
+    #pf-os-{{ section.id }} .pf-os__tile b { font-size: 1.25rem; line-height: 1.3; }
+    #pf-os-{{ section.id }} .pf-os__tile small { font-size: 1.05rem; line-height: 1.35; }
+    #pf-os-{{ section.id }} .pf-os__note { margin-top: 1.4rem; font-size: 1.3rem; }
+  }
+  @media (max-width: 380px) {
+    #pf-os-{{ section.id }} .pf-os__tile small { display: none; }
+    #pf-os-{{ section.id }} .pf-os__title { font-size: 2.3rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #pf-os-{{ section.id }} .pf-os__line i { animation: none; left: 50%; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Câu chuyện Phomifood",
+  "tag": "section",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Nhãn vàng", "default": "Câu chuyện Phomifood" },
+    { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Mang hương vị quê nhà đến bàn ăn châu Âu" },
+    { "type": "richtext", "id": "text", "label": "Đoạn giới thiệu", "default": "<p>Với người Việt xa quê, một bát phở hay ly cà phê sữa là cả trời thương nhớ, nhưng tìm được hàng chuẩn vị lại không dễ. <strong>Phomifood</strong> ra đời để mang <strong>hàng Việt chính hãng</strong> từ tổng kho Praha giao tận cửa nhà bạn.</p>" },
+    { "type": "text", "id": "point_1", "label": "Ý chính 1", "default": "Hàng chính hãng" },
+    { "type": "text", "id": "point_2", "label": "Ý chính 2", "default": "Gửi từ kho Séc" },
+    { "type": "text", "id": "point_3", "label": "Ý chính 3", "default": "Giá kho, mua thùng rẻ hơn" },
+    { "type": "text", "id": "point_4", "label": "Ý chính 4", "default": "Hàng độc quyền chỉ có tại Phomifood" },
+    { "type": "text", "id": "button_label", "label": "Chữ nút (để trống = ẩn)", "default": "Đọc câu chuyện Phomifood" },
+    { "type": "url", "id": "button_link", "label": "Link nút" },
+    { "type": "header", "content": "Thẻ bên phải" },
+    { "type": "image_picker", "id": "card_image", "label": "Ảnh lớn đầu thẻ (vd. ảnh kho)" },
+    { "type": "text", "id": "card_image_url", "label": "Hoặc link ảnh lớn", "info": "Dùng khi chưa chọn ảnh ở trên. Để trống cả hai = không có ảnh." },
+    { "type": "text", "id": "card_image_alt", "label": "Mô tả ảnh lớn", "default": "Tổng kho Phomifood tại Praha" },
+    { "type": "text", "id": "route_from", "label": "Điểm đầu", "default": "📦 Tổng kho Praha" },
+    { "type": "text", "id": "route_to", "label": "Điểm cuối", "default": "🏠 Bếp nhà bạn" },
+    { "type": "richtext", "id": "card_note", "label": "Dòng chú thích dưới thẻ", "default": "<p>Đóng gói cẩn thận, <strong>giao khắp châu Âu</strong></p>" },
+    { "type": "checkbox", "id": "full_width", "label": "Tràn hết chiều ngang màn hình", "default": true },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 36 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 36 }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Ô nhóm hàng",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Biểu tượng (emoji, chỉ hiện khi ô không có ảnh)", "default": "🍜" },
+        { "type": "collection", "id": "collection", "label": "Danh mục", "info": "Tự lấy ảnh danh mục (hoặc ảnh sản phẩm đầu tiên) và link tới danh mục." },
+        { "type": "image_picker", "id": "image", "label": "Ảnh ô (thay ảnh tự lấy)" },
+        { "type": "text", "id": "image_url", "label": "Hoặc link ảnh" },
+        { "type": "text", "id": "title", "label": "Tên", "default": "Phở & bún" },
+        { "type": "text", "id": "subtitle", "label": "Mô tả ngắn", "default": "Bún, phở, miến khô" },
+        { "type": "url", "id": "link", "label": "Link (để trống = link danh mục)" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Câu chuyện Phomifood", "blocks": [ { "type": "tile" }, { "type": "tile" }, { "type": "tile" } ] }
+  ]
+}
+{% endschema %}

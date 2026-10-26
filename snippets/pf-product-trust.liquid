@@ -1,31 +1,152 @@
 {%- comment -%} Trust / assurance box on the product detail page {%- endcomment -%}
 <style>
-  .pf-ptrust { margin: 2rem 0 0; border: 1px solid #e3ece5; border-radius: 14px; overflow: hidden; background: linear-gradient(180deg, #f4faf5 0%, #ffffff 100%); box-shadow: 0 6px 18px rgba(20, 90, 45, .05); }
-  .pf-ptrust__row { display: flex; align-items: flex-start; gap: 1.4rem; padding: 1.6rem 1.8rem; }
-  .pf-ptrust__row + .pf-ptrust__row { border-top: 1px solid #e7ede8; }
-  .pf-ptrust__ic { flex: none; width: 4.4rem; height: 4.4rem; border-radius: 50%; display: grid; place-items: center; background: #1e8541; color: #fff; box-shadow: 0 6px 14px rgba(20, 90, 45, .22); }
-  .pf-ptrust__ic.gold { background: #1e63c8; box-shadow: 0 6px 14px rgba(30, 99, 200, .22); }
-  .pf-ptrust__t { font-size: 1.5rem; font-weight: 800; color: #14672f; letter-spacing: 0.01em; margin: 0 0 0.3rem; }
-  .pf-ptrust__row.gold .pf-ptrust__t { color: #1e63c8; }
-  .pf-ptrust__d { font-size: 1.35rem; line-height: 1.55; color: #574f45; margin: 0; }
+  /* Ẩn dòng "Ưu đãi miễn phí ship & giảm giá tùy quốc gia — xem chi tiết ở trang giỏ hàng" dưới giá (25/10). */
+  .product__info-container .product__tax { display: none !important; }
+  /* PF 26/10 — Khung cam kết 3 ô ngang, gọn: icon tròn nền trắng + tiêu đề đậm xanh + 1 dòng phụ xám,
+     ngăn cách bằng vạch mảnh; màu theo bộ xanh của trang. */
+  .pf-ptrust { margin: 2rem 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    background: #f2f9f3; border: 1px solid #dcebdf; border-radius: 16px; padding: 1.2rem .4rem; }
+  .pf-ptrust__item { display: flex; align-items: center; gap: .9rem; min-width: 0; padding: .2rem 1.2rem; }
+  .pf-ptrust__item + .pf-ptrust__item { border-left: 1px solid #dcebdf; }
+  .pf-ptrust__ic { flex: none; width: 3.6rem; height: 3.6rem; border-radius: 50%; display: grid; place-items: center;
+    background: #fff; color: #1e8541; box-shadow: 0 0 0 1px #d3e8d8; }
+  .pf-ptrust__txt { min-width: 0; display: flex; flex-direction: column; gap: .1rem; }
+  .pf-ptrust__t { margin: 0; font-size: 1.35rem; line-height: 1.3; font-weight: 800; color: #14672f; letter-spacing: 0; white-space: nowrap; }
+  .pf-ptrust__d { margin: 0; font-size: 1.15rem; line-height: 1.35; font-weight: 500; color: #6b6357; letter-spacing: 0; }
+  @media (max-width: 1199px) {
+    .pf-ptrust { padding: 1.2rem .2rem; }
+    .pf-ptrust__item { flex-direction: column; text-align: center; gap: .5rem; padding: .2rem .6rem; }
+    .pf-ptrust__t { white-space: normal; }
+  }
+
+  /* PF 26/10 — Đồng nhất trang sản phẩm: bo góc (ảnh/khung 16px, nút & ô chọn dạng viên thuốc),
+     màu theo bộ nhận diện (xanh #1e8541 / vàng #ffc61a / đỏ giá), nút "Thanh toán ngay" (.pf-buy-now) vàng nhấp nháy. */
+  .product__media-list .product__media-item .product-media-container,
+  .product__media-list .product__media,
+  .product__media-wrapper .media { border-radius: 16px !important; overflow: hidden; }
+  .product__info-container .quantity,
+  .product__info-container .quantity::before,
+  .product__info-container .quantity::after { border-radius: 999px !important; }
+  .product__info-container .quantity { border: 0; }
+  .product__info-container .quantity::after { box-shadow: 0 0 0 1.5px #1e8541 !important; }
+  .product__info-container .quantity__button { color: #1e8541; }
+  .product__info-container .product-form__submit,
+  .product__info-container .product-form__submit::before,
+  .product__info-container .product-form__submit::after { border-radius: 999px !important; }
+  .product__info-container .product-form__buttons { display: grid; gap: 1.2rem; }
+  .product__info-container .product-form__buttons .pf-buy-now {
+    width: 100%; margin: 0; min-height: 5.4rem; border: 0 !important; border-radius: 999px !important;
+    background: #ffc61a !important; color: #14672f !important;
+    font-weight: 800 !important; font-size: 1.7rem !important; letter-spacing: .02em;
+    box-shadow: 0 6px 16px rgba(255, 170, 0, .35);
+    animation: pf-buynow-pulse 1.6s ease-in-out infinite;
+  }
+  .product__info-container .product-form__buttons .pf-buy-now::before,
+  .product__info-container .product-form__buttons .pf-buy-now::after { display: none !important; }
+  .product__info-container .product-form__buttons .pf-buy-now:not([disabled]):hover {
+    background: #ffd23f !important; color: #14672f !important; animation-play-state: paused;
+  }
+  .product__info-container .product-form__buttons .pf-buy-now[disabled] { animation: none; opacity: .55; }
+  /* Nhấp nháy bằng viền sáng tỏa ra (không phóng to nút) → nút luôn thẳng hàng với "Thêm vào giỏ" */
+  @keyframes pf-buynow-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 198, 26, .7), 0 6px 16px rgba(255, 170, 0, .3); filter: brightness(1); }
+    50% { box-shadow: 0 0 0 9px rgba(255, 198, 26, 0), 0 8px 20px rgba(255, 170, 0, .45); filter: brightness(1.06); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .product__info-container .product-form__buttons .pf-buy-now { animation: none !important; }
+  }
+
+  /* PF 26/10 — Trang sản phẩm 2 cột cân đối 50/50: mỗi cột là 1 khung trắng bo 20px trên nền be.
+     Ảnh nằm giữa khung ảnh (Dawn "giới hạn theo chiều cao màn hình" làm ảnh dọc hẹp lại và lệch trái),
+     thông tin trong khung có dải màu xanh–vàng trên đầu. Khoảng cách 2 cột dùng padding (không đổi column-gap). */
+  #MainContent[data-template='product'] .page-width:has(> .product.grid) {
+    max-width: 150rem; padding-inline: clamp(1.6rem, 3vw, 4.8rem);
+  }
+  #MainContent[data-template='product'] .product__info-container {
+    background: #fff !important; border: 1px solid #ece3d4 !important; border-radius: 20px !important;
+    box-shadow: 0 12px 32px rgba(120, 100, 70, .08) !important; max-width: none !important;
+    padding: clamp(2.2rem, 2.6vw, 3.6rem) !important; overflow: hidden;
+  }
+  #MainContent[data-template='product'] .product__info-container::before {
+    display: block !important; background: linear-gradient(90deg, #1e8541 0%, #2fa35a 55%, #ffc61a 100%) !important;
+  }
+  #MainContent[data-template='product'] .product__media-wrapper .product-media-container { box-shadow: none !important; margin-inline: auto; }
+  @media screen and (min-width: 990px) {
+    #MainContent[data-template='product'] .product:not(.product--no-media) .product__media-wrapper {
+      max-width: 50% !important; width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2) !important;
+    }
+    #MainContent[data-template='product'] .product:not(.product--no-media) .product__info-wrapper {
+      max-width: 50% !important; width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2) !important;
+      padding-left: clamp(2.4rem, 2.4vw, 4rem) !important; padding-right: 0 !important;
+    }
+    #MainContent[data-template='product'] .product__media-list .product__media-item {
+      background: #fff; border: 1px solid #ece3d4; border-radius: 20px; padding: 1.4rem;
+      box-shadow: 0 12px 32px rgba(120, 100, 70, .08);
+    }
+  }
+  @media screen and (max-width: 749px) {
+    #MainContent[data-template='product'] .product__info-container { padding: 2rem 1.6rem !important; border-radius: 16px !important; margin-top: 1.2rem; }
+  }
+  /* Mọi khối trong cột thông tin rộng bằng nhau (nút, khung deal, khung cam kết thẳng mép) */
+  #MainContent[data-template='product'] .product__info-container .product-form,
+  #MainContent[data-template='product'] .product__info-container .product-form__buttons,
+  #MainContent[data-template='product'] .product__info-container .product-form__input,
+  #MainContent[data-template='product'] .product__info-container .pf-ptrust { max-width: none !important; width: 100%; }
+  /* Tên + giá nổi bật */
+  #MainContent[data-template='product'] .product__title h1,
+  #MainContent[data-template='product'] .product__title > * {
+    font-size: clamp(2.4rem, 2.3vw, 3.4rem) !important; font-weight: 900 !important; line-height: 1.18 !important; color: #1f1c18 !important;
+  }
+  #MainContent[data-template='product'] .product__info-container .price { margin: .4rem 0 .6rem; }
+  #MainContent[data-template='product'] .product__info-container .price__regular .price-item--regular,
+  #MainContent[data-template='product'] .product__info-container .price-item--sale {
+    color: #d62828 !important; -webkit-text-fill-color: #d62828; font-size: clamp(2.8rem, 2.4vw, 3.4rem) !important; font-weight: 900 !important; line-height: 1.1;
+  }
+  #MainContent[data-template='product'] .product__info-container .price--on-sale .price__sale s.price-item--regular,
+  #MainContent[data-template='product'] .product__info-container .price--on-sale .price__sale .price-item--regular {
+    color: #a79c8e !important; -webkit-text-fill-color: #a79c8e; font-size: 1.9rem !important; font-weight: 600 !important;
+  }
+  #MainContent[data-template='product'] .product__info-container .product-form__input .form__label,
+  #MainContent[data-template='product'] .product__info-container .quantity__label { font-size: 1.4rem; }
+  #MainContent[data-template='product'] .product__info-container .product-form__submit { min-height: 5.4rem; font-size: 1.7rem; }
+
+  /* PF 26/10 — Các khối bên dưới ("Thường được mua kèm", "Sản phẩm cùng danh mục") bỏ nền/khung,
+     nằm thẳng trên nền trang — chỉ phần chi tiết sản phẩm (ảnh + thông tin) giữ khung trắng.
+     overflow visible để nút trước/sau của hàng trượt không bị cắt mép. */
+  #MainContent[data-template='product'] .pf-fbt,
+  #MainContent[data-template='product'] .pf-sc__box {
+    background: transparent !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important;
+    padding-left: 0 !important; padding-right: 0 !important;
+  }
+  #MainContent[data-template='product'] .pf-sc__box { overflow: visible !important; }
 </style>
 
 <div class="pf-ptrust">
-  <div class="pf-ptrust__row">
+  <div class="pf-ptrust__item">
     <span class="pf-ptrust__ic" aria-hidden="true">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v8H3z"/><path d="M14 10h4l3 3v2h-7z"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v8H3z"/><path d="M14 10h4l3 3v2h-7z"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
     </span>
-    <div>
-      <p class="pf-ptrust__t">{% if request.locale.iso_code == 'vi' %}Giao hàng tận nơi trên 25 nước Châu Âu{% else %}Delivery to over 25 European countries{% endif %}</p>
+    <div class="pf-ptrust__txt">
+      <p class="pf-ptrust__t">{% if request.locale.iso_code == 'vi' %}Freeship / -10%{% else %}Free ship / -10%{% endif %}</p>
+      <p class="pf-ptrust__d">{% if request.locale.iso_code == 'vi' %}Đơn từ 139€{% else %}Orders from 139€{% endif %}</p>
     </div>
   </div>
-  <div class="pf-ptrust__row gold">
-    <span class="pf-ptrust__ic gold" aria-hidden="true">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 1 1-4.9-7.7"/><path d="M21 4v4h-4"/></svg>
+  <div class="pf-ptrust__item">
+    <span class="pf-ptrust__ic" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M8.8 12.2l2.2 2.2 4.2-4.4"/></svg>
     </span>
-    <div>
-      <p class="pf-ptrust__t">{% if request.locale.iso_code == 'vi' %}Đổi trả dễ dàng{% else %}Easy returns{% endif %}</p>
-      <p class="pf-ptrust__d">{% if request.locale.iso_code == 'vi' %}Sản phẩm bị lỗi khi giao nhận: hoàn lại tiền <strong>100%</strong>. Nếu khách hàng phát hiện hàng giả: hoàn <strong>120%</strong> giá trị sản phẩm.{% else %}Damaged on delivery: <strong>100%</strong> refund. If you find a counterfeit item: refund of <strong>120%</strong> of the product value.{% endif %}</p>
+    <div class="pf-ptrust__txt">
+      <p class="pf-ptrust__t">{% if request.locale.iso_code == 'vi' %}Chính hãng 100%{% else %}100% genuine{% endif %}</p>
+      <p class="pf-ptrust__d">{% if request.locale.iso_code == 'vi' %}Hàng giả hoàn 120%{% else %}120% refund if fake{% endif %}</p>
+    </div>
+  </div>
+  <div class="pf-ptrust__item">
+    <span class="pf-ptrust__ic" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.5 4 5.6 4 9s-1.4 6.5-4 9c-2.6-2.5-4-5.6-4-9s1.4-6.5 4-9z"/></svg>
+    </span>
+    <div class="pf-ptrust__txt">
+      <p class="pf-ptrust__t">{% if request.locale.iso_code == 'vi' %}Giao 25 nước EU{% else %}Ships to 25 EU{% endif %}</p>
+      <p class="pf-ptrust__d">{% if request.locale.iso_code == 'vi' %}Tận nơi, kho Praha{% else %}Door to door, from Prague{% endif %}</p>
     </div>
   </div>
 </div>

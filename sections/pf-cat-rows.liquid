@@ -1,0 +1,109 @@
+{%- comment -%}
+  Sản phẩm theo từng danh mục: mỗi block = 1 danh mục. Kiểu đơn giản (26/10): tiêu đề xanh căn trái + "Xem tất cả",
+  1 hàng thẻ pf-flash-card trượt ngang có mũi tên. CSS chung ở snippet pf-flash-card (.pf-simple).
+  Giữ class pf-cr__row / pf-cr__track / pf-cr__card / pf-cr__all / pf-cr__slider cho script lưới 2 cột + "Xem thêm" trên mobile.
+  Bản cũ lưu ở scratchpad: simple/pf-cat-rows.orig.liquid.
+{%- endcomment -%}
+{%- liquid
+  assign vi = false
+  if request.locale.iso_code == 'vi'
+    assign vi = true
+  endif
+  assign limit = section.settings.products_per_row
+-%}
+
+<div id="pf-cr-{{ section.id }}" class="pf-simple" style="--cols: {{ section.settings.columns_desktop }}; padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
+  <div class="page-width{% if section.settings.full_width %} pf-simple__full{% endif %}">
+    {%- for block in section.blocks -%}
+      {%- assign col = block.settings.collection -%}
+      {%- if col != blank and col.products_count > 0 -%}
+        {%- assign title = block.settings.title | default: col.title -%}
+        <div class="pf-cr__row" data-pf-cr-row {{ block.shopify_attributes }}>
+          <div class="pf-simple__head">
+            <h2 class="pf-cr__title pf-simple__title">{% render 'pf-tr', s: title %}</h2>
+            <a class="pf-cr__all pf-simple__all" href="{{ col.url }}">{% if vi %}Xem tất cả{% else %}View all{% endif %}</a>
+          </div>
+          {%- if block.settings.subtitle != blank -%}<p class="pf-simple__sub">{% render 'pf-tr', s: block.settings.subtitle %}</p>{%- endif -%}
+          <div class="pf-cr__slider pf-simple__slider">
+            <button type="button" class="pf-simple__arrow pf-simple__arrow--prev" aria-label="{% if vi %}Trước{% else %}Previous{% endif %}" disabled>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <div class="pf-cr__track pf-simple__track" data-pf-cr-track>
+              {%- assign pf_btn_scope = section.id | append: '-' | append: block.id -%}
+              {%- for p in col.products limit: limit -%}
+                {%- render 'pf-flash-card', p: p, section_id: pf_btn_scope, extra_class: 'pf-cr__card' -%}
+              {%- endfor -%}
+            </div>
+            <button type="button" class="pf-simple__arrow pf-simple__arrow--next" aria-label="{% if vi %}Sau{% else %}Next{% endif %}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+<style>
+  #pf-cr-{{ section.id }} .pf-cr__row + .pf-cr__row { margin-top: 4rem; }
+  @media (max-width: 749px) { #pf-cr-{{ section.id }} .pf-cr__row + .pf-cr__row { margin-top: 2.8rem; } }
+</style>
+
+<script>
+  (function () {
+    var root = document.getElementById('pf-cr-{{ section.id }}');
+    if (!root) return;
+    Array.prototype.forEach.call(root.querySelectorAll('[data-pf-cr-row]'), function (row) {
+      var track = row.querySelector('[data-pf-cr-track]');
+      var prev = row.querySelector('.pf-simple__arrow--prev');
+      var next = row.querySelector('.pf-simple__arrow--next');
+      if (!track || !prev || !next) return;
+      var step = function () {
+        var c = track.querySelector('.pf-cr__card');
+        var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+        return c ? (c.getBoundingClientRect().width + gap) * Math.max(1, Math.floor(track.clientWidth / (c.getBoundingClientRect().width + gap))) : track.clientWidth;
+      };
+      var update = function () {
+        var max = track.scrollWidth - track.clientWidth - 2;
+        prev.disabled = track.scrollLeft <= 2;
+        next.disabled = track.scrollLeft >= max;
+      };
+      prev.addEventListener('click', function () { track.scrollBy({ left: -step() }); });
+      next.addEventListener('click', function () { track.scrollBy({ left: step() }); });
+      var t;
+      track.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(update, 60); }, { passive: true });
+      window.addEventListener('resize', update);
+      window.addEventListener('load', update);
+      update();
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Sản phẩm theo danh mục",
+  "tag": "section",
+  "max_blocks": 16,
+  "settings": [
+    { "type": "range", "id": "columns_desktop", "min": 3, "max": 6, "step": 1, "label": "Số sản phẩm mỗi hàng (desktop)", "default": 5 },
+    { "type": "range", "id": "products_per_row", "min": 4, "max": 24, "step": 1, "label": "Số sản phẩm tối đa mỗi danh mục (trượt ngang để xem)", "default": 12 },
+    { "type": "checkbox", "id": "full_width", "label": "Tràn hết chiều ngang màn hình", "default": true },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Danh mục",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Bộ sưu tập" },
+        { "type": "text", "id": "icon", "label": "Biểu tượng nhỏ (emoji)", "default": "🛒" },
+        { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ phía trên", "default": "Danh mục" },
+        { "type": "text", "id": "title", "label": "Tiêu đề (để trống = tên bộ sưu tập)" },
+        { "type": "text", "id": "subtitle", "label": "Mô tả ngắn" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Sản phẩm theo danh mục", "blocks": [ { "type": "category" }, { "type": "category" } ] } ]
+}
+{% endschema %}

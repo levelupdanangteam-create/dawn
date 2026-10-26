@@ -107,10 +107,69 @@
   .pf-hl__v { padding-top: 0; }
 }
 
-/* ---------- Hai cột Ảnh / Thông tin: cùng mép trên (máy tính + tablet) ----------
-   Khung thông tin bị đẩy xuống 30px do top:30px còn sót từ kiểu sticky của Dawn → đưa về 0.
-   Ảnh giữ kiểu mặc định của Dawn (nằm sát mép trên, cuộn dính theo trang) — không kéo giãn/căn giữa,
-   tránh khoảng trống lớn phía trên ảnh khi cột thông tin dài. */
+/* ---------- Hai cột Ảnh / Thông tin (máy tính + tablet) ----------
+   Cột trái = 1 ảnh lớn + lưới ảnh nhỏ (5 ảnh/hàng, hiện đủ, không trượt).
+   Tổng chiều cao cột trái = chiều cao cột thông tin bên phải: khung ảnh được đặt tuyệt đối trong
+   cột trái, ảnh nhỏ giữ kích thước, ảnh lớn co giãn lấp phần còn lại (ảnh hiển thị trọn, không cắt). */
 @media screen and (min-width: 750px) {
-  #MainContent[data-template='product'] .product__info-container { top: 0 !important; }
+  #MainContent[data-template='product'] .product { align-items: stretch; }
+  /* Hai cột rộng bằng nhau */
+  #MainContent[data-template='product'] .product:not(.product--no-media) .product__media-wrapper,
+  #MainContent[data-template='product'] .product:not(.product--no-media) .product__info-wrapper {
+    max-width: 50%; width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2);
+  }
+  #MainContent[data-template='product'] .product:not(.product--no-media) .product__info-wrapper { padding: 0 0 0 2.4rem; }
+  #MainContent[data-template='product'] .product:not(.product--no-media).product--right .product__info-wrapper { padding: 0 2.4rem 0 0; }
+  #MainContent[data-template='product'] .product__info-wrapper { display: flex; flex-direction: column; }
+  #MainContent[data-template='product'] .product__info-container { top: 0 !important; flex: 1 1 auto; }
+
+  #MainContent[data-template='product'] .product__media-wrapper { position: relative; min-height: 60rem; }
+  #MainContent[data-template='product'] .product__media-wrapper > media-gallery {
+    position: absolute !important; inset: 0; top: 0 !important;
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+
+  /* Ảnh lớn: lấp phần chiều cao còn lại */
+  #MainContent[data-template='product'] .product__media-wrapper slider-component:not(.thumbnail-slider) {
+    flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column;
+  }
+  #MainContent[data-template='product'] .product__media-wrapper .product__media-list {
+    flex: 1 1 auto; min-height: 0; display: block; margin: 0; padding: 0;
+  }
+  #MainContent[data-template='product'] .product__media-wrapper .product__media-item:not(.is-active) { display: none !important; }
+  #MainContent[data-template='product'] .product__media-wrapper .product__media-item.is-active {
+    display: block; height: 100%; width: 100%; max-width: 100%; margin: 0; padding: 0;
+  }
+  #MainContent[data-template='product'] .product__media-wrapper .product__media-item.is-active .product-media-container,
+  #MainContent[data-template='product'] .product__media-wrapper .product__media-item.is-active .product__modal-opener--image,
+  #MainContent[data-template='product'] .product__media-wrapper .product__media-item.is-active .product__media {
+    width: 100% !important; max-width: 100% !important; height: 100%;
+  }
+  #MainContent[data-template='product'] .product__media-wrapper .product__media-item.is-active .product__media { padding-top: 0 !important; }
+  #MainContent[data-template='product'] .product__media-wrapper .product__media-item.is-active .product__media img { object-fit: contain; }
+
+  /* Ảnh nhỏ: 1 hàng 5 ảnh; nhiều hơn 5 ảnh thì hiện nút ‹ › để trượt */
+  #MainContent[data-template='product'] .product__media-wrapper .thumbnail-slider {
+    flex: none; display: flex !important; align-items: center; gap: .6rem; margin: 0;
+  }
+  #MainContent[data-template='product'] .product__media-wrapper .thumbnail-list {
+    display: flex !important; flex: 1 1 auto; min-width: 0; gap: .8rem; margin: 0 !important; padding: .4rem 0 !important;
+    overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-left: 0; scrollbar-width: none;
+  }
+  #MainContent[data-template='product'] .product__media-wrapper .thumbnail-list::-webkit-scrollbar { display: none; }
+  #MainContent[data-template='product'] .product__media-wrapper .thumbnail-list::after { display: none !important; }
+  #MainContent[data-template='product'] .product__media-wrapper .thumbnail-list .thumbnail-list__item {
+    flex: 0 0 calc((100% - 4 * .8rem) / 5); width: calc((100% - 4 * .8rem) / 5) !important; max-width: none !important;
+    margin: 0 !important; scroll-snap-align: start;
+  }
+  #MainContent[data-template='product'] .product__media-wrapper .thumbnail-slider .slider-button {
+    display: flex !important; flex: none; align-items: center; justify-content: center;
+    width: 3.6rem; height: 3.6rem; padding: 0; border: 1px solid #ece3d4; border-radius: 50%;
+    background: #fff; color: #2a2622; box-shadow: 0 4px 12px rgba(120, 100, 70, .12); cursor: pointer;
+  }
+  #MainContent[data-template='product'] .product__media-wrapper .thumbnail-slider .slider-button:not([disabled]):hover { border-color: #1e8541; color: #1e8541; }
+  #MainContent[data-template='product'] .product__media-wrapper .thumbnail-slider .slider-button[disabled] { opacity: .35; cursor: default; }
+  #MainContent[data-template='product'] .product__media-wrapper .thumbnail-slider .slider-button .svg-wrapper { width: 1.2rem; height: 1.2rem; }
+  /* 5 ảnh trở xuống: vừa 1 hàng → ẩn nút */
+  #MainContent[data-template='product'] .product__media-wrapper .thumbnail-slider:not(:has(.thumbnail-list__item:nth-child(6))) .slider-button { display: none !important; }
 }

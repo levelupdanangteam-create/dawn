@@ -14,21 +14,29 @@
   assign picks = product.metafields.custom.bought_together.value
 -%}
 <div class="page-width pf-fbt-wrap"><div class="pf-fbt color-scheme-1" data-pf-fbt data-money-format="{{ shop.money_format | escape }}">
-  <h2 class="pf-fbt__title">{{ fbt_heading }}</h2>
+  <div class="pf-fbt__head">
+    <span class="pf-fbt__hico" aria-hidden="true">🛒</span>
+    <div>
+      <h2 class="pf-fbt__title">{{ fbt_heading | remove: '🛒' | strip }}</h2>
+      <p class="pf-fbt__sub">{% if vi %}Khách hàng thường chọn mua cùng nhau — thêm tất cả chỉ với 1 lần bấm{% else %}Customers often buy these together — add them all in one click{% endif %}</p>
+    </div>
+  </div>
   <div class="pf-fbt__body">
     <div class="pf-fbt__row">
       {%- if main_v.available -%}
         <label class="pf-fbt__item is-main">
           <input type="checkbox" class="pf-fbt__cb" checked data-id="{{ main_v.id }}" data-price="{{ main_v.price }}">
           <span class="pf-fbt__tick" aria-hidden="true"></span>
+          <span class="pf-fbt__tag">{% if vi %}Đang xem{% else %}This item{% endif %}</span>
           <span class="pf-fbt__media">
             {%- assign img = main_v.featured_image | default: product.featured_image -%}
             {%- if img -%}<img src="{{ img | image_url: width: 400 }}" alt="{{ product.title | escape }}" loading="lazy" width="400" height="400">{%- endif -%}
           </span>
-          <span class="pf-fbt__tag">{% if vi %}Sản phẩm này{% else %}This item{% endif %}</span>
-          <span class="pf-fbt__nm">{% render 'pf-short-title', title: product.title %}</span>
-          {%- unless product.has_only_default_variant -%}<span class="pf-fbt__vt">{{ main_v.title }}</span>{%- endunless -%}
-          <span class="pf-fbt__pr">{{ main_v.price | money }}</span>
+          <span class="pf-fbt__info">
+            <span class="pf-fbt__nm">{% render 'pf-short-title', title: product.title %}</span>
+            {%- unless product.has_only_default_variant -%}<span class="pf-fbt__vt">{{ main_v.title }}</span>{%- endunless -%}
+            <span class="pf-fbt__pr">{{ main_v.price | money }}</span>
+          </span>
         </label>
       {%- endif -%}
       {%- for p in picks -%}
@@ -44,23 +52,26 @@
               {%- assign img = v.featured_image | default: p.featured_image -%}
               {%- if img -%}<img src="{{ img | image_url: width: 400 }}" alt="{{ p.title | escape }}" loading="lazy" width="400" height="400">{%- endif -%}
             </a>
-            <a class="pf-fbt__nm" href="{{ p.url }}">{% render 'pf-short-title', title: p.title %}</a>
-            {%- unless p.has_only_default_variant -%}<span class="pf-fbt__vt">{{ v.title }}</span>{%- endunless -%}
-            <span class="pf-fbt__pr">{{ v.price | money }}</span>
+            <span class="pf-fbt__info">
+              <a class="pf-fbt__nm" href="{{ p.url }}">{% render 'pf-short-title', title: p.title %}</a>
+              {%- unless p.has_only_default_variant -%}<span class="pf-fbt__vt">{{ v.title }}</span>{%- endunless -%}
+              <span class="pf-fbt__pr">{{ v.price | money }}</span>
+            </span>
           </div>
         {%- endif -%}
       {%- endfor -%}
     </div>
     <div class="pf-fbt__sum">
-      <span class="pf-fbt__sl">{% if vi %}Tổng cho sản phẩm đã chọn{% else %}Total for selected items{% endif %}</span>
+      <span class="pf-fbt__sl">{% if vi %}Tổng cho <b data-pf-fbt-count>0</b> sản phẩm đã chọn{% else %}Total for <b data-pf-fbt-count>0</b> selected items{% endif %}</span>
       <span class="pf-fbt__total" data-pf-fbt-total>—</span>
       <button type="button" class="pf-fbt__btn" data-pf-fbt-add
         data-l-one="{% if vi %}Thêm vào giỏ{% else %}Add to cart{% endif %}"
-        data-l-many="{% if vi %}Thêm [n] sản phẩm vào giỏ{% else %}Add [n] items to cart{% endif %}"
+        data-l-many="{% if vi %}Thêm cả [n] vào giỏ{% else %}Add all [n] to cart{% endif %}"
         data-l-busy="{% if vi %}Đang thêm…{% else %}Adding…{% endif %}"
         data-l-done="{% if vi %}Đã thêm vào giỏ ✓{% else %}Added to cart ✓{% endif %}"
         data-l-err="{% if vi %}Có lỗi, thử lại{% else %}Something went wrong, try again{% endif %}"
         data-l-none="{% if vi %}Chọn ít nhất 1 sản phẩm{% else %}Select at least 1 item{% endif %}"></button>
+      <span class="pf-fbt__fine">{% if vi %}Bỏ tick để bỏ bớt sản phẩm{% else %}Untick to remove an item{% endif %}</span>
     </div>
   </div>
 </div></div>
@@ -69,38 +80,90 @@
   /* Khoảng cách rõ với thẻ thông tin sản phẩm (thẻ này sticky, z-index 2) — padding không bị "collapse" như margin,
      và khối nằm lớp trên để thẻ sticky không bao giờ đè lên. */
   .pf-fbt-wrap { clear: both; position: relative; z-index: 3; padding-top: clamp(3.2rem, 5vw, 5.6rem); padding-bottom: 1.2rem; }
-  .pf-fbt { margin: 0; background: #fff; border: 1px solid #ece3d4; border-radius: 22px; padding: clamp(2.2rem, 3.2vw, 3.6rem) clamp(1.6rem, 3vw, 3.2rem); box-shadow: 0 12px 32px rgba(120,100,70,.08); }
-  .pf-fbt__title { margin: 0 0 1.6rem; font-family: var(--font-heading-family, sans-serif); font-weight: 800; font-size: clamp(1.9rem, 2.4vw, 2.3rem); line-height: 1.2; color: #2a2622; }
-  .pf-fbt__body { display: grid; grid-template-columns: 1fr minmax(24rem, 30rem); gap: 2.4rem; align-items: center; }
-  .pf-fbt__row { display: flex; align-items: flex-start; gap: 1rem; min-width: 0; }
-  .pf-fbt__item { position: relative; flex: 0 1 17rem; min-width: 0; display: flex; flex-direction: column; gap: .4rem; cursor: pointer; }
-  .pf-fbt__plus { align-self: center; margin-top: -6rem; font-size: 2.2rem; color: #b9b0a3; flex: none; }
-  .pf-fbt__media { display: grid; place-items: center; aspect-ratio: 1; background: #fff; border: 1px solid #f0e8db; border-radius: 14px; overflow: hidden; }
-  .pf-fbt__media img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
+  .pf-fbt {
+    --g: #1e8541; --g-d: #14672f; --y: #ffc61a; --ink: #2a2622;
+    position: relative; overflow: hidden; margin: 0; border-radius: 24px; border: 1px solid #dfeee3;
+    background: radial-gradient(120% 140% at 0% 0%, #eef8f1 0%, #ffffff 45%, #fffbef 100%) !important;
+    padding: clamp(2.2rem, 3.2vw, 3.6rem) clamp(1.6rem, 3vw, 3.2rem); box-shadow: 0 14px 36px rgba(20, 103, 47, .08);
+  }
+  .pf-fbt__head { display: flex; align-items: center; gap: 1.2rem; margin: 0 0 2.2rem; }
+  .pf-fbt__hico { flex: none; width: 4.4rem; height: 4.4rem; border-radius: 14px; display: grid; place-items: center; font-size: 2.2rem; background: var(--g); box-shadow: 0 6px 14px rgba(30, 133, 65, .25); }
+  .pf-fbt__title { margin: 0; font-family: var(--font-heading-family, sans-serif); font-weight: 900; font-size: clamp(2rem, 2.4vw, 2.5rem); line-height: 1.2; color: var(--g); }
+  .pf-fbt__sub { margin: .3rem 0 0; font-size: 1.35rem; color: #6b6357; }
+  .pf-fbt__body { display: grid; grid-template-columns: 1fr minmax(25rem, 30rem); gap: 2.4rem; align-items: stretch; }
+  .pf-fbt__row { display: flex; align-items: stretch; gap: .8rem; min-width: 0; }
+  .pf-fbt__item {
+    position: relative; flex: 1 1 0; max-width: 19rem; min-width: 0; display: flex; flex-direction: column; gap: .5rem;
+    background: #fff; border: 2px solid #e8e2d6; border-radius: 16px; padding: .8rem .8rem 1.2rem; cursor: pointer;
+    transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+  }
+  .pf-fbt__item:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(20, 103, 47, .1); }
+  .pf-fbt__item:has(.pf-fbt__cb:checked) { border-color: var(--g); box-shadow: 0 8px 18px rgba(30, 133, 65, .12); }
+  .pf-fbt__plus {
+    align-self: center; flex: none; width: 3rem; height: 3rem; border-radius: 50%; display: grid; place-items: center;
+    background: var(--y); color: var(--g-d); font-size: 2rem; font-weight: 900; line-height: 1; box-shadow: 0 3px 8px rgba(255, 170, 0, .35);
+  }
+  .pf-fbt__media { display: grid; place-items: center; aspect-ratio: 1; background: #f8f5ef; border-radius: 12px; overflow: hidden; }
+  .pf-fbt__media img { width: 100%; height: 100%; object-fit: contain; padding: 8px; mix-blend-mode: multiply; }
   .pf-fbt__cb { position: absolute; opacity: 0; width: 1px; height: 1px; }
-  .pf-fbt__hit { position: absolute; inset: 0 0 auto 0; height: 4.4rem; z-index: 2; cursor: pointer; }
-  .pf-fbt__tick { position: absolute; top: .9rem; left: .9rem; z-index: 2; width: 2.6rem; height: 2.6rem; border-radius: 7px; border: 2px solid #c9c0b2; background: #fff; display: grid; place-items: center; transition: background .15s, border-color .15s; }
-  .pf-fbt__cb:checked + .pf-fbt__tick { background: #1f7a47; border-color: #1f7a47; }
-  .pf-fbt__cb:checked + .pf-fbt__tick::after { content: ""; width: .7rem; height: 1.3rem; border: solid #fff; border-width: 0 3px 3px 0; transform: rotate(45deg) translate(-1px, -1px); }
-  .pf-fbt__cb:focus-visible + .pf-fbt__tick { outline: 2px solid #1f7a47; outline-offset: 2px; }
-  .pf-fbt__item:has(.pf-fbt__cb:not(:checked)) .pf-fbt__media { opacity: .45; }
-  .pf-fbt__tag { margin-top: .6rem; font-size: 1.15rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #1f7a47; }
-  .pf-fbt__nm { margin-top: .2rem; font-size: 1.35rem; line-height: 1.35; color: #2a2622; text-decoration: none; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  a.pf-fbt__nm:hover { color: #1e63c8; }
-  .pf-fbt__vt { font-size: 1.25rem; color: #8a8174; }
-  .pf-fbt__pr { font-weight: 800; font-size: 1.45rem; color: #2a2622; }
-  .pf-fbt__sum { display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center; background: #faf7f1; border-radius: 16px; padding: 2.2rem 1.8rem; }
-  .pf-fbt__sl { font-size: 1.4rem; color: #6c6458; }
-  .pf-fbt__total { font-size: clamp(2.6rem, 3.4vw, 3.2rem); font-weight: 900; color: #1f7a47; font-variant-numeric: tabular-nums; }
-  .pf-fbt__btn { width: 100%; border: 0; border-radius: 999px; padding: 1.4rem 2rem; background: #f2c14e; color: #2a2622; font-weight: 800; font-size: 1.6rem; cursor: pointer; transition: filter .15s; }
-  .pf-fbt__btn:hover { filter: brightness(.96); }
-  .pf-fbt__btn:disabled { opacity: .6; cursor: default; }
+  .pf-fbt__hit { position: absolute; inset: 0 0 auto 0; height: 4.8rem; z-index: 2; cursor: pointer; }
+  .pf-fbt__tick { position: absolute; top: 1.4rem; left: 1.4rem; z-index: 2; width: 2.6rem; height: 2.6rem; border-radius: 50%; border: 2px solid #c9c0b2; background: #fff; display: grid; place-items: center; transition: background .15s, border-color .15s; box-shadow: 0 2px 6px rgba(0,0,0,.12); }
+  .pf-fbt__cb:checked + .pf-fbt__tick { background: var(--g); border-color: var(--g); }
+  .pf-fbt__cb:checked + .pf-fbt__tick::after { content: ""; width: .6rem; height: 1.15rem; border: solid #fff; border-width: 0 3px 3px 0; transform: rotate(45deg) translate(-1px, -1px); }
+  .pf-fbt__cb:focus-visible + .pf-fbt__tick { outline: 2px solid var(--g); outline-offset: 2px; }
+  .pf-fbt__item:has(.pf-fbt__cb:not(:checked)) .pf-fbt__media,
+  .pf-fbt__item:has(.pf-fbt__cb:not(:checked)) .pf-fbt__info { opacity: .5; }
+  .pf-fbt__tag { position: absolute; top: 1.4rem; right: 1.4rem; z-index: 2; font-size: 1rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: #fff; background: var(--g); padding: .35rem .7rem; border-radius: 999px; }
+  .pf-fbt__info { display: flex; flex-direction: column; gap: .4rem; flex: 1; padding: .4rem .4rem 0; }
+  .pf-fbt__nm { font-size: 1.35rem; font-weight: 600; line-height: 1.35; color: var(--ink); text-decoration: none; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 3.65rem; }
+  a.pf-fbt__nm:hover { color: var(--g-d); }
+  .pf-fbt__vt { align-self: flex-start; font-size: 1.1rem; font-weight: 600; color: #6b6357; background: #f3efe6; padding: .2rem .8rem; border-radius: 999px; }
+  .pf-fbt__pr { margin-top: auto; font-weight: 800; font-size: 1.6rem; color: var(--g); font-variant-numeric: tabular-nums; }
+  .pf-fbt__sum {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .8rem; text-align: center;
+    background: linear-gradient(160deg, var(--g) 0%, var(--g-d) 100%); color: #fff; border-radius: 18px; padding: 2.4rem 2rem;
+    box-shadow: 0 12px 26px rgba(20, 103, 47, .25);
+  }
+  .pf-fbt__sl { font-size: 1.4rem; color: rgba(255,255,255,.85); }
+  .pf-fbt__sl b { color: var(--y); }
+  .pf-fbt__total { font-size: clamp(3rem, 3.6vw, 3.6rem); font-weight: 900; color: #fff; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .pf-fbt__btn {
+    width: 100%; margin-top: .4rem; border: 0; border-radius: 999px; padding: 1.4rem 2rem; background: var(--y); color: var(--ink);
+    font-weight: 900; font-size: 1.6rem; cursor: pointer; box-shadow: 0 6px 16px rgba(0,0,0,.18); transition: transform .15s, filter .15s;
+  }
+  .pf-fbt__btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+  .pf-fbt__btn:disabled { opacity: .65; cursor: default; transform: none; }
+  .pf-fbt__fine { font-size: 1.2rem; color: rgba(255,255,255,.75); }
+  /* Hạn chế rớt dòng: thẻ rộng hơn (bỏ giới hạn 19rem, khung tổng gọn lại), chữ không giãn,
+     nhãn quy cách / nút luôn 1 dòng */
+  .pf-fbt__item, .pf-fbt__sum { letter-spacing: 0; }
+  .pf-fbt__vt { max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pf-fbt__tag, .pf-fbt__btn, .pf-fbt__sl, .pf-fbt__fine { white-space: nowrap; }
+  .pf-fbt__tag { font-size: .9rem; padding: .3rem .6rem; }
+  @media (min-width: 990px) {
+    .pf-fbt__body { grid-template-columns: 1fr minmax(22rem, 25rem); gap: 1.6rem; }
+    .pf-fbt__row { gap: .6rem; }
+    .pf-fbt__item { max-width: none; }
+    .pf-fbt__plus { width: 2.4rem; height: 2.4rem; font-size: 1.6rem; }
+    .pf-fbt__nm { font-size: 1.3rem; }
+    .pf-fbt__btn { padding: 1.3rem 1.4rem; font-size: 1.5rem; }
+  }
   @media (max-width: 989px) {
     .pf-fbt__body { grid-template-columns: 1fr; }
+    .pf-fbt__item { max-width: none; }
   }
   @media (max-width: 749px) {
-    .pf-fbt__row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.6rem 1.2rem; }
+    .pf-fbt { border-radius: 18px; }
+    .pf-fbt__head { margin-bottom: 1.6rem; }
+    .pf-fbt__hico { width: 3.8rem; height: 3.8rem; font-size: 1.9rem; border-radius: 12px; }
+    .pf-fbt__sub { font-size: 1.25rem; }
+    .pf-fbt__row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; }
     .pf-fbt__plus { display: none; }
+    .pf-fbt__tick { top: 1.2rem; left: 1.2rem; }
+    .pf-fbt__tag { top: 1.2rem; right: 1.2rem; font-size: .9rem; }
+    .pf-fbt__nm { font-size: 1.25rem; min-height: 3.4rem; }
+    .pf-fbt__pr { font-size: 1.5rem; }
+    .pf-fbt__sum { padding: 2rem 1.6rem; }
   }
 </style>
 
@@ -110,6 +173,7 @@
       box.setAttribute('data-bound', '1');
       var fmt = box.getAttribute('data-money-format') || ('€{' + '{amount_with_comma_separator}' + '}');
       var totalEl = box.querySelector('[data-pf-fbt-total]');
+      var countEl = box.querySelector('[data-pf-fbt-count]');
       var btn = box.querySelector('[data-pf-fbt-add]');
       var cbs = Array.prototype.slice.call(box.querySelectorAll('.pf-fbt__cb'));
       var root = (window.Shopify && Shopify.routes && Shopify.routes.root) || '/';
@@ -147,6 +211,7 @@
         var sel = checked(), sum = 0;
         sel.forEach(function (c) { sum += parseInt(c.getAttribute('data-price'), 10) || 0; });
         totalEl.textContent = money(sum);
+        if (countEl) countEl.textContent = sel.length;
         btn.disabled = sel.length === 0;
         btn.textContent = sel.length === 0 ? btn.getAttribute('data-l-none')
           : sel.length === 1 ? btn.getAttribute('data-l-one')

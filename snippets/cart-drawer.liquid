@@ -31,6 +31,8 @@
   /* Thanh ưu đãi đầu giỏ trượt */
   #CartDrawer .pf-drawer-deal { flex: none; }
   #CartDrawer .pf-drawer-deal:empty { display: none; }
+  #CartDrawer .pf-drawer-deal--foot { margin-top: 1rem; }
+  #CartDrawer .pf-drawer-deal.pf-drawer-deal--foot .pf-shipbar { margin: 0; padding: 1rem 1.2rem; background: #eef7f0; border: 1px solid #cfe7d6; border-radius: 12px; }
   /* Gọn như phomifood.com: không khung, 1 dòng chữ + vạch tiến độ mảnh */
   #CartDrawer .pf-drawer-deal .pf-shipbar { margin: 0 0 1rem; padding: 0; background: none; border: 0; border-radius: 0; }
   #CartDrawer .pf-drawer-deal .pf-shipbar__head { display: none; }
@@ -72,6 +74,69 @@
   @media screen and (max-width: 749px) {
     #CartDrawer .cart__checkout-button { font-size: 1.7rem; min-height: 5.6rem; }
     .cart-drawer__continue { font-size: 1.65rem; min-height: 5.6rem; }
+  }
+  /* ===== PF 25/10: giỏ trượt gọn & đồng bộ màu thương hiệu (xanh lá / vàng) ===== */
+  #CartDrawer { --pg: #1e8541; --pg-d: #14672f; --py: #ffc61a; --pr: #d62828; --pink: #2a2622; --pmut: #7a7266; }
+  #CartDrawer .drawer__inner { padding: 0; max-height: 100dvh; }
+  #CartDrawer .drawer__inner-empty { padding: 0 2rem; }
+  #CartDrawer .drawer__header { padding: 1.6rem 2rem 1.2rem; border-bottom: 1px solid #eee7da; }
+  #CartDrawer .drawer__heading { font-size: 2rem; font-weight: 800; color: var(--pg-d); letter-spacing: 0; }
+  #CartDrawer .drawer__close { color: var(--pink); }
+  #CartDrawer cart-drawer-items { padding: 0 2rem; }
+  #CartDrawer .cart-items thead { display: none; }
+  #CartDrawer .cart-item { padding: 1.4rem 0; margin: 0; border-bottom: 1px dashed #e6dfd2; column-gap: 1.4rem; row-gap: .6rem; }
+  #CartDrawer .cart-item:last-child { border-bottom: 0; }
+  #CartDrawer .cart-item__media { padding: 0; }
+  #CartDrawer .cart-item__image { border-radius: 12px; border: 1px solid #efe9de; background: #fff; padding: 4px; object-fit: contain; aspect-ratio: 1; height: auto; }
+  #CartDrawer .cart-item__name { font-size: 1.45rem; font-weight: 600; line-height: 1.35; color: var(--pink); text-decoration: none; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  #CartDrawer .cart-item__name:hover { color: var(--pg-d); }
+  #CartDrawer .cart-item__details > * + * { margin-top: .35rem; }
+  #CartDrawer .cart-item__details .product-option { font-size: 1.25rem; line-height: 1.4; color: var(--pmut); }
+  #CartDrawer .cart-item__details dl { margin: .3rem 0 0; }
+  #CartDrawer .cart-item__details dl .product-option { display: inline-flex; gap: .3rem; background: #f4f1ea; border-radius: 999px; padding: .2rem .9rem; font-size: 1.15rem; }
+  #CartDrawer .cart-item__details dl dt, #CartDrawer .cart-item__details dl dd { margin: 0; }
+  #CartDrawer .cart-item__final-price { color: var(--pg); }
+  #CartDrawer .pf-cw { margin-top: .35rem; font-size: 1.15rem; color: var(--pmut); }
+  #CartDrawer .cart-item__totals .price { font-size: 1.6rem; font-weight: 800; color: var(--pg); }
+  #CartDrawer .cart-item__old-price { color: #a79c8e; font-size: 1.2rem; }
+  #CartDrawer .cart-item__quantity-wrapper { gap: .8rem; align-items: center; }
+  #CartDrawer .quantity { width: 11.6rem; min-height: 3.8rem; border-radius: 999px; background: #fff; }
+  #CartDrawer .quantity:before, #CartDrawer .quantity:after { border-radius: 999px; box-shadow: 0 0 0 1.5px #d9d0c0; }
+  #CartDrawer .quantity__input { font-size: 1.5rem; font-weight: 700; color: var(--pink); }
+  #CartDrawer .quantity__button { width: 3.6rem; color: var(--pg-d); }
+  #CartDrawer .quantity__button:hover { color: var(--pg); }
+  #CartDrawer .quantity__button .svg-wrapper, #CartDrawer .quantity__button svg { width: 1.1rem; height: 1.1rem; }
+  #CartDrawer .cart-remove-button { width: 3.6rem; height: 3.6rem; min-width: 0; min-height: 0; border-radius: 50%; background: #f6f2ec; color: #8a8174; padding: 0; display: grid; place-items: center; }
+  #CartDrawer .cart-remove-button:hover { background: #fde8e8; color: var(--pr); }
+  #CartDrawer .cart-remove-button .svg-wrapper, #CartDrawer .cart-remove-button svg { width: 1.6rem; height: 1.6rem; }
+  #CartDrawer .drawer__footer { padding: 1.4rem 2rem calc(2.4rem + env(safe-area-inset-bottom, 0px)); background: #fbf9f4; border-top: 1px solid #eee7da; box-shadow: 0 -8px 20px rgba(60, 45, 20, .06); }
+  #CartDrawer .cart-drawer__footer { padding: 0; border: 0; }
+  #CartDrawer .pf-ctw { margin: 0; color: var(--pmut); font-size: 1.3rem; }
+  #CartDrawer .pf-ctw b { color: var(--pink); font-weight: 600; font-size: 1.3rem; }
+  #CartDrawer .totals { margin-top: .5rem; }
+  #CartDrawer .totals__total-value { color: var(--pg-d); font-size: 2.2rem; }
+  #CartDrawer .pf-drawer-deal--foot { margin-top: 1.1rem; }
+  #CartDrawer .pf-drawer-deal.pf-drawer-deal--foot .pf-shipbar { padding: 1rem 1.2rem; background: #fff; border: 1px solid #dfeee3; border-radius: 12px; }
+  #CartDrawer .pf-drawer-deal--foot .pf-shipbar__status { font-size: 1.3rem; font-weight: 600; color: var(--pink); }
+  #CartDrawer .pf-drawer-deal--foot .pf-shipbar__status b { color: var(--pr); }
+  #CartDrawer .pf-drawer-deal--foot .pf-shipbar__status b + b { color: var(--pg); }
+  #CartDrawer .pf-drawer-deal--foot .pf-shipbar__track { height: 6px; margin: .7rem 0 0; background: #eee7da; }
+  #CartDrawer .pf-drawer-deal--foot .pf-shipbar__fill { background: linear-gradient(90deg, var(--pg), var(--py)); }
+  #CartDrawer .pf-drawer-deal--foot .pf-shipbar__hint { margin-top: .5rem; font-size: 1.15rem; color: var(--pmut); }
+  #CartDrawer .pf-drawer-deal--foot .pf-shipbar--max { background: #eef8f1; border-color: #bfe0c7; }
+  #CartDrawer .cart__ctas { margin-top: 1.2rem; }
+  #CartDrawer .cart-drawer__continue--primary {
+    background: linear-gradient(90deg, var(--pg), var(--pg-d)); border-color: var(--pg); color: #fff;
+    min-height: 5.4rem; padding: 1.3rem 1.6rem; font-size: 1.6rem; box-shadow: 0 8px 18px rgba(20, 103, 47, .28);
+  }
+  #CartDrawer .cart-drawer__continue--primary:hover { background: var(--pg-d); color: #fff; }
+  @media screen and (max-width: 749px) {
+    #CartDrawer .drawer__header { padding: 1.4rem 1.6rem 1rem; }
+    #CartDrawer .drawer__heading { font-size: 1.8rem; }
+    #CartDrawer cart-drawer-items { padding: 0 1.6rem; }
+    #CartDrawer .drawer__footer { padding: 1.2rem 1.6rem calc(2.4rem + env(safe-area-inset-bottom, 0px)); }
+    #CartDrawer .cart-item__name { font-size: 1.35rem; }
+    #CartDrawer .cart-drawer__continue--primary { min-height: 5.2rem; font-size: 1.55rem; }
   }
 </style>
 
@@ -134,8 +199,7 @@
           </span>
         </button>
       </div>
-      {%- comment -%} Thanh tiến độ ưu đãi (Freeship / giảm 10% từ mốc) — cố định trên đầu, danh sách SP cuộn bên dưới {%- endcomment -%}
-      <div class="pf-drawer-deal">{% render 'pf-cart-shipbar' %}</div>
+      {%- comment -%} Thanh tiến độ ưu đãi đã chuyển xuống dưới "Giá tạm tính" (25/10). {%- endcomment -%}
       <cart-drawer-items
         view-event-payload="{{ cart | standard_event_data: 'view', context: 'dialog' | escape }}"
         view-event-trigger="manual"
@@ -601,10 +665,8 @@
             </h2>
             <p class="totals__total-value">{{ cart.total_price | money }}</p>
           </div>
-          <a class="pf-ship-note" href="{{ routes.cart_url }}">
-            <span class="pf-ship-note__ic" aria-hidden="true">🚚</span>
-            <span>{% if request.locale.iso_code == 'vi' %}Ưu đãi <b>miễn phí ship</b> &amp; <b>giảm giá</b> tùy quốc gia — <u>xem chi tiết ở trang giỏ hàng</u>{% else %}<b>Free shipping</b> &amp; <b>discounts</b> vary by country — <u>see details on the cart page</u>{% endif %}</span>
-          </a>
+          {%- comment -%} Thanh tiến độ ưu đãi (Freeship / giảm 10% từ 139€) — thay cho dòng "xem chi tiết ở trang giỏ hàng" (25/10). {%- endcomment -%}
+          <div class="pf-drawer-deal pf-drawer-deal--foot">{% render 'pf-cart-shipbar' %}</div>
 
         </div>
 

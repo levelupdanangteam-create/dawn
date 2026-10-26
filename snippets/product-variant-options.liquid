@@ -47,6 +47,12 @@
         assign pf_hide = true
       endif
     endif
+    # PHOMIFOOD: sản phẩm gắn tag "pf-chi-loc" chỉ bán quy cách Lốc → ẩn Thùng / Lẻ.
+    if product.tags contains 'pf-chi-loc' and value.selected == false
+      unless value.name contains 'Lốc'
+        assign pf_hide = true
+      endunless
+    endif
   -%}
   {%- if pf_hide -%}{%- continue -%}{%- endif -%}
 

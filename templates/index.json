@@ -61,7 +61,7 @@
         "heading_1": "Freeship",
         "heading_2": "đơn từ 139€",
         "text": "<p>Hoặc <strong>giảm 10%</strong> đơn hàng — hương vị Việt chuẩn vị, từ phở đến cà phê, giao tận cửa nhà bạn.</p>",
-        "stat_1_title": "15 quốc gia",
+        "stat_1_title": "18 quốc gia",
         "stat_1_sub": "Miễn phí vận chuyển",
         "stat_2_title": "4 quốc gia",
         "stat_2_sub": "Giảm 10%",
@@ -76,112 +76,190 @@
         "padding_bottom": 48
       }
     },
-    "pf_category_grid": {
-      "type": "pf-category-grid",
+    "pf_story": {
+      "type": "pf-our-story",
+      "disabled": true,
+      "settings": {
+        "eyebrow": "Câu chuyện Phomifood",
+        "heading": "Mang hương vị quê nhà đến bàn ăn châu Âu",
+        "text": "<p>Với người Việt xa quê, một bát phở hay ly cà phê sữa là cả trời thương nhớ, nhưng tìm được hàng chuẩn vị lại không dễ. <strong>Phomifood</strong> ra đời để mang <strong>hàng Việt chính hãng</strong> từ tổng kho Praha giao tận cửa nhà bạn.</p>",
+        "point_1": "Hàng chính hãng",
+        "point_2": "Gửi từ kho Séc",
+        "point_3": "Giá kho, mua thùng rẻ hơn",
+        "point_4": "Hàng độc quyền chỉ có tại Phomifood",
+        "button_label": "Đọc câu chuyện Phomifood",
+        "button_link": "shopify://pages/ve-chung-toi",
+        "card_image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/759881151_122141535231179229_3801021190243726628_n.jpg?v=1787036177",
+        "card_image_alt": "Tổng kho Phomifood tại Praha",
+        "route_from": "📦 Tổng kho Praha",
+        "route_to": "🏠 Bếp nhà bạn",
+        "card_note": "<p>Đóng gói cẩn thận, <strong>giao khắp châu Âu</strong></p>",
+        "full_width": true,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "pf_why": {
+      "type": "pf-why-phomi",
+      "blocks": {
+        "j1": {
+          "type": "stop",
+          "settings": {
+            "kicker": "Tổng kho",
+            "title": "Hàng Việt sẵn ở Praha",
+            "text": "Hàng chính hãng, lưu sẵn tại kho Séc.",
+            "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/759881151_122141535231179229_3801021190243726628_n.jpg?v=1787036177",
+            "link": "",
+            "link_label": ""
+          }
+        },
+        "j2": {
+          "type": "stop",
+          "settings": {
+            "kicker": "Đóng gói",
+            "title": "Đóng gói cẩn thận",
+            "text": "Đơn cuối tuần sẽ gửi đi từ thứ Hai.",
+            "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/764774570_122142676821179229_5406358648784605218_n.jpg?v=1787036177",
+            "link": "",
+            "link_label": ""
+          }
+        },
+        "j3": {
+          "type": "stop",
+          "settings": {
+            "kicker": "Vận chuyển",
+            "title": "Giao 25 nước châu Âu",
+            "text": "Từ 139€: Freeship hoặc giảm 10% tùy nước.",
+            "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/779019196_122144936703179229_7436146164322467373_n.jpg?v=1787036177",
+            "link": "shopify://pages/tra-cuu-phi-ship",
+            "link_label": "Tra phí ship"
+          }
+        },
+        "j4": {
+          "type": "stop",
+          "settings": {
+            "kicker": "Tới nơi",
+            "title": "Vị quê nhà trên bàn ăn",
+            "text": "Hơn 240 món Việt cho bữa cơm nhà bạn.",
+            "image": "shopify://shop_images/bun_ph.png",
+            "image_url": "",
+            "link": "shopify://collections/all",
+            "link_label": "Đi chợ ngay"
+          }
+        }
+      },
+      "block_order": [
+        "j1",
+        "j2",
+        "j3",
+        "j4"
+      ],
+      "disabled": true,
+      "settings": {
+        "eyebrow": "Vì sao chọn Phomifood",
+        "heading_1": "Từ tổng kho Praha",
+        "heading_2": "tới bếp nhà bạn",
+        "subheading": "",
+        "button_label": "Đọc câu chuyện Phomifood",
+        "button_link": "shopify://pages/ve-chung-toi",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "pf_cat_tiles": {
+      "type": "pf-image-tiles",
       "blocks": {
         "cat_combo": {
-          "type": "category",
+          "type": "tile",
           "settings": {
-            "collection": "combo",
-            "label": "Combo tiết kiệm",
+            "image": "shopify://shop_images/40d4fbab-dabf-4309-bcb5-3349148fc772.png",
             "image_url": "",
-            "price_text": "",
-            "badge_color": ""
+            "link": "",
+            "collection": "combo",
+            "alt": "Combo tiết kiệm"
           }
         },
         "category_MTQ6Hj": {
-          "type": "category",
+          "type": "tile",
           "settings": {
-            "collection": "dồ-uống",
-            "label": "Đồ uống",
+            "image": "shopify://shop_images/8c1dc51e-0a16-4f29-9b5a-6121ac40e285.webp",
             "image_url": "",
-            "price_text": "",
-            "badge_color": ""
+            "link": "",
+            "collection": "dồ-uống",
+            "alt": "Đồ uống"
           }
         },
         "category_9T6JEJ": {
-          "type": "category",
+          "type": "tile",
           "settings": {
-            "collection": "bột-gia-vị",
-            "label": "Gia vị và bột",
-            "image": "shopify://shop_images/nuoc-mam-hieu-ca-muc-squid-300ml-thai-lan-03.jpg",
+            "image": "shopify://shop_images/8c1dc51e-0a16-4f29-9b5a-6121ac40e285.webp",
             "image_url": "",
-            "price_text": "",
-            "badge_color": ""
+            "link": "",
+            "collection": "bột-gia-vị",
+            "alt": "Gia vị và bột"
           }
         },
         "category_Epjgx6": {
-          "type": "category",
+          "type": "tile",
           "settings": {
-            "collection": "thực-phẩm-chế-biến-sẵn",
-            "label": "Thực phẩm chế biến sẵn",
             "image_url": "",
-            "price_text": "",
-            "badge_color": ""
+            "link": "",
+            "collection": "thực-phẩm-chế-biến-sẵn",
+            "alt": "Thực phẩm chế biến sẵn"
           }
         },
         "category_y8g6ky": {
-          "type": "category",
+          "type": "tile",
           "settings": {
-            "collection": "banh-kẹo-dồ-an-vặt",
-            "label": "Bánh, kẹo và đồ ăn vặt",
             "image_url": "",
-            "price_text": "",
-            "badge_color": ""
+            "link": "",
+            "collection": "banh-kẹo-dồ-an-vặt",
+            "alt": "Bánh, kẹo và đồ ăn vặt"
           }
         },
         "cat1": {
-          "type": "category",
+          "type": "tile",
           "settings": {
+            "image_url": "",
+            "link": "",
             "collection": "gạo-nếp-cac-loại",
-            "label": "Gạo, nếp các loại",
-            "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/z6922210164962-fd56bef27dd6da270d1ab5bed8b608d220250819121050.jpg?v=1784472229",
-            "price_text": "Giá chỉ từ 1,3€",
-            "badge_color": ""
+            "alt": "Gạo, nếp các loại"
           }
         },
         "cat2": {
-          "type": "category",
+          "type": "tile",
           "settings": {
-            "collection": "mi-an-liền",
-            "label": "Mì ăn liền",
-            "image": "shopify://shop_images/747613366_122098487565396579_1473846482251679537_n.jpg",
             "image_url": "",
-            "price_text": "",
-            "badge_color": ""
+            "link": "",
+            "collection": "mi-an-liền",
+            "alt": "Mì ăn liền"
           }
         },
         "cat4": {
-          "type": "category",
+          "type": "tile",
           "settings": {
-            "collection": "banh-trang-cac-loại",
-            "label": "Bánh tráng",
-            "image": "shopify://shop_images/banh-da-nem-totaco.webp",
             "image_url": "",
-            "price_text": "",
-            "badge_color": ""
+            "link": "",
+            "collection": "banh-trang-cac-loại",
+            "alt": "Bánh tráng"
           }
         },
         "cat3": {
-          "type": "category",
+          "type": "tile",
           "settings": {
-            "collection": "sữa-cac-loại",
-            "label": "Sữa",
-            "image": "shopify://shop_images/sua-tuoi-th-true-milk-it-duong-hop-180ml-a1.jpg",
             "image_url": "",
-            "price_text": "",
-            "badge_color": ""
+            "link": "",
+            "collection": "sữa-cac-loại",
+            "alt": "Sữa"
           }
         },
         "cat5": {
-          "type": "category",
+          "type": "tile",
           "settings": {
-            "collection": "bun-phở-kho",
-            "label": "Bún, phở",
-            "image": "shopify://shop_images/bun_ph.png",
             "image_url": "",
-            "price_text": "",
-            "badge_color": ""
+            "link": "",
+            "collection": "bun-phở-kho",
+            "alt": "Bún, phở"
           }
         }
       },
@@ -197,11 +275,14 @@
         "cat3",
         "cat5"
       ],
+      "disabled": true,
       "settings": {
-        "heading": "Danh Mục Sản Phẩm",
+        "heading": "Danh mục sản phẩm",
         "show_all_button": true,
         "all_button_label": "Xem tất cả danh mục",
         "all_button_link": "",
+        "full_width": true,
+        "ratio": "1.4 / 1",
         "padding_top": 40,
         "padding_bottom": 40
       }
@@ -232,39 +313,200 @@
             "deal_price": "3.9",
             "is_gift": false
           }
+        },
+        "stock_01": {
+          "type": "product",
+          "settings": {
+            "product": "banh-da-nem-tho-ha-250g-x-50-goi",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_02": {
+          "type": "product",
+          "settings": {
+            "product": "pho-3-cay-tre-3mm-400g-x-30-tui",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_03": {
+          "type": "product",
+          "settings": {
+            "product": "mi-tom-omachi-tom-chua-cay",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_04": {
+          "type": "product",
+          "settings": {
+            "product": "thanh-thuy-gao-nep-cai-hoa-vang-1kg-x-30-goi",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_05": {
+          "type": "product",
+          "settings": {
+            "product": "ngọc-lien-dưa-mon",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_06": {
+          "type": "product",
+          "settings": {
+            "product": "tp-banh-hoi-3-cay-tre-340g-x-40-goi",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_07": {
+          "type": "product",
+          "settings": {
+            "product": "bun-thanh-loc-soi-vua-500g-x-40-goi",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_08": {
+          "type": "product",
+          "settings": {
+            "product": "mien-phu-huong-suon-heo-55g-x-24-goi",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_09": {
+          "type": "product",
+          "settings": {
+            "product": "moc-nhi-100g-x-50-goi",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_10": {
+          "type": "product",
+          "settings": {
+            "product": "sua-kun-huong-socola-lua-mach-180ml-x-48-hop",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_11": {
+          "type": "product",
+          "settings": {
+            "product": "sua-kun-trai-cay-huong-nho-180ml-x-48-hop",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_12": {
+          "type": "product",
+          "settings": {
+            "product": "sua-kun-trai-cay-huong-dau-180ml-x-48-hop",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_14": {
+          "type": "product",
+          "settings": {
+            "product": "sua-kun-trai-cay-huong-cam-180ml-x-48-hop",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_13": {
+          "type": "product",
+          "settings": {
+            "product": "sua-kun-trai-cay-huong-cam-co-thach",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_15": {
+          "type": "product",
+          "settings": {
+            "product": "sua-kun-trai-cay-huong-dau-co-thach-170ml-x-48",
+            "deal_price": "",
+            "is_gift": false
+          }
         }
       },
       "block_order": [
         "product_Db8cPB",
         "product_77RH79",
-        "product_R3UDyK"
+        "product_R3UDyK",
+        "stock_01",
+        "stock_02",
+        "stock_03",
+        "stock_04",
+        "stock_05",
+        "stock_06",
+        "stock_07",
+        "stock_08",
+        "stock_09",
+        "stock_10",
+        "stock_11",
+        "stock_12",
+        "stock_14",
+        "stock_13",
+        "stock_15"
       ],
       "settings": {
-        "heading": "🔥 ƯU ĐÃI ĐẶC BIỆT",
-        "subheading": "Số lượng có hạn! Thêm vào giỏ hàng ngay.",
-        "padding_top": 40,
+        "eyebrow": "Số lượng có hạn",
+        "heading": "Duy nhất hôm nay",
+        "subheading": "Giá tốt chỉ trong hôm nay — hết giờ là thôi",
+        "show_countdown": true,
+        "countdown_label": "Kết thúc sau",
+        "view_all_label": "Xem tất cả",
+        "view_all_link": "",
+        "more_label": "Xem các sản phẩm khác",
+        "more_link": "",
+        "show_steps": false,
+        "step_1": "Chọn 1 món giá deal",
+        "step_2": "Thêm vào giỏ cùng đơn hàng",
+        "step_3": "Thanh toán — giá deal áp dụng ngay",
+        "padding_top": 68,
         "padding_bottom": 40
       }
     },
     "pf_sale_1010": {
       "type": "pf-sale-1010",
       "settings": {
-        "eyebrow": "",
-        "heading": "ƯU ĐÃI TUẦN NÀY",
-        "subheading": "Chốt đơn liền tay - Không lo cháy ví",
-        "badge": "Giảm 20%",
-        "collection": "sieu-sale-10-10",
-        "columns_desktop": 5,
-        "pf_initial": 10,
+        "eyebrow": "SALE SỐC",
+        "heading": "Giá Siêu Rẻ",
+        "subheading": "",
+        "show_countdown": true,
+        "countdown_label": "Kết thúc sau",
+        "stock_note": "",
+        "low_stock": 10,
+        "badge": "Xả kho",
+        "collection": "gia-xa-kho",
+        "columns_desktop": 6,
+        "pf_initial": 12,
         "padding_top": 40,
         "padding_bottom": 40
+      }
+    },
+    "pf_promo_banner": {
+      "type": "pf-promo-banner",
+      "settings": {
+        "image": "shopify://shop_images/phomifood_banner_no_white_padding.png",
+        "image_mobile": "shopify://shop_images/8861ac51-3fbf-42ea-add7-9feb9954521b.png",
+        "link": "shopify://pages/tra-cuu-phi-ship",
+        "alt": "Đơn từ 139€ Freeship hoặc giảm 10% giá trị đơn hàng",
+        "padding_top": 16,
+        "padding_bottom": 16
       }
     },
     "custom_liquid_m33TFL": {
       "type": "custom-liquid",
       "name": "t:sections.custom-liquid.presets.name",
       "settings": {
-        "custom_liquid": "<script>\n  (function () {\n    document.querySelectorAll('[data-pf-s10-more]').forEach(function (b) {\n      var a = document.createElement('a');\n      a.href = '/pages/flash-sale';\n      a.className = b.className;\n      a.style.textDecoration = 'none';\n      a.innerHTML = 'Xem thêm <span aria-hidden=\"true\">→</span>';\n      b.replaceWith(a);\n    });\n  })();\n</script>",
+        "custom_liquid": "<style>\n  /* Cỡ giá thống nhất cho mọi thẻ sản phẩm trên trang chủ: giá mới 1.8rem đậm, giá gạch 1.3rem xám */\n  .pf-ex__price .now, .pf-bs__price .now, .pf-cb__price .now, .pf-s10__price .now, .pf-cr__now, .pf-hd__now {\n    font-size: 1.8rem !important; font-weight: 800 !important; line-height: 1.2 !important;\n  }\n  .pf-ex__price .was, .pf-bs__price .was, .pf-cb__price .was, .pf-s10__price .was, .pf-cr__was, .pf-hd__was {\n    font-size: 1.3rem !important; font-weight: 400 !important; line-height: 1.2 !important; color: #a79c8e !important;\n  }\n  .pf-ex__price, .pf-bs__price, .pf-cb__price, .pf-s10__price, .pf-cr__price, .pf-hd__price { flex-wrap: wrap; column-gap: .8rem; row-gap: .2rem; }\n  @media (max-width: 749px) {\n    .pf-ex__price .now, .pf-bs__price .now, .pf-cb__price .now, .pf-s10__price .now, .pf-cr__now, .pf-hd__now { font-size: 1.6rem !important; }\n    .pf-ex__price .was, .pf-bs__price .was, .pf-cb__price .was, .pf-s10__price .was, .pf-cr__was, .pf-hd__was { font-size: 1.2rem !important; }\n  }\n  /* Nút trên thẻ sản phẩm: Thêm vào giỏ = xanh lá đặc, Xem sản phẩm = viền xanh lá, đều bo tròn */\n  .pf-card-actions { gap: .6rem !important; }\n  .pf-card-actions .pf-btn-cart, .pf-card-actions .pf-btn-view {\n    border-radius: 999px !important; border: 1.5px solid #1e8541 !important;\n    font-size: 1.3rem !important; font-weight: 700 !important; padding: .9rem .6rem !important;\n  }\n  .pf-card-actions .pf-btn-cart { background: #1e8541 !important; color: #fff !important; }\n  .pf-card-actions .pf-btn-cart:hover:not([disabled]) { background: #14672f !important; border-color: #14672f !important; }\n  .pf-card-actions .pf-btn-cart[disabled] { background: #b9b3a8 !important; border-color: #b9b3a8 !important; opacity: 1 !important; }\n  .pf-card-actions .pf-btn-view { background: #fff !important; color: #14672f !important; }\n  .pf-card-actions .pf-btn-view:hover { background: #e9f5ed !important; color: #14672f !important; }\n  @media (max-width: 749px) {\n    .pf-card-actions .pf-btn-cart, .pf-card-actions .pf-btn-view { font-size: 1.15rem !important; padding: .75rem .4rem !important; }\n  }\n  /* Tiêu đề section trang chủ: cùng màu xanh, cùng font, cùng cỡ + đậm, viết thường (chữ cái đầu hoa) */\n  .pf-it__title, .pf-hd__title, .pf-s10__title, .pf-ex__title, .pf-cb__title, .pf-bs__title, .pf-cr__title, .pf-se__title, .pf-os__title {\n    font-family: var(--font-heading-family, sans-serif) !important; font-weight: 900 !important; font-style: normal !important;\n    font-size: clamp(2.6rem, 3.4vw, 3.8rem) !important; line-height: 1.15 !important; letter-spacing: 0 !important;\n    text-transform: none !important; color: #1e8541 !important;\n  }\n  .pf-it__title::after, .pf-s10__title::after, .pf-ex__title::after, .pf-cb__title::after, .pf-bs__title::after, .pf-cr__title::after, .pf-se__title::after { background: linear-gradient(90deg, #1e8541, #ffc61a) !important; }\n  .pf-bs__eyebrow { color: #1e8541 !important; }\n  @media (max-width: 749px) {\n    .pf-it__title, .pf-hd__title, .pf-s10__title, .pf-ex__title, .pf-cb__title, .pf-bs__title, .pf-cr__title, .pf-se__title, .pf-os__title { font-size: 2.4rem !important; }\n  }\n  /* Mobile: các section nhiều sản phẩm hiện lưới 2 cột × 3 hàng + nút Xem thêm (JS bên dưới) */\n  @media (max-width: 749px) {\n    .pf-bs__grid, .pf-cb__grid, .pf-ex__grid, .pf-s10__grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 1.2rem !important; }\n    .pf-cr__track { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem !important; overflow: visible !important; scroll-snap-type: none !important; padding: .4rem 0 .4rem !important; }\n    .pf-cr__track > .pf-cr__card { flex: none !important; width: auto !important; }\n    .pf-mh { display: none !important; }\n    .pf-mmore { display: flex; justify-content: center; margin-top: 1.8rem; }\n    .pf-mmore button {\n      display: inline-flex; align-items: center; gap: .6rem; cursor: pointer; font-family: inherit;\n      background: #fff; border: 2px solid #1e8541; color: #14672f; font-weight: 800; font-size: 1.4rem;\n      padding: .9rem 2.6rem; border-radius: 999px;\n    }\n    .pf-mmore button:active { background: #1e8541; color: #fff; }\n  }\n</style>\n<script>\n  (function () {\n    document.querySelectorAll('[data-pf-s10-more]').forEach(function (b) {\n      var a = document.createElement('a');\n      a.href = '/pages/flash-sale';\n      a.className = b.className;\n      a.style.textDecoration = 'none';\n      a.innerHTML = 'Xem thêm <span aria-hidden=\"true\">→</span>';\n      b.replaceWith(a);\n    });\n  })();\n</script>\n<script>\n  /* Mobile: mỗi section sản phẩm hiện 6 sản phẩm (2 cột × 3 hàng), nút \"Xem thêm\" mở thêm 6.\n     Hết sản phẩm thì trả lại nút gốc của section (Xem tất cả / link Flash sale). */\n  document.addEventListener('DOMContentLoaded', function () {\n    if (!window.matchMedia('(max-width: 749px)').matches) return;\n    var STEP = 6;\n    var vi = (document.documentElement.lang || 'vi').indexOf('vi') === 0;\n    var groups = [\n      { grid: '.pf-bs__grid', card: '.pf-bs__card', own: '.pf-bs__more', wrap: '.pf-bs__morewrap' },\n      { grid: '.pf-cb__grid', card: '.pf-cb__card', own: '.pf-cb__more', wrap: '.pf-cb__morewrap' },\n      { grid: '.pf-ex__grid', card: '.pf-ex__card', own: '[data-pf-ex-more]', wrap: '.pf-ex__more-wrap' },\n      { grid: '.pf-s10__grid', card: '.pf-s10__card', own: '.pf-s10__more', wrap: '.pf-s10__more-wrap' },\n      { grid: '.pf-cr__track', card: '.pf-cr__card', own: '.pf-cr__all', wrap: '.pf-cr__foot', scope: '.pf-cr__row' }\n    ];\n    groups.forEach(function (g) {\n      document.querySelectorAll(g.grid).forEach(function (grid) {\n        var scope = (g.scope && grid.closest(g.scope)) || grid.parentNode.closest('[id]') || grid.parentNode;\n        var own = scope.querySelector(g.own);\n        var ownWrap = own ? (own.closest(g.wrap) || own) : null;\n        var ownIsButton = own && own.tagName === 'BUTTON';\n        var ownUsed = false;\n        var shown = STEP;\n        var avail = function () {\n          return Array.prototype.filter.call(grid.children, function (c) {\n            if (!c.matches(g.card)) return false;\n            c.classList.remove('pf-mh');\n            return getComputedStyle(c).display !== 'none';\n          });\n        };\n        var apply = function () {\n          var a = avail();\n          a.forEach(function (c, i) { c.classList.toggle('pf-mh', i >= shown); });\n          return a.length;\n        };\n        var more = function (n) { return n > shown || (ownIsButton && !ownUsed); };\n        var n = apply();\n        if (!more(n)) return;\n        if (ownWrap) ownWrap.classList.add('pf-mh');\n        var box = document.createElement('div');\n        box.className = 'pf-mmore';\n        box.innerHTML = '<button type=\"button\">' + (vi ? 'Xem thêm' : 'View more') + ' <span aria-hidden=\"true\">▾</span></button>';\n        (grid.closest('.pf-cr__slider') || grid).insertAdjacentElement('afterend', box);\n        box.querySelector('button').addEventListener('click', function () {\n          shown += STEP;\n          n = apply();\n          if (n < shown && ownIsButton && !ownUsed) { ownUsed = true; own.click(); n = apply(); }\n          if (!more(n)) {\n            box.remove();\n            if (ownWrap && !ownIsButton) ownWrap.classList.remove('pf-mh');\n          }\n        });\n      });\n    });\n  });\n</script>",
         "color_scheme": "",
         "padding_top": 0,
         "padding_bottom": 0
@@ -275,10 +517,10 @@
       "settings": {
         "eyebrow": "Sản phẩm độc quyền",
         "heading": "Chỉ có tại Phomifood",
-        "subheading": "Những món độc quyền chỉ Phomifood mới có — không tìm thấy ở nơi nào khác tại châu Âu.",
+        "subheading": "",
         "collection": "hang-dộc-quyền",
         "product_handles": "miến-lẩu-thai-vifon\ncombo-4-hộp-ca-thu-chien-sốt-tương-ớt-roza\nkho-quẹt-chay\ncốt-lếch-chay\nsườn-chay-xao-sả-ớt\nsườn-non-chay\nbun-bo-huế-vifon-thịt-thật\ncombo-5-goi-banh-da-trộn-vifon\nmỳ-quảng-hội-an-an-liền-cathifood-4-vị\ncanh-chua-isoup\nca-biển-an-liền-taki-deli\ncombo-5-ly-soup-hải-sản-i-soup\nmiến-dong-dồi-cao",
-        "columns_desktop": 4,
+        "columns_desktop": 6,
         "pf_initial": 12,
         "padding_top": 40,
         "padding_bottom": 40
@@ -453,14 +695,14 @@
     "pf_combo": {
       "type": "pf-combo",
       "settings": {
-        "heading": "Combo Phomifood",
-        "subheading": "Gói trọn theo nhu cầu — tiết kiệm hơn mua lẻ!",
+        "heading": "Combo",
+        "subheading": "",
         "collection": "combo",
         "products_to_show": 12,
-        "initial_count": 4,
+        "initial_count": 6,
         "show_view_all": true,
         "view_all_label": "Xem thêm",
-        "columns_desktop": 4,
+        "columns_desktop": 6,
         "padding_top": 40,
         "padding_bottom": 40
       }
@@ -479,32 +721,190 @@
         "padding_bottom": 48
       }
     },
+    "pf_promo_banner_deal": {
+      "type": "pf-promo-banner",
+      "settings": {
+        "image": "shopify://shop_images/uu-dai-duy-nhat-hom-nay-banner.webp",
+        "link": "shopify://pages/uu-dai-hom-nay",
+        "alt": "Ưu đãi duy nhất trong hôm nay - giảm sâu tới 17%",
+        "padding_top": 16,
+        "padding_bottom": 16
+      }
+    },
     "pf_bestsellers": {
       "type": "pf-bestsellers",
+      "disabled": true,
       "settings": {
         "heading": "Sản phẩm bán chạy nhất",
         "subheading": "Những sản phẩm được khách hàng yêu thích và đặt mua nhiều nhất",
         "collection": "ban-chay-nhat",
         "products_to_show": 150,
-        "initial_count": 15,
+        "initial_count": 18,
         "show_more_label": "Xem thêm",
-        "columns_desktop": 5,
+        "columns_desktop": 6,
         "padding_top": 40,
         "padding_bottom": 40
       }
     },
-    "pf_promo_image": {
-      "type": "pf-promo-image",
+    "pf_cat_rows": {
+      "type": "pf-cat-rows",
+      "blocks": {
+        "c1": {
+          "type": "category",
+          "settings": {
+            "collection": "mi-an-liền",
+            "icon": "🍜",
+            "eyebrow": "Ăn liền tiện lợi",
+            "title": "Mì ăn liền",
+            "subtitle": ""
+          }
+        },
+        "c2": {
+          "type": "category",
+          "settings": {
+            "collection": "bun-phở-kho",
+            "icon": "🍲",
+            "eyebrow": "Bún phở khô",
+            "title": "Bún và phở khô",
+            "subtitle": ""
+          }
+        },
+        "c3": {
+          "type": "category",
+          "settings": {
+            "collection": "bột-gia-vị",
+            "icon": "🧂",
+            "eyebrow": "Nêm nếm chuẩn vị",
+            "title": "Gia vị và bột nấu ăn",
+            "subtitle": ""
+          }
+        },
+        "c4": {
+          "type": "category",
+          "settings": {
+            "collection": "thực-phẩm-chế-biến-sẵn",
+            "icon": "🥫",
+            "eyebrow": "Ăn liền, ăn ngay",
+            "title": "Thực phẩm chế biến sẵn",
+            "subtitle": ""
+          }
+        },
+        "c5": {
+          "type": "category",
+          "settings": {
+            "collection": "banh-kẹo-dồ-an-vặt",
+            "icon": "🍬",
+            "eyebrow": "Ăn vặt tuổi thơ",
+            "title": "Bánh kẹo và đồ ăn vặt",
+            "subtitle": ""
+          }
+        },
+        "c6": {
+          "type": "category",
+          "settings": {
+            "collection": "dồ-uống",
+            "icon": "🥤",
+            "eyebrow": "Giải khát",
+            "title": "Đồ uống",
+            "subtitle": ""
+          }
+        },
+        "c7": {
+          "type": "category",
+          "settings": {
+            "collection": "gạo-nếp-cac-loại",
+            "icon": "🌾",
+            "eyebrow": "Gạo ngon mỗi ngày",
+            "title": "Gạo, nếp các loại",
+            "subtitle": ""
+          }
+        },
+        "c8": {
+          "type": "category",
+          "settings": {
+            "collection": "banh-trang-cac-loại",
+            "icon": "🥢",
+            "eyebrow": "Cuốn gì cũng ngon",
+            "title": "Bánh tráng các loại",
+            "subtitle": ""
+          }
+        },
+        "c9": {
+          "type": "category",
+          "settings": {
+            "collection": "sữa-cac-loại",
+            "icon": "🥛",
+            "eyebrow": "Sữa Việt",
+            "title": "Sữa các loại",
+            "subtitle": ""
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5",
+        "c6",
+        "c7",
+        "c8",
+        "c9"
+      ],
       "settings": {
-        "image": "shopify://shop_images/40d4fbab-dabf-4309-bcb5-3349148fc772.png",
-        "image_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/a206d210-2d7b-4262-8930-5d659a92e314_1.png?v=1784527901",
-        "alt": "Ưu đãi vận chuyển PHOMIFOOD",
-        "link": "",
-        "max_width": 108,
-        "corner_radius": 20,
-        "shadow": true,
-        "padding_top": 32,
-        "padding_bottom": 32
+        "columns_desktop": 6,
+        "products_per_row": 12,
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "pf_ship_europe": {
+      "type": "pf-ship-europe",
+      "settings": {
+        "eyebrow": "Giao hàng tận nhà",
+        "heading": "Giao hàng toàn châu Âu",
+        "subheading": "Phí ship rõ ràng cho từng nước — đơn từ 139€ được Freeship hoặc giảm 10%.",
+        "button_label": "Tra cứu phí ship chi tiết",
+        "button_link": "shopify://pages/tra-cuu-phi-ship",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 48
+      }
+    },
+    "pf_testimonials": {
+      "type": "pf-testimonials",
+      "settings": {
+        "badge": "Feedback thật từ khách hàng",
+        "heading_1": "Khách hàng nói gì về",
+        "heading_2": "Phomifood?",
+        "subheading": "Những phản hồi thật từ khách hàng đã mua sắm tại Phomifood. Cảm ơn cả nhà đã tin tưởng và ủng hộ!",
+        "button_label": "Xem ngay",
+        "button_link": "shopify://pages/feedback-khach-hang",
+        "images": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/765158470_122111552733396579_5765327748659751309_n.jpg\nhttps://cdn.shopify.com/s/files/1/0749/9353/3018/files/765818079_122111552829396579_5401768943136104717_n.jpg\nhttps://cdn.shopify.com/s/files/1/0749/9353/3018/files/764800463_122111552685396579_4072291594541595060_n.jpg\nhttps://cdn.shopify.com/s/files/1/0749/9353/3018/files/763671755_122111552835396579_3096848449742426825_n.jpg\nhttps://cdn.shopify.com/s/files/1/0749/9353/3018/files/764752298_122111552739396579_7507345758427458679_n.jpg\nhttps://cdn.shopify.com/s/files/1/0749/9353/3018/files/image.png",
+        "speed": 60,
+        "padding_top": 48,
+        "padding_bottom": 56
+      }
+    },
+    "pf_lead": {
+      "type": "pf-lead-offer",
+      "settings": {
+        "eyebrow": "Ưu đãi thành viên",
+        "heading": "Để lại thông tin, nhận ưu đãi riêng",
+        "subheading": "Đăng ký email để là người đầu tiên biết deal xả kho, hàng mới về và mã giảm giá chỉ dành cho thành viên Phomifood.",
+        "perk_1": "Mã giảm giá riêng cho thành viên",
+        "perk_2": "Báo deal xả kho, hàng mới về sớm nhất",
+        "perk_3": "Không spam — hủy đăng ký bất cứ lúc nào",
+        "form_title": "Nhận ưu đãi qua email",
+        "button_label": "Nhận ưu đãi ngay",
+        "privacy_note": "Thông tin của bạn được bảo mật tuyệt đối",
+        "reward_code": "",
+        "reward_note": "Nhập mã ở bước thanh toán",
+        "success_text": "Cảm ơn bạn! Phomifood sẽ gửi ưu đãi mới nhất qua email cho bạn.",
+        "tag": "lead-trang-chu",
+        "padding_top": 24,
+        "padding_bottom": 56
       }
     },
     "pf_buying_guide": {
@@ -555,9 +955,12 @@
   },
   "order": [
     "pf_hero_float",
-    "pf_category_grid",
+    "pf_story",
+    "pf_why",
+    "pf_cat_tiles",
     "pf_deal_hook",
     "pf_sale_1010",
+    "pf_promo_banner",
     "custom_liquid_m33TFL",
     "pf_exclusive",
     "pf_weekly_deals",
@@ -565,7 +968,11 @@
     "pf_combo",
     "pf_flash_sale",
     "pf_bestsellers",
-    "pf_promo_image",
+    "pf_promo_banner_deal",
+    "pf_cat_rows",
+    "pf_ship_europe",
+    "pf_testimonials",
+    "pf_lead",
     "pf_buying_guide"
   ]
 }

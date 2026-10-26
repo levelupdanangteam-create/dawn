@@ -1,0 +1,201 @@
+{%- comment -%}
+  Thẻ sản phẩm kiểu Flash Sale cho section "Ưu đãi duy nhất hôm nay" (pf-deal-hook).
+  Params: p, deal_price, is_gift, gift_min, section_id, block_attrs,
+  extra_class (thêm class cho thẻ), hidden (ẩn sau nút Xem thêm), low_stock (hiện "Chỉ còn N" khi tồn ≤ N).
+  Giá deal / quà tặng tính như pf-deal-card-v2. Nút giỏ dùng form .pf-card-actions__form (AJAX trong pf-cart-ajax.js).
+  Thanh "Đã bán" lấy số thật từ metafield custom.total_sold; độ dài thanh = đã bán / (đã bán + tồn).
+{%- endcomment -%}
+{%- liquid
+  assign v = p.selected_or_first_available_variant
+  assign pf_gm = gift_min | default: 100
+  assign vi = false
+  if request.locale.iso_code == 'vi'
+    assign vi = true
+  endif
+  assign now_cents = v.price
+  assign was_cents = 0
+  if is_gift
+    assign now_cents = 0
+    assign was_cents = v.price
+  elsif deal_price != blank
+    assign now_cents = deal_price | remove: '€' | strip | replace: ',', '.' | times: 100 | round
+    assign was_cents = v.price
+  elsif v.compare_at_price > v.price
+    assign was_cents = v.compare_at_price
+  else
+    capture pf_c
+      render 'pf-cmp', v: v
+    endcapture
+    assign pf_c = pf_c | plus: 0
+    if pf_c > v.price
+      assign was_cents = pf_c
+    endif
+  endif
+  assign pct = 0
+  if was_cents > now_cents and was_cents > 0
+    assign pct = was_cents | minus: now_cents | times: 1000.0 | divided_by: was_cents | round | divided_by: 10.0
+  endif
+
+  assign sold = p.metafields.custom.total_sold.value | default: 0 | plus: 0
+  assign stock = p.total_inventory | default: 0 | plus: 0
+  if stock < 0
+    assign stock = 0
+  endif
+  assign fill = 35
+  if sold > 0
+    assign denom = sold | plus: stock
+    if denom < 1
+      assign denom = 1
+    endif
+    assign fill = sold | times: 100 | divided_by: denom
+    if fill < 25
+      assign fill = 25
+    elsif fill > 95
+      assign fill = 95
+    endif
+  endif
+-%}
+<div class="pf-fs__card{% if is_gift %} pf-fs__card--gift{% endif %}{% if extra_class %} {{ extra_class }}{% endif %}{% if hidden %} pf-s10__card--hidden{% endif %}"{% if block_attrs %} {{ block_attrs }}{% endif %}>
+  <a href="{{ p.url }}" class="pf-fs__media" tabindex="-1" aria-hidden="true">
+    {%- if p.featured_image -%}
+      <img src="{{ p.featured_image | image_url: width: 400 }}" srcset="{{ p.featured_image | image_url: width: 240 }} 240w, {{ p.featured_image | image_url: width: 400 }} 400w" sizes="(max-width: 749px) 42vw, 220px" alt="{{ p.title | escape }}" loading="lazy" width="400" height="400">
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag }}
+    {%- endif -%}
+    {%- if is_gift -%}
+      <span class="pf-fs__badge">{% if vi %}Quà tặng{% else %}Gift{% endif %}</span>
+    {%- elsif pct > 0 -%}
+      <span class="pf-fs__badge">-{{ pct }}%</span>
+    {%- endif -%}
+  </a>
+
+  <a class="pf-fs__name" href="{{ p.url }}" title="{{ p.title | escape }}">{% render 'pf-short-title', title: p.title %}</a>
+
+  <div class="pf-fs__row">
+    <div class="pf-fs__price">
+      <span class="pf-fs__now">{% if now_cents == 0 %}0€{% else %}{{ now_cents | money }}{% endif %}</span>
+      {%- if was_cents > now_cents -%}<s class="pf-fs__was">{{ was_cents | money }}</s>{%- endif -%}
+    </div>
+  </div>
+
+  <div class="pf-fs__bar{% unless p.available %} pf-fs__bar--out{% endunless %}">
+    <i style="width: {% if p.available %}{{ fill }}{% else %}100{% endif %}%"></i>
+    <span>
+      {%- if p.available == false -%}{% if vi %}Đã hết hàng{% else %}Sold out{% endif %}
+      {%- elsif low_stock > 0 and stock > 0 and stock <= low_stock -%}{% if vi %}Chỉ còn {{ stock }}{% else %}Only {{ stock }} left{% endif %}
+      {%- elsif sold > 0 -%}{% if vi %}Đã bán {{ sold }}{% else %}Sold {{ sold }}{% endif %}
+      {%- elsif is_gift -%}{% if vi %}Tặng đơn từ {{ pf_gm }}€{% else %}Free from {{ pf_gm }}€{% endif %}
+      {%- elsif deal_price != blank -%}{% if vi %}1 sản phẩm/đơn{% else %}1 per order{% endif %}
+      {%- else -%}{% if vi %}Đang bán chạy{% else %}Selling fast{% endif %}{%- endif -%}
+    </span>
+  </div>
+
+  {%- if p.available -%}
+    {%- assign pf_add_id = 'pf-fs-' | append: section_id | append: '-' | append: p.id -%}
+    {%- form 'product', p, id: pf_add_id, class: 'pf-card-actions__form pf-fs__addform' -%}
+      <input type="hidden" name="id" value="{{ v.id }}">
+      <button type="submit" class="pf-fs__add pf-fs__add--text">{% if vi %}Thêm vào giỏ{% else %}Add to cart{% endif %}</button>
+    {%- endform -%}
+  {%- else -%}
+    <button type="button" class="pf-fs__add pf-fs__add--text" disabled>{% if vi %}Hết hàng{% else %}Sold out{% endif %}</button>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  /* Nút "Thêm vào giỏ" dạng chữ, rộng hết thẻ (thay icon giỏ). Ghi đè CSS thẻ trong section pf-deal-hook / pf-sale-1010. */
+  .pf-fs__card .pf-fs__price { flex-direction: row !important; align-items: baseline !important; flex-wrap: wrap; gap: .1rem .7rem; }
+  .pf-fs__card .pf-fs__row { flex: 1 1 auto; align-items: flex-start !important; }
+  .pf-fs__card .pf-fs__addform { width: 100%; margin: 1rem 0 0 !important; }
+  .pf-fs__card .pf-fs__add.pf-fs__add--text {
+    display: block !important; box-sizing: border-box; width: 100% !important; height: auto !important; margin: 0;
+    border: 1.5px solid #1e8541 !important; border-radius: 999px !important; background: #1e8541 !important; color: #fff !important;
+    font-family: inherit; font-size: 1.4rem !important; font-weight: 700; line-height: 1.2; padding: .9rem .6rem !important;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; transition: background .15s ease;
+  }
+  .pf-fs__card .pf-fs__add.pf-fs__add--text:hover:not([disabled]) { background: #14672f !important; border-color: #14672f !important; }
+  .pf-fs__card .pf-fs__add.pf-fs__add--text[disabled] { opacity: .85; cursor: default; }
+  .pf-fs__card > .pf-fs__add.pf-fs__add--text[disabled] { margin-top: 1rem; background: #b9b3a8 !important; border-color: #b9b3a8 !important; }
+  .pf-fs__card .pf-fs__add.pf-fs__add--text::after { content: none !important; }
+  .pf-fs__card .pf-fs__bar { margin-top: .9rem !important; }
+  /* 26/10: bỏ icon tia sét trước tiêu đề 2 section Ưu đãi hôm nay / Xả kho */
+  .pf-fs__bolt, .pf-xk__bolt { display: none !important; }
+  /* ===== Kiểu "đơn giản" dùng chung cho các section sản phẩm trang chủ (.pf-simple): Chỉ có tại Phomifood, Combo, Theo danh mục ===== */
+  .pf-simple { --g: #1e8541; --g-d: #14672f; --g-soft: #eef6f0; --line: #ececec; --ink: #2a2622; --mut: #8a8173; --r: #d62828; }
+  .pf-simple .pf-simple__full { max-width: none; padding-inline: clamp(1.6rem, 3vw, 4.8rem); }
+  .pf-simple .pf-simple__head { display: flex; align-items: center; gap: 1.2rem 2.4rem; flex-wrap: wrap; padding: 0 0 1.4rem; border-bottom: 1px solid var(--line); }
+  .pf-simple .pf-simple__head .pf-simple__title {
+    margin: 0; color: var(--g) !important; font-family: var(--font-heading-family, sans-serif) !important; font-weight: 900 !important;
+    font-size: clamp(2.4rem, 2.8vw, 3.4rem) !important; line-height: 1.15 !important; text-transform: none !important; letter-spacing: 0 !important; text-align: left;
+  }
+  .pf-simple .pf-simple__head .pf-simple__title::after { content: none !important; }
+  .pf-simple .pf-simple__all {
+    margin-left: auto; background: #fff; color: var(--g-d); border: 1.5px solid var(--g); text-decoration: none; font-size: 1.4rem; font-weight: 700;
+    padding: .8rem 2rem; border-radius: 999px; white-space: nowrap; transition: background .15s ease, color .15s ease;
+  }
+  .pf-simple .pf-simple__all:hover { background: var(--g); color: #fff; }
+  .pf-simple .pf-simple__sub { margin: 1rem 0 0; font-size: 1.4rem; color: var(--mut); }
+  .pf-simple .pf-simple__grid { display: grid; grid-template-columns: repeat(var(--cols, 6), minmax(0, 1fr)); gap: 1.2rem; margin-top: 1.6rem; }
+  .pf-simple .pf-simple__slider { position: relative; margin-top: 1.6rem; }
+  .pf-simple .pf-simple__track { --per: var(--cols, 6); --gap: 1.2rem; display: flex; gap: var(--gap); overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 0; }
+  .pf-simple .pf-simple__track::-webkit-scrollbar { display: none; }
+  .pf-simple .pf-simple__track > .pf-fs__card { flex: 0 0 calc((100% - (var(--per) - 1) * var(--gap)) / var(--per)); scroll-snap-align: start; }
+  .pf-simple .pf-simple__arrow {
+    position: absolute; top: 40%; z-index: 3; width: 4rem; height: 4rem; border-radius: 50%; border: 1px solid #e6e6e6; padding: 0; cursor: pointer;
+    display: grid; place-items: center; background: #fff; color: var(--ink); box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  }
+  .pf-simple .pf-simple__arrow:hover { color: #fff; background: var(--g); border-color: var(--g); }
+  .pf-simple .pf-simple__arrow[disabled] { opacity: 0; pointer-events: none; }
+  .pf-simple .pf-simple__arrow--prev { left: -1rem; }
+  .pf-simple .pf-simple__arrow--next { right: -1rem; }
+  .pf-simple .pf-simple__more-wrap { text-align: center; margin-top: 2.4rem; }
+  .pf-simple .pf-simple__more {
+    display: inline-flex; align-items: center; gap: .6rem; cursor: pointer; font-family: inherit;
+    background: #fff; border: 1.5px solid var(--g); color: var(--g-d); font-weight: 700; font-size: 1.5rem;
+    padding: .9rem 2.6rem; border-radius: 999px; transition: background .15s ease, color .15s ease;
+  }
+  .pf-simple .pf-simple__more:hover { background: var(--g); color: #fff; }
+  .pf-simple .pf-s10__card--hidden { display: none !important; }
+  .pf-simple .is-expanded .pf-s10__card--hidden { display: flex !important; }
+  /* Thẻ */
+  .pf-simple .pf-fs__card { display: flex; flex-direction: column; min-width: 0; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1rem 1.1rem; overflow: visible; transform: none; box-shadow: none; }
+  .pf-simple .pf-fs__media { position: relative; display: block; aspect-ratio: 1 / 1; border-radius: 8px; overflow: hidden; background: #fff; }
+  .pf-simple .pf-fs__media img, .pf-simple .pf-fs__media svg { width: 100%; height: 100%; object-fit: contain; display: block; transition: transform .3s ease; }
+  .pf-simple .pf-fs__card:hover .pf-fs__media img { transform: scale(1.04); }
+  .pf-simple .pf-fs__badge { position: absolute; top: .4rem; left: .4rem; background: #fdecec; color: var(--r); font-size: 1.2rem; font-weight: 700; line-height: 1; padding: .45rem .6rem; border-radius: 6px; }
+  .pf-simple .pf-fs__name { display: block; margin-top: 1rem; font-size: 1.5rem; line-height: 1.35; color: var(--ink); text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
+  .pf-simple .pf-fs__name:hover { color: var(--g); }
+  .pf-simple .pf-fs__row { display: flex; margin-top: .6rem; }
+  .pf-simple .pf-fs__price { display: flex; min-width: 0; }
+  .pf-simple .pf-fs__now { font-size: 2rem; font-weight: 800; color: var(--g); line-height: 1.2; white-space: nowrap; }
+  .pf-simple .pf-fs__was { font-size: 1.3rem; color: var(--mut); line-height: 1.3; white-space: nowrap; }
+  .pf-simple .pf-fs__bar { position: relative; height: 2rem; border-radius: 999px; background: var(--g-soft); overflow: hidden; }
+  .pf-simple .pf-fs__bar i { position: absolute; inset: 0 auto 0 0; border-radius: 999px; background: #cfe8d6; }
+  .pf-simple .pf-fs__bar span { position: relative; display: block; text-align: center; font-size: 1.2rem; font-weight: 700; line-height: 2rem; color: var(--g-d); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 .6rem; }
+  .pf-simple .pf-fs__bar--out { background: #f0f0f0; }
+  .pf-simple .pf-fs__bar--out i { background: #e0e0e0; }
+  .pf-simple .pf-fs__bar--out span { color: var(--mut); }
+  @media (min-width: 1600px) { .pf-simple .pf-simple__grid { gap: 1.6rem; } }
+  @media (max-width: 1199px) { .pf-simple .pf-simple__grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } .pf-simple .pf-simple__track { --per: 5; } }
+  @media (max-width: 989px) { .pf-simple .pf-simple__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .pf-simple .pf-simple__track { --per: 4; } }
+  @media (max-width: 749px) {
+    .pf-simple .pf-simple__head { padding: 0 0 1rem; gap: .8rem 1rem; }
+    .pf-simple .pf-simple__head .pf-simple__title { font-size: 2.1rem !important; }
+    .pf-simple .pf-simple__all { font-size: 1.2rem; padding: .5rem 1.2rem; }
+    .pf-simple .pf-simple__sub { margin: .8rem 0 0; font-size: 1.25rem; }
+    .pf-simple .pf-simple__grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: .8rem !important; margin-top: 1.2rem; }
+    .pf-simple .pf-simple__slider { margin-top: 1.2rem; }
+    .pf-simple .pf-simple__track { --per: 2.3; --gap: .8rem; }
+    .pf-simple .pf-simple__arrow { display: none !important; }
+    .pf-simple .pf-fs__card { padding: .7rem .7rem .8rem; }
+    .pf-simple .pf-fs__badge { font-size: 1.05rem; padding: .35rem .45rem; }
+    .pf-simple .pf-fs__name { font-size: 1.3rem; margin-top: .7rem; }
+    .pf-simple .pf-fs__now { font-size: 1.6rem; }
+    .pf-simple .pf-fs__was { font-size: 1.15rem; }
+    .pf-simple .pf-fs__bar { height: 1.8rem; }
+    .pf-simple .pf-fs__bar span { font-size: 1.05rem; line-height: 1.8rem; }
+  }
+  @media (max-width: 749px) {
+    .pf-fs__card .pf-fs__add.pf-fs__add--text { font-size: 1.2rem !important; padding: .75rem .4rem !important; }
+    .pf-fs__card .pf-fs__addform { margin-top: .8rem !important; }
+  }
+{% endstylesheet %}

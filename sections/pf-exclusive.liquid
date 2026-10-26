@@ -1,67 +1,10 @@
 {%- comment -%}
-  "Chỉ có tại Phomifood" — sản phẩm độc quyền (Vifon, đồ chay, combo…).
-  Render theo danh sách handle trong cài đặt (mặc định đã điền sẵn). Sửa
-  danh sách trong Theme editor, không cần chọn từng block.
+  "Chỉ có tại Phomifood" — sản phẩm độc quyền. Kiểu đơn giản (26/10): tiêu đề xanh căn trái + "Xem tất cả", lưới thẻ pf-flash-card.
+  CSS chung ở snippet pf-flash-card (.pf-simple). Giữ class pf-ex__grid / pf-ex__card / data-pf-ex-more cho script "Xem thêm" mobile.
+  Bản cũ lưu ở scratchpad: simple/pf-exclusive.orig.liquid.
 {%- endcomment -%}
-<style>
-  #pf-ex-{{ section.id }} { padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px; }
-  #pf-ex-{{ section.id }} .pf-wrap { max-width: var(--page-width, 120rem); margin-inline: auto; padding-inline: clamp(1.6rem, 3vw, 3rem); }
-  #pf-ex-{{ section.id }} .pf-ex { --cols: {{ section.settings.columns_desktop }}; }
-  #pf-ex-{{ section.id }} .pf-ex__head { text-align: center; margin-bottom: 2.8rem; }
-  #pf-ex-{{ section.id }} .pf-ex__eyebrow {
-    display: inline-flex; align-items: center; gap: .5rem; font-size: 1.2rem; font-weight: 800;
-    letter-spacing: .14em; text-transform: uppercase; color: #b8791a;
-    background: #fff6e2; border: 1px solid #f0d99a; padding: .4rem 1rem; border-radius: 999px; margin-bottom: 1rem;
-  }
-  #pf-ex-{{ section.id }} .pf-ex__title { font-family: var(--font-heading-family, sans-serif); font-weight: 800; font-size: clamp(2.2rem, 3.4vw, 3.2rem); color: #2a2622; margin: 0; line-height: 1.15; }
-  #pf-ex-{{ section.id }} .pf-ex__title::after { content: ""; display: block; width: 6rem; height: 4px; border-radius: 4px; margin: 1.2rem auto 0; background: linear-gradient(90deg, #1e8541, #63c98a); }
-  #pf-ex-{{ section.id }} .pf-ex__sub { margin: 1rem auto 0; max-width: 56ch; color: #6b6357; font-size: 1.45rem; }
-
-  #pf-ex-{{ section.id }} .pf-ex__grid { display: grid; grid-template-columns: repeat(var(--cols), 1fr); gap: 1.8rem; }
-  #pf-ex-{{ section.id }} .pf-ex__card {
-    position: relative; background: #fff; border: 1px solid #ece4d8; border-radius: 16px; overflow: hidden;
-    display: flex; flex-direction: column; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-  }
-  #pf-ex-{{ section.id }} .pf-ex__card:hover { transform: translateY(-5px); box-shadow: 0 16px 36px rgba(20,103,47,.14); border-color: #bfe6cc; }
-  #pf-ex-{{ section.id }} .pf-ex__badge {
-    position: absolute; top: 0; left: 0; z-index: 3;
-    display: inline-flex; align-items: center; gap: .3rem; font-weight: 800; font-size: 1.1rem; color: #fff;
-    background: linear-gradient(135deg, #1e8541, #14672f); padding: .45rem .9rem; border-radius: 16px 0 16px 0;
-    box-shadow: 0 4px 10px rgba(0,0,0,.15);
-  }
-  #pf-ex-{{ section.id }} .pf-ex__media { position: relative; aspect-ratio: 1; background: #f7f1e9; display: grid; place-items: center; overflow: hidden; }
-  #pf-ex-{{ section.id }} .pf-ex__media img, #pf-ex-{{ section.id }} .pf-ex__media svg { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
-  #pf-ex-{{ section.id }} .pf-ex__card:hover .pf-ex__media img { transform: scale(1.06); }
-  #pf-ex-{{ section.id }} .pf-ex__sale { position: absolute; top: 1rem; right: 1rem; background: #d62828; color: #fff; font-size: 1.1rem; font-weight: 800; padding: .35rem .8rem; border-radius: 7px; }
-
-  #pf-ex-{{ section.id }} .pf-ex__info { padding: 1.3rem 1.4rem 1.6rem; display: flex; flex-direction: column; gap: .6rem; flex: 1; }
-  #pf-ex-{{ section.id }} .pf-ex__info .pf-card-actions { margin-top: auto; }
-  #pf-ex-{{ section.id }} .pf-ex__nm { margin: 0; font-size: 1.4rem; font-weight: 600; line-height: 1.35; color: #2a2622; }
-  #pf-ex-{{ section.id }} .pf-ex__nm a { color: inherit; text-decoration: none; }
-  #pf-ex-{{ section.id }} .pf-ex__nm a:hover { color: #1e8541; }
-  #pf-ex-{{ section.id }} .pf-ex__price { display: flex; align-items: baseline; gap: .8rem; font-variant-numeric: tabular-nums; }
-  #pf-ex-{{ section.id }} .pf-ex__price .now { font-size: 1.65rem; font-weight: 800; color: #1e8541; }
-  #pf-ex-{{ section.id }} .pf-ex__price .was { font-size: 1.2rem; color: #a79c8e; text-decoration: line-through; }
-
-  #pf-ex-{{ section.id }} .pf-ex__card--hidden { display: none; }
-  #pf-ex-{{ section.id }} .pf-ex.is-expanded .pf-ex__card--hidden { display: flex; }
-  #pf-ex-{{ section.id }} .pf-ex__more-wrap { text-align: center; margin-top: 2.6rem; }
-  #pf-ex-{{ section.id }} .pf-ex__more {
-    display: inline-flex; align-items: center; gap: .6rem; cursor: pointer;
-    background: #fff; border: 2px solid #1e8541; color: #14672f; font-weight: 800; font-size: 1.5rem;
-    padding: 1rem 2.6rem; border-radius: 999px; transition: background .18s ease, color .18s ease;
-  }
-  #pf-ex-{{ section.id }} .pf-ex__more:hover { background: #1e8541; color: #fff; }
-  #pf-ex-{{ section.id }} .pf-ex__more .arw { transition: transform .2s ease; }
-  #pf-ex-{{ section.id }} .pf-ex.is-expanded .pf-ex__more .arw { transform: rotate(180deg); }
-
-  @media (max-width: 989px) { #pf-ex-{{ section.id }} .pf-ex__grid { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 599px) { #pf-ex-{{ section.id }} .pf-ex__grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; } }
-</style>
-
 {%- assign pf_handles = section.settings.product_handles | newline_to_br | split: '<br />' -%}
 {%- assign pf_initial = section.settings.pf_initial | default: 10 -%}
-{%- comment -%} Ưu tiên lấy sản phẩm từ Danh mục (collection). Mặc định = "Hàng độc quyền"; có thể đổi trong Theme editor. Nếu không có thì dùng danh sách handle. {%- endcomment -%}
 {%- assign pf_col = section.settings.collection -%}
 {%- if pf_col == blank -%}{%- assign pf_col = collections['hang-độc-quyền'] -%}{%- endif -%}
 {%- assign pf_use_col = false -%}
@@ -75,27 +18,25 @@
     {%- if hh != blank and all_products[hh] != blank and all_products[hh].id -%}{%- assign pf_valid = pf_valid | plus: 1 -%}{%- endif -%}
   {%- endfor -%}
 {%- endif -%}
+{%- assign vi = false -%}{%- if request.locale.iso_code == 'vi' -%}{%- assign vi = true -%}{%- endif -%}
 
-<div id="pf-ex-{{ section.id }}" class="pf-boxed-section">
-  <div class="pf-wrap">
-    <div class="pf-ex">
-      <div class="pf-ex__head">
-        {%- if section.settings.eyebrow != blank -%}<span class="pf-ex__eyebrow">⭐ {% render 'pf-tr', s: section.settings.eyebrow %}</span>{%- endif -%}
-        <h2 class="pf-ex__title">{% render 'pf-tr', s: section.settings.heading %}</h2>
-        {%- if section.settings.subheading != blank -%}<p class="pf-ex__sub">{% render 'pf-tr', s: section.settings.subheading %}</p>{%- endif -%}
+<div id="pf-ex-{{ section.id }}" class="pf-simple" style="padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
+  <div class="page-width pf-simple__full">
+    <div class="pf-ex" style="--cols: {{ section.settings.columns_desktop }};">
+      <div class="pf-simple__head">
+        <h2 class="pf-ex__title pf-simple__title">{% render 'pf-tr', s: section.settings.heading %}</h2>
+        {%- if pf_use_col -%}<a class="pf-simple__all" href="{{ pf_col.url }}">{% if vi %}Xem tất cả{% else %}View all{% endif %}</a>{%- endif -%}
       </div>
+      {%- if section.settings.subheading != blank -%}<p class="pf-simple__sub">{% render 'pf-tr', s: section.settings.subheading %}</p>{%- endif -%}
 
       {%- assign pf_shown = 0 -%}
-      <div class="pf-ex__grid">
+      <div class="pf-ex__grid pf-simple__grid">
         {%- if pf_use_col -%}
           {%- for product in pf_col.products -%}
             {%- if product != blank and product.id -%}
               {%- assign pf_shown = pf_shown | plus: 1 -%}
-              {%- if pf_shown > pf_initial -%}
-                {% render 'pf-ex-card', product: product, section_id: section.id, hidden: true %}
-              {%- else -%}
-                {% render 'pf-ex-card', product: product, section_id: section.id %}
-              {%- endif -%}
+              {%- assign pf_hide = false -%}{%- if pf_shown > pf_initial -%}{%- assign pf_hide = true -%}{%- endif -%}
+              {%- render 'pf-flash-card', p: product, section_id: section.id, extra_class: 'pf-ex__card', hidden: pf_hide -%}
             {%- endif -%}
           {%- endfor -%}
         {%- else -%}
@@ -104,23 +45,20 @@
             {%- assign product = all_products[hh] -%}
             {%- if hh != blank and product != blank and product.id -%}
               {%- assign pf_shown = pf_shown | plus: 1 -%}
-              {%- if pf_shown > pf_initial -%}
-                {% render 'pf-ex-card', product: product, section_id: section.id, hidden: true %}
-              {%- else -%}
-                {% render 'pf-ex-card', product: product, section_id: section.id %}
-              {%- endif -%}
+              {%- assign pf_hide = false -%}{%- if pf_shown > pf_initial -%}{%- assign pf_hide = true -%}{%- endif -%}
+              {%- render 'pf-flash-card', p: product, section_id: section.id, extra_class: 'pf-ex__card', hidden: pf_hide -%}
             {%- endif -%}
           {%- endfor -%}
         {%- endif -%}
-        {%- if pf_valid == 0 -%}
-          <p class="pf-ex__sub">{% if request.locale.iso_code == "vi" %}Chưa có sản phẩm — chọn Danh mục hàng độc quyền hoặc thêm handle trong cài đặt section.{% else %}No products yet — pick a collection or add product handles in section settings.{% endif %}</p>
-        {%- endif -%}
       </div>
+      {%- if pf_valid == 0 -%}
+        <p class="pf-simple__sub">{% if vi %}Chưa có sản phẩm — chọn Danh mục hàng độc quyền hoặc thêm handle trong cài đặt section.{% else %}No products yet — pick a collection or add product handles in section settings.{% endif %}</p>
+      {%- endif -%}
 
       {%- if pf_valid > pf_initial -%}
-        <div class="pf-ex__more-wrap">
-          <button type="button" class="pf-ex__more" data-pf-ex-more>
-            <span class="pf-ex__more-txt">{% if request.locale.iso_code == "vi" %}Xem thêm{% else %}View more{% endif %}</span>
+        <div class="pf-ex__more-wrap pf-simple__more-wrap">
+          <button type="button" class="pf-simple__more" data-pf-ex-more>
+            <span class="pf-ex__more-txt">{% if vi %}Xem thêm{% else %}View more{% endif %}</span>
             <span class="arw" aria-hidden="true">▾</span>
           </button>
         </div>

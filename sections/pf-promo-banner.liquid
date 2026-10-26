@@ -1,0 +1,45 @@
+{%- comment -%}
+  Banner ảnh khuyến mãi (26/10): ví dụ "Đơn từ 139€ Freeship hoặc giảm 10%".
+  Ảnh full màn hình (chừa lề 2 bên như các section sản phẩm), bo góc, bấm vào đi tới link. Có thể đặt ảnh riêng cho điện thoại.
+  Bo góc theo bề ngang (1.8vw) để che phần góc trắng có sẵn trong ảnh.
+{%- endcomment -%}
+{%- assign img = section.settings.image -%}
+{%- assign img_m = section.settings.image_mobile | default: img -%}
+{%- if img != blank -%}
+<div id="pf-promo-{{ section.id }}" class="pf-promo" style="padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
+  <div class="page-width pf-promo__wrap">
+    {%- if section.settings.link != blank -%}<a class="pf-promo__link" href="{{ section.settings.link }}">{%- else -%}<div class="pf-promo__link">{%- endif -%}
+      <picture>
+        {%- if section.settings.image_mobile != blank -%}
+          <source media="(max-width: 749px)" srcset="{{ img_m | image_url: width: 750 }} 750w, {{ img_m | image_url: width: 1100 }} 1100w">
+        {%- endif -%}
+        <img src="{{ img | image_url: width: 1800 }}" srcset="{{ img | image_url: width: 750 }} 750w, {{ img | image_url: width: 1200 }} 1200w, {{ img | image_url: width: 1800 }} 1800w" sizes="100vw" alt="{{ section.settings.alt | default: img.alt | escape }}" width="{{ img.width }}" height="{{ img.height }}" loading="lazy">
+      </picture>
+    {%- if section.settings.link != blank -%}</a>{%- else -%}</div>{%- endif -%}
+  </div>
+</div>
+
+<style>
+  #pf-promo-{{ section.id }} .pf-promo__wrap { max-width: none; padding-inline: clamp(1.6rem, 3vw, 4.8rem); }
+  #pf-promo-{{ section.id }} .pf-promo__link { display: block; border-radius: clamp(10px, 1.8vw, 34px); overflow: hidden; line-height: 0; box-shadow: 0 10px 28px rgba(20, 103, 47, .16); transition: transform .2s ease, box-shadow .2s ease; }
+  #pf-promo-{{ section.id }} a.pf-promo__link:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(20, 103, 47, .22); }
+  #pf-promo-{{ section.id }} .pf-promo__link img { display: block; width: 100%; height: auto; }
+  @media (prefers-reduced-motion: reduce) { #pf-promo-{{ section.id }} .pf-promo__link { transition: none; } }
+</style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Banner khuyến mãi",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Ảnh banner (máy tính)" },
+    { "type": "image_picker", "id": "image_mobile", "label": "Ảnh cho điện thoại (không bắt buộc)" },
+    { "type": "url", "id": "link", "label": "Link khi bấm vào banner" },
+    { "type": "text", "id": "alt", "label": "Mô tả ảnh (alt)" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 16 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 16 }
+  ],
+  "presets": [ { "name": "Banner khuyến mãi" } ]
+}
+{% endschema %}
