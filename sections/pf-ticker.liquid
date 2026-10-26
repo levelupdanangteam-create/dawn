@@ -1,0 +1,91 @@
+{%- comment -%}
+  Banner chạy (ticker) đầu trang: các thông điệp định vị chạy ngang liên tục.
+  Rê chuột để dừng. Tắt chuyển động nếu người dùng bật "giảm chuyển động".
+{%- endcomment -%}
+<style>
+  #pf-tk-{{ section.id }} {
+    background: linear-gradient(90deg, {{ section.settings.bg }} 0%, {{ section.settings.bg_2 }} 100%); color: {{ section.settings.text_color }};
+    overflow: hidden; position: relative; z-index: 3;
+  }
+  #pf-tk-{{ section.id }} .pf-tk__track {
+    display: flex; width: max-content;
+    animation: pf-tk-scroll-{{ section.id }} {{ section.settings.duration }}s linear infinite;
+  }
+  #pf-tk-{{ section.id }}:hover .pf-tk__track,
+  #pf-tk-{{ section.id }}:focus-within .pf-tk__track { animation-play-state: paused; }
+  #pf-tk-{{ section.id }} .pf-tk__half { display: flex; flex: none; }
+  #pf-tk-{{ section.id }} .pf-tk__item {
+    display: inline-flex; align-items: center; gap: .6rem; flex: none;
+    padding: .8rem 2.8rem; font-size: 1.3rem; line-height: 1.4; white-space: nowrap;
+    color: inherit; text-decoration: none;
+  }
+  #pf-tk-{{ section.id }} .pf-tk__item b { font-weight: 700; }
+  #pf-tk-{{ section.id }} .pf-tk__item span { opacity: .82; }
+  #pf-tk-{{ section.id }} .pf-tk__dot {
+    flex: none; width: .7rem; height: .7rem; border-radius: 50%; background: {{ section.settings.accent }};
+  }
+  @keyframes pf-tk-scroll-{{ section.id }} {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @media screen and (max-width: 749px) {
+    #pf-tk-{{ section.id }} .pf-tk__item { font-size: 1.2rem; padding: .7rem 2rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #pf-tk-{{ section.id }} .pf-tk__track { animation: none; }
+  }
+</style>
+
+{%- capture pf_tk_set -%}
+  {%- for block in section.blocks -%}
+    {%- if block.settings.link != blank -%}
+      <a class="pf-tk__item" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
+    {%- else -%}
+      <div class="pf-tk__item" {{ block.shopify_attributes }}>
+    {%- endif -%}
+      <i class="pf-tk__dot" aria-hidden="true"></i>
+      {%- if block.settings.bold != blank -%}<b>{{ block.settings.bold }}</b>{%- endif -%}
+      {%- if block.settings.bold != blank and block.settings.sub != blank -%}<span>&nbsp;·&nbsp;</span>{%- endif -%}
+      {%- if block.settings.sub != blank -%}<span>{{ block.settings.sub }}</span>{%- endif -%}
+    {%- if block.settings.link != blank -%}</a>{%- else -%}</div>{%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- if section.blocks.size > 0 -%}
+<div id="pf-tk-{{ section.id }}" role="region" aria-label="Thông tin nổi bật">
+  <div class="pf-tk__track">
+    {%- comment -%} Mỗi nửa lặp 4 lần để luôn phủ kín màn hình rộng; chạy -50% là liền mạch {%- endcomment -%}
+    <div class="pf-tk__half">{{ pf_tk_set }}{{ pf_tk_set }}{{ pf_tk_set }}{{ pf_tk_set }}</div>
+    <div class="pf-tk__half" aria-hidden="true">{{ pf_tk_set }}{{ pf_tk_set }}{{ pf_tk_set }}{{ pf_tk_set }}</div>
+  </div>
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Banner chạy",
+  "tag": "div",
+  "class": "pf-ticker-section",
+  "settings": [
+    { "type": "color", "id": "bg", "label": "Màu nền (trái)", "default": "#14672f" },
+    { "type": "color", "id": "bg_2", "label": "Màu nền (phải)", "default": "#1e8541" },
+    { "type": "color", "id": "text_color", "label": "Màu chữ", "default": "#ffffff" },
+    { "type": "color", "id": "accent", "label": "Màu chấm", "default": "#ffc61a" },
+    { "type": "range", "id": "duration", "min": 20, "max": 240, "step": 5, "unit": "s", "label": "Thời gian 1 vòng (càng lớn càng chậm)", "default": 130 }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Thông điệp",
+      "settings": [
+        { "type": "text", "id": "bold", "label": "Chữ đậm", "default": "Tổng kho tại EU" },
+        { "type": "text", "id": "sub", "label": "Chữ phụ", "default": "không chờ hàng từ Việt Nam" },
+        { "type": "url", "id": "link", "label": "Liên kết (tuỳ chọn)" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Banner chạy", "blocks": [ { "type": "item" } ] }
+  ]
+}
+{% endschema %}

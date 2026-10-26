@@ -22,7 +22,7 @@
 
 <div id="pf-guide-{{ section.id }}">
   <div class="pf-wrap">
-    <h2 class="pf-title">{{ section.settings.heading }}</h2>
+    <h2 class="pf-title">{% render 'pf-tr', s: section.settings.heading %}</h2>
     <div class="pf-steps">
       {%- for block in section.blocks -%}
         <div class="pf-step" {{ block.shopify_attributes }}>

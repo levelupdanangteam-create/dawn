@@ -1,0 +1,252 @@
+{%- comment -%}
+  Trang "Ưu đãi tuần" (/pages/flash-sale) — cùng giao diện với section "Xả kho – Giá sâu nhất tuần" ở trang chủ
+  (pf-sale-1010 + thẻ pf-s1010-card), hiện TẤT CẢ sản phẩm của danh mục sieu-sale-10-10.
+  Đổi chữ: sửa các biến pf_* ngay bên dưới.
+{%- endcomment -%}
+{%- liquid
+  assign pf_col = collections['sieu-sale-10-10']
+  assign pf_eyebrow = 'Xả kho cuối tuần'
+  assign pf_heading = 'Xả kho – Giá sâu nhất tuần'
+  assign pf_sub = 'Giá đáy cho hàng xả kho — mua ngay kẻo hết, hết là thôi!'
+  assign pf_badge = 'Xả kho'
+  assign pf_stock_note = 'Hết là thôi'
+  assign pf_countdown_label = 'Kết thúc sau'
+  assign pf_low_stock = 10
+  assign vi = false
+  if request.locale.iso_code == 'vi'
+    assign vi = true
+  endif
+-%}
+<style>
+  #pf-s10-flashpage { padding: 24px 0 56px; }
+  #pf-s10-flashpage .pf-wrap { max-width: var(--page-width, 120rem); margin-inline: auto; padding-inline: clamp(1.6rem, 3vw, 3rem); }
+  #pf-s10-flashpage .pf-s10 { --cols: 6; }
+  #pf-s10-flashpage .pf-s10__head { text-align: center; margin-bottom: 2.8rem; }
+  #pf-s10-flashpage .pf-s10__eyebrow {
+    display: inline-flex; align-items: center; gap: .5rem; font-size: 1.2rem; font-weight: 800;
+    letter-spacing: .14em; text-transform: uppercase; color: #c0261f;
+    background: #fff0ee; border: 1px solid #f6c3bd; padding: .4rem 1rem; border-radius: 999px; margin-bottom: 1rem;
+  }
+  #pf-s10-flashpage .pf-s10__title { font-family: var(--font-heading-family, sans-serif); font-weight: 900; font-size: clamp(2.4rem, 3.8vw, 3.6rem); color: #d62828; margin: 0; line-height: 1.15; letter-spacing: .02em; }
+  #pf-s10-flashpage .pf-s10__title::after { content: ""; display: block; width: 6rem; height: 4px; border-radius: 4px; margin: 1.2rem auto 0; background: linear-gradient(90deg, #d62828, #f4a261); }
+  #pf-s10-flashpage .pf-s10__sub { margin: 1rem auto 0; max-width: 56ch; color: #6b6357; font-size: 1.5rem; font-weight: 600; }
+
+  /* Đầu section kiểu "xả kho": nền vàng thương hiệu + dải băng vạch chéo xanh–vàng (kiểu băng dán thùng kho) + 3 ô nổi bật */
+  #pf-s10-flashpage .pf-s10__head {
+    position: relative; overflow: hidden; padding: 3.6rem 2rem 2.6rem; border-radius: 18px;
+    background:
+      radial-gradient(circle at 12% 20%, rgba(255, 255, 255, .7), rgba(255, 255, 255, 0) 45%),
+      linear-gradient(160deg, #fffbe8 0%, #fff3c4 55%, #ffe68a 100%);
+    border: 1px solid #f3dc8c; box-shadow: inset 0 -6px 0 rgba(30, 133, 65, .08);
+  }
+  #pf-s10-flashpage .pf-s10__head > .pf-s10__tape {
+    position: absolute; top: 0; left: 0; right: 0; height: 1rem;
+    background: repeating-linear-gradient(-45deg, #1e8541 0 14px, #ffc61a 14px 28px);
+  }
+  #pf-s10-flashpage .pf-s10__head::before, #pf-s10-flashpage .pf-s10__head::after {
+    content: "%"; position: absolute; font-weight: 900; color: rgba(214, 150, 0, .16); line-height: 1; pointer-events: none;
+  }
+  #pf-s10-flashpage .pf-s10__head::before { font-size: 16rem; left: 2%; top: -2rem; transform: rotate(-14deg); }
+  #pf-s10-flashpage .pf-s10__head::after { font-size: 12rem; right: 3%; bottom: -2.4rem; transform: rotate(12deg); }
+  #pf-s10-flashpage .pf-s10__eyebrow { position: relative; background: #d62828 !important; color: #fff !important; border-color: #d62828 !important; box-shadow: 0 6px 16px rgba(214, 40, 40, .3); animation: pf-s10-pulse-flashpage 2s ease-in-out infinite; }
+  @keyframes pf-s10-pulse-flashpage { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  #pf-s10-flashpage .pf-s10__title, #pf-s10-flashpage .pf-s10__sub { position: relative; }
+  #pf-s10-flashpage .pf-s10__stats { position: relative; display: flex; justify-content: center; flex-wrap: wrap; gap: 1.2rem; margin-top: 2rem; }
+  #pf-s10-flashpage .pf-s10__stat {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .3rem; min-width: 15rem;
+    background: #fff; border: 1px solid #f1e2b0; border-radius: 14px; padding: 1rem 1.8rem; box-shadow: 0 8px 18px rgba(150, 110, 0, .12);
+  }
+  #pf-s10-flashpage .pf-s10__stat[hidden] { display: none; }
+  #pf-s10-flashpage .pf-s10__stat small { font-size: 1.15rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #8a4a3a; }
+  #pf-s10-flashpage .pf-s10__stat b { font-size: 2.2rem; font-weight: 900; line-height: 1.1; color: #2a2622; font-variant-numeric: tabular-nums; }
+  #pf-s10-flashpage .pf-s10__stat--deal { background: #d62828; border-color: #d62828; }
+  #pf-s10-flashpage .pf-s10__stat--deal small { color: #ffe3dc; }
+  #pf-s10-flashpage .pf-s10__stat--deal b { color: #fff; font-size: 3rem; }
+  #pf-s10-flashpage .pf-s10__clock { display: inline-flex; align-items: baseline; gap: .3rem; }
+  #pf-s10-flashpage .pf-s10__clock b { color: #d62828; }
+  #pf-s10-flashpage .pf-s10__clock i { font-style: normal; font-weight: 800; font-size: 1.3rem; color: #8a4a3a; margin-right: .2rem; }
+  #pf-s10-flashpage .pf-s10__stat--stock b { font-size: 1.6rem; color: #14672f; }
+  /* Dòng tiết kiệm + tồn kho thấp trên thẻ */
+  #pf-s10-flashpage .pf-s10__save { align-self: flex-start; font-size: 1.2rem; font-weight: 800; color: #c0261f; background: #fdecea; border-radius: 6px; padding: .3rem .7rem; }
+  #pf-s10-flashpage .pf-s10__low { font-size: 1.2rem; font-weight: 700; color: #b8791a; }
+
+  #pf-s10-flashpage .pf-s10__grid { display: grid; grid-template-columns: repeat(var(--cols), 1fr); gap: 1.8rem; }
+  #pf-s10-flashpage .pf-s10__card {
+    position: relative; background: #fff; border: 1px solid #ece4d8; border-radius: 16px; overflow: hidden;
+    display: flex; flex-direction: column; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  #pf-s10-flashpage .pf-s10__card:hover { transform: translateY(-5px); box-shadow: 0 16px 36px rgba(214,40,40,.14); border-color: #f6c3bd; }
+  #pf-s10-flashpage .pf-s10__badge {
+    position: absolute; top: 0; left: 0; z-index: 3;
+    display: inline-flex; align-items: center; gap: .3rem; font-weight: 800; font-size: 1.1rem; color: #fff;
+    background: linear-gradient(135deg, #e63946, #c0261f); padding: .45rem .9rem; border-radius: 16px 0 16px 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,.15);
+  }
+  #pf-s10-flashpage .pf-s10__media { position: relative; aspect-ratio: 1; background: #f7f1e9; display: grid; place-items: center; overflow: hidden; }
+  #pf-s10-flashpage .pf-s10__media img, #pf-s10-flashpage .pf-s10__media svg { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
+  #pf-s10-flashpage .pf-s10__card:hover .pf-s10__media img { transform: scale(1.06); }
+  #pf-s10-flashpage .pf-s10__sale { position: absolute; top: 1rem; right: 1rem; z-index: 3; background: #d62828; color: #fff; font-size: 1.1rem; font-weight: 800; line-height: 1.2; padding: .35rem .8rem; border-radius: 7px; }
+
+  #pf-s10-flashpage .pf-s10__info { padding: 1.3rem 1.4rem 1.6rem; display: flex; flex-direction: column; gap: .6rem; flex: 1; }
+  #pf-s10-flashpage .pf-s10__info .pf-card-actions { margin-top: auto; }
+  #pf-s10-flashpage .pf-s10__nm { margin: 0; font-size: 1.4rem; font-weight: 600; line-height: 1.35; color: #2a2622; }
+  #pf-s10-flashpage .pf-s10__nm a { color: inherit; text-decoration: none; }
+  #pf-s10-flashpage .pf-s10__nm a:hover { color: #d62828; }
+  #pf-s10-flashpage .pf-s10__price { display: flex; align-items: baseline; flex-wrap: wrap; gap: .2rem .8rem; font-variant-numeric: tabular-nums; }
+  #pf-s10-flashpage .pf-s10__price .now { font-size: 1.65rem; font-weight: 800; color: #1e8541; }
+  #pf-s10-flashpage .pf-s10__price .was { font-size: 1.2rem; color: #a79c8e; text-decoration: line-through; }
+
+  #pf-s10-flashpage .pf-s10__card--hidden { display: none; }
+  #pf-s10-flashpage .pf-s10.is-expanded .pf-s10__card--hidden { display: flex; }
+  #pf-s10-flashpage .pf-s10__more-wrap { text-align: center; margin-top: 2.6rem; }
+  #pf-s10-flashpage .pf-s10__more {
+    display: inline-flex; align-items: center; gap: .6rem; cursor: pointer;
+    background: #fff; border: 2px solid #d62828; color: #c0261f; font-weight: 800; font-size: 1.5rem;
+    padding: 1rem 2.6rem; border-radius: 999px; transition: background .18s ease, color .18s ease;
+  }
+  #pf-s10-flashpage .pf-s10__more:hover { background: #d62828; color: #fff; }
+  #pf-s10-flashpage .pf-s10__more .arw { transition: transform .2s ease; }
+  #pf-s10-flashpage .pf-s10.is-expanded .pf-s10__more .arw { transform: rotate(180deg); }
+
+  @media (max-width: 989px) { #pf-s10-flashpage .pf-s10__grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 599px) { #pf-s10-flashpage .pf-s10__grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; } }
+  @media (max-width: 749px) {
+    #pf-s10-flashpage .pf-s10__head { padding: 2.6rem 1.2rem 1.8rem; border-radius: 14px; }
+    #pf-s10-flashpage .pf-s10__head > .pf-s10__tape { height: .8rem; }
+    #pf-s10-flashpage .pf-s10__head::before { font-size: 10rem; }
+    #pf-s10-flashpage .pf-s10__head::after { font-size: 8rem; }
+    #pf-s10-flashpage .pf-s10__stats { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; margin-top: 1.6rem; }
+    #pf-s10-flashpage .pf-s10__stat { min-width: 0; padding: .9rem .8rem; }
+    #pf-s10-flashpage .pf-s10__stat--time { grid-column: 1 / -1; order: -1; }
+    #pf-s10-flashpage .pf-s10__stat small { font-size: 1rem; }
+    #pf-s10-flashpage .pf-s10__stat b { font-size: 1.9rem; }
+    #pf-s10-flashpage .pf-s10__stat--deal b { font-size: 2.4rem; }
+    #pf-s10-flashpage .pf-s10__stat--stock b { font-size: 1.35rem; }
+    #pf-s10-flashpage .pf-s10__save, #pf-s10-flashpage .pf-s10__low { font-size: 1.05rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { #pf-s10-flashpage .pf-s10__eyebrow { animation: none; } }
+
+  /* Đồng bộ với trang chủ: giá, nút xanh lá, tiêu đề */
+  #pf-s10-flashpage .pf-s10__badge { background: linear-gradient(135deg, #1e8541, #14672f) !important; }
+  #pf-s10-flashpage .pf-s10__price .now { font-size: 1.8rem !important; font-weight: 800 !important; line-height: 1.2 !important; color: #1e8541 !important; }
+  #pf-s10-flashpage .pf-s10__price .was { font-size: 1.3rem !important; font-weight: 400 !important; line-height: 1.2 !important; color: #a79c8e !important; }
+  #pf-s10-flashpage .pf-card-actions { gap: .6rem !important; }
+  #pf-s10-flashpage .pf-card-actions .pf-btn-cart, #pf-s10-flashpage .pf-card-actions .pf-btn-view {
+    border-radius: 999px !important; border: 1.5px solid #1e8541 !important;
+    font-size: 1.3rem !important; font-weight: 700 !important; padding: .9rem .6rem !important;
+  }
+  #pf-s10-flashpage .pf-card-actions .pf-btn-cart { background: #1e8541 !important; color: #fff !important; }
+  #pf-s10-flashpage .pf-card-actions .pf-btn-cart:hover:not([disabled]) { background: #14672f !important; border-color: #14672f !important; }
+  #pf-s10-flashpage .pf-card-actions .pf-btn-cart[disabled] { background: #b9b3a8 !important; border-color: #b9b3a8 !important; opacity: 1 !important; }
+  #pf-s10-flashpage .pf-card-actions .pf-btn-view { background: #fff !important; color: #14672f !important; }
+  #pf-s10-flashpage .pf-card-actions .pf-btn-view:hover { background: #e9f5ed !important; color: #14672f !important; }
+  #pf-s10-flashpage .pf-s10__title { font-weight: 900 !important; font-size: clamp(2.6rem, 3.4vw, 3.8rem) !important; color: #1e8541 !important; text-transform: none !important; letter-spacing: 0 !important; }
+  #pf-s10-flashpage .pf-s10__title::after { background: linear-gradient(90deg, #1e8541, #ffc61a) !important; }
+  #pf-s10-flashpage .pf-s10__count { position: relative; margin: 1.2rem 0 0; font-size: 1.35rem; font-weight: 700; color: #6b6357; }
+  #pf-s10-flashpage .pf-s10__count b { color: #14672f; }
+  #pf-s10-flashpage .pf-s10__allwrap { margin-top: 3.2rem; text-align: center; }
+  #pf-s10-flashpage .pf-s10__allnote { margin: 0 0 1.2rem; font-size: 1.45rem; color: #6b6357; }
+  #pf-s10-flashpage .pf-s10__all {
+    display: inline-flex; align-items: center; gap: .8rem; text-decoration: none;
+    background: linear-gradient(90deg, #1e8541, #14672f); color: #fff; font-weight: 800; font-size: 1.6rem;
+    padding: 1.4rem 3.2rem; border-radius: 999px; box-shadow: 0 10px 22px rgba(20, 103, 47, .28); transition: transform .15s ease, box-shadow .15s ease;
+  }
+  #pf-s10-flashpage .pf-s10__all:hover { color: #fff; transform: translateY(-2px); box-shadow: 0 14px 28px rgba(20, 103, 47, .36); }
+  #pf-s10-flashpage .pf-s10__all span { display: inline-grid; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: #ffc61a; color: #14672f; font-size: 1.5rem; }
+  @media (max-width: 749px) {
+    #pf-s10-flashpage .pf-s10__price .now { font-size: 1.6rem !important; }
+    #pf-s10-flashpage .pf-s10__price .was { font-size: 1.2rem !important; }
+    #pf-s10-flashpage .pf-card-actions .pf-btn-cart, #pf-s10-flashpage .pf-card-actions .pf-btn-view { font-size: 1.15rem !important; padding: .75rem .4rem !important; }
+    #pf-s10-flashpage .pf-s10__title { font-size: 2.4rem !important; }
+    #pf-s10-flashpage .pf-s10__allnote { font-size: 1.3rem; }
+    #pf-s10-flashpage .pf-s10__all { display: flex; justify-content: center; font-size: 1.5rem; padding: 1.3rem 2rem; }
+  }
+</style>
+
+{%- if pf_col != blank and pf_col.products_count > 0 -%}
+<div id="pf-s10-flashpage" class="pf-boxed-section">
+  <div class="pf-wrap">
+    <div class="pf-s10">
+      {%- paginate pf_col.products by 250 -%}
+      {%- liquid
+        assign pf_max = 0
+        for product in pf_col.products
+          assign v = product.selected_or_first_available_variant
+          assign c = v.compare_at_price
+          if c == blank or c <= v.price
+            assign c = product.compare_at_price_max
+          endif
+          if c > v.price
+            assign p = c | minus: v.price | times: 100.0 | divided_by: c | round
+            if p > pf_max
+              assign pf_max = p
+            endif
+          endif
+        endfor
+      -%}
+      <div class="pf-s10__head">
+        <span class="pf-s10__tape" aria-hidden="true"></span>
+        <span class="pf-s10__eyebrow">🔥 {{ pf_eyebrow }}</span>
+        <h1 class="pf-s10__title">{{ pf_heading }}</h1>
+        <p class="pf-s10__sub">{{ pf_sub }}</p>
+        <div class="pf-s10__stats">
+          {%- if pf_max > 0 -%}
+            <div class="pf-s10__stat pf-s10__stat--deal">
+              <small>{% if vi %}Giảm đến{% else %}Up to{% endif %}</small>
+              <b>-{{ pf_max }}%</b>
+            </div>
+          {%- endif -%}
+          <div class="pf-s10__stat pf-s10__stat--time" data-pf-s10-timer hidden>
+            <small>{{ pf_countdown_label }}</small>
+            <span class="pf-s10__clock"><b data-d>0</b><i>{% if vi %}ngày{% else %}d{% endif %}</i><b data-h>00</b><i>:</i><b data-m>00</b><i>:</i><b data-s>00</b></span>
+          </div>
+          <div class="pf-s10__stat pf-s10__stat--stock">
+            <small>{% if vi %}Hàng xả kho{% else %}Clearance{% endif %}</small>
+            <b>{{ pf_stock_note }}</b>
+          </div>
+        </div>
+        <p class="pf-s10__count">{% if vi %}<b>{{ pf_col.products_count }}</b> sản phẩm đang xả kho{% else %}<b>{{ pf_col.products_count }}</b> clearance products{% endif %}</p>
+      </div>
+
+      <div class="pf-s10__grid">
+        {%- for product in pf_col.products -%}
+          {%- if product != blank and product.id -%}
+            {% render 'pf-s1010-card', product: product, section_id: 'flashpage', badge: pf_badge, low_stock: pf_low_stock %}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      {%- endpaginate -%}
+
+      <div class="pf-s10__allwrap">
+        <p class="pf-s10__allnote">{% if vi %}Chưa tìm thấy món bạn cần? Hơn 240 món Việt đang chờ bạn trong cửa hàng.{% else %}Didn't find what you need? Browse all our Vietnamese products.{% endif %}</p>
+        <a class="pf-s10__all" href="{{ routes.all_products_collection_url }}">{% if vi %}Xem thêm các sản phẩm khác{% else %}See more products{% endif %} <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('pf-s10-flashpage');
+    if (!root) return;
+    // Đồng hồ đếm ngược tới 23:59:59 Chủ nhật (giờ trên máy khách), sang tuần mới tự chạy lại — giống trang chủ
+    var t = root.querySelector('[data-pf-s10-timer]');
+    if (!t) return;
+    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+    var q = function (k) { return t.querySelector('[data-' + k + ']'); };
+    var tick = function () {
+      var now = new Date(), end = new Date(now);
+      end.setDate(now.getDate() + ((7 - now.getDay()) % 7));
+      end.setHours(23, 59, 59, 999);
+      var left = Math.max(0, Math.floor((end - now) / 1000));
+      q('d').textContent = Math.floor(left / 86400);
+      q('h').textContent = pad(Math.floor(left % 86400 / 3600));
+      q('m').textContent = pad(Math.floor(left % 3600 / 60));
+      q('s').textContent = pad(left % 60);
+    };
+    tick(); t.hidden = false; setInterval(tick, 1000);
+  })();
+</script>
+{%- else -%}
+  <div class="page-width" style="padding: 56px 0; text-align: center;"><p>{% if vi %}Chưa có sản phẩm ưu đãi tuần này.{% else %}No products yet.{% endif %}</p></div>
+{%- endif -%}

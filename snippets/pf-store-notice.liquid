@@ -1,0 +1,85 @@
+{%- comment -%}
+  Store-wide notice bar (shown on every page, below the header).
+  Tells customers only part of the catalog is online and to message the
+  Fanpage for anything they can't find. Dismissible per browsing session.
+  Set pf_fanpage_url to the real Facebook Fanpage link.
+{%- endcomment -%}
+{%- assign pf_fanpage_url = 'https://m.me/phomifoodstore' -%}
+
+<div class="pf-notice" id="pf-store-notice" hidden>
+  <div class="pf-notice__inner">
+    <span class="pf-notice__badge" aria-hidden="true">📦</span>
+    {%- if request.locale.iso_code == 'vi' -%}
+      <p class="pf-notice__text">
+        Kho hàng Phomifood có <strong>hơn 400 mặt hàng</strong>. Website chỉ hiển thị một phần —
+        chưa thấy món bạn cần?
+      </p>
+    {%- else -%}
+      <p class="pf-notice__text">
+        Phomifood stocks <strong>over 400 products</strong>. The website shows only part of them —
+        can't find what you need?
+      </p>
+    {%- endif -%}
+    <a class="pf-notice__btn" href="{{ pf_fanpage_url }}" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg>
+      {% if request.locale.iso_code == 'vi' %}Nhắn Fanpage tư vấn{% else %}Message us on Facebook{% endif %}
+    </a>
+    <button type="button" class="pf-notice__close" id="pf-store-notice-close" aria-label="Đóng thông báo">&times;</button>
+  </div>
+</div>
+
+<style>
+  .pf-notice { padding: 1rem clamp(1.2rem, 4vw, 3rem) 1.4rem; }
+  .pf-notice__inner {
+    max-width: var(--page-width, 120rem); margin: 0 auto;
+    display: flex; align-items: center; gap: 1.2rem;
+    background: linear-gradient(135deg, #fff8e9 0%, #fdeecb 100%);
+    border: 1px solid #f0d99a; border-left: 5px solid #1e8541;
+    border-radius: 14px; padding: 1.1rem 1.3rem;
+    box-shadow: 0 6px 18px rgba(30, 133, 65, .07);
+  }
+  .pf-notice__badge {
+    flex: none; width: 3.8rem; height: 3.8rem; border-radius: 50%;
+    background: #1e8541; color: #fff; display: grid; place-items: center;
+    font-size: 1.9rem; box-shadow: 0 3px 8px rgba(20, 103, 47, .3);
+  }
+  .pf-notice__text { margin: 0; font-size: 1.38rem; line-height: 1.5; font-weight: 600; color: #5c4a20; flex: 1 1 auto; }
+  .pf-notice__text strong { color: #14672f; }
+  .pf-notice__btn {
+    flex: none; display: inline-flex; align-items: center; gap: .6rem; text-decoration: none;
+    background: #1877f2; color: #fff; font-weight: 800; font-size: 1.35rem;
+    padding: .95rem 1.6rem; border-radius: 999px; white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(24, 119, 242, .32); transition: filter .15s ease, transform .15s ease;
+  }
+  .pf-notice__btn svg { flex: none; }
+  .pf-notice__btn:hover { filter: brightness(1.06); transform: translateY(-1px); }
+  .pf-notice__close {
+    flex: none; width: 3rem; height: 3rem; border: 0; cursor: pointer; border-radius: 50%;
+    background: rgba(20, 103, 47, .1); color: #14672f; font-size: 2rem; line-height: 1;
+    display: flex; align-items: center; justify-content: center; transition: background .15s ease;
+  }
+  .pf-notice__close:hover { background: rgba(20, 103, 47, .2); }
+  @media (max-width: 749px) {
+    .pf-notice__inner { flex-wrap: wrap; align-items: center; gap: .8rem 1rem; padding: 1rem 1.1rem; }
+    .pf-notice__badge { width: 3.2rem; height: 3.2rem; font-size: 1.6rem; }
+    .pf-notice__text { font-size: 1.3rem; line-height: 1.45; flex: 1 1 auto; }
+    .pf-notice__btn { order: 5; flex: 1 1 100%; justify-content: center; font-size: 1.4rem; padding: 1.1rem; }
+    .pf-notice__close { width: 2.6rem; height: 2.6rem; font-size: 1.8rem; }
+  }
+</style>
+
+<script>
+  (function () {
+    var el = document.getElementById('pf-store-notice');
+    if (!el) return;
+    var KEY = 'pf_notice_closed';
+    var closed = false;
+    try { closed = sessionStorage.getItem(KEY) === '1'; } catch (e) {}
+    if (!closed) el.hidden = false;
+    var btn = document.getElementById('pf-store-notice-close');
+    if (btn) btn.addEventListener('click', function () {
+      el.hidden = true;
+      try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+    });
+  })();
+</script>

@@ -62,6 +62,7 @@
         >
           {%- if card_product.featured_media -%}
             <div class="card__media{% if image_shape and image_shape != 'default' %} shape--{{ image_shape }} color-{{ settings.card_color_scheme }} gradient{% endif %}">
+              {% render 'pf-preorder-badge', product: card_product %}
               <div class="media media--transparent media--hover-effect">
                 {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
                 <img
@@ -123,7 +124,7 @@
                   class="full-unstyled-link"
                   aria-labelledby="StandardCardNoMediaLink-{{ section_id }}-{{ card_product.id }}{% if card_product.available == false or card_product.compare_at_price > card_product.price %} NoMediaStandardBadge-{{ section_id }}-{{ card_product.id }}{% endif %}"
                 >
-                  {{ card_product.title | escape }}
+                  {% render 'pf-short-title', title: card_product.title %}
                 </a>
               </h3>
             </div>
@@ -160,7 +161,7 @@
                 class="full-unstyled-link"
                 aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }}{% if card_product.available == false or card_product.compare_at_price > card_product.price %} Badge-{{ section_id }}-{{ card_product.id }}{% endif %}"
               >
-                {{ card_product.title | escape }}
+                {% render 'pf-short-title', title: card_product.title %}
               </a>
             </h3>
             <div class="card-information">
@@ -168,6 +169,8 @@
                 <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
                 <div class="caption-with-letter-spacing light">{{ card_product.vendor }}</div>
               {%- endif -%}
+
+              {% render 'pf-sold-badge', p: card_product %}
 
               <span class="caption-large light">{{ block.settings.description | escape }}</span>
 
@@ -292,6 +295,7 @@
             </div>
             {%- if card_product and card_product != empty -%}
               <div class="pf-card-actions">
+                <a href="{{ card_product.url }}" class="pf-btn-view">Xem sản phẩm</a>
                 {%- if card_product.available -%}
                   {%- assign pf_add_id = 'pf-add-' | append: section_id | append: '-' | append: card_product.id -%}
                   {%- form 'product', card_product, id: pf_add_id, class: 'pf-card-actions__form' -%}
@@ -305,7 +309,6 @@
                 {%- else -%}
                   <button type="button" class="pf-btn-cart" disabled>Hết hàng</button>
                 {%- endif -%}
-                <a href="{{ card_product.url }}" class="pf-btn-view">Xem ngay</a>
               </div>
             {%- endif -%}
           </div>
@@ -531,7 +534,7 @@
                         </div>
                         <div class="quick-add-modal__content-info--bulk-details large-up-hide">
                           <a href="{{ card_product.url }}" class="full-unstyled-link">
-                            <h3>{{ card_product.title | escape }}</h3>
+                            <h3>{% render 'pf-short-title', title: card_product.title %}</h3>
                           </a>
                           {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}
                           {%- if card_product.quantity_price_breaks_configured? -%}
@@ -545,7 +548,7 @@
                         <div class="quick-add-modal__content-info--bulk-details small-hide medium-hide">
                           <a href="{{ card_product.url }}" class="full-unstyled-link">
                             <h3 class="h2">
-                              {{ card_product.title | escape }}
+                              {% render 'pf-short-title', title: card_product.title %}
                             </h3>
                           </a>
                           {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}

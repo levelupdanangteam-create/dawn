@@ -1,0 +1,81 @@
+{%- comment -%}
+  Thẻ deal kiểu "Hot Deals" cho section Ưu đãi đặc biệt.
+  Params: p, deal_price, is_gift, gift_min, section_id, block_attrs (giống pf-deal-card).
+  Nút "Xem sản phẩm" + "Thêm vào giỏ" dùng chung snippet pf-card-buttons như các thẻ khác.
+  (26/10: bỏ nhãn "Tiết kiệm €x" cho thẻ gọn hơn — % giảm vẫn hiện ở góc ảnh.)
+  (26/10: giá deal to + đỏ cho nổi bật — CSS ở cuối file.)
+  (26/10: sản phẩm thường — không nhập giá deal — hiện nhãn "HÔM NAY" và không có dòng "Giá deal: 1 sản phẩm/đơn".)
+{%- endcomment -%}
+{%- liquid
+  assign v = p.selected_or_first_available_variant
+  assign pf_gm = gift_min | default: 100
+  assign vi = false
+  if request.locale.iso_code == 'vi'
+    assign vi = true
+  endif
+  assign now_cents = v.price
+  assign was_cents = 0
+  if is_gift
+    assign now_cents = 0
+    assign was_cents = v.price
+  elsif deal_price != blank
+    assign now_cents = deal_price | remove: '€' | strip | replace: ',', '.' | times: 100 | round
+    assign was_cents = v.price
+  elsif v.compare_at_price > v.price
+    assign was_cents = v.compare_at_price
+  endif
+  assign pct = 0
+  if was_cents > now_cents and was_cents > 0
+    assign pct = was_cents | minus: now_cents | times: 100.0 | divided_by: was_cents | round
+  endif
+-%}
+<div class="pf-hd__card{% if is_gift %} pf-hd__card--gift{% endif %}"{% if block_attrs %} {{ block_attrs }}{% endif %}>
+  <div class="pf-hd__media">
+    <a href="{{ p.url }}" class="pf-hd__imglink" tabindex="-1" aria-hidden="true">
+      {%- if p.featured_image -%}
+        <img src="{{ p.featured_image | image_url: width: 500 }}" srcset="{{ p.featured_image | image_url: width: 300 }} 300w, {{ p.featured_image | image_url: width: 500 }} 500w" sizes="(max-width: 749px) 46vw, 280px" alt="{{ p.title | escape }}" loading="lazy" width="500" height="500">
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag }}
+      {%- endif -%}
+    </a>
+    <span class="pf-hd__tag pf-hd__tag--sale">{% if is_gift %}{% if vi %}QUÀ TẶNG{% else %}GIFT{% endif %}{% elsif deal_price != blank %}DEAL{% else %}{% if vi %}HÔM NAY{% else %}TODAY{% endif %}{% endif %}</span>
+    {%- if pct > 0 -%}
+      <span class="pf-hd__tag pf-hd__tag--save">-{{ pct }}%</span>
+    {%- endif -%}
+  </div>
+
+  <a class="pf-hd__name" href="{{ p.url }}">{% render 'pf-short-title', title: p.title %}</a>
+  {%- capture pf_hd_sold -%}{% render 'pf-sold-badge', p: p %}{%- endcapture -%}
+  {%- if pf_hd_sold != blank -%}{{ pf_hd_sold }}{%- else -%}<span class="pf-sold pf-sold--hot">⚡ {% if vi %}Deal hot hôm nay{% else %}Today's hot deal{% endif %}</span>{%- endif -%}
+
+  <div class="pf-hd__price">
+    <span class="pf-hd__now">{% if now_cents == 0 %}0€{% else %}{{ now_cents | money }}{% endif %}</span>
+    {%- if was_cents > now_cents -%}<s class="pf-hd__was">{{ was_cents | money }}</s>{%- endif -%}
+  </div>
+
+  {%- if is_gift or deal_price != blank -%}
+  <p class="pf-hd__note">
+    {%- if is_gift -%}
+      {% if vi %}Tặng khi đơn từ {{ pf_gm }}€{% else %}Free on orders from {{ pf_gm }}€{% endif %}
+    {%- else -%}
+      {% if vi %}Giá deal: 1 sản phẩm/đơn{% else %}Deal price: 1 item/order{% endif %}
+    {%- endif -%}
+  </p>
+  {%- endif -%}
+
+  <div class="pf-hd__actions">{%- render 'pf-card-buttons', product: p, section_id: section_id -%}</div>
+</div>
+
+{% stylesheet %}
+  /* Giá deal to, đỏ, nổi bật (ghi đè CSS trong section pf-deal-hook) */
+  .pf-hd .pf-hd__card .pf-hd__price { align-items: baseline !important; gap: .2rem 1rem !important; }
+  .pf-hd .pf-hd__card .pf-hd__now { font-size: 3rem !important; font-weight: 900 !important; line-height: 1.1 !important; color: #d62828 !important; letter-spacing: -.01em; }
+  .pf-hd .pf-hd__card--gift .pf-hd__now { color: #1e8541 !important; }
+  .pf-hd .pf-hd__card .pf-hd__was { font-size: 1.6rem !important; color: #8a8173 !important; }
+  .pf-hd .pf-hd__card .pf-hd__note { font-size: 1.4rem !important; color: #5a5347 !important; font-weight: 600; }
+  @media (max-width: 749px) {
+    .pf-hd .pf-hd__card .pf-hd__now { font-size: 2.3rem !important; }
+    .pf-hd .pf-hd__card .pf-hd__was { font-size: 1.3rem !important; }
+    .pf-hd .pf-hd__card .pf-hd__note { font-size: 1.2rem !important; }
+  }
+{% endstylesheet %}

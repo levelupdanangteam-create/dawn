@@ -1,0 +1,105 @@
+{%- comment -%}
+  "Chỉ có tại Phomifood" — sản phẩm độc quyền. Kiểu đơn giản (26/10): tiêu đề xanh căn trái + "Xem tất cả", lưới thẻ pf-flash-card.
+  CSS chung ở snippet pf-flash-card (.pf-simple). Giữ class pf-ex__grid / pf-ex__card / data-pf-ex-more cho script "Xem thêm" mobile.
+  Bản cũ lưu ở scratchpad: simple/pf-exclusive.orig.liquid.
+{%- endcomment -%}
+{%- assign pf_handles = section.settings.product_handles | newline_to_br | split: '<br />' -%}
+{%- assign pf_initial = section.settings.pf_initial | default: 10 -%}
+{%- assign pf_col = section.settings.collection -%}
+{%- if pf_col == blank -%}{%- assign pf_col = collections['hang-độc-quyền'] -%}{%- endif -%}
+{%- assign pf_use_col = false -%}
+{%- if pf_col != blank and pf_col.products_count > 0 -%}
+  {%- assign pf_use_col = true -%}
+  {%- assign pf_valid = pf_col.products_count -%}
+{%- else -%}
+  {%- assign pf_valid = 0 -%}
+  {%- for h in pf_handles -%}
+    {%- assign hh = h | strip | remove: '<br>' | strip -%}
+    {%- if hh != blank and all_products[hh] != blank and all_products[hh].id -%}{%- assign pf_valid = pf_valid | plus: 1 -%}{%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+{%- assign vi = false -%}{%- if request.locale.iso_code == 'vi' -%}{%- assign vi = true -%}{%- endif -%}
+
+<div id="pf-ex-{{ section.id }}" class="pf-simple" style="padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
+  <div class="page-width pf-simple__full">
+    <div class="pf-ex" style="--cols: {{ section.settings.columns_desktop }};">
+      <div class="pf-simple__head">
+        <h2 class="pf-ex__title pf-simple__title">{% render 'pf-tr', s: section.settings.heading %}</h2>
+        {%- if pf_use_col -%}<a class="pf-simple__all" href="{{ pf_col.url }}">{% if vi %}Xem tất cả{% else %}View all{% endif %}</a>{%- endif -%}
+      </div>
+      {%- if section.settings.subheading != blank -%}<p class="pf-simple__sub">{% render 'pf-tr', s: section.settings.subheading %}</p>{%- endif -%}
+
+      {%- assign pf_shown = 0 -%}
+      <div class="pf-ex__grid pf-simple__grid">
+        {%- if pf_use_col -%}
+          {%- for product in pf_col.products -%}
+            {%- if product != blank and product.id -%}
+              {%- assign pf_shown = pf_shown | plus: 1 -%}
+              {%- assign pf_hide = false -%}{%- if pf_shown > pf_initial -%}{%- assign pf_hide = true -%}{%- endif -%}
+              {%- render 'pf-flash-card', p: product, section_id: section.id, extra_class: 'pf-ex__card', hidden: pf_hide -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for h in pf_handles -%}
+            {%- assign hh = h | strip | remove: '<br>' | strip -%}
+            {%- assign product = all_products[hh] -%}
+            {%- if hh != blank and product != blank and product.id -%}
+              {%- assign pf_shown = pf_shown | plus: 1 -%}
+              {%- assign pf_hide = false -%}{%- if pf_shown > pf_initial -%}{%- assign pf_hide = true -%}{%- endif -%}
+              {%- render 'pf-flash-card', p: product, section_id: section.id, extra_class: 'pf-ex__card', hidden: pf_hide -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+      {%- if pf_valid == 0 -%}
+        <p class="pf-simple__sub">{% if vi %}Chưa có sản phẩm — chọn Danh mục hàng độc quyền hoặc thêm handle trong cài đặt section.{% else %}No products yet — pick a collection or add product handles in section settings.{% endif %}</p>
+      {%- endif -%}
+
+      {%- if pf_valid > pf_initial -%}
+        <div class="pf-ex__more-wrap pf-simple__more-wrap">
+          <button type="button" class="pf-simple__more" data-pf-ex-more>
+            <span class="pf-ex__more-txt">{% if vi %}Xem thêm{% else %}View more{% endif %}</span>
+            <span class="arw" aria-hidden="true">▾</span>
+          </button>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('pf-ex-{{ section.id }}');
+    if (!root) return;
+    var ex = root.querySelector('.pf-ex');
+    var btn = root.querySelector('[data-pf-ex-more]');
+    if (!ex || !btn) return;
+    var txt = btn.querySelector('.pf-ex__more-txt');
+    var vi = '{{ request.locale.iso_code }}' === 'vi';
+    btn.addEventListener('click', function () {
+      var expanded = ex.classList.toggle('is-expanded');
+      if (txt) txt.textContent = expanded ? (vi ? 'Thu gọn' : 'View less') : (vi ? 'Xem thêm' : 'View more');
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Chỉ có tại Phomifood",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "Sản phẩm độc quyền" },
+    { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Chỉ có tại Phomifood" },
+    { "type": "text", "id": "subheading", "label": "Phụ đề", "default": "Những món độc quyền chỉ Phomifood mới có — không tìm thấy ở nơi nào khác tại châu Âu." },
+    { "type": "collection", "id": "collection", "label": "Danh mục hàng độc quyền", "info": "Mặc định đã lấy danh mục 'Hàng độc quyền'. Chọn danh mục khác ở đây nếu muốn đổi. Để trống = dùng danh mục mặc định." },
+    { "type": "textarea", "id": "product_handles", "label": "Danh sách sản phẩm (dự phòng — mỗi dòng 1 handle)", "info": "Chỉ dùng khi KHÔNG chọn danh mục ở trên. Handle lấy từ URL sản phẩm (phần sau /products/).", "default": "miến-lẩu-thai-vifon\ncombo-4-hộp-ca-thu-chien-sốt-tương-ớt-roza\nkho-quẹt-chay\ncốt-lếch-chay\nsườn-chay-xao-sả-ớt\nsườn-non-chay\nbun-bo-huế-vifon-thịt-thật\ncombo-5-goi-banh-da-trộn-vifon\nmỳ-quảng-hội-an-an-liền-cathifood-4-vị\ncanh-chua-isoup" },
+    { "type": "range", "id": "columns_desktop", "min": 3, "max": 6, "step": 1, "label": "Số cột (desktop)", "default": 5 },
+    { "type": "range", "id": "pf_initial", "min": 3, "max": 20, "step": 1, "label": "Số sản phẩm hiện ban đầu (còn lại ẩn sau nút Xem thêm)", "default": 10 },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 40 }
+  ],
+  "presets": [
+    { "name": "Chỉ có tại Phomifood" }
+  ]
+}
+{% endschema %}

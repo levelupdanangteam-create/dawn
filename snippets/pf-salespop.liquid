@@ -1,0 +1,152 @@
+{%- comment -%}
+  PHOMIFOOD — Thông báo "đã mua hàng" bằng ĐƠN THẬT gần đây.
+  Dữ liệu lấy từ đơn hàng thật trên Shopify, ĐÃ ẨN DANH: chỉ hiện tên gọi
+  (không họ) + thành phố + sản phẩm + giá trị + thời gian thật. KHÔNG hiện
+  địa chỉ/họ tên đầy đủ của khách (tôn trọng quyền riêng tư / GDPR).
+  Muốn làm mới danh sách: cập nhật mảng ORDERS bên dưới (chạy lại từ Shopify).
+{%- endcomment -%}
+{%- assign vi = false -%}
+{%- if request.locale.iso_code == 'vi' -%}{%- assign vi = true -%}{%- endif -%}
+
+<div id="pf-sp" class="pf-sp" role="status" aria-live="polite" hidden>
+  <button type="button" class="pf-sp__close" id="pf-sp-close" aria-label="{% if vi %}Đóng{% else %}Close{% endif %}">&times;</button>
+  <div class="pf-sp__check" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+  </div>
+  <div class="pf-sp__body">
+    <div class="pf-sp__line1">
+      <span class="pf-sp__name" id="pf-sp-name"></span>
+      <span class="pf-sp__city" id="pf-sp-city"></span>
+    </div>
+    <div class="pf-sp__line2">
+      <span id="pf-sp-action">{% if vi %}đã mua{% else %}bought{% endif %}</span>
+      <span class="pf-sp__prod" id="pf-sp-prod"></span>
+    </div>
+    <div class="pf-sp__line3">
+      <span class="pf-sp__val" id="pf-sp-val"></span>
+      <span class="pf-sp__time" id="pf-sp-time"></span>
+      <span class="pf-sp__verified">{% if vi %}✓ Đơn đã xác nhận{% else %}✓ Verified order{% endif %}</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .pf-sp {
+    position: fixed; inset: auto auto 1.4rem 1.4rem; z-index: 2147483000;
+    width: min(27rem, calc(100vw - 2.6rem));
+    display: flex; align-items: center; gap: .85rem;
+    background: #fff; border: 1px solid #e6ecdf; border-left: 4px solid #1e8541;
+    border-radius: 13px; padding: .85rem 2rem .85rem .9rem;
+    box-shadow: 0 10px 28px rgba(20, 60, 30, .16);
+    transform: translateY(140%); opacity: 0;
+    transition: transform .5s cubic-bezier(.2,.8,.2,1), opacity .4s ease;
+    font-family: inherit;
+  }
+  .pf-sp[hidden] { display: none; }
+  .pf-sp.is-in { transform: translateY(0); opacity: 1; }
+  .pf-sp__close {
+    position: absolute; top: .3rem; right: .4rem; width: 2rem; height: 2rem; border: 0;
+    background: transparent; color: #b3aa99; font-size: 1.6rem; line-height: 1; cursor: pointer; border-radius: 50%;
+  }
+  .pf-sp__close:hover { background: #f2ede3; color: #5a5346; }
+  .pf-sp__check {
+    flex: none; width: 2.8rem; height: 2.8rem; border-radius: 50%;
+    background: linear-gradient(135deg, #23a152, #14672f); display: grid; place-items: center;
+    box-shadow: 0 3px 8px rgba(20, 103, 47, .28);
+  }
+  .pf-sp__check svg { width: 16px; height: 16px; }
+  .pf-sp__body { min-width: 0; flex: 1; }
+  .pf-sp__line1 { display: flex; align-items: baseline; gap: .4rem; flex-wrap: wrap; }
+  .pf-sp__name { font-size: 1.3rem; font-weight: 800; color: #23201b; }
+  .pf-sp__city { font-size: 1.1rem; color: #1e8541; font-weight: 700; }
+  .pf-sp__line2 { margin-top: .12rem; font-size: 1.2rem; color: #5a5346; line-height: 1.35; }
+  .pf-sp__prod { font-weight: 700; color: #23201b; }
+  .pf-sp__line3 { margin-top: .28rem; display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+  .pf-sp__val {
+    background: #fdeaea; color: #d62828; font-weight: 800; font-size: 1.1rem;
+    padding: .05rem .5rem; border-radius: 999px; white-space: nowrap;
+  }
+  .pf-sp__time { font-size: 1.05rem; color: #a49c8c; }
+  .pf-sp__verified { font-size: 1.02rem; color: #1e8541; font-weight: 700; }
+  @media (max-width: 749px) {
+    /* Gọn hơn, nâng cao khỏi mép dưới và nằm BÊN TRÁI để không đè nút chat bên phải. */
+    .pf-sp {
+      left: .8rem; bottom: 5.5rem; right: auto;
+      width: min(20rem, calc(100vw - 8rem));
+      padding: .9rem 1.9rem .9rem .8rem; gap: .6rem; border-radius: 11px;
+    }
+    .pf-sp__check { width: 2.3rem; height: 2.3rem; }
+    .pf-sp__name { font-size: 1.2rem; }
+    .pf-sp__city { font-size: 1.05rem; }
+    .pf-sp__line2 { font-size: 1.1rem; }
+    .pf-sp__val { font-size: 1.02rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pf-sp { transition: opacity .3s ease; transform: none; }
+  }
+</style>
+
+<script>
+  (function () {
+    var el = document.getElementById('pf-sp');
+    if (!el) return;
+    if (el.parentNode !== document.body) { document.body.appendChild(el); }
+    var VI = {{ vi }};
+
+    // ==== ĐƠN HÀNG THẬT (đã ẩn danh) ============================
+    // [tên gọi, thành phố, cờ, sản phẩm, giá trị €, thời điểm đặt ISO]
+    var ORDERS = [["Tiến","Hassfurt","🇩🇪","Bánh gạo OneOne vị sữa ngô",86,"2026-09-06T20:17:23Z"],["Thi","Berlin","🇩🇪","Cơm Cháy VIP",166,"2026-09-05T23:44:19Z"],["Phuong","Gutach","🇩🇪","Bánh quy Gouté Mè giòn tan",149,"2026-09-05T09:45:22Z"],["Thi","Nice","🇫🇷","Nước mắm chinsu cá hồi",51,"2026-09-04T22:08:49Z"],["Khiêm","Apeldoorn","🇳🇱","Cà Phê Phố Sữa Đá",65,"2026-09-04T16:30:53Z"],["Thảo","Rilland","🇳🇱","Phở bò Đệ Nhất",170,"2026-09-04T04:04:41Z"],["Nguyen","Düsseldorf","🇩🇪","Nước Tương Chinsu Tỏi Ớt",53,"2026-09-04T00:58:55Z"],["Thi","Lörrach","🇩🇪","Mì Hoàng Gia vị Gà",157,"2026-09-03T15:02:18Z"],["Lực","Toulouse","🇫🇷","Bánh Bon sợi thịt gà",197,"2026-09-03T10:27:42Z"],["Hoang","Weil Am Rhein","🇩🇪","Bánh quy Coconut Cracker",150,"2026-09-02T09:20:15Z"],["Mai","Amancy","🇫🇷","Tân Tân - Đậu phộng nước cốt dừa",297,"2026-09-02T08:18:32Z"],["Gio","Støvring","🇩🇰","Nước mắm chinsu cá hồi",192,"2026-09-02T06:40:52Z"],["Dep","Närpes","🇫🇮","Nước Tương Chinsu Tỏi Ớt",160,"2026-09-02T04:50:57Z"],["Lien","Eindhoven","🇳🇱","Thanh Thủy - Gạo Nếp Cái Hoa Vàng",195,"2026-09-01T17:14:05Z"],["Thi","Schwerin","🇩🇪","Bánh đa nem Thành Lộc",163,"2026-08-30T12:05:49Z"],["Giau","Skövde","🇸🇪","Chinsu - Tương ớt tiêu chuẩn",143,"2026-08-30T05:24:02Z"]];
+    // =============================================================
+
+    var name = document.getElementById('pf-sp-name');
+    var city = document.getElementById('pf-sp-city');
+    var prod = document.getElementById('pf-sp-prod');
+    var val  = document.getElementById('pf-sp-val');
+    var timeEl = document.getElementById('pf-sp-time');
+
+    var i = Math.floor((new Date().getTime() / 60000) % ORDERS.length);
+    var stopped = false;
+    var hideT, nextT;
+
+    function timeAgo(iso) {
+      var then = new Date(iso).getTime();
+      if (isNaN(then)) return '';
+      var mins = Math.max(1, Math.round((Date.now() - then) / 60000));
+      if (mins < 60) return VI ? (mins + ' phút trước') : (mins + ' min ago');
+      var hrs = Math.round(mins / 60);
+      if (hrs < 24) return VI ? (hrs + ' giờ trước') : (hrs + 'h ago');
+      var days = Math.round(hrs / 24);
+      return VI ? (days + ' ngày trước') : (days + 'd ago');
+    }
+    function render() {
+      var o = ORDERS[i % ORDERS.length];
+      name.textContent = o[0];
+      city.textContent = '• ' + o[1] + ' ' + o[2];
+      prod.textContent = o[3];
+      val.textContent = o[4] + '€';
+      timeEl.textContent = '· ' + timeAgo(o[5]);
+      i++;
+    }
+    function show() {
+      if (stopped) return;
+      render();
+      el.hidden = false;
+      void el.offsetWidth;
+      el.classList.add('is-in');
+      hideT = setTimeout(hide, 6500);
+    }
+    function hide() {
+      el.classList.remove('is-in');
+      setTimeout(function () { el.hidden = true; }, 500);
+      if (!stopped) nextT = setTimeout(show, 9000 + Math.random() * 7000);
+    }
+    document.getElementById('pf-sp-close').addEventListener('click', function () {
+      stopped = true;
+      clearTimeout(hideT); clearTimeout(nextT);
+      el.classList.remove('is-in');
+      setTimeout(function () { el.hidden = true; }, 400);
+    });
+
+    setTimeout(show, 4000);
+  })();
+</script>

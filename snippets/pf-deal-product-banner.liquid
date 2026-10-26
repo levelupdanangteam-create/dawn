@@ -1,0 +1,77 @@
+{%- comment -%}
+  On a deal product's detail page, show a notice that adding it to the
+  cart unlocks the deal price. Single source: Theme settings → pf_deal_rows
+  (handle||deal_price, rows split by ;;).
+{%- endcomment -%}
+{%- assign pf_deal_rows = settings.pf_deal_rows | remove: 'canh-chua-isoup||3,9€;;' | split: ";;" -%}
+{%- assign pf_deal_price = "" -%}
+{%- assign pf_deal_note = "" -%}
+{%- for row in pf_deal_rows -%}
+  {%- assign parts = row | split: "||" -%}
+  {%- if parts[0] == product.handle -%}
+    {%- assign pf_deal_price = parts[1] -%}
+    {%- if parts[2] != blank -%}{%- assign pf_deal_note = parts[2] -%}{%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- comment -%} Ghi chú deal riêng theo sản phẩm (áp dụng cho vị cụ thể). Thêm handle mới ở đây nếu cần. {%- endcomment -%}
+{%- if product.handle == 'canh-chua-isoup' -%}{%- assign pf_deal_note = 'áp dụng cho 1 sản phẩm, giá sẽ thay đổi khi mua nhiều hơn' -%}{%- endif -%}
+{%- if product.handle == 'chan-ga-ba-tuyết' -%}{%- assign pf_deal_price = '1,9€' -%}{%- assign pf_deal_note = 'áp dụng cho 1 combo' -%}{%- endif -%}
+{%- comment -%} Ẩn khung DEAL trên trang các sản phẩm này (25/10: Cà pháo Ngọc Liên). Thêm handle, cách nhau bằng dấu phẩy. {%- endcomment -%}
+{%- assign pf_deal_hide = 'ngoc-lien-ca-phao-trang-365g-x-24-lo' | split: ',' -%}
+{%- if pf_deal_hide contains product.handle -%}{%- assign pf_deal_price = "" -%}{%- endif -%}
+
+{%- if settings.pf_gift_enable and settings.pf_gift_handle != blank and product.handle == settings.pf_gift_handle -%}
+  {%- assign pf_gm = settings.pf_gift_min | default: 100 -%}
+  <div class="pf-deal-pb pf-deal-pb--gift">
+    <span class="pf-deal-pb__badge pf-deal-pb__badge--gift">🎁 {% if request.locale.iso_code == 'vi' %}QUÀ TẶNG{% else %}GIFT{% endif %}</span>
+    <p class="pf-deal-pb__txt">
+      {% if request.locale.iso_code == 'vi' %}Mua đơn hàng từ <b>{{ pf_gm }}€</b> — được <b>TẶNG 1 sản phẩm này miễn phí</b>!{% else %}Spend <b>{{ pf_gm }}€</b> or more and get <b>1 of this item FREE</b>!{% endif %}
+    </p>
+  </div>
+
+  <style>
+    .pf-deal-pb--gift { background: linear-gradient(90deg, #e9f7ee, #dff3e6) !important; border-color: #a9dcb9 !important; border-left-color: #1e8541 !important; }
+    .pf-deal-pb--gift .pf-deal-pb__txt { color: #14672f; }
+    .pf-deal-pb--gift .pf-deal-pb__txt b { color: #1e8541; }
+    .pf-deal-pb--gift .pf-deal-pb__note { color: #4f8f63; }
+    .pf-deal-pb__badge--gift { background: #1e8541 !important; }
+    .pf-deal-pb {
+      display: flex; align-items: center; gap: 1rem; margin: 1.6rem 0;
+      background: linear-gradient(90deg, #fff1e0, #ffe6e6);
+      border: 1px solid #f2b8a0; border-left: 5px solid #d62828;
+      border-radius: 12px; padding: 1.2rem 1.4rem;
+    }
+    .pf-deal-pb__badge {
+      flex: none; background: #d62828; color: #fff; font-weight: 800; font-size: 1.25rem;
+      letter-spacing: .5px; padding: .5rem .9rem; border-radius: 999px; white-space: nowrap;
+    }
+    .pf-deal-pb__txt { margin: 0; font-size: 1.4rem; line-height: 1.45; color: #7a2f1a; font-weight: 600; }
+    .pf-deal-pb__txt b { color: #d62828; }
+    .pf-deal-pb__note { display: block; font-size: 1.2rem; font-weight: 500; color: #a86a4a; margin-top: .2rem; }
+  </style>
+{%- elsif pf_deal_price != "" -%}
+  <div class="pf-deal-pb">
+    <span class="pf-deal-pb__badge">🔥 DEAL</span>
+    <p class="pf-deal-pb__txt">
+      {% if request.locale.iso_code == 'vi' %}🛒 Thêm vào giỏ hàng để hưởng ưu đãi — <b>giá chỉ {{ pf_deal_price }}</b>!{% else %}🛒 Add to cart to get the deal — <b>only {{ pf_deal_price }}</b>!{% endif %}
+      <span class="pf-deal-pb__note">{% if pf_deal_note != blank %}({{ pf_deal_note }}){% elsif request.locale.iso_code == 'vi' %}(ưu đãi áp dụng cho 1 sản phẩm){% else %}(offer applies to 1 item){% endif %}</span>
+    </p>
+  </div>
+
+  <style>
+    .pf-deal-pb {
+      display: flex; align-items: center; gap: 1rem; margin: 1.6rem 0;
+      background: linear-gradient(90deg, #fff1e0, #ffe6e6);
+      border: 1px solid #f2b8a0; border-left: 5px solid #d62828;
+      border-radius: 12px; padding: 1.2rem 1.4rem;
+    }
+    .pf-deal-pb__badge {
+      flex: none; background: #d62828; color: #fff; font-weight: 800; font-size: 1.25rem;
+      letter-spacing: .5px; padding: .5rem .9rem; border-radius: 999px; white-space: nowrap;
+    }
+    .pf-deal-pb__txt { margin: 0; font-size: 1.4rem; line-height: 1.45; color: #7a2f1a; font-weight: 600; }
+    .pf-deal-pb__txt b { color: #d62828; }
+    .pf-deal-pb__note { display: block; font-size: 1.2rem; font-weight: 500; color: #a86a4a; margin-top: .2rem; }
+  </style>
+{%- endif -%}

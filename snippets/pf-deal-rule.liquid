@@ -1,0 +1,117 @@
+{%- comment -%}
+  PHOMIFOOD — "Deal add-on" rule.
+  The loss-leader deal products may only be checked out when the cart ALSO
+  contains at least one non-deal product. If the cart holds only deal products,
+  the checkout + express-checkout buttons are blocked and a message is shown.
+  On a deal product's own page the "Buy it now" (dynamic checkout) button is
+  hidden so a lone deal item can't skip the cart.
+  Keep the handle list in sync with the Deal / Deal 0 Đồng sections.
+{%- endcomment -%}
+{%- comment -%}Handles derived from the single source: Theme settings → pf_deal_rows.{%- endcomment -%}
+{%- assign pf_deal_handles = "" -%}
+{%- assign pf_dr_rows = settings.pf_deal_rows | remove: 'canh-chua-isoup||3,9€;;' | split: ";;" -%}
+{%- for row in pf_dr_rows -%}
+  {%- assign pf_dr_parts = row | split: "||" -%}
+  {%- comment -%}Skip the gift product — it's a normal, freely purchasable item.{%- endcomment -%}
+  {%- unless pf_dr_parts[0] == settings.pf_gift_handle -%}
+    {%- if pf_deal_handles == "" -%}{%- assign pf_deal_handles = pf_dr_parts[0] -%}
+    {%- else -%}{%- assign pf_deal_handles = pf_deal_handles | append: "," | append: pf_dr_parts[0] -%}{%- endif -%}
+  {%- endunless -%}
+{%- endfor -%}
+{%- comment -%}Deal add-on cứng cho chân gà bà Tuyết (combo) — không nằm trong pf_deal_rows.{%- endcomment -%}
+{%- if pf_deal_handles == "" -%}{%- assign pf_deal_handles = "chan-ga-ba-tuyết" -%}{%- else -%}{%- assign pf_deal_handles = pf_deal_handles | append: ",chan-ga-ba-tuyết" -%}{%- endif -%}
+
+<script>
+  (function () {
+    if (window.__pfDealRule) return;
+    window.__pfDealRule = true;
+
+    // Sản phẩm vẫn là deal nhưng KHÔNG bắt mua kèm (được thanh toán một mình). Thêm handle vào đây nếu cần.
+    var NO_RULE = ['canh-chua-isoup'];
+    var DEAL = "{{ pf_deal_handles }}".split(',').filter(function (h) { return NO_RULE.indexOf(h) === -1; });
+    var CUR = "{{ product.handle }}";
+    var PFLANG = '{{ request.locale.iso_code }}';
+    var MSG = (PFLANG === 'vi')
+      ? 'Sản phẩm ưu đãi chỉ được mua KÈM — vui lòng thêm ít nhất 1 sản phẩm khác vào giỏ để thanh toán.'
+      : 'Deal products can only be bought WITH others — please add at least 1 more product to your cart to check out.';
+
+    function root() { return (window.Shopify && Shopify.routes ? Shopify.routes.root : '/'); }
+    function isDeal(h) { return h && DEAL.indexOf(h) > -1; }
+
+    // Express-checkout containers that live in the cart page / cart drawer.
+    var CART_EXPRESS = '.cart__dynamic-checkout-buttons, [data-shopify="dynamic-checkout-cart"]';
+
+    function setBlocked(blocked) {
+      document.querySelectorAll('#checkout, [name="checkout"], .cart__checkout-button').forEach(function (b) {
+        if (blocked) { b.setAttribute('disabled', 'disabled'); b.classList.add('pf-deal-blocked'); }
+        else if (b.classList.contains('pf-deal-blocked')) { b.removeAttribute('disabled'); b.classList.remove('pf-deal-blocked'); }
+      });
+      document.querySelectorAll(CART_EXPRESS).forEach(function (el) {
+        el.style.display = blocked ? 'none' : '';
+      });
+      var existing = document.querySelectorAll('.pf-deal-rule-msg');
+      if (blocked) {
+        if (!existing.length) {
+          document.querySelectorAll('#checkout, [name="checkout"]').forEach(function (b) {
+            var m = document.createElement('div');
+            m.className = 'pf-deal-rule-msg';
+            m.textContent = '⚠️ ' + MSG;
+            b.parentNode.insertBefore(m, b);
+          });
+        }
+      } else {
+        existing.forEach(function (n) { if (n.parentNode) n.parentNode.removeChild(n); });
+      }
+    }
+
+    function check() {
+      fetch(root() + 'cart.js', { headers: { Accept: 'application/json' } })
+        .then(function (r) { return r.json(); })
+        .then(function (cart) {
+          var items = cart.items || [];
+          var hasDeal = false, hasOther = false;
+          items.forEach(function (i) { if (isDeal(i.handle)) hasDeal = true; else hasOther = true; });
+          setBlocked(hasDeal && !hasOther);
+        })
+        .catch(function () {});
+    }
+
+    // Re-check whenever the cart changes.
+    var origFetch = window.fetch;
+    window.fetch = function (input) {
+      var p = origFetch.apply(this, arguments);
+      try {
+        var u = (typeof input === 'string') ? input : (input && input.url) || '';
+        if (u.indexOf('/cart/change') > -1 || u.indexOf('/cart/update') > -1 || u.indexOf('/cart/add') > -1) {
+          p.then(function () { setTimeout(check, 200); });
+        }
+      } catch (e) {}
+      return p;
+    };
+
+    // On a deal product's own page: hide "Buy it now" so a lone deal item can't
+    // skip the cart. (Dòng ghi chú "mua kèm ít nhất 1 sản phẩm" đã gỡ theo yêu cầu 25/10;
+    // quy tắc chặn thanh toán ở giỏ hàng vẫn giữ nguyên.)
+    function pdpGuard() {
+      if (!isDeal(CUR)) return;
+      document.querySelectorAll('.shopify-payment-button, [data-shopify="payment-button"]').forEach(function (el) {
+        el.style.display = 'none';
+      });
+    }
+
+    function run() { check(); pdpGuard(); }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+    else run();
+    // Re-guard PDP after a short delay (dynamic checkout buttons load async).
+    setTimeout(pdpGuard, 800);
+    setTimeout(pdpGuard, 2000);
+  })();
+</script>
+
+<style>
+  .pf-deal-rule-msg {
+    background: #fdeaea; border: 1px solid #f3c2c2; color: #c0392b; border-radius: 10px;
+    padding: 1rem 1.1rem; font-size: 1.3rem; font-weight: 700; line-height: 1.4; margin: 0 0 1rem;
+  }
+  .pf-deal-blocked { opacity: .5; cursor: not-allowed !important; filter: grayscale(.3); }
+</style>

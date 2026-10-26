@@ -1,0 +1,136 @@
+{%- comment -%}
+  PHOMIFOOD — Terms of Service page.
+  Assign this template ("dieu-khoan-dich-vu") to a page in Admin.
+  Adapted for Phomifood; company details (LEVELUPVN LIMITED) unchanged.
+{%- endcomment -%}
+
+<div class="pf-tos color-scheme-1">
+  <div class="pf-tos__wrap page-width">
+    <header class="pf-tos__head">
+      <h1 class="pf-tos__title">Terms of Service</h1>
+      <p class="pf-tos__updated">Last updated: 12/06/2026</p>
+    </header>
+
+    <p class="pf-tos__intro">
+      Welcome to PHOMIFOOD (phomifood.eu). By accessing, ordering or using any service on this website,
+      you agree to the Terms of Service below. Please read them carefully before continuing.
+    </p>
+
+    <section class="pf-tos__sec">
+      <h2>1. Store information</h2>
+      <ul>
+        <li><strong>Brand name:</strong> Phomifood</li>
+        <li><strong>Operated by:</strong> LEVELUPVN LIMITED</li>
+        <li><strong>Business registration:</strong> 77795525-000-03-26-8</li>
+        <li><strong>Registered address:</strong> Unit E01, 10/F, Wong King Industrial Building, 2-4 Tai Yau Street, San Po Kong, Hong Kong</li>
+        <li><strong>Website:</strong> <a href="https://phomifood.eu">https://phomifood.eu</a></li>
+        <li><strong>Contact email:</strong> <a href="mailto:nhatngo@levelupvn.com">nhatngo@levelupvn.com</a></li>
+        <li><strong>Phone:</strong> <a href="tel:+84988818036">+84 988 818 036</a></li>
+      </ul>
+    </section>
+
+    <section class="pf-tos__sec">
+      <h2>2. Scope</h2>
+      <p>
+        These terms apply to all customers who visit the website, create an account or purchase products at
+        phomifood.eu. Continued use of the website means you accept the current terms and any future updates.
+      </p>
+    </section>
+
+    <section class="pf-tos__sec">
+      <h2>3. Customer rights and responsibilities</h2>
+      <ul>
+        <li>Provide accurate information when creating an account and placing orders.</li>
+        <li>Keep your account password secure. Phomifood is not liable for damage caused by login details disclosed on the customer side.</li>
+        <li>Do not use the website for unlawful purposes, fraud, or actions that harm Phomifood systems.</li>
+        <li>Respect Phomifood intellectual property: do not copy or redistribute product images and descriptions without written consent.</li>
+      </ul>
+    </section>
+
+    <section class="pf-tos__sec">
+      <h2>4. Phomifood rights and responsibilities</h2>
+      <ul>
+        <li>Deliver products that match their description, images and committed timelines.</li>
+        <li>Protect customer personal data in line with our Privacy Policy.</li>
+        <li>Refuse or cancel orders where fraud is detected, where a displayed price is incorrect due to a technical error, or where an item unexpectedly runs out of stock.</li>
+        <li>Change prices, promotions and website content without prior notice.</li>
+      </ul>
+    </section>
+
+    <section class="pf-tos__sec">
+      <h2>5. Orders and payment</h2>
+      <ul>
+        <li>An order is valid once you complete checkout and receive a confirmation email from Phomifood.</li>
+        <li>Available payment methods are shown at checkout and may include card payment, local payment methods, and cash on delivery (COD) in selected countries.</li>
+        <li>All transactions are encrypted with SSL/TLS to protect payment information.</li>
+      </ul>
+    </section>
+
+    <section class="pf-tos__sec">
+      <h2>6. Pricing</h2>
+      <ul>
+        <li>Prices shown on the website include VAT where applicable.</li>
+        <li>Shipping fees are calculated separately at checkout based on the delivery address.</li>
+        <li>If a price is displayed incorrectly due to a technical error, Phomifood may cancel the order and refund 100% of any payment made.</li>
+      </ul>
+    </section>
+
+    <section class="pf-tos__sec">
+      <h2>7. Intellectual property</h2>
+      <p>
+        All content on phomifood.eu — including the logo, product images, descriptions, videos and source code —
+        belongs to Phomifood. Copying or commercial use without permission will be handled in accordance with applicable law.
+      </p>
+    </section>
+
+    <section class="pf-tos__sec">
+      <h2>8. Disputes</h2>
+      <p>
+        These Terms of Service are governed by the laws of the Hong Kong Special Administrative Region, where
+        LEVELUPVN LIMITED is registered. Any dispute will first be resolved through negotiation in good faith;
+        where no resolution can be reached, the dispute will be submitted to the competent courts of Hong Kong.
+        If you are a consumer in the European Union, the mandatory consumer protection provisions of the law of
+        your country of residence remain unaffected.
+      </p>
+    </section>
+
+    <section class="pf-tos__sec">
+      <h2>9. Changes to these terms</h2>
+      <p>
+        Phomifood may update or amend these Terms of Service at any time. The new version takes effect as soon as
+        it is published on the website. Please check back periodically for the latest version.
+      </p>
+    </section>
+
+    <section class="pf-tos__sec">
+      <h2>10. Contact</h2>
+      <p>For any questions about these Terms of Service, please contact:</p>
+      <ul>
+        <li><strong>Email:</strong> <a href="mailto:nhatngo@levelupvn.com">nhatngo@levelupvn.com</a></li>
+        <li><strong>Phone:</strong> <a href="tel:+84988818036">+84 988 818 036</a></li>
+        <li><strong>Support hours:</strong> 8:30 – 18:00 CET (Monday – Saturday)</li>
+      </ul>
+    </section>
+
+    {%- if page.content != blank -%}
+      <div class="pf-tos__rte rte">{{ page.content }}</div>
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  .pf-tos { padding: 3rem 0 5rem; }
+  .pf-tos__wrap { max-width: 82rem; }
+  .pf-tos__head { border-bottom: 3px solid #1e8541; padding-bottom: 1.4rem; margin-bottom: 2.4rem; }
+  .pf-tos__title { margin: 0; font-size: clamp(2.8rem, 5vw, 3.8rem); font-weight: 800; color: #14672f; }
+  .pf-tos__updated { margin: .6rem 0 0; font-size: 1.3rem; color: #8a8272; }
+  .pf-tos__intro { font-size: 1.55rem; line-height: 1.7; color: #4a4534; margin: 0 0 2.4rem; }
+  .pf-tos__sec { margin: 0 0 2.4rem; }
+  .pf-tos__sec h2 { font-size: 1.9rem; font-weight: 800; color: #1e8541; margin: 0 0 1rem; }
+  .pf-tos__sec p { font-size: 1.5rem; line-height: 1.7; color: #4a4534; margin: 0 0 1rem; }
+  .pf-tos__sec ul { margin: 0; padding-left: 1.9rem; }
+  .pf-tos__sec li { font-size: 1.5rem; line-height: 1.65; color: #4a4534; margin-bottom: .7rem; }
+  .pf-tos a { color: #1e63c8; text-decoration: underline; }
+  .pf-tos a:hover { color: #14672f; }
+  .pf-tos__rte { margin-top: 2.4rem; }
+</style>

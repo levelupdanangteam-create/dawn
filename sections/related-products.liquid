@@ -29,7 +29,12 @@
   >
     {% if recommendations.performed and recommendations.products_count > 0 %}
       <h2 class="related-products__heading inline-richtext {{ section.settings.heading_size }}">
-        {{ section.settings.heading }}
+        {%- assign pf_rp_heading = section.settings.heading -%}
+        {%- if pf_rp_heading == blank or pf_rp_heading == 'You may also like' -%}
+          Có thể bạn cũng thích
+        {%- else -%}
+          {{ pf_rp_heading }}
+        {%- endif -%}
       </h2>
       <ul
         class="grid product-grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"

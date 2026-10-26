@@ -1,0 +1,180 @@
+{%- comment -%}
+  Auto-applied discounts on the cart page. When the cart reaches a code's
+  minimum spend, the code is silently applied via /discount/CODE (so it is
+  already active at checkout) — no copy/apply buttons needed. A progress
+  bar nudges the customer toward each threshold.
+  rows: CODE|min_in_cents|description|short_label
+{%- endcomment -%}
+{%- if request.locale.iso_code == 'vi' -%}
+  {%- assign pf_cpn_rows = "FREESHIP150|15000|Miễn phí vận chuyển toàn châu Âu · đơn từ 150€|🚚 Free ship;;GIAM2%|20000|Giảm 2% khi thanh toán online · đơn từ 200€|🎁 Giảm 2%;;BANMOI|25000|Giảm 3% tổng đơn hàng · đơn từ 250€|🏷️ Giảm 3%" | split: ";;" -%}
+{%- else -%}
+  {%- assign pf_cpn_rows = "FREESHIP150|15000|Free shipping across Europe · orders from 150€|🚚 Free ship;;GIAM2%|20000|2% off when paying online · orders from 200€|🎁 2% off;;BANMOI|25000|3% off your order · orders from 250€|🏷️ 3% off" | split: ";;" -%}
+{%- endif -%}
+
+<div class="pf-cpns" data-currency="{{ cart.currency.iso_code }}">
+  <div class="pf-cpns__head">{% if request.locale.iso_code == 'vi' %}🎁 Ưu đãi tự động — mua đủ ngưỡng là được giảm ngay khi thanh toán!{% else %}🎁 Automatic offers — reach the threshold and save at checkout!{% endif %}</div>
+
+  {%- for row in pf_cpn_rows -%}
+    {%- assign parts = row | split: '|' -%}
+    {%- assign code = parts[0] -%}
+    {%- assign minp = parts[1] | plus: 0 -%}
+    {%- assign desc = parts[2] -%}
+    {%- assign label = parts[3] -%}
+
+    {%- assign tot = cart.total_price -%}
+    {%- assign rem = minp | minus: tot -%}
+    {%- assign pct = tot | times: 100 | divided_by: minp -%}
+    {%- if pct > 100 -%}{%- assign pct = 100 -%}{%- endif -%}
+
+    <div class="pf-cpn{% if rem <= 0 %} is-eligible{% endif %}" data-code="{{ code }}" data-min="{{ minp }}">
+      <div class="pf-cpn__top">
+        <span class="pf-cpn__label">{{ label }}</span>
+        <span class="pf-cpn__desc">{{ desc }}</span>
+      </div>
+      <div class="pf-cpn__bar"><span class="pf-cpn__bar-fill" style="width: {{ pct }}%;"></span></div>
+      <div class="pf-cpn__hint">
+        {%- if rem > 0 -%}
+          {% if request.locale.iso_code == 'vi' %}Mua thêm <strong>{{ rem | money }}</strong> nữa là đủ{% else %}Add <strong>{{ rem | money }}</strong> more to unlock{% endif %}
+        {%- else -%}
+          {% if request.locale.iso_code == 'vi' %}✅ Đã đủ điều kiện!{% else %}✅ Unlocked!{% endif %}
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endfor -%}
+</div>
+
+<style>
+  .pf-cpns {
+    margin: 0 0 1.4rem; padding: 1.2rem; border-radius: 14px;
+    background: linear-gradient(180deg, #fff8ec 0%, #fffdf9 100%);
+    border: 1px solid #edd39a; display: grid; gap: 1rem;
+  }
+  .pf-cpns__head { font-size: 1.4rem; font-weight: 800; color: #b8791a; line-height: 1.35; }
+  .pf-cpn {
+    background: #fff; border: 1px solid #efe0be; border-radius: 12px;
+    padding: 1.1rem 1.2rem; display: grid; gap: .75rem;
+    position: relative; overflow: hidden;
+  }
+  .pf-cpn::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    background: linear-gradient(180deg, #f2c14e, #1e8541);
+  }
+  .pf-cpn.is-eligible { border-color: #2ea45a; background: #f4fdf7; }
+  .pf-cpn__top { display: flex; align-items: center; gap: .8rem; }
+  .pf-cpn__label {
+    flex: none; font-size: 1.28rem; font-weight: 800; color: #14672f;
+    background: #eafaef; border: 1px solid #bfe6cc; border-radius: 7px;
+    padding: .5rem .9rem; white-space: nowrap;
+  }
+  .pf-cpn__desc { font-size: 1.3rem; color: #5a5346; line-height: 1.35; min-width: 0; }
+  .pf-cpn__bar { height: 6px; border-radius: 999px; background: #eee2c6; overflow: hidden; }
+  .pf-cpn__bar-fill {
+    display: block; height: 100%; border-radius: 999px;
+    background: linear-gradient(90deg, #f2c14e, #1e8541); transition: width .4s ease;
+  }
+  .pf-cpn.is-eligible .pf-cpn__bar-fill { background: #2ea45a; }
+  .pf-cpn__hint { font-size: 1.2rem; color: #8a7a52; }
+  .pf-cpn__hint strong { color: #d62828; }
+  .pf-cpn.is-eligible .pf-cpn__hint { color: #1c7a3f; font-weight: 700; }
+
+  /* Cart drawer: 3 small stacked rows — compact, but still show how much more
+     the customer needs to add. (Full version lives on the cart page.) */
+  .drawer__footer .pf-cpns { display: grid; gap: .4rem; padding: .65rem .75rem; margin: 0 0 .9rem; border-radius: 10px; }
+  .drawer__footer .pf-cpns__head { display: none; }
+  .drawer__footer .pf-cpn { padding: .45rem .6rem .5rem; gap: .28rem; border-radius: 8px; }
+  .drawer__footer .pf-cpn::before { width: 3px; }
+  .drawer__footer .pf-cpn__top { gap: .5rem; align-items: center; }
+  .drawer__footer .pf-cpn__label { font-size: 1rem; padding: .18rem .5rem; }
+  .drawer__footer .pf-cpn__desc { display: none; }
+  .drawer__footer .pf-cpn__bar { height: 3px; }
+  .drawer__footer .pf-cpn__hint { font-size: 1.05rem; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* Always stacked (1 column) — clean and readable at every width. Allow the
+     label + description to wrap so nothing is clipped in narrow containers. */
+  .pf-cpn__top { flex-wrap: wrap; gap: .5rem .8rem; }
+  @media (max-width: 480px) {
+    .pf-cpns { padding: 1rem; }
+    .pf-cpn { padding: .9rem 1rem; }
+    .pf-cpn__label { font-size: 1.18rem; padding: .4rem .75rem; }
+    .pf-cpn__desc { font-size: 1.25rem; }
+  }
+</style>
+
+<script>
+  (function () {
+    if (window.__pfCoupons) return;
+    var PFLANG = '{{ request.locale.iso_code }}';
+    window.__pfCoupons = true;
+
+    function root() { return (window.Shopify && Shopify.routes ? Shopify.routes.root : '/'); }
+
+    function fmt(cents, cur) {
+      try { return new Intl.NumberFormat('de-DE', { style: 'currency', currency: cur || 'EUR' }).format(cents / 100); }
+      catch (e) { return (cents / 100).toFixed(2) + ' ' + (cur || 'EUR'); }
+    }
+
+    function ss(key, val) {
+      try {
+        if (val === undefined) return sessionStorage.getItem(key);
+        sessionStorage.setItem(key, val);
+      } catch (e) { return null; }
+    }
+
+    // Silently apply a discount code so it's already active at checkout.
+    function autoApply(code) {
+      if (!code || ss('pf_ap_' + code)) return;
+      ss('pf_ap_' + code, '1');
+      fetch(root() + 'discount/' + encodeURIComponent(code), { method: 'GET' }).catch(function () {});
+    }
+
+    function update() {
+      var boxes = document.querySelectorAll('.pf-cpns');
+      if (!boxes.length) return;
+      fetch(root() + 'cart.js', { headers: { Accept: 'application/json' } })
+        .then(function (r) { return r.json(); })
+        .then(function (cart) {
+          var total = cart.total_price || 0;
+          boxes.forEach(function (box) {
+            var cur = box.getAttribute('data-currency') || 'EUR';
+            box.querySelectorAll('.pf-cpn').forEach(function (el) {
+              var min = parseInt(el.getAttribute('data-min') || '0', 10);
+              var code = el.getAttribute('data-code');
+              var rem = min - total;
+              var pct = min > 0 ? Math.min(100, Math.round((total / min) * 100)) : 100;
+              var fill = el.querySelector('.pf-cpn__bar-fill');
+              var hint = el.querySelector('.pf-cpn__hint');
+              if (fill) fill.style.width = pct + '%';
+              if (rem > 0) {
+                el.classList.remove('is-eligible');
+                if (hint) hint.innerHTML = (PFLANG === 'vi' ? 'Mua thêm <strong>' + fmt(rem, cur) + '</strong> nữa là đủ' : 'Add <strong>' + fmt(rem, cur) + '</strong> more to unlock');
+              } else {
+                el.classList.add('is-eligible');
+                if (hint) hint.textContent = '{% if request.locale.iso_code == 'vi' %}✅ Đã đủ điều kiện!{% else %}✅ Unlocked!{% endif %}';
+                autoApply(code);
+              }
+            });
+          });
+        })
+        .catch(function () {});
+    }
+
+    // Refresh + auto-apply whenever the cart changes.
+    var origFetch = window.fetch;
+    window.fetch = function (input) {
+      var p = origFetch.apply(this, arguments);
+      try {
+        var url = (typeof input === 'string') ? input : (input && input.url) || '';
+        if (url.indexOf('/cart/change') > -1 || url.indexOf('/cart/update') > -1 || url.indexOf('/cart/add') > -1) {
+          p.then(function () { setTimeout(update, 150); });
+        }
+      } catch (e) {}
+      return p;
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', update);
+    } else {
+      update();
+    }
+  })();
+</script>

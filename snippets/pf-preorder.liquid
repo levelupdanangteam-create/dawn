@@ -1,0 +1,33 @@
+{%- comment -%}
+  Badge "Hàng đặt trước (pre-order)" — hiện khi sản phẩm có tag: preorder / pre-order.
+  Gắn tag "preorder" cho sản phẩm trong Shopify để bật badge này.
+{%- endcomment -%}
+{%- assign pf_is_preorder = false -%}
+{%- if product.tags contains 'preorder' or product.tags contains 'pre-order' or product.tags contains 'Pre-order' or product.tags contains 'PreOrder' -%}
+  {%- assign pf_is_preorder = true -%}
+{%- endif -%}
+{%- if pf_is_preorder -%}
+  <div class="pf-preorder">
+    <span class="pf-preorder__icon" aria-hidden="true">🕒</span>
+    <div class="pf-preorder__text">
+      {%- if request.locale.iso_code == 'vi' -%}
+        <b>Hàng đặt trước (Pre-order)</b><br>
+        Dự kiến nhận hàng sau <b>14–21 ngày</b> kể từ khi đặt.
+      {%- else -%}
+        <b>Pre-order item</b><br>
+        Estimated delivery <b>14–21 days</b> after ordering.
+      {%- endif -%}
+    </div>
+  </div>
+  <style>
+    .pf-preorder {
+      display: flex; align-items: center; gap: .7rem;
+      margin: 1rem 0; padding: .85rem 1.1rem;
+      background: #fff4e0; border: 1px solid #f0d9a8; border-left: 4px solid #d9911f;
+      border-radius: 10px; line-height: 1.45;
+    }
+    .pf-preorder__icon { font-size: 1.7rem; line-height: 1; flex-shrink: 0; }
+    .pf-preorder__text { font-size: 1.3rem; color: #7a4e12; }
+    .pf-preorder__text b { color: #5c3a0c; font-weight: 700; }
+  </style>
+{%- endif -%}

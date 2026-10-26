@@ -1,55 +1,117 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "t:sections.header.name",
   "type": "header",
   "sections": {
-    "announcement-bar": {
+    "announcement_bar": {
       "type": "announcement-bar",
-      "settings": {
-        "color_scheme": "scheme-1",
-        "show_line_separator": true,
-        "show_social": false,
-        "auto_rotate": false,
-        "change_slides_speed": 5,
-        "enable_country_selector": false,
-        "enable_language_selector": false
-      },
       "blocks": {
-        "announcement-bar-0": {
+        "announcement_freeship": {
           "type": "announcement",
           "settings": {
-            "text": "Welcome to our store",
-            "text_alignment": "center",
-            "color_scheme": "scheme-1",
+            "text": "🚚 Freeship đơn hàng từ 139€ hoặc giảm 10%",
             "link": ""
           }
         }
       },
       "block_order": [
-        "announcement-bar-0"
-      ]
+        "announcement_freeship"
+      ],
+      "disabled": true,
+      "settings": {
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "color_scheme": "scheme-4",
+        "show_line_separator": false,
+        "show_social": false,
+        "enable_country_selector": false,
+        "enable_language_selector": false
+      }
+    },
+    "pf_ticker": {
+      "type": "pf-ticker",
+      "blocks": {
+        "t1": {
+          "type": "item",
+          "settings": {
+            "bold": "Tổng kho tại EU",
+            "sub": "không chờ hàng từ Việt Nam",
+            "link": ""
+          }
+        },
+        "t2": {
+          "type": "item",
+          "settings": {
+            "bold": "Hàng độc quyền",
+            "sub": "chỉ có tại Phomifood",
+            "link": ""
+          }
+        },
+        "t3": {
+          "type": "item",
+          "settings": {
+            "bold": "Freeship đơn từ 139€",
+            "sub": "hoặc giảm 10%",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3"
+      ],
+      "settings": {
+        "bg": "#14672f",
+        "bg_2": "#1e8541",
+        "text_color": "#ffffff",
+        "accent": "#ffc61a",
+        "duration": 130
+      }
     },
     "header": {
       "type": "header",
       "settings": {
-        "color_scheme": "scheme-1",
-        "menu_color_scheme": "scheme-1",
         "logo_position": "middle-left",
+        "mobile_logo_position": "center",
         "menu": "main-menu",
         "menu_type_desktop": "dropdown",
         "sticky_header_type": "on-scroll-up",
         "show_line_separator": true,
-        "enable_country_selector": true,
-        "enable_language_selector": true,
-        "enable_customer_avatar": true,
-        "mobile_logo_position": "center",
+        "color_scheme": "scheme-1",
+        "menu_color_scheme": "scheme-1",
+        "enable_country_selector": false,
+        "enable_language_selector": false,
+        "enable_customer_avatar": false,
         "margin_bottom": 0,
-        "padding_top": 20,
-        "padding_bottom": 20
+        "padding_top": 8,
+        "padding_bottom": 8
+      }
+    },
+    "pf_hero_slideshow_UijQAg": {
+      "type": "pf-hero-slideshow",
+      "name": "Hero Slideshow",
+      "settings": {
+        "autoplay_interval": 5,
+        "height_desktop": 460,
+        "height_mobile": 300,
+        "text_align": "left",
+        "fallback_asset": "pf-hero.jpg"
       }
     }
   },
   "order": [
-    "announcement-bar",
-    "header"
+    "announcement_bar",
+    "pf_ticker",
+    "header",
+    "pf_hero_slideshow_UijQAg"
   ]
 }

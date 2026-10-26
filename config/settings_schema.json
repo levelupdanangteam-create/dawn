@@ -8,6 +8,57 @@
     "theme_support_url": "https://support.shopify.com/"
   },
   {
+    "name": "🔥 Ưu đãi đặc biệt (Deal)",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Danh sách sản phẩm deal — NGUỒN DUY NHẤT. Sửa ở đây là tự cập nhật khắp nơi: section trang chủ, trang danh mục, banner trang sản phẩm, luật giỏ hàng, trang Deal, popup rời trang."
+      },
+      {
+        "type": "textarea",
+        "id": "pf_deal_rows",
+        "label": "Sản phẩm deal (mỗi dòng: handle||giá)",
+        "info": "Định dạng: handle-san-pham||giá, phân tách bằng ;; — ví dụ: mi-tom-omachi-tom-chua-cay||0€;;banh-da-nem-totaco-250g-x-80-goi||0,9€",
+        "default": "mi-tom-omachi-tom-chua-cay||0€;;banh-da-nem-totaco-250g-x-80-goi||0,9€;;ngoc-lien-ca-phao-trang-365g-x-24-lo||1,9€"
+      }
+    ]
+  },
+  {
+    "name": "🎁 Quà tặng theo đơn (Gift)",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Đơn đạt mốc → tự thêm 1 sản phẩm quà vào giỏ, tụt dưới mốc → tự gỡ. LƯU Ý: quà phải MIỄN PHÍ — hoặc để sản phẩm quà giá €0, hoặc tạo Automatic discount 'Buy X get Y' (mua tối thiểu 100€ → tặng 1 sản phẩm 100% off)."
+      },
+      {
+        "type": "checkbox",
+        "id": "pf_gift_enable",
+        "label": "Bật tặng quà theo đơn",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "pf_gift_handle",
+        "label": "Handle sản phẩm quà",
+        "info": "Lấy phần cuối URL sản phẩm. VD: chip-oishi-ngo-80-goi-32g-x-80-goi-bich",
+        "default": "chip-oishi-ngo-80-goi-32g-x-80-goi-bich"
+      },
+      {
+        "type": "number",
+        "id": "pf_gift_min",
+        "label": "Mốc tặng tối thiểu (€)",
+        "default": 100
+      },
+      {
+        "type": "number",
+        "id": "pf_gift_max",
+        "label": "Mốc tối đa (€) — 0 = không giới hạn",
+        "info": "Chỉ tặng khi tổng < mốc này. VD 169 = chỉ tặng cho đơn từ 100€ đến dưới 169€. Để 0 nếu không cần trần.",
+        "default": 0
+      }
+    ]
+  },
+  {
     "name": "t:settings_schema.logo.name",
     "settings": [
       {
@@ -1455,9 +1506,55 @@
   {
     "name": "Phomifood",
     "settings": [
-      { "type": "header", "content": "Ưu đãi hôm nay (upsell trang sản phẩm)" },
-      { "type": "collection", "id": "pf_deal_collection", "label": "Bộ sưu tập sản phẩm giảm giá", "info": "Hiển thị ở cuối mỗi trang chi tiết sản phẩm để upsell." },
-      { "type": "text", "id": "pf_deal_heading", "label": "Tiêu đề", "default": "Sản phẩm giảm giá – Ưu đãi hôm nay" }
+      {
+        "type": "header",
+        "content": "Ưu đãi hôm nay (upsell trang sản phẩm)"
+      },
+      {
+        "type": "collection",
+        "id": "pf_deal_collection",
+        "label": "Bộ sưu tập sản phẩm giảm giá",
+        "info": "Hiển thị ở cuối mỗi trang chi tiết sản phẩm để upsell."
+      },
+      {
+        "type": "text",
+        "id": "pf_deal_heading",
+        "label": "Tiêu đề",
+        "default": "Sản phẩm giảm giá – Ưu đãi hôm nay"
+      },
+      {
+        "type": "header",
+        "content": "Chặn truy cập theo quốc gia"
+      },
+      {
+        "type": "paragraph",
+        "content": "Chặn phía trình duyệt dựa trên IP (có thể bị lách bằng VPN). Bỏ chặn cho chính bạn: mở web kèm ?pfgeo=allow một lần."
+      },
+      {
+        "type": "checkbox",
+        "id": "pf_geoblock_on",
+        "label": "Bật chặn truy cập",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "pf_geoblock_countries",
+        "label": "Mã quốc gia bị chặn (ISO, cách nhau dấu phẩy)",
+        "default": "US",
+        "info": "Vd: US hoặc US, CA. Dùng mã 2 chữ cái."
+      },
+      {
+        "type": "textarea",
+        "id": "pf_geoblock_msg_vi",
+        "label": "Thông báo (tiếng Việt)",
+        "default": "Rất tiếc, Phomifood hiện chỉ phục vụ khách hàng tại châu Âu và chưa nhận đơn từ khu vực của bạn."
+      },
+      {
+        "type": "textarea",
+        "id": "pf_geoblock_msg_en",
+        "label": "Thông báo (English)",
+        "default": "Sorry, Phomifood currently serves customers in Europe only and cannot accept orders from your region."
+      }
     ]
   }
 ]

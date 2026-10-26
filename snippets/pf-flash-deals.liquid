@@ -8,28 +8,57 @@
   assign hrs = countdown_hours | default: 3
   assign lim = limit | default: 5
   assign col = deal_collection
+  if show_all and col != blank
+    assign lim = col.products_count
+  endif
+  assign init = initial | default: 0
+  assign rendered = lim
+  if col != blank and col.products_count < rendered
+    assign rendered = col.products_count
+  endif
 -%}
 <div class="pf-flash" id="pf-flash-{{ uid }}">
   <div class="pf-flash__head">
     <div class="pf-flash__brand">
-      <span class="pf-flash__clock" aria-hidden="true">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      <span class="pf-flash__badge">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>
+        FLASH SALE
       </span>
-      <span class="pf-flash__name">{{ heading | default: 'FLASH SALE' }}</span>
-      <span class="pf-flash__timer" data-hours="{{ hrs }}" role="timer" aria-label="Đếm ngược ưu đãi">
+      <span class="pf-flash__name">{%- if heading != blank -%}{{ heading }}{%- elsif request.locale.iso_code == 'vi' -%}Ưu đãi hôm nay{%- else -%}Today's deals{%- endif -%}</span>
+    </div>
+    <div class="pf-flash__count">
+      <span class="pf-flash__count-label">{% if request.locale.iso_code == 'vi' %}Kết thúc sau{% else %}Ends in{% endif %}</span>
+      <span class="pf-flash__timer" data-hours="{{ hrs }}" role="timer" aria-label="{% if request.locale.iso_code == 'vi' %}Đếm ngược ưu đãi{% else %}Deal countdown{% endif %}">
         <span class="pf-u hh">00</span><i>:</i><span class="pf-u mm">00</span><i>:</i><span class="pf-u ss">00</span>
       </span>
     </div>
-    {%- if col != blank -%}
-      <a class="pf-flash__more" href="{{ col.url }}">Xem thêm ›</a>
+    {%- if col != blank and show_all != true -%}
+      <a class="pf-flash__more" href="{{ col.url }}">{% if request.locale.iso_code == 'vi' %}Xem tất cả{% else %}View all{% endif %}
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+      </a>
     {%- endif -%}
   </div>
 
   <div class="pf-flash__row">
     {%- if col != blank and col.products_count > 0 -%}
       {%- for product in col.products limit: lim -%}
-        <div class="pf-flash__card">
+        {%- liquid
+          assign pf_v = product.selected_or_first_available_variant
+          assign pf_price = pf_v.price
+          assign pf_cmp = pf_v.compare_at_price
+          if pf_cmp == blank or pf_cmp <= pf_price
+            assign pf_cmp = product.compare_at_price_max
+          endif
+          assign on_sale = false
+          if pf_cmp > pf_price
+            assign on_sale = true
+            assign disc = pf_cmp | minus: pf_price | times: 100.0 | divided_by: pf_cmp | round
+          endif
+        -%}
+        <div class="pf-flash__card{% if init > 0 and forloop.index > init %} is-hidden{% endif %}">
           <a class="pf-flash__media" href="{{ product.url }}">
+            {% render 'pf-preorder-badge', product: product %}
+            {%- if on_sale -%}<span class="pf-flash__disc">-{{ disc }}%</span>{%- endif -%}
             <span class="pf-flash__hot">HOT</span>
             {%- if product.featured_image -%}
               <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title | escape }}" loading="lazy" width="400" height="400">
@@ -38,8 +67,11 @@
             {%- endif -%}
           </a>
           <div class="pf-flash__info">
-            <h3 class="pf-flash__nm"><a href="{{ product.url }}">{{ product.title }}</a></h3>
-            <div class="pf-flash__price">{{ product.price | money }}</div>
+            <h3 class="pf-flash__nm"><a href="{{ product.url }}">{% render 'pf-short-title', title: product.title %}</a></h3>
+            <div class="pf-flash__price">
+              <span class="now">{{ pf_price | money }}</span>
+              {%- if on_sale -%}<span class="was">{{ pf_cmp | money }}</span>{%- endif -%}
+            </div>
             <span class="pf-flash__tag">Best Seller</span>
             {% render 'pf-card-buttons', product: product, section_id: uid %}
           </div>
@@ -49,24 +81,43 @@
       {%- for i in (1..lim) -%}
         <div class="pf-flash__card">
           <div class="pf-flash__media">
+            <span class="pf-flash__disc">-20%</span>
             <span class="pf-flash__hot">HOT</span>
             {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
           </div>
           <div class="pf-flash__info">
-            <h3 class="pf-flash__nm">Tên sản phẩm</h3>
-            <div class="pf-flash__price">0&nbsp;€</div>
+            <h3 class="pf-flash__nm">{% if request.locale.iso_code == 'vi' %}Tên sản phẩm{% else %}Product name{% endif %}</h3>
+            <div class="pf-flash__price"><span class="now">0&nbsp;€</span></div>
             <span class="pf-flash__tag">Best Seller</span>
           </div>
         </div>
       {%- endfor -%}
     {%- endif -%}
   </div>
+
+  {%- if init > 0 and rendered > init -%}
+    <div class="pf-flash__morewrap">
+      <button type="button" class="pf-flash__more-btn">
+        {% if request.locale.iso_code == 'vi' %}Xem thêm{% else %}View more{% endif %}
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+    </div>
+  {%- endif -%}
 </div>
 
 <script>
   (function () {
     var box = document.getElementById('pf-flash-{{ uid }}');
     if (!box) return;
+    var moreBtn = box.querySelector('.pf-flash__more-btn');
+    if (moreBtn && !moreBtn.dataset.pfInit) {
+      moreBtn.dataset.pfInit = '1';
+      moreBtn.addEventListener('click', function () {
+        box.querySelectorAll('.pf-flash__card.is-hidden').forEach(function (c) { c.classList.remove('is-hidden'); });
+        var w = moreBtn.closest('.pf-flash__morewrap');
+        if (w) w.remove();
+      });
+    }
     var el = box.querySelector('.pf-flash__timer');
     if (!el || el.dataset.pfInit) return;
     el.dataset.pfInit = '1';

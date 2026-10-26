@@ -1,0 +1,85 @@
+{%- comment -%}
+  Ô "Phí vận chuyển" trên trang giỏ hàng: khách CHỌN QUỐC GIA → phí ship tính THEO CÂN NẶNG GIỎ HÀNG
+  (bảng giá giống Shopify, nằm trong snippet pf-ship-rates) — không hiện cân nặng cho khách.
+  Mặc định chọn sẵn nước khách đang mua (localization.country).
+{%- endcomment -%}
+{%- liquid
+  assign rows = 'DE|Đức;CZ|Séc;PL|Ba Lan;SK|Slovakia;HU|Hungary;BG|Bulgaria;RO|Romania;AT|Áo;HR|Croatia;IT|Ý;BE|Bỉ;FR|Pháp;NL|Hà Lan;ES|Tây Ban Nha;PT|Bồ Đào Nha;GR|Hy Lạp;LU|Luxembourg;SI|Slovenia;IE|Ireland;DK|Đan Mạch;FI|Phần Lan;SE|Thụy Điển;EE|Estonia;LV|Latvia;LT|Litva' | split: ';'
+  assign cur = localization.country.iso_code
+-%}
+{% render 'pf-ship-rates' %}
+<div class="pf-ship" data-pf-ship data-sub="{{ cart.items_subtotal_price }}" data-total="{{ cart.total_price }}" data-weight="{{ cart.total_weight }}">
+  <label class="pf-ship__lbl" for="PfShipCountry">🚚 Phí vận chuyển</label>
+  <div class="pf-ship__line">
+    <div class="pf-ship__selwrap">
+      <select id="PfShipCountry" class="pf-ship__sel" data-pf-ship-sel aria-label="Giao đến">
+        {%- for r in rows -%}
+          {%- assign p = r | split: '|' -%}
+          <option value="{{ p[0] }}"{% if p[0] == cur %} selected{% endif %}>{{ p[1] }}</option>
+        {%- endfor -%}
+      </select>
+    </div>
+    <span class="pf-ship__v" data-pf-ship-fee aria-live="polite">—</span>
+  </div>
+  <p class="pf-ship__note" data-pf-ship-note aria-live="polite"></p>
+</div>
+<script>
+  (function () {
+    document.querySelectorAll('[data-pf-ship]').forEach(function (box) {
+      if (box.dataset.pfInit || !window.pfRates) return; box.dataset.pfInit = '1';
+      var R = window.pfRates, eur = R.eur;
+      var sel = box.querySelector('[data-pf-ship-sel]');
+      function render() {
+        var sub = parseInt(box.dataset.sub, 10) || 0, g = parseInt(box.dataset.weight, 10) || 0;
+        var tot = parseInt(box.dataset.total, 10); if (isNaN(tot)) tot = sub;
+        var q = R.quote(sel.value, g, tot, sub); if (!q) return;
+        var feeEl = box.querySelector('[data-pf-ship-fee]'), note = box.querySelector('[data-pf-ship-note]');
+        feeEl.textContent = q.over ? 'Liên hệ' : (q.ship === 0 ? 'Miễn phí' : eur(q.ship));
+        feeEl.classList.toggle('is-free', q.ship === 0);
+        var h;
+        if (q.over) h = 'Chưa có phí ship cho đơn ' + R.kg(q.weight) + ' đến ' + q.name + ' — vui lòng nhắn shop để được báo phí.';
+        else if (q.perk === 'free') {
+          if (q.free) h = '🎉 Giỏ đã đạt €139 — <b>miễn phí ship</b>!';
+          else if (q.reached) h = 'Giỏ đã đạt €139 nhưng đơn trên 30 kg nên vẫn tính phí ship.';
+          else h = 'Mua thêm <b>' + eur(q.rem) + '</b> để được <b>miễn phí ship</b>.';
+        } else if (q.perk === 'none') {
+          h = 'Nước này chưa áp dụng ưu đãi đơn từ €139.';
+        } else {
+          h = q.reached ? '🎉 Giỏ đã đạt €139 — được <b>giảm 10%</b> (phí ship ' + eur(q.fee) + ').' : 'Mua thêm <b>' + eur(q.rem) + '</b> để được <b>giảm 10%</b>.';
+        }
+        note.innerHTML = h;
+      }
+      function refresh() {
+        fetch(((window.Shopify && Shopify.routes && Shopify.routes.root) || '/') + 'cart.js', { headers: { Accept: 'application/json' } })
+          .then(function (r) { return r.json(); })
+          .then(function (c) { box.dataset.sub = c.items_subtotal_price; box.dataset.total = c.total_price; box.dataset.weight = c.total_weight; render(); if (window.pfShip) window.pfShip.update(); })
+          .catch(function () {});
+      }
+      try { var saved = sessionStorage.getItem('pf_ship_cc'); if (saved && sel.querySelector('option[value="' + saved + '"]')) sel.value = saved; } catch (e) {}
+      sel.addEventListener('change', function () { render(); if (window.pfShip) window.pfShip.setCc(sel.value); });
+      // Giỏ đổi số lượng/xoá SP → lấy lại tổng tiền + cân nặng
+      try { if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') subscribe(PUB_SUB_EVENTS.cartUpdate, refresh); } catch (e) {}
+      var tm; function later() { clearTimeout(tm); tm = setTimeout(refresh, 150); }
+      ['main-cart-items'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) new MutationObserver(later).observe(el, { childList: true, subtree: true });
+      });
+      render();
+    });
+  })();
+</script>
+<style>
+  .pf-ship { margin: 0; }
+  .pf-ship__lbl { display: block; margin-bottom: .6rem; font-size: 1.4rem; font-weight: 800; color: #2a2622; }
+  .pf-ship__line { display: flex; align-items: center; gap: 1rem; }
+  .pf-ship__selwrap { position: relative; flex: 1; min-width: 0; }
+  .pf-ship__selwrap::after { content: ""; position: absolute; right: 1.2rem; top: 50%; width: .7rem; height: .7rem; margin-top: -.5rem;
+    border: solid #6b665e; border-width: 0 2px 2px 0; transform: rotate(45deg); pointer-events: none; }
+  .pf-ship__sel { width: 100%; height: 4.4rem; padding: 0 3.2rem 0 1.2rem; border: 1px solid #d9d4ca; border-radius: 10px;
+    background: #fff; font: inherit; font-size: 1.4rem; color: #2a2622; appearance: none; -webkit-appearance: none; cursor: pointer; }
+  .pf-ship__sel:focus { outline: 2px solid #1e8541; outline-offset: 0; border-color: #1e8541; }
+  .pf-ship__v { flex: none; min-width: 6.4rem; text-align: right; font-size: 1.7rem; font-weight: 900; color: #2a2622; }
+  .pf-ship__note { margin: .6rem 0 0; font-size: 1.2rem; color: #6b665e; }
+  .pf-ship__note b { color: #1e8541; }
+  .pf-ship__v.is-free { color: #1e8541; }
+</style>

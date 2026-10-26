@@ -41,6 +41,110 @@
   data-collection-id="{{ collection.id }}"
 >
   <div class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}">
+    {%- style -%}
+      #pf-cbox-{{ section.id }} {
+        max-width: var(--page-width, 120rem); margin-inline: auto;
+        background: #fff; border: 1px solid #ece3d4; border-radius: 22px;
+        box-shadow: 0 10px 30px rgba(120,100,70,.08);
+        padding: 1.8rem clamp(1.6rem,3vw,3rem) 2.4rem;
+      }
+      #pf-cbox-{{ section.id }} .collection.page-width,
+      #pf-cbox-{{ section.id }} .collection--empty.page-width { max-width: 100%; padding-inline: 0; }
+      /* Native filter + sort bar aligns flush inside the white card */
+      #pf-cbox-{{ section.id }} .facets.page-width,
+      #pf-cbox-{{ section.id }} #main-collection-filters.page-width,
+      #pf-cbox-{{ section.id }} .product-count.page-width { max-width: 100%; padding-inline: 0; margin-inline: 0; }
+      #pf-cbox-{{ section.id }} .facets-container { margin-bottom: 1.6rem; }
+      #pf-cbox-{{ section.id }} .pf-ctbar {
+        display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.4rem;
+        margin-bottom: 2rem; padding-bottom: 1.6rem; border-bottom: 1px solid #f0e8db;
+      }
+      #pf-cbox-{{ section.id }} .pf-chips { display: flex; flex-wrap: wrap; gap: .8rem; margin-bottom: 1.6rem; }
+      #pf-cbox-{{ section.id }} .pf-chip--sale { background: #fdecec; border-color: #f3c0c0; color: #d62828; }
+      #pf-cbox-{{ section.id }} .pf-chip--sale:hover { background: #fbdada; border-color: #e89a9a; color: #b81f1f; }
+      #pf-cbox-{{ section.id }} .pf-chip--sale.is-active { background: linear-gradient(90deg,#e8452f,#d62828); border-color: #d62828; color: #fff; box-shadow: 0 6px 14px rgba(214,40,40,.28); }
+      #pf-cbox-{{ section.id }} .pf-chip {
+        display: inline-flex; align-items: center; gap: .4rem; padding: .7rem 1.4rem; border-radius: 999px;
+        font-size: 1.35rem; font-weight: 700; text-decoration: none; color: #2a2622;
+        background: #f4efe6; border: 1px solid #e7ddcd; transition: all .18s ease; white-space: nowrap;
+      }
+      #pf-cbox-{{ section.id }} .pf-chip:hover { background: #eaf3ec; border-color: #bfe0c7; color: #14672f; transform: translateY(-2px); }
+      #pf-cbox-{{ section.id }} .pf-chip.is-active { background: linear-gradient(90deg,#1e8541,#14672f); border-color: #14672f; color: #fff; box-shadow: 0 6px 14px rgba(20,90,45,.28); }
+      #pf-cbox-{{ section.id }} .pf-ctbar__hint { font-size: 1.4rem; font-weight: 700; color: #6a6255; }
+      #pf-cbox-{{ section.id }} .pf-catselect-wrap { position: relative; display: inline-flex; align-items: center; }
+      #pf-cbox-{{ section.id }} .pf-catselect-ic { position: absolute; left: 1.3rem; font-size: 1.6rem; pointer-events: none; }
+      #pf-cbox-{{ section.id }} .pf-catselect {
+        appearance: none; -webkit-appearance: none; cursor: pointer;
+        border: 1px solid #e0d6c4; border-radius: 999px; background: #fbf8f2;
+        padding: 1rem 4rem 1rem 4rem; font-size: 1.45rem; font-weight: 700; color: #2a2622;
+        min-width: 22rem; line-height: 1.2;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23146' d='M1 1l5 5 5-5' stroke='%231e8541' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat; background-position: right 1.5rem center;
+      }
+      #pf-cbox-{{ section.id }} .pf-catselect:focus { outline: none; border-color: #1e8541; box-shadow: 0 0 0 2px rgba(30,133,65,.2); }
+      #pf-cbox-{{ section.id }} .pf-search { display: flex; align-items: stretch; min-width: 22rem; flex: 0 1 30rem; }
+      #pf-cbox-{{ section.id }} .pf-search input {
+        flex: 1; min-width: 0; border: 1px solid #e0d6c4; border-right: none; border-radius: 999px 0 0 999px;
+        padding: 1rem 1.6rem; font-size: 1.4rem; color: #2a2622; background: #fbf8f2;
+      }
+      #pf-cbox-{{ section.id }} .pf-search input:focus { outline: none; border-color: #1e8541; box-shadow: inset 0 0 0 1px #1e8541; }
+      #pf-cbox-{{ section.id }} .pf-search button {
+        border: none; border-radius: 0 999px 999px 0; padding: 0 1.8rem; cursor: pointer;
+        background: linear-gradient(90deg,#1e8541,#14672f); color: #fff; font-size: 1.5rem; font-weight: 700;
+        display: inline-flex; align-items: center; gap: .5rem;
+      }
+      #pf-cbox-{{ section.id }} .pf-search button:hover { filter: brightness(1.08); }
+      @media (max-width: 749px) {
+        #pf-cbox-{{ section.id }} { border-radius: 16px; padding: 1.4rem 1.2rem 1.8rem; }
+        #pf-cbox-{{ section.id }} .pf-ctbar { flex-direction: column; align-items: stretch; }
+        #pf-cbox-{{ section.id }} .pf-chips { justify-content: center; }
+        #pf-cbox-{{ section.id }} .pf-catselect-wrap { width: 100%; }
+        #pf-cbox-{{ section.id }} .pf-catselect { width: 100%; min-width: 0; }
+        #pf-cbox-{{ section.id }} .pf-search { flex: 0 0 auto; width: 100%; min-width: 0; }
+        #pf-cbox-{{ section.id }} .pf-search input,
+        #pf-cbox-{{ section.id }} .pf-search button { height: 4.8rem; }
+      }
+    {%- endstyle -%}
+
+    <div id="pf-cbox-{{ section.id }}">
+      <div class="pf-ctbar">
+        <div class="pf-catselect-wrap">
+          <span class="pf-catselect-ic" aria-hidden="true">📂</span>
+          <select
+            class="pf-catselect"
+            aria-label="{% if request.locale.iso_code == 'vi' %}Chọn danh mục{% else %}Choose category{% endif %}"
+            onchange="if(this.value){window.location.href=this.value;}"
+          >
+            <option value="" disabled selected hidden>
+              {% if request.locale.iso_code == 'vi' %}Chọn danh mục sản phẩm{% else %}Choose a product category{% endif %}
+            </option>
+            <option value="/collections/all">
+              {% if request.locale.iso_code == 'vi' %}Tất cả sản phẩm{% else %}All products{% endif %}
+            </option>
+            {%- if section.settings.pf_category_menu != blank -%}
+              {%- for clink in section.settings.pf_category_menu.links -%}
+                <option value="{{ clink.url }}"{% if clink.current or clink.child_active %} selected{% endif %}>{% render 'pf-menu-label', title: clink.title %}</option>
+              {%- endfor -%}
+            {%- else -%}
+              {%- comment -%} Same 9 categories shown on the homepage grid {%- endcomment -%}
+              {%- assign pf_home_cats = 'dồ-uống||Đồ uống;;bột-gia-vị||Gia vị và bột;;thực-phẩm-chế-biến-sẵn||Thực phẩm chế biến sẵn;;banh-kẹo-dồ-an-vặt||Bánh, kẹo và đồ ăn vặt;;gạo-nếp-cac-loại||Gạo, nếp các loại;;mi-an-liền||Mì ăn liền;;banh-trang-cac-loại||Bánh tráng;;sữa-cac-loại||Sữa;;bun-phở-kho||Bún, phở' | split: ';;' -%}
+              {%- for pair in pf_home_cats -%}
+                {%- assign hp = pair | split: '||' -%}
+                {%- assign chandle = hp[0] -%}
+                {%- assign ccol = collections[chandle] -%}
+                {%- if ccol != empty and ccol.url -%}
+                  <option value="{{ ccol.url }}"{% if collection.handle == chandle %} selected{% endif %}>{{ hp[1] }}</option>
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+          </select>
+        </div>
+        <form class="pf-search" action="{{ routes.search_url }}" method="get" role="search">
+          <input type="hidden" name="type" value="product">
+          <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{% if request.locale.iso_code == 'vi' %}Tìm sản phẩm...{% else %}Search products...{% endif %}" aria-label="Tìm kiếm sản phẩm">
+          <button type="submit" aria-label="Tìm kiếm">🔍 {% if request.locale.iso_code == 'vi' %}Tìm{% else %}Search{% endif %}</button>
+        </form>
+      </div>
     {%- paginate collection.products by section.settings.products_per_page -%}
       {% comment %} Sort is the first tabbable element when filter type is vertical {% endcomment %}
       {%- if section.settings.enable_sorting and section.settings.filter_type == 'vertical' -%}
@@ -198,8 +302,60 @@
     {% if section.settings.image_shape == 'arch' %}
       {{ 'mask-arch.svg' | inline_asset_content }}
     {%- endif -%}
+    </div>
   </div>
 </collection-component>
+
+<script>
+  /* PHOMIFOOD: client-side "Đang giảm giá" chip — shows only on-sale product
+     cards on the current view. Works with no collection setup; re-applies
+     after Dawn's AJAX filters re-render the grid. */
+  (function () {
+    var box = document.getElementById('pf-cbox-{{ section.id }}');
+    if (!box) return;
+    var btn = box.querySelector('[data-pf-sale-toggle]');
+    if (!btn) return;
+    var active = false;
+
+    function apply() {
+      var grid = document.getElementById('product-grid');
+      if (!grid) return;
+      var items = grid.querySelectorAll('.grid__item');
+      var shown = 0;
+      items.forEach(function (it) {
+        var onSale = !!it.querySelector('.price--on-sale');
+        if (active && !onSale) { it.style.display = 'none'; }
+        else { it.style.display = ''; if (onSale) shown++; }
+      });
+      var empty = box.querySelector('.pf-sale-empty');
+      if (active && shown === 0) {
+        if (!empty) {
+          empty = document.createElement('p');
+          empty.className = 'pf-sale-empty';
+          empty.style.cssText = 'text-align:center;color:#6a6255;font-size:1.5rem;padding:2rem 0;';
+          empty.textContent = '{% if request.locale.iso_code == "vi" %}Không có sản phẩm giảm giá ở trang này. Thử trang tiếp theo hoặc danh mục khác.{% else %}No discounted products on this page. Try the next page or another category.{% endif %}';
+          grid.parentNode.insertBefore(empty, grid.nextSibling);
+        }
+      } else if (empty) {
+        empty.remove();
+      }
+    }
+
+    btn.addEventListener('click', function () {
+      active = !active;
+      btn.classList.toggle('is-active', active);
+      btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+      apply();
+    });
+
+    // Re-apply the filter after Dawn's facets replace the product grid.
+    var container = document.getElementById('ProductGridContainer');
+    if (container && window.MutationObserver) {
+      new MutationObserver(function () { if (active) apply(); })
+        .observe(container, { childList: true, subtree: true });
+    }
+  })();
+</script>
 
 {% schema %}
 {
@@ -386,6 +542,40 @@
       "id": "enable_sorting",
       "default": true,
       "label": "t:sections.main-collection-product-grid.settings.enable_sorting.label"
+    },
+    {
+      "type": "header",
+      "content": "🔎 Chip lọc nhanh (PHOMIFOOD)"
+    },
+    {
+      "type": "checkbox",
+      "id": "pf_show_quickfilter",
+      "label": "Hiện hàng chip lọc nhanh (danh mục + giảm giá)",
+      "default": true
+    },
+    {
+      "type": "link_list",
+      "id": "pf_category_menu",
+      "label": "Menu danh mục cho chip",
+      "info": "Chọn menu chứa các danh mục (VD menu con của \"Sản phẩm\"). Mỗi mục thành 1 chip."
+    },
+    {
+      "type": "checkbox",
+      "id": "pf_show_all_chip",
+      "label": "Hiện chip \"Tất cả\"",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "pf_show_sale_chip",
+      "label": "Hiện chip \"Đang giảm giá\"",
+      "default": true
+    },
+    {
+      "type": "collection",
+      "id": "pf_sale_collection",
+      "label": "Bộ sưu tập hàng giảm giá",
+      "info": "Tạo Automated collection với điều kiện \"Compare at price > 0\" rồi chọn ở đây. Chip giảm giá sẽ dẫn tới đó."
     },
     {
       "type": "header",

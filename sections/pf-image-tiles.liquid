@@ -1,0 +1,222 @@
+{%- comment -%}
+  Danh mục dạng ô ảnh lớn trượt ngang (3 ô trên máy tính, 2 trên tablet, 1 trên điện thoại).
+  Mỗi ô = 1 ảnh banner thiết kế sẵn (chữ, nút nằm trong ảnh) + 1 liên kết. Cả ô bấm được.
+  Chưa có ảnh thì tự lấy ảnh của bộ sưu tập để không bị trống.
+{%- endcomment -%}
+<style>
+  #pf-it-{{ section.id }} { padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px; }
+  #pf-it-{{ section.id }} .pf-it__wrap { max-width: var(--page-width, 120rem); margin-inline: auto; padding-inline: clamp(1.6rem, 3vw, 3rem); }
+
+  #pf-it-{{ section.id }} .pf-it__head { position: relative; display: flex; flex-direction: column; align-items: center; margin-bottom: 2.4rem; text-align: center; }
+  #pf-it-{{ section.id }} .pf-it__title { margin: 0; font-family: var(--font-heading-family, sans-serif); font-weight: 900; font-size: clamp(2.6rem, 3.8vw, 3.8rem); line-height: 1.15; color: #1e8541; }
+  #pf-it-{{ section.id }} .pf-it__bars { display: inline-flex; gap: .6rem; margin-top: 1rem; }
+  #pf-it-{{ section.id }} .pf-it__bars i { display: block; height: 4px; border-radius: 4px; }
+  #pf-it-{{ section.id }} .pf-it__bars i:first-child { width: 6rem; background: #1e8541; }
+  #pf-it-{{ section.id }} .pf-it__bars i:last-child { width: 2rem; background: #ffc61a; }
+  #pf-it-{{ section.id }} .pf-it__all {
+    position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+    display: inline-flex; align-items: center; gap: .5rem; text-decoration: none; white-space: nowrap;
+    font-size: 1.45rem; font-weight: 800; color: #1e8541;
+  }
+  #pf-it-{{ section.id }} .pf-it__all:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+  #pf-it-{{ section.id }} .pf-it__slider { position: relative; }
+  #pf-it-{{ section.id }} .pf-it__track {
+    display: flex; gap: 2rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: .4rem .2rem 1.2rem;
+  }
+  #pf-it-{{ section.id }} .pf-it__track::-webkit-scrollbar { display: none; }
+  #pf-it-{{ section.id }} .pf-it__tile {
+    flex: 0 0 calc((100% - 4rem) / 3); scroll-snap-align: start; display: block;
+    aspect-ratio: {{ section.settings.ratio }}; border-radius: 20px; overflow: hidden; background: #eef4ef;
+    box-shadow: 0 10px 26px rgba(20, 90, 45, .12); transition: transform .25s ease, box-shadow .25s ease;
+  }
+  #pf-it-{{ section.id }} .pf-it__tile:hover { transform: translateY(-4px); box-shadow: 0 18px 38px rgba(20, 90, 45, .2); }
+  #pf-it-{{ section.id }} .pf-it__tile img, #pf-it-{{ section.id }} .pf-it__tile svg { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #pf-it-{{ section.id }} .pf-it__fallback { position: relative; width: 100%; height: 100%; }
+  #pf-it-{{ section.id }} .pf-it__fallback img { object-fit: contain; padding: 1.6rem; }
+  #pf-it-{{ section.id }} .pf-it__label {
+    position: absolute; left: 1.2rem; bottom: 1.2rem; background: #1e8541; color: #fff; font-weight: 800; font-size: 1.5rem;
+    padding: .6rem 1.4rem; border-radius: 999px;
+  }
+
+  #pf-it-{{ section.id }} .pf-it__arrow {
+    position: absolute; top: 50%; transform: translateY(-60%); z-index: 2; width: 5rem; height: 5rem; border-radius: 50%;
+    border: 0; padding: 0; cursor: pointer; display: grid; place-items: center; background: #fff; color: #22201c;
+    box-shadow: 0 6px 18px rgba(0,0,0,.18); transition: background .15s ease, color .15s ease, opacity .15s ease;
+  }
+  #pf-it-{{ section.id }} .pf-it__arrow:hover { background: #1e8541; color: #fff; }
+  #pf-it-{{ section.id }} .pf-it__arrow[disabled] { opacity: 0; pointer-events: none; }
+  #pf-it-{{ section.id }} .pf-it__arrow--prev { left: -1.4rem; }
+  #pf-it-{{ section.id }} .pf-it__arrow--next { right: -1.4rem; }
+  #pf-it-{{ section.id }} .pf-it__arrow svg { width: 2.2rem; height: 2.2rem; }
+  #pf-it-{{ section.id }} .pf-it__dots { display: flex; justify-content: center; gap: .7rem; margin-top: .8rem; }
+  #pf-it-{{ section.id }} .pf-it__dot { width: 1.1rem; height: 1.1rem; border-radius: 999px; border: 0; padding: 0; background: #cfc8ba; cursor: pointer; transition: width .2s ease, background .2s ease; }
+  #pf-it-{{ section.id }} .pf-it__dot.is-active { width: 3.4rem; background: #22201c; }
+
+  @media (max-width: 989px) {
+    #pf-it-{{ section.id }} .pf-it__tile { flex-basis: calc((100% - 2rem) / 2); }
+  }
+  @media (max-width: 749px) {
+    #pf-it-{{ section.id }} .pf-it__track { gap: 1.2rem; }
+    #pf-it-{{ section.id }} .pf-it__tile { flex-basis: 88%; border-radius: 16px; }
+    #pf-it-{{ section.id }} .pf-it__arrow { display: none; }
+    #pf-it-{{ section.id }} .pf-it__all { position: static; transform: none; margin-top: 1rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #pf-it-{{ section.id }} .pf-it__track { scroll-behavior: auto; }
+    #pf-it-{{ section.id }} .pf-it__tile { transition: none; }
+  }
+  {%- if section.settings.full_width %}
+  /* Tràn màn hình: ô ảnh kéo sát hai mép, tiêu đề vẫn nằm trong khung trang */
+  #pf-it-{{ section.id }} .pf-it__wrap { max-width: none; padding-inline: clamp(1.2rem, 1.6vw, 2.4rem); }
+  #pf-it-{{ section.id }} .pf-it__head { max-width: var(--page-width, 120rem); margin-inline: auto; width: 100%; }
+  #pf-it-{{ section.id }} .pf-it__arrow--prev { left: .8rem; }
+  #pf-it-{{ section.id }} .pf-it__arrow--next { right: .8rem; }
+  {%- endif %}
+</style>
+
+<div id="pf-it-{{ section.id }}">
+  <div class="pf-it__wrap">
+    {%- if section.settings.heading != blank -%}
+      <div class="pf-it__head">
+        <h2 class="pf-it__title">{% render 'pf-tr', s: section.settings.heading %}</h2>
+        <span class="pf-it__bars" aria-hidden="true"><i></i><i></i></span>
+        {%- if section.settings.show_all_button -%}
+          <a class="pf-it__all" href="{{ section.settings.all_button_link | default: routes.collections_url }}">{% render 'pf-tr', s: section.settings.all_button_label %} <span aria-hidden="true">→</span></a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="pf-it__slider">
+      <button type="button" class="pf-it__arrow pf-it__arrow--prev" aria-label="Trước" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg>
+      </button>
+      <div class="pf-it__track" data-pf-it-track>
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign col = block.settings.collection
+            assign url = block.settings.link
+            if url == blank and col != blank
+              assign url = col.url
+            endif
+            if url == blank
+              assign url = '#'
+            endif
+            assign alt = block.settings.alt
+            if alt == blank and col != blank
+              assign alt = col.title
+            endif
+          -%}
+          <a class="pf-it__tile" href="{{ url }}" aria-label="{{ alt | escape }}" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '500, 800, 1200', sizes: '(max-width: 749px) 88vw, (max-width: 989px) 50vw, 33vw', alt: alt }}
+            {%- elsif block.settings.image_url != blank -%}
+              <img src="{{ block.settings.image_url }}" alt="{{ alt | escape }}" loading="lazy" width="1200" height="860">
+            {%- elsif col != blank and col.image -%}
+              <span class="pf-it__fallback">
+                <img src="{{ col.image | image_url: width: 800 }}" alt="{{ alt | escape }}" loading="lazy" width="800" height="800">
+                <span class="pf-it__label">{{ alt }}</span>
+              </span>
+            {%- else -%}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </a>
+        {%- endfor -%}
+      </div>
+      <button type="button" class="pf-it__arrow pf-it__arrow--next" aria-label="Sau">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+      </button>
+    </div>
+    <div class="pf-it__dots" data-pf-it-dots></div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('pf-it-{{ section.id }}');
+    if (!root) return;
+    var track = root.querySelector('[data-pf-it-track]');
+    var dots = root.querySelector('[data-pf-it-dots]');
+    var prev = root.querySelector('.pf-it__arrow--prev');
+    var next = root.querySelector('.pf-it__arrow--next');
+    var tiles = Array.prototype.slice.call(track.children);
+    if (!tiles.length) return;
+
+    function stepW() {
+      var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      return tiles[0].getBoundingClientRect().width + gap;
+    }
+    function perView() { return Math.max(1, Math.round((track.clientWidth + 1) / stepW())); }
+    function pages() { return Math.max(1, tiles.length - perView() + 1); }
+    function current() { return Math.min(pages() - 1, Math.round(track.scrollLeft / stepW())); }
+    function goTo(i) { track.scrollTo({ left: Math.max(0, Math.min(pages() - 1, i)) * stepW() }); }
+    function build() {
+      dots.innerHTML = '';
+      var n = pages();
+      if (n > 1) {
+        for (var i = 0; i < n; i++) {
+          var b = document.createElement('button');
+          b.type = 'button'; b.className = 'pf-it__dot'; b.setAttribute('aria-label', 'Tới ô ' + (i + 1));
+          b.addEventListener('click', (function (k) { return function () { goTo(k); }; })(i));
+          dots.appendChild(b);
+        }
+      }
+      update();
+    }
+    function update() {
+      var c = current();
+      Array.prototype.forEach.call(dots.children, function (d, i) { d.classList.toggle('is-active', i === c); });
+      var max = track.scrollWidth - track.clientWidth - 2;
+      prev.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= max;
+    }
+    prev.addEventListener('click', function () { goTo(current() - 1); });
+    next.addEventListener('click', function () { goTo(current() + 1); });
+    var t;
+    track.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(update, 60); }, { passive: true });
+    window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(build, 120); });
+    build();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Danh mục ô ảnh",
+  "tag": "section",
+  "max_blocks": 16,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Tiêu đề (để trống = ẩn)", "default": "Danh Mục Sản Phẩm" },
+    { "type": "checkbox", "id": "show_all_button", "label": "Hiện link \"Xem tất cả danh mục\"", "default": true },
+    { "type": "text", "id": "all_button_label", "label": "Chữ của link", "default": "Xem tất cả danh mục" },
+    { "type": "url", "id": "all_button_link", "label": "Liên kết (mặc định: trang bộ sưu tập)" },
+    { "type": "checkbox", "id": "full_width", "label": "Tràn hết chiều ngang màn hình", "default": true },
+    {
+      "type": "select", "id": "ratio", "label": "Tỉ lệ ô ảnh", "default": "1.4 / 1",
+      "info": "Nên thiết kế ảnh đúng tỉ lệ này để không bị cắt.",
+      "options": [
+        { "value": "1.4 / 1", "label": "Ngang 1.4 : 1 (vd 1400×1000)" },
+        { "value": "3 / 2", "label": "Ngang 3 : 2 (vd 1200×800)" },
+        { "value": "4 / 3", "label": "Ngang 4 : 3 (vd 1200×900)" },
+        { "value": "1 / 1", "label": "Vuông 1 : 1" }
+      ]
+    },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Ô ảnh",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Ảnh banner", "info": "Ảnh đã thiết kế sẵn chữ và nút. Nên dùng đúng tỉ lệ đã chọn ở trên." },
+        { "type": "text", "id": "image_url", "label": "Hoặc dán URL ảnh" },
+        { "type": "url", "id": "link", "label": "Liên kết khi bấm vào ô" },
+        { "type": "collection", "id": "collection", "label": "Bộ sưu tập (dự phòng)", "info": "Nếu chưa có ảnh/liên kết, ô dùng ảnh và link của bộ sưu tập này." },
+        { "type": "text", "id": "alt", "label": "Mô tả ảnh (cho SEO & người khiếm thị)" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Danh mục ô ảnh", "blocks": [ { "type": "tile" }, { "type": "tile" }, { "type": "tile" } ] } ]
+}
+{% endschema %}

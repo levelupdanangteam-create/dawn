@@ -1,0 +1,67 @@
+{%- comment -%}
+  PHOMIFOOD — "Câu hỏi thường gặp" trên trang sản phẩm (accordion).
+  Mỗi câu hỏi là 1 block, sửa trong trình chỉnh giao diện. Có nhóm (block "Nhóm") để chia mục.
+{%- endcomment -%}
+{%- if section.blocks.size > 0 -%}
+<div class="page-width pf-pd-wrap" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+  <section class="pf-faq">
+    <h2 class="pf-faq__title">{{ section.settings.heading }}</h2>
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'group' -%}
+          <p class="pf-faq__group" {{ block.shopify_attributes }}>{{ block.settings.title }}</p>
+        {%- when 'question' -%}
+          <details class="pf-faq__item" {{ block.shopify_attributes }}>
+            <summary><span>{{ block.settings.question }}</span><span class="pf-faq__ic" aria-hidden="true"></span></summary>
+            <div class="pf-faq__a rte">{{ block.settings.answer }}</div>
+          </details>
+      {%- endcase -%}
+    {%- endfor -%}
+  </section>
+</div>
+<style>
+  .pf-faq__title { margin: 0 0 2rem; text-align: center; font-family: var(--font-heading-family, sans-serif); font-weight: 800; font-size: clamp(2rem, 2.8vw, 2.6rem); color: #2a2622; }
+  .pf-faq__group { margin: 2.2rem 0 .8rem; font-size: 1.5rem; font-weight: 800; color: #1e8541; }
+  .pf-faq__group:first-of-type { margin-top: 0; }
+  .pf-faq__item { background: #fff; border: 1px solid #ece3d4; border-radius: 12px; margin-bottom: .8rem; transition: box-shadow .18s, border-color .18s; }
+  .pf-faq__item[open] { border-color: #bfe0c7; box-shadow: 0 6px 18px rgba(20, 90, 45, .07); }
+  .pf-faq__item summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 1.2rem; cursor: pointer; padding: 1.4rem 1.6rem; font-size: 1.5rem; font-weight: 700; color: #2a2622; }
+  .pf-faq__item summary::-webkit-details-marker { display: none; }
+  .pf-faq__item summary:focus-visible { outline: 2px solid #1e8541; outline-offset: 2px; border-radius: 12px; }
+  .pf-faq__ic { flex: none; position: relative; width: 2.4rem; height: 2.4rem; border-radius: 50%; background: #eef7f0; }
+  .pf-faq__ic::before, .pf-faq__ic::after { content: ""; position: absolute; left: 50%; top: 50%; width: 1rem; height: 2px; background: #1e8541; transform: translate(-50%, -50%); transition: transform .18s; }
+  .pf-faq__ic::after { transform: translate(-50%, -50%) rotate(90deg); }
+  .pf-faq__item[open] .pf-faq__ic::after { transform: translate(-50%, -50%) rotate(0deg); }
+  .pf-faq__a { padding: 0 1.6rem 1.6rem; font-size: 1.45rem; line-height: 1.65; color: #574f45; }
+  .pf-faq__a p { margin: 0 0 .6rem; }
+</style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Câu hỏi thường gặp (SP)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Câu hỏi thường gặp" },
+    { "type": "range", "id": "padding_top", "label": "Khoảng cách trên", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "padding_bottom", "label": "Khoảng cách dưới", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 24 }
+  ],
+  "blocks": [
+    {
+      "type": "group",
+      "name": "Nhóm câu hỏi",
+      "settings": [ { "type": "text", "id": "title", "label": "Tên nhóm", "default": "Vận chuyển & đơn hàng" } ]
+    },
+    {
+      "type": "question",
+      "name": "Câu hỏi",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Câu hỏi", "default": "Câu hỏi" },
+        { "type": "richtext", "id": "answer", "label": "Trả lời", "default": "<p>Câu trả lời</p>" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Câu hỏi thường gặp (SP)" } ]
+}
+{% endschema %}

@@ -11,41 +11,229 @@ body.gradient {
   background-image: none !important;
 }
 
-/* Let native homepage sections show the beige ground through */
+/* Let native homepage + collection + search sections show the beige ground through */
 #MainContent[data-template='index'] > .shopify-section > .color-scheme-1,
-#MainContent[data-template='index'] > .shopify-section > .gradient {
+#MainContent[data-template='index'] > .shopify-section > .gradient,
+#MainContent[data-template='collection'] > .shopify-section > .color-scheme-1,
+#MainContent[data-template='collection'] > .shopify-section > .gradient,
+#MainContent[data-template='search'] > .shopify-section > .color-scheme-1,
+#MainContent[data-template='search'] > .shopify-section > .gradient,
+#MainContent[data-template='collection'] collection-component > .color-scheme-1,
+#MainContent[data-template='collection'] collection-component > .gradient {
   background: transparent !important;
 }
+/* Dawn's native filter + sort bar (price, category, sort) is used on
+   collections. Keep it visible; the PHOMIFOOD search box sits above it. */
 
-/* ---- Header: white background to highlight the logo --------------- */
+/* ---- Header: blue brand background -------------------------------- */
 .header-wrapper,
 .section-header .header {
-  background-color: #ffffff !important;
+  background-color: transparent !important;
 }
 .header-wrapper {
-  border-bottom: 1px solid #ece4d8;
+  position: relative;
+  background: linear-gradient(90deg, #1e8541 0%, #14672f 100%) !important;
+  border-bottom: none;
+  box-shadow: 0 3px 16px rgba(20, 90, 45, .2);
 }
+/* Red brand accent line along the bottom edge */
+.header-wrapper::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #d62828 0%, #f2792a 100%);
+  z-index: 4;
+}
+/* Deeper shadow once the header sticks on scroll */
+.shopify-section-header-sticky .header-wrapper {
+  box-shadow: 0 6px 24px rgba(20, 90, 45, .32);
+}
+/* ---- Announcement bar: brand green to match the header ------------ */
+.utility-bar {
+  background: linear-gradient(90deg, #14672f 0%, #1e8541 100%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, .12);
+}
+.utility-bar .announcement-bar__message,
+.utility-bar .announcement-bar__message span,
+.utility-bar .announcement-bar__link,
+.utility-bar .announcement-bar__link:hover {
+  color: #fff !important;
+}
+.utility-bar .announcement-bar__message { font-weight: 600; letter-spacing: .2px; }
+/* White nav text + icons on the blue header */
 .header,
-.header__heading-link,
-.header__heading-link .h2,
 .header__menu-item,
 .header__active-menu-item,
 .header__inline-menu .list-menu__item--link,
 .header__icons .header__icon,
-.header__icons .header__icon .icon {
-  color: #2a2622 !important;
+.header__icons .header__icon .icon,
+.header-wrapper .localization-form__select,
+.header-wrapper .disclosure__button,
+.header-wrapper .header__localization .icon-caret {
+  color: #ffffff !important;
+}
+.header-wrapper .localization-form__select option { color: #2a2622; }
+.header__menu-item {
+  font-weight: 600;
+  letter-spacing: .01em;
+  transition: color .18s ease;
+}
+/* Logo sits on a white rounded pill so it stays crisp on the green header */
+.header__heading-link,
+.header__heading-link.link {
+  display: inline-flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: .3rem .9rem !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .14);
+}
+/* Logo size — keep aspect ratio (width auto), capped by height so the header
+   stays slim. Uses max-height like Dawn expects, so the logo is never squished. */
+.header__heading-link img,
+.header__heading-logo {
+  height: auto;
+  width: auto;
+  max-height: 6.4rem;
+  max-width: 100%;
+}
+@media screen and (max-width: 749px) {
+  .header__heading-link img,
+  .header__heading-logo { max-height: 5.2rem; }
+  /* Điện thoại: logo thành huy hiệu tròn, cùng dạng nút tròn đỏ bên phải */
+  .header__heading-link,
+  .header__heading-link.link {
+    padding: 0 !important; width: 5.4rem; height: 5.4rem; border-radius: 50%; overflow: hidden;
+    justify-content: center;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, .28), 0 4px 12px rgba(0, 0, 0, .2);
+  }
+  .header__heading-link img,
+  .header__heading-logo {
+    max-height: none; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%;
+    transform: scale(1.05);
+  }
+  /* Nút menu 3 gạch màu trắng như các icon khác trên thanh xanh */
+  .header__icon--menu,
+  .header__icon--menu .icon { color: #ffffff !important; }
+}
+/* Animated white underline under each top-level menu label */
+.header__inline-menu .header__menu-item span {
+  position: relative;
+}
+.header__inline-menu .header__menu-item span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  border-radius: 2px;
+  background: #ffffff;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .22s ease;
+}
+.header__inline-menu .header__menu-item:hover span::after,
+.header__inline-menu span.header__active-menu-item::after {
+  transform: scaleX(1);
 }
 .header__menu-item:hover span,
 .header__inline-menu .list-menu__item--link:hover,
 .header__active-menu-item {
+  color: #ffffff !important;
+}
+/* Dropdown submenus stay on white with dark text */
+.header__submenu {
+  background: #ffffff !important;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 10px 26px rgba(30, 60, 120, .16);
+}
+.header__submenu .header__menu-item {
+  color: #2a2622 !important;
+}
+.header__submenu .header__menu-item:hover {
   color: #1e63c8 !important;
 }
+/* Hide the account (user) icon in the header */
+.header__icons .header__icon--account,
+.header__icon--account {
+  display: none !important;
+}
+/* "Liên hệ mua sỉ" WhatsApp button in the header */
+.pf-wholesale-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  margin-right: .8rem;
+  background: linear-gradient(180deg, #e8452f, #d62828);
+  color: #ffffff !important;
+  font-weight: 800;
+  font-size: 1.35rem;
+  line-height: 1;
+  padding: .9rem 1.4rem;
+  border-radius: 999px;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .18);
+  transition: filter .15s ease, transform .15s ease;
+}
+.pf-wholesale-btn:hover { filter: brightness(1.07); transform: translateY(-1px); }
+.pf-wholesale-btn__ic { flex: none; }
+
+/* WhatsApp button in header (green, same shape as the pill above) */
+.pf-wa-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  margin-right: .8rem;
+  background: linear-gradient(180deg, #45d367, #1faf52);
+  color: #ffffff !important;
+  font-weight: 800;
+  font-size: 1.35rem;
+  line-height: 1;
+  padding: .9rem 1.4rem;
+  border-radius: 999px;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .18);
+  transition: filter .15s ease, transform .15s ease;
+}
+.pf-wa-btn:hover { filter: brightness(1.07); transform: translateY(-1px); }
+
+@media (max-width: 989px) {
+  .pf-wholesale-btn { padding: .8rem; margin-right: .4rem; }
+  .pf-wholesale-btn__tx { display: none; }
+  .pf-wa-btn { padding: .8rem; margin-right: .4rem; }
+  .pf-wa-btn .pf-wholesale-btn__tx { display: none; }
+}
+/* Center the nav menu: logo left · menu center · icons right */
+@media screen and (min-width: 990px) {
+  .header.header--middle-left {
+    grid-template-columns: 1fr auto 1fr !important;
+  }
+  .header--middle-left .header__heading,
+  .header--middle-left .header__heading-link { justify-self: start; }
+  .header--middle-left .header__inline-menu { justify-self: center; margin: 0; }
+  .header--middle-left .header__icons { justify-self: end; }
+}
+/* Soft translucent circle when hovering the header icons */
+.header__icons .header__icon {
+  border-radius: 50%;
+  transition: background-color .18s ease, color .18s ease;
+}
+.header__icons .header__icon:hover {
+  background-color: rgba(255, 255, 255, .16);
+}
 .header__icon:hover .icon {
-  color: #1e63c8;
+  color: #ffffff !important;
 }
 .header__icon .cart-count-bubble {
-  background-color: #1e63c8 !important;
+  background-color: #d62828 !important;
   color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .3);
 }
 
 /* ---- Price in accent blue ----------------------------------------- */
@@ -78,6 +266,109 @@ body.gradient {
   border-color: #164fa0 !important;
 }
 
+/* ---- Footer: deep green brand background --------------------------- */
+.footer {
+  background: linear-gradient(180deg, #14672f 0%, #0e4a24 100%) !important;
+  border-top: 3px solid #d62828;
+}
+/* White logo pill in the footer brand block */
+.footer .footer-block--newsletter .footer-block__brand-info,
+.footer .footer-block__image-wrapper {
+  background: #ffffff;
+  display: inline-block;
+  padding: .6rem 1rem;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .2);
+}
+.footer .footer-block__image-wrapper img { display: block; }
+/* Light text everywhere in the footer */
+.footer .footer-block__heading,
+.footer .footer-block__details-content,
+.footer .footer-block__details-content .rte,
+.footer .footer-block__details-content p,
+.footer .footer__content-bottom,
+.footer .copyright__content,
+.footer .footer__copyright,
+.footer .list-menu__item,
+.footer .footer-block-image__description,
+.footer small,
+.footer .caption {
+  color: #eaf3ec !important;
+}
+/* Brand intro paragraph in white */
+.footer .rte,
+.footer .rte p,
+.footer .footer-block__brand-info .rte,
+.footer .footer-block__brand-info .rte p {
+  color: #ffffff !important;
+}
+/* Gold section headings for a warmer, premium look */
+.footer .footer-block__heading {
+  color: #f2c14e !important;
+  font-weight: 800;
+  letter-spacing: .01em;
+}
+/* Footer links: light with a smooth hover */
+.footer a,
+.footer .footer-block__details-content a,
+.footer .list-menu__item--link {
+  color: #eaf3ec !important;
+  text-decoration: none;
+  transition: color .18s ease;
+}
+.footer a:hover,
+.footer .footer-block__details-content a:hover,
+.footer .list-menu__item--link:hover {
+  color: #ffffff !important;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+/* Social icons in light tone */
+.footer .footer__list-social .icon {
+  color: #eaf3ec;
+}
+.footer .footer__list-social .list-social__link:hover .icon {
+  color: #f2c14e;
+}
+/* Business Information accordion in footer (click to expand) */
+.footer .pf-biz-acc { border-top: 1px solid rgba(255, 255, 255, .18); }
+.footer .pf-biz-acc__sum {
+  list-style: none; cursor: pointer; user-select: none;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 1.2rem 0; margin: 0;
+  font-size: 1.6rem !important; font-weight: 800; color: #f2c14e !important;
+  letter-spacing: .01em;
+}
+.footer .pf-biz-acc__sum::-webkit-details-marker { display: none; }
+.footer .pf-biz-acc__sum::after {
+  content: "\203A"; /* › */
+  font-size: 2.2rem; line-height: 1; color: #f2c14e;
+  transform: rotate(90deg); transition: transform .2s ease;
+}
+.footer .pf-biz-acc[open] .pf-biz-acc__sum::after { transform: rotate(-90deg); }
+.footer .pf-biz-acc__body { padding: .2rem 0 1.2rem; }
+.footer .pf-biz-acc__body p { margin: 0 0 .6rem; }
+/* Newsletter field on the dark background */
+.footer .newsletter-form__field-wrapper .field__input {
+  background: rgba(255, 255, 255, .1) !important;
+  border: 1px solid rgba(255, 255, 255, .35) !important;
+  color: #ffffff !important;
+  border-radius: 10px;
+}
+.footer .newsletter-form__field-wrapper .field__input::placeholder { color: rgba(255, 255, 255, .6) !important; }
+.footer .newsletter-form__field-wrapper .field__label { color: rgba(255, 255, 255, .7) !important; }
+.footer .newsletter-form__button .icon { color: #ffffff; }
+/* Hide the bottom bar (language selector, payment icons, copyright/policy) */
+.footer .footer__content-bottom { display: none !important; }
+.footer .footer-block--newsletter { border-color: rgba(255, 255, 255, .16); }
+/* Payment icons sit on a light chip so they stay visible */
+.footer .payment-icon,
+.footer .list-payment__item svg {
+  background: #ffffff;
+  border-radius: 4px;
+  padding: 2px;
+}
+
 /* ---- Policy / guide pages -------------------------------------- */
 .pf-policy { padding: 4rem 0 6rem; }
 .pf-policy__wrap {
@@ -108,11 +399,11 @@ body.gradient {
 
 /* ---- Product-card action buttons (Add to cart / View) ---------- */
 /* Base: visible everywhere (used by custom deal sections too). */
-.pf-card-actions { display: flex; gap: 0.8rem; margin-top: 1rem; position: relative; z-index: 2; }
-.pf-card-actions__form { flex: 1; display: flex; margin: 0; }
+.pf-card-actions { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1rem; position: relative; z-index: 2; }
+.pf-card-actions__form { display: flex; margin: 0; }
 .pf-card-actions .pf-btn-cart,
 .pf-card-actions .pf-btn-view {
-  flex: 1; width: 100%; text-align: center; font-size: 1.25rem; font-weight: 700; line-height: 1.2;
+  width: 100%; text-align: center; font-size: 1.25rem; font-weight: 700; line-height: 1.2;
   padding: 0.9rem 0.6rem; border-radius: 8px; border: 1.5px solid #1e63c8; cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
 }
@@ -122,23 +413,328 @@ body.gradient {
 .pf-btn-view { background: #ffffff; color: #1e63c8; text-decoration: none; display: flex; align-items: center; justify-content: center; }
 .pf-btn-view:hover { background: #1e63c8; color: #ffffff; }
 
-/* Native Dawn cards only: hide on desktop, reveal on hover. */
-@media screen and (min-width: 750px) {
-  .card-wrapper .pf-card-actions {
-    opacity: 0; max-height: 0; margin-top: 0; overflow: hidden; transform: translateY(6px);
-    pointer-events: none;
-    transition: opacity 0.18s ease, transform 0.18s ease, max-height 0.18s ease, margin-top 0.18s ease;
-  }
-  .card-wrapper:hover .pf-card-actions,
-  .card-wrapper:focus-within .pf-card-actions {
-    opacity: 1; max-height: 8rem; margin-top: 1rem; transform: none; pointer-events: auto;
-  }
+/* Native product cards (collection, search, related products): always show
+   the Xem sản phẩm / Thêm vào giỏ buttons — no hover needed. */
+.card-wrapper .pf-card-actions {
+  opacity: 1;
+  max-height: none;
+  margin-top: 1rem;
+  transform: none;
+  pointer-events: auto;
+  overflow: visible;
 }
 @media (prefers-reduced-motion: reduce) { .pf-card-actions { transition: none; } }
+
+/* Equal, compact image frames: capped-height landscape box on all cards
+   (aspect-ratio keeps them equal; max-height keeps them from ballooning) */
+.card-wrapper .card__inner.ratio,
+.card-wrapper .card.ratio {
+  padding-bottom: 0 !important;
+  aspect-ratio: 4 / 3;
+  max-height: 22rem;
+}
+/* Show the whole product (no cropping) on a clean white ground */
+.card-wrapper .card__media,
+.card-wrapper .card__media .media { background: #ffffff; }
+.card-wrapper .card__media .media img,
+.card-wrapper .card__inner img { object-fit: contain !important; padding: 6px; }
+
+/* Uniform, prominent 2-line product titles so price + buttons line up */
+.card-wrapper .card__heading {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.8em;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+.card-wrapper .card__heading a { color: #2a2622 !important; font-weight: 700; }
+.card-wrapper .card__heading a:hover { color: #1e63c8 !important; }
+
+/* Equal square images + fixed 2-line titles keep the price and buttons
+   aligned across cards without stretching the card (which left big gaps). */
 
 /* Title link inside custom deal-section cards */
 .pf-card .pf-name a { color: inherit; text-decoration: none; }
 .pf-card .pf-name a:hover { color: #1e63c8; }
+
+/* ---- Product detail page ---------------------------------------- */
+/* Product media: rounded corners + soft shadow */
+#MainContent[data-template='product'] .product__media-wrapper .media,
+#MainContent[data-template='product'] .product__media-wrapper .product-media-container,
+#MainContent[data-template='product'] .product__media-wrapper .media img {
+  border-radius: 16px;
+}
+#MainContent[data-template='product'] .product__media-wrapper .product-media-container {
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(120, 100, 70, .1);
+}
+/* Info column as a clean white card on the beige page */
+#MainContent[data-template='product'] .product__info-container {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #ece3d4;
+  border-radius: 20px;
+  padding: clamp(1.8rem, 2.6vw, 3rem);
+  box-shadow: 0 12px 32px rgba(120, 100, 70, .08);
+}
+/* Colorful brand accent strip across the top of the info card */
+#MainContent[data-template='product'] .product__info-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  border-radius: 20px 20px 0 0;
+  background: linear-gradient(90deg, #1e8541 0%, #1e63c8 50%, #d62828 100%);
+}
+/* Colored form labels (variant options, quantity) */
+#MainContent[data-template='product'] .product-form__input .form__label,
+#MainContent[data-template='product'] .product-form__input > label,
+#MainContent[data-template='product'] .quantity__label,
+#MainContent[data-template='product'] variant-selects .form__label {
+  color: #14672f !important;
+  font-weight: 700;
+}
+/* Variant pills: filled green (not black) when selected */
+#MainContent[data-template='product'] .product-form__input input[type='radio']:checked + label,
+#MainContent[data-template='product'] .product-variant-options input[type='radio']:checked + label {
+  background-color: #1e8541 !important;
+  color: #ffffff !important;
+  border-color: #1e8541 !important;
+  box-shadow: 0 0 0 1px #1e8541;
+}
+/* Rounded quantity selector + product inputs */
+#MainContent[data-template='product'] .quantity {
+  border-radius: 12px;
+  overflow: hidden;
+}
+#MainContent[data-template='product'] .quantity:after {
+  border-radius: 12px;
+  border-color: #d9cdb6;
+}
+#MainContent[data-template='product'] .quantity__button:hover .svg-wrapper { color: #1e8541; }
+#MainContent[data-template='product'] .product-form__input .select__select {
+  border-radius: 12px;
+}
+#MainContent[data-template='product'] .product-form__input .select:after {
+  border-radius: 12px;
+}
+/* Related products: prominent Vietnamese heading with ornament + boxed cards */
+.related-products .related-products__heading {
+  position: relative;
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  text-align: center;
+  margin-bottom: 2.6rem;
+}
+.related-products .related-products__heading::after {
+  content: "";
+  display: block;
+  width: 6rem;
+  height: 4px;
+  border-radius: 4px;
+  margin: 1.1rem auto 0;
+  background: linear-gradient(90deg, #d62828, #f2792a);
+}
+/* Let the related section sit directly on the beige page (no full-width band) */
+#MainContent[data-template='product'] > .shopify-section > .color-scheme-1,
+#MainContent[data-template='product'] > .shopify-section > .gradient {
+  background: transparent !important;
+}
+#MainContent[data-template='product'] .related-products {
+  margin-top: clamp(3rem, 6vw, 6rem);
+  background: #ffffff;
+  border: 1px solid #ece3d4;
+  border-radius: 22px;
+  padding: clamp(2.4rem, 3.5vw, 4rem) clamp(1.6rem, 3vw, 3.2rem);
+  box-shadow: 0 12px 32px rgba(120, 100, 70, .08);
+}
+/* Related cards sit directly on the page — no white box */
+#MainContent[data-template='product'] .related-products .card-wrapper {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+@media screen and (max-width: 749px) {
+  #MainContent[data-template='product'] .product__info-container {
+    padding: 1.8rem 1.4rem;
+    border-radius: 16px;
+  }
+}
+/* Prominent product title */
+#MainContent[data-template='product'] .product__title,
+#MainContent[data-template='product'] .product__title > * {
+  font-weight: 800 !important;
+  color: #2a2622 !important;
+  line-height: 1.2;
+}
+/* Price stands out a bit more */
+#MainContent[data-template='product'] .price__container .price-item {
+  font-size: 2.2rem;
+}
+/* Accordion / description headings */
+#MainContent[data-template='product'] .product__accordion summary .accordion__title {
+  font-weight: 700;
+  color: #2a2622;
+}
+/* Related products heading */
+.related-products .related-products__heading,
+.related-products__heading.title {
+  font-weight: 800;
+  color: #d62828;
+  background: linear-gradient(90deg, #d62828 0%, #e8452f 55%, #f2792a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---- Cart page --------------------------------------------------- */
+#MainContent[data-template='cart'] > .shopify-section > .color-scheme-1,
+#MainContent[data-template='cart'] > .shopify-section > .gradient,
+.cart__footer-wrapper > .color-scheme-1,
+.cart__footer-wrapper > .gradient { background: transparent !important; }
+#MainContent[data-template='cart'] .title--primary { font-weight: 800; color: #2a2622; }
+/* White card around the cart items */
+#MainContent[data-template='cart'] .cart__items {
+  background: #ffffff;
+  border: 1px solid #ece3d4;
+  border-radius: 18px;
+  padding: .4rem 2rem;
+  box-shadow: 0 8px 22px rgba(120, 100, 70, .07);
+}
+/* Whole footer = ONE unified white card holding both columns */
+#MainContent[data-template='cart'] .cart__footer {
+  background: #ffffff;
+  border: 1px solid #ece3d4;
+  border-radius: 20px;
+  padding: clamp(2rem, 3vw, 3rem);
+  box-shadow: 0 10px 28px rgba(120, 100, 70, .08);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: start;
+}
+/* Left column (totals + checkout) — transparent, sits in the shared card */
+#MainContent[data-template='cart'] .cart__footer .cart__blocks {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+/* A soft divider between the two columns */
+#MainContent[data-template='cart'] .cart__footer .pf-ordercopy {
+  border-left: 1px solid #f0e8db;
+  padding-left: clamp(2rem, 4vw, 4rem);
+}
+@media screen and (max-width: 749px) {
+  #MainContent[data-template='cart'] .cart__footer {
+    grid-template-columns: 1fr;
+    gap: 2.4rem;
+  }
+  #MainContent[data-template='cart'] .cart__footer .pf-ordercopy {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid #f0e8db;
+    padding-top: 2.4rem;
+  }
+}
+/* Rounded quantity selector on the cart */
+#MainContent[data-template='cart'] .quantity { border-radius: 12px; overflow: hidden; }
+#MainContent[data-template='cart'] .quantity:after { border-radius: 12px; border-color: #d9cdb6; }
+#MainContent[data-template='cart'] .quantity__button:hover .svg-wrapper { color: #1e8541; }
+/* Line-item titles a touch bolder */
+#MainContent[data-template='cart'] .cart-item__name { font-weight: 700; color: #2a2622; }
+/* Bulk-select toolbar + per-item checkboxes */
+#MainContent[data-template='cart'] .pf-cartbulk {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  padding: 1rem 1.4rem; margin-bottom: 1.2rem;
+  background: #fbf6ee; border: 1px solid #efe2cd; border-radius: 12px;
+}
+#MainContent[data-template='cart'] .pf-cartbulk__all {
+  display: inline-flex; align-items: center; gap: .7rem; font-size: 1.45rem; font-weight: 700; color: #2a2622; cursor: pointer;
+}
+#MainContent[data-template='cart'] .pf-cartbulk__all input,
+#MainContent[data-template='cart'] .cart-item__media .pf-cart-check {
+  width: 2rem; height: 2rem; accent-color: #d62828; cursor: pointer;
+}
+#MainContent[data-template='cart'] .pf-cartbulk__del {
+  display: inline-flex; align-items: center; gap: .4rem; cursor: pointer;
+  background: #fff; color: #d62828; border: 2px solid #d62828; border-radius: 999px;
+  font-weight: 800; font-size: 1.4rem; padding: .8rem 1.6rem; transition: background .18s ease, color .18s ease, opacity .18s ease;
+}
+#MainContent[data-template='cart'] .pf-cartbulk__del:hover:not([disabled]) { background: #d62828; color: #fff; }
+#MainContent[data-template='cart'] .pf-cartbulk__del[disabled] { opacity: .5; cursor: not-allowed; }
+/* Position the per-item checkbox at the top-left of the product image */
+#MainContent[data-template='cart'] .cart-item__media { position: relative; }
+#MainContent[data-template='cart'] .cart-item__media .pf-cart-check {
+  position: absolute; top: .4rem; left: .4rem; z-index: 2;
+  background: #fff; border-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,.2);
+}
+/* Make the estimated total stand out */
+#MainContent[data-template='cart'] .totals {
+  align-items: center;
+  padding: 1.2rem 1.6rem;
+  background: #fbf6ee;
+  border: 1px solid #efe2cd;
+  border-radius: 12px;
+}
+#MainContent[data-template='cart'] .totals__total {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #2a2622;
+}
+#MainContent[data-template='cart'] .totals__total-value {
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: #d62828;
+  margin: 0;
+}
+
+/* Urgency note above the checkout button */
+#MainContent[data-template='cart'] .pf-cart-urgency {
+  display: flex; align-items: flex-start; gap: .8rem;
+  background: #fff4e5; border: 1px solid #f4cf8f; border-radius: 12px;
+  padding: 1rem 1.3rem; margin: 0 0 1rem;
+  font-size: 1.35rem; line-height: 1.45; color: #a15b12; font-weight: 600;
+}
+#MainContent[data-template='cart'] .pf-cart-urgency__icon { flex: none; font-size: 1.7rem; line-height: 1.3; }
+
+/* Prominent, attention-drawing checkout button */
+#MainContent[data-template='cart'] .cart__checkout-button.pf-checkout-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .7rem;
+  background: linear-gradient(180deg, #2b74e0, #1747a8) !important;
+  color: #fff !important; font-size: 1.9rem; font-weight: 800; letter-spacing: .3px;
+  min-height: 6rem; border-radius: 14px; border: 0;
+  box-shadow: 0 8px 22px rgba(23, 71, 168, .35);
+  animation: pf-checkout-pulse 2.2s ease-in-out infinite;
+  transition: transform .15s ease, filter .15s ease;
+}
+#MainContent[data-template='cart'] .cart__checkout-button.pf-checkout-btn .pf-checkout-btn__icon { flex: none; }
+#MainContent[data-template='cart'] .cart__checkout-button.pf-checkout-btn::after { display: none; }
+#MainContent[data-template='cart'] .cart__checkout-button.pf-checkout-btn:hover { filter: brightness(1.06); transform: translateY(-2px); }
+@keyframes pf-checkout-pulse {
+  0%, 100% { box-shadow: 0 8px 20px rgba(23, 71, 168, .28); }
+  50% { box-shadow: 0 10px 32px rgba(23, 71, 168, .55); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #MainContent[data-template='cart'] .cart__checkout-button.pf-checkout-btn { animation: none; }
+}
+
+/* Applied-discount highlight (cart page + drawer) */
+.pf-applied {
+  background: linear-gradient(180deg, #eafaef, #dbf3e3);
+  border: 1px solid #9bd8ae; border-radius: 12px;
+  padding: 1rem 1.2rem; margin: 0 0 1.2rem;
+}
+.pf-applied__head { font-size: 1.35rem; font-weight: 800; color: #14672f; margin-bottom: .5rem; }
+.pf-applied__list { margin: 0; display: grid; gap: .4rem; }
+.pf-applied__item { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.pf-applied__code { font-size: 1.35rem; font-weight: 700; color: #1c7a3f; }
+.pf-applied__amount { font-size: 1.45rem; font-weight: 800; color: #d62828; white-space: nowrap; }
 
 /* ---- Boxed content sections (white card on the beige page) ------ */
 .pf-boxed-section { background: transparent !important; }
@@ -151,27 +747,156 @@ body.gradient {
 }
 
 /* ---- Flash-sale deals box (with countdown) --------------------- */
-.pf-flash { background: #fff; border: 1px solid #f0e6d8; border-radius: 24px; padding: 2.4rem clamp(1.6rem, 3vw, 3.2rem); box-shadow: 0 10px 30px rgba(60, 40, 20, 0.06); }
-.pf-flash__head { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; margin-bottom: 2.4rem; flex-wrap: wrap; }
+.pf-flash { position: relative; background: linear-gradient(180deg, #fff6ef 0%, #ffffff 22%); border: 1px solid #f4ddd0; border-radius: 24px; padding: 2.6rem clamp(1.6rem, 3vw, 3.2rem) 2.8rem; box-shadow: 0 12px 34px rgba(180, 60, 30, 0.10); overflow: hidden; }
+.pf-flash::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, #ff5a3c, #d62828, #ff5a3c); }
+.pf-flash__head { display: flex; align-items: center; gap: 1.4rem 2rem; margin-bottom: 2.4rem; flex-wrap: wrap; }
 .pf-flash__brand { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; }
-.pf-flash__clock { width: 3.4rem; height: 3.4rem; border-radius: 50%; background: #d62828; color: #fff; display: grid; place-items: center; flex: none; }
-.pf-flash__name { font-family: var(--font-heading-family, sans-serif); font-weight: 800; font-size: 1.9rem; color: #2a2622; letter-spacing: 0.01em; }
-.pf-flash__name span { color: #d62828; }
-.pf-flash__timer { display: inline-flex; align-items: center; gap: 0.4rem; margin-left: 0.4rem; }
-.pf-flash__timer i { color: #2a2622; font-style: normal; font-weight: 800; }
-.pf-flash__timer .pf-u { background: #2a2622; color: #fff; font-weight: 800; font-size: 1.5rem; padding: 0.5rem 0.8rem; border-radius: 6px; min-width: 3.6rem; text-align: center; font-variant-numeric: tabular-nums; }
-.pf-flash__more { font-weight: 700; color: #2a2622; font-size: 1.4rem; white-space: nowrap; }
-.pf-flash__more:hover { color: #1e63c8; }
+.pf-flash__badge { position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 0.6rem; background: linear-gradient(135deg, #ff5a3c, #d62828); color: #fff; font-weight: 800; font-size: 1.5rem; letter-spacing: 0.06em; padding: 0.8rem 1.4rem; border-radius: 999px; box-shadow: 0 6px 16px rgba(214, 40, 40, 0.35); }
+.pf-flash__badge svg { animation: pf-swing 1.6s ease-in-out infinite; transform-origin: 50% 20%; }
+.pf-flash__badge::after { content: ""; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent); transform: skewX(-20deg); animation: pf-shine 2.8s ease-in-out infinite; }
+.pf-flash__name { font-family: var(--font-heading-family, sans-serif); font-weight: 800; font-size: 1.9rem; color: #2a2622; }
+.pf-flash__count { display: flex; align-items: center; gap: 0.9rem; margin-left: auto; }
+.pf-flash__count-label { font-size: 1.3rem; font-weight: 700; color: #8a4a3a; }
+.pf-flash__timer { display: inline-flex; align-items: center; gap: 0.35rem; }
+.pf-flash__timer i { color: #d62828; font-style: normal; font-weight: 800; }
+.pf-flash__timer .pf-u { background: #2a2622; color: #fff; font-weight: 800; font-size: 1.6rem; padding: 0.55rem 0.85rem; border-radius: 8px; min-width: 3.8rem; text-align: center; font-variant-numeric: tabular-nums; }
+.pf-flash__more { font-weight: 800; color: #d62828; font-size: 1.4rem; white-space: nowrap; display: inline-flex; align-items: center; gap: 0.4rem; }
+.pf-flash__more:hover { color: #a01d1d; }
 .pf-flash__row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.6rem; }
-.pf-flash__card { display: flex; flex-direction: column; }
-.pf-flash__media { position: relative; aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: #faf3ea; display: grid; place-items: center; }
-.pf-flash__media img, .pf-flash__media svg { width: 100%; height: 100%; object-fit: cover; }
-.pf-flash__hot { position: absolute; top: 1rem; right: 1rem; background: #fbe8c4; color: #b4791a; font-size: 1.05rem; font-weight: 800; padding: 0.3rem 0.9rem; border-radius: 7px; letter-spacing: 0.03em; }
-.pf-flash__info { padding-top: 1.2rem; display: flex; flex-direction: column; gap: 0.7rem; }
+.pf-flash__card { display: flex; flex-direction: column; background: #fff; border: 1px solid #f0e6d8; border-radius: 16px; overflow: hidden; transition: transform 0.16s ease, box-shadow 0.16s ease; }
+.pf-flash__card:hover { transform: translateY(-5px); box-shadow: 0 16px 34px rgba(180, 60, 30, 0.14); }
+.pf-flash__media { position: relative; aspect-ratio: 1; overflow: hidden; background: #faf3ea; display: grid; place-items: center; }
+.pf-flash__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+.pf-flash__card:hover .pf-flash__media img { transform: scale(1.06); }
+.pf-flash__media svg { width: 100%; height: 100%; object-fit: cover; }
+.pf-flash__disc { position: absolute; top: 0; left: 0; z-index: 2; background: linear-gradient(135deg, #ff5a3c, #d62828); color: #fff; font-size: 1.15rem; font-weight: 800; padding: 0.4rem 0.9rem; border-radius: 0 0 12px 0; box-shadow: 0 4px 10px rgba(214, 40, 40, 0.3); }
+.pf-flash__hot { position: absolute; top: 1rem; right: 1rem; z-index: 2; background: #ffe08a; color: #a35a12; font-size: 1rem; font-weight: 800; padding: 0.3rem 0.8rem; border-radius: 7px; letter-spacing: 0.04em; }
+.pf-flash__info { padding: 1.2rem 1.3rem 1.4rem; display: flex; flex-direction: column; gap: 0.6rem; flex: 1; }
+.pf-flash__info .pf-card-actions { margin-top: auto; }
 .pf-flash__nm { margin: 0; font-size: 1.35rem; font-weight: 600; line-height: 1.35; color: #2a2622; }
 .pf-flash__nm a { color: inherit; text-decoration: none; }
-.pf-flash__nm a:hover { color: #1e63c8; }
-.pf-flash__price { font-size: 1.6rem; font-weight: 800; color: #d62828; }
-.pf-flash__tag { align-self: flex-start; background: #fbe0e4; color: #d6455d; font-size: 1.05rem; font-weight: 700; padding: 0.3rem 0.9rem; border-radius: 7px; }
-@media (max-width: 989px) { .pf-flash__row { grid-template-columns: repeat(3, 1fr); } }
+.pf-flash__nm a:hover { color: #d62828; }
+.pf-flash__price { display: flex; align-items: baseline; gap: 0.7rem; font-variant-numeric: tabular-nums; }
+.pf-flash__price .now { font-size: 1.7rem; font-weight: 800; color: #d62828; }
+.pf-flash__price .was { font-size: 1.2rem; color: #a79c8e; text-decoration: line-through; }
+.pf-flash__tag { align-self: flex-start; background: #fbe0e4; color: #d6455d; font-size: 1rem; font-weight: 700; padding: 0.3rem 0.8rem; border-radius: 7px; }
+@keyframes pf-shine { 0% { left: -60%; } 55%, 100% { left: 130%; } }
+@keyframes pf-swing { 0%, 100% { transform: rotate(-8deg); } 50% { transform: rotate(8deg); } }
+@media (prefers-reduced-motion: reduce) { .pf-flash__badge svg, .pf-flash__badge::after { animation: none; } .pf-flash__media img, .pf-flash__card { transition: none; } }
+@media (max-width: 989px) { .pf-flash__row { grid-template-columns: repeat(3, 1fr); } .pf-flash__count { margin-left: 0; } }
 @media (max-width: 599px) { .pf-flash__row { grid-template-columns: repeat(2, 1fr); } }
+
+/* Flash-sale: hide-beyond-initial + 'Xem thêm' reveal */
+.pf-flash__card.is-hidden { display: none; }
+.pf-flash__morewrap { text-align: center; margin-top: 2rem; }
+.pf-flash__more-btn {
+  display: inline-flex; align-items: center; gap: 0.5rem; background: #fff; border: 1.5px solid #d62828;
+  color: #d62828; font-weight: 800; font-size: 1.4rem; padding: 1.1rem 2.8rem; border-radius: 999px;
+  cursor: pointer; transition: background 0.15s ease, color 0.15s ease;
+}
+.pf-flash__more-btn:hover { background: #d62828; color: #fff; }
+
+/* Mobile menu drawer: all text black */
+.menu-drawer,
+.menu-drawer a,
+.menu-drawer summary,
+.menu-drawer .menu-drawer__menu-item,
+.menu-drawer__menu-item,
+.menu-drawer__submenu .menu-drawer__menu-item,
+.menu-drawer .menu-drawer__menu-item:hover,
+.menu-drawer .menu-drawer__menu-item--active {
+  color: #1a1a1a !important;
+}
+.menu-drawer .menu-drawer__menu-item .svg-wrapper,
+.menu-drawer summary .svg-wrapper { color: #1a1a1a; }
+
+/* Hide slideshow/slider prev-next arrows while the mobile menu drawer is open
+   (they have a high z-index and otherwise float on top of the open menu).
+   The .pf-menu-open body class is toggled by JS so it works even in in-app
+   browsers that lack :has() support. */
+body.pf-menu-open .pf-ss-arrow,
+body.pf-menu-open .pf-ss-dots,
+body.pf-menu-open .slider-button,
+body.pf-menu-open .slideshow__control,
+body:has(.menu-drawer-container[open]) .pf-ss-arrow,
+body:has(.menu-drawer-container[open]) .pf-ss-dots,
+body:has(.menu-drawer-container[open]) .slider-button,
+body:has(.menu-drawer-container[open]) .slideshow__control {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* ===== PHOMIFOOD: mobile menu — inline accordion (dropdown) submenus =====
+   Dawn's default drawer slides parent items ("Sản phẩm") into a separate
+   panel. This turns them into a dropdown that expands in place instead.
+   Selectors are extra-specific because component-menu-drawer.css loads after
+   this file and would otherwise win the tie. */
+.js .menu-drawer .menu-drawer__submenu {
+  position: static;
+  transform: none;
+  visibility: visible;
+  height: auto;
+  bottom: auto;
+  z-index: auto;
+  background-color: transparent;
+}
+/* keep the main menu list visible while a submenu is open (accordion, not slide) */
+.js .menu-drawer .menu-drawer__navigation .submenu-open { visibility: visible; }
+/* the sliding-panel "back" button isn't needed in an accordion */
+.menu-drawer .menu-drawer__submenu .menu-drawer__close-button { display: none; }
+/* indent child links so the hierarchy reads clearly */
+.menu-drawer .menu-drawer__submenu .menu-drawer__menu-item { padding-left: 4.6rem; }
+.menu-drawer .menu-drawer__submenu .menu-drawer__submenu .menu-drawer__menu-item { padding-left: 6.2rem; }
+/* swap the right-arrow (→) for a down-caret (▾) that rotates when open */
+.menu-drawer .menu-drawer__menu-item > .svg-wrapper .icon-arrow { display: none; }
+.js .menu-drawer .menu-drawer__menu-item .icon-caret { display: inline-block; }
+.menu-drawer .menu-drawer__menu-item > .svg-wrapper .icon-caret { transition: transform .2s ease; }
+.menu-drawer details[open] > summary.menu-drawer__menu-item .icon-caret { transform: rotate(180deg); }
+
+/* ===== PHOMIFOOD: "View all" link at top of desktop dropdown menus =====
+   Desktop behaves like mobile: click the parent ("Sản phẩm") to open the
+   dropdown, then use this link to reach the full products page. */
+.header__submenu .pf-menu-viewall {
+  font-weight: 800 !important;
+  color: #1e8541 !important;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+.header__submenu .pf-menu-viewall:hover { color: #14672f !important; }
+
+/* ===== PHOMIFOOD: "View all" link at top of mobile drawer submenus ===== */
+.menu-drawer__submenu .pf-drawer-viewall {
+  font-weight: 800 !important;
+  color: #1e8541 !important;
+}
+.menu-drawer__submenu .pf-drawer-viewall:active { color: #14672f !important; }
+
+/* ===== Nhãn "Đã bán X" (số thật) / "Mới về" ===== */
+.pf-sold{
+  display:inline-flex; align-items:center; gap:.3em;
+  font-size:1.15rem; font-weight:700; line-height:1.2;
+  padding:.28em .7em; border-radius:999px; margin:.2rem 0 .4rem;
+  white-space:nowrap;
+}
+.pf-sold--hot{ color:#c62828; background:#fdeceb; border:1px solid #f6c9c5; }
+.pf-sold--new{ color:#1e7a3c; background:#e9f7ee; border:1px solid #bfe0c7; }
+@media (max-width:749px){ .pf-sold{ font-size:1.05rem; padding:.24em .6em; } }
+
+/* ===== Cart drawer: note phí ship + nút "Xem giỏ hàng & thanh toán" ===== */
+.pf-ship-note{
+  display:flex; align-items:flex-start; gap:.6rem; margin:1.2rem 0;
+  padding:1rem 1.2rem; border-radius:12px; text-decoration:none;
+  background:#f4faf5; border:1px solid #d7e8dd; color:#2e2a22;
+  font-size:1.3rem; line-height:1.45;
+}
+.pf-ship-note__ic{ font-size:1.7rem; line-height:1; flex:none; }
+.pf-ship-note b{ color:#14672f; }
+.pf-ship-note u{ color:#1e8541; text-underline-offset:2px; }
+.pf-ship-note:hover{ background:#eaf5ee; }
+/* Nút "Xem giỏ hàng & thanh toán" được style trực tiếp trong snippets/cart-drawer.liquid
+   để áp ngay khi render (tránh nháy trắng do thứ tự tải CSS). */
+
+/* ===== Ảnh sản phẩm: thumbnail 3 cột (ảnh chính trên, 3 thumbnail dưới) ===== */
+@media screen and (min-width: 750px){
+  .product--thumbnail .thumbnail-list{ grid-template-columns: repeat(3, 1fr) !important; }
+}

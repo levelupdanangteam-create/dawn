@@ -1,0 +1,93 @@
+{%- comment -%}
+  Video riêng cho từng sản phẩm (khớp theo handle).
+  Thêm sản phẩm mới: thêm một nhánh {%- when 'handle-cua-san-pham' -%} với danh sách URL video.
+{%- endcomment -%}
+{%- assign pf_pv_urls = '' -%}
+{%- case product.handle -%}
+  {%- when 'canh-chua-isoup' -%}
+    {%- assign pf_pv_urls = 'https://cdn.shopify.com/videos/c/o/v/3025f2f9a4714a7a840067e5db0e13e9.mp4,https://cdn.shopify.com/videos/c/o/v/6cdfb0dc6a9a4c0cbd295df5dc6668a4.mp4,https://cdn.shopify.com/videos/c/o/v/f8a00a1c3d604feb9edd96b0f3c6679f.mp4' -%}
+  {%- when 'sầu-rieng-sấy' -%}
+    {%- assign pf_pv_urls = 'https://cdn.shopify.com/videos/c/o/v/0e630a914c544f3492a7fcc0b3523998.mp4,https://cdn.shopify.com/videos/c/o/v/cec813b68e5c4483ad74f11fcfd7a849.mp4,https://cdn.shopify.com/videos/c/o/v/cb40d40a9edf472fb9cc919bcff493ec.mp4' -%}
+  {%- when 'snack-hinh-mực-nướng' -%}
+    {%- assign pf_pv_urls = 'https://cdn.shopify.com/videos/c/o/v/cfd78f0d28164e158e91b7c1b37ba798.mp4,https://cdn.shopify.com/videos/c/o/v/c11a447037374f18bc66e7ae81ed982b.mp4,https://cdn.shopify.com/videos/c/o/v/e19e3106e7f043e1a2f4f5d692a72eae.mp4' -%}
+  {%- when 'mỳ-quảng-hội-an-an-liền-cathifood-4-vị' -%}
+    {%- assign pf_pv_urls = 'https://cdn.shopify.com/videos/c/o/v/284bfc97badb493287ad719ccadc76d5.mp4,https://cdn.shopify.com/videos/c/o/v/4d6f5424af214f59bd690b4c7afa741b.mp4,https://cdn.shopify.com/videos/c/o/v/9934690603a0418e9d0aa21b6746d429.mp4' -%}
+  {%- when 'combo-5-goi-banh-da-trộn-vifon' -%}
+    {%- assign pf_pv_urls = 'https://cdn.shopify.com/videos/c/o/v/7db4d4b59c694ae79da602449dfacd2f.mp4,https://cdn.shopify.com/videos/c/o/v/d150ba2a80644e5daaebf962e6ba825d.mp4,https://cdn.shopify.com/videos/c/o/v/0272973876b749ceb0f26c1b7c09a299.mp4' -%}
+  {%- when 'bun-bo-huế-vifon-thịt-thật' -%}
+    {%- assign pf_pv_urls = 'https://cdn.shopify.com/videos/c/o/v/29690355d4b84577919d7a0e501d1de5.mp4,https://cdn.shopify.com/videos/c/o/v/4444ac78da0242a1950dc68d40f8b30c.mp4,https://cdn.shopify.com/videos/c/o/v/06a7a5b9d3224fd7b97004d7b7336311.mp4' -%}
+  {%- when 'sườn-non-chay' -%}
+    {%- assign pf_pv_urls = 'https://cdn.shopify.com/videos/c/o/v/ade624084e994b3cbf52bd9da87caf2b.mp4,https://cdn.shopify.com/videos/c/o/v/65f46c0d2bfa4fe78c5de6e52353ceb7.mp4,https://cdn.shopify.com/videos/c/o/v/190c91b8a93043e884281320c919fc97.mp4' -%}
+  {%- when 'sườn-chay-xao-sả-ớt' -%}
+    {%- assign pf_pv_urls = 'https://cdn.shopify.com/videos/c/o/v/d3575c5c5d0e4d8eb062e43873ff7f39.mp4,https://cdn.shopify.com/videos/c/o/v/7c64d5748c22466b886df4a4376b86d9.mp4' -%}
+  {%- when 'kho-quẹt-chay' -%}
+    {%- assign pf_pv_urls = 'https://cdn.shopify.com/videos/c/o/v/ab40c47916d14e8c8b6a83a3426d5d2a.mp4,https://cdn.shopify.com/videos/c/o/v/7f1206b3e20c4cd190e9a52c3e5c5df0.mp4,https://cdn.shopify.com/videos/c/o/v/c17d0be64d3f4412813ba531b90a5ded.mp4' -%}
+  {%- when 'combo-5-ly-soup-hải-sản-i-soup' -%}
+    {%- assign pf_pv_urls = 'https://cdn.shopify.com/videos/c/o/v/9d859174693a47b3892f8be81e29eb73.mp4,https://cdn.shopify.com/videos/c/o/v/6c1b1bd66a2b4475aa6fe38a5a6e837a.mp4' -%}
+  {%- when 'kẹo-cu-dơ' -%}
+    {%- assign pf_pv_urls = 'https://cdn.shopify.com/videos/c/o/v/c45fcf6724fe422a9f52187a8edca801.mp4,https://cdn.shopify.com/videos/c/o/v/e3f32cb652694bb4bc0c0b09b38b5c0c.mp4,https://cdn.shopify.com/videos/c/o/v/99becb29395a49948d6118adb0830fed.mp4' -%}
+  {%- when 'che-an-liền-cathifood' -%}
+    {%- assign pf_pv_urls = 'https://cdn.shopify.com/videos/c/o/v/dd3206041a65414fa88767bf70fe35ad.mp4,https://cdn.shopify.com/videos/c/o/v/9ce008f65e494741b4d626cd2b428df1.mp4,https://cdn.shopify.com/videos/c/o/v/5e9d8ef6d0cc4183a37a783655422da0.mp4' -%}
+  {%- when 'ca-biển-an-liền-taki-deli' -%}
+    {%- assign pf_pv_urls = 'https://cdn.shopify.com/videos/c/o/v/12f35ba0b7ed4edfb3fc7d3d4e99affa.mp4,https://cdn.shopify.com/videos/c/o/v/bc5601113cba44c7ac03fcda79008175.mp4,https://cdn.shopify.com/videos/c/o/v/73ab9cadf2a043aa888da42ca861e50d.mp4' -%}
+  {%- when 'gia-vị-cơm-ga-3-4-người-an' -%}
+    {%- assign pf_pv_urls = 'https://cdn.shopify.com/videos/c/o/v/ea415d2a4cc44fe29fdd31b0f21c93b4.mp4,https://cdn.shopify.com/videos/c/o/v/80a958a43a3e4d5c88778e9c30360db3.mp4,https://cdn.shopify.com/videos/c/o/v/7cc27b11bf314047bf62848c53c56d7a.mp4' -%}
+  {%- when 'o-mai-sấu-gion' -%}
+    {%- assign pf_pv_urls = 'https://cdn.shopify.com/videos/c/o/v/0aebd42763954c5da60fc1153380f0be.mp4,https://cdn.shopify.com/videos/c/o/v/04e916a9aa034167a0973d2900122218.mp4,https://cdn.shopify.com/videos/c/o/v/d644b6d8f2e74c1c8ea30043d890de18.mp4' -%}
+  {%- when 'xoai-sấy-dẻo-muối-ớt' -%}
+    {%- assign pf_pv_urls = 'https://cdn.shopify.com/videos/c/o/v/68ff7c40ac7b40ed97dec72cfea25f22.mp4,https://cdn.shopify.com/videos/c/o/v/20f4504b136145f79a68467e7909d3c4.mp4,https://cdn.shopify.com/videos/c/o/v/d3c4c90cd17f440aa6cc94c80272acde.mp4' -%}
+{%- endcase -%}
+
+{%- comment -%} Khớp theo tiêu đề (dự phòng khi không chắc handle) {%- endcomment -%}
+{%- if pf_pv_urls == '' -%}
+  {%- assign pf_title_dc = product.title | downcase -%}
+  {%- if pf_title_dc contains 'miến lẩu thái' or pf_title_dc contains 'mien lau thai' -%}
+    {%- assign pf_pv_urls = 'https://cdn.shopify.com/videos/c/o/v/c58d0dc7e8784baaaa39f10585b5d927.mp4,https://cdn.shopify.com/videos/c/o/v/aa426c8028ce44b598ae8a51ad1f4e77.mp4,https://cdn.shopify.com/videos/c/o/v/48780efb6d504c348c1669e44e271575.mp4' -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- if pf_pv_urls != '' -%}
+  {%- assign pf_pv_list = pf_pv_urls | split: ',' -%}
+  <section class="pf-pvid">
+    <div class="pf-pvid__inner page-width">
+      <h2 class="pf-pvid__h">{% if request.locale.iso_code == 'vi' %}🎬 Video sản phẩm{% else %}🎬 Product videos{% endif %}</h2>
+      <div class="pf-pvid__grid">
+        {%- for u in pf_pv_list -%}
+          <video class="pf-pvid__v" controls playsinline muted loop {% if forloop.first %}autoplay preload="auto"{% else %}preload="metadata"{% endif %}>
+            <source src="{{ u | strip }}" type="video/mp4">
+          </video>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+  <style>
+    .pf-pvid { margin: 3rem 0 1rem; padding: 3.5rem 0; background: #f4f1ea; border-top: 1px solid #ece6d8; }
+    .pf-pvid__inner { text-align: center; }
+    .pf-pvid__h { font-size: 2.2rem; font-weight: 700; margin: 0 0 1.8rem; color: #2e7d46; }
+    .pf-pvid__grid {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 1.4rem;
+    }
+    .pf-pvid__v {
+      width: 100%; max-width: 260px; aspect-ratio: 9 / 16; object-fit: cover;
+      border-radius: 14px; background: #000; display: block;
+      box-shadow: 0 8px 22px rgba(0,0,0,.16);
+    }
+    @media (max-width: 749px) {
+      .pf-pvid { padding: 2.4rem 0; }
+      .pf-pvid__h { font-size: 1.8rem; }
+      /* Lướt ngang trên điện thoại */
+      .pf-pvid__grid {
+        display: flex; flex-wrap: nowrap; justify-content: flex-start;
+        gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding: 0 1.5rem .8rem; margin: 0 -1.5rem;
+        scrollbar-width: none;
+      }
+      .pf-pvid__grid::-webkit-scrollbar { display: none; }
+      .pf-pvid__v {
+        flex: 0 0 auto; width: 62vw; max-width: 260px;
+        scroll-snap-align: center;
+      }
+    }
+  </style>
+{%- endif -%}

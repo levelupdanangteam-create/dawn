@@ -1,0 +1,36 @@
+{%- comment -%}
+  Chữ giao diện ngắn (store EU: luôn tiếng Việt).
+  Dùng: {% render 'pf-ui', k: 'apply' %}
+{%- endcomment -%}
+{%- liquid
+  case k
+    when 'note'
+      echo 'Ghi chú đơn hàng'
+    when 'note_ph'
+      echo 'VD: giờ giao hàng, mã cổng, gọi trước khi giao…'
+    when 'discounts'
+      echo 'Mã giảm giá'
+    when 'apply'
+      echo 'Áp dụng'
+    when 'disc_ph'
+      echo 'Nhập mã giảm giá'
+    when 'order_summary'
+      echo 'Tóm tắt đơn hàng'
+    when 'trust_secure'
+      echo 'Thanh toán an toàn'
+    when 'trust_delivery'
+      echo 'Giao 3–7 ngày'
+    when 'trust_eu'
+      echo 'Gửi từ kho EU'
+    when 'ship_fees'
+      echo 'Phí ship theo quốc gia'
+    when 'select_all'
+      echo 'Chọn tất cả'
+    when 'delete_selected'
+      echo 'Xóa mục đã chọn'
+    when 'add'
+      echo 'Thêm vào giỏ'
+    when 'sold_out'
+      echo 'Hết hàng'
+  endcase
+-%}

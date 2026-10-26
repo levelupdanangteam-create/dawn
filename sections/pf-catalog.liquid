@@ -1,0 +1,208 @@
+{%- comment -%}
+  Trang "Danh sách sản phẩm" kiểu siêu thị (26/10): cột trái = danh mục có icon (dính khi cuộn, bấm để nhảy tới),
+  cột phải = từng danh mục: tiêu đề + "Xem thêm >" + 1 hàng thẻ pf-flash-card trượt ngang.
+  Dùng ở templates/collection.json (chỉ hiện ở /collections/all, tự ẩn lưới sản phẩm mặc định) và templates/list-collections.json.
+  CSS thẻ + hàng trượt dùng chung .pf-simple trong snippet pf-flash-card.
+{%- endcomment -%}
+{%- liquid
+  assign show = true
+  if section.settings.only_all and template.name == 'collection'
+    unless collection.handle == 'all'
+      assign show = false
+    endunless
+  endif
+  assign vi = false
+  if request.locale.iso_code == 'vi'
+    assign vi = true
+  endif
+  assign limit = section.settings.products_per_row
+-%}
+{%- if show -%}
+{%- if template.name == 'collection' -%}
+  <style>
+    /* Ở trang tất cả sản phẩm: ẩn lưới mặc định + khối combo, chỉ hiện bố cục danh mục */
+    .shopify-section[id$="__product-grid"], .shopify-section[id$="__pf_combo_cta"], .shopify-section[id$="__banner"] { display: none !important; }
+  </style>
+{%- endif -%}
+<div id="pf-cat-{{ section.id }}" class="pf-simple pf-cat" style="--cols: {{ section.settings.columns_desktop }}; padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
+  <div class="page-width pf-simple__full">
+    <nav class="pf-cat__crumb" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">{% if vi %}Trang chủ{% else %}Home{% endif %}</a>
+      <span aria-hidden="true">/</span>
+      <span>{% render 'pf-tr', s: section.settings.heading %}</span>
+    </nav>
+    <div class="pf-cat__layout">
+      <aside class="pf-cat__side">
+        <ul class="pf-cat__menu" data-pf-cat-menu>
+          {%- for block in section.blocks -%}
+            {%- assign col = block.settings.collection -%}
+            {%- if col != blank and col.products_count > 0 -%}
+              {%- assign title = block.settings.title | default: col.title -%}
+              {%- assign icon = block.settings.icon | default: col.image | default: col.products.first.featured_image -%}
+              <li>
+                <a href="#pf-cat-{{ section.id }}-{{ block.id }}" data-target="pf-cat-{{ section.id }}-{{ block.id }}" {{ block.shopify_attributes }}>
+                  <span class="pf-cat__ic">{%- if icon -%}<img src="{{ icon | image_url: width: 96, height: 96, crop: 'center' }}" alt="" width="48" height="48" loading="lazy">{%- endif -%}</span>
+                  <span class="pf-cat__nm">{% render 'pf-tr', s: title %}</span>
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </aside>
+
+      <div class="pf-cat__main">
+        {%- for block in section.blocks -%}
+          {%- assign col = block.settings.collection -%}
+          {%- if col != blank and col.products_count > 0 -%}
+            {%- assign title = block.settings.title | default: col.title -%}
+            <section class="pf-cat__row" id="pf-cat-{{ section.id }}-{{ block.id }}" data-pf-cat-row>
+              <div class="pf-cat__head">
+                <h2 class="pf-cat__title">{% render 'pf-tr', s: title %}</h2>
+                <a class="pf-cat__more" href="{{ col.url }}">{% if vi %}Xem thêm{% else %}View more{% endif %} <span aria-hidden="true">›</span></a>
+              </div>
+              <div class="pf-simple__slider">
+                <button type="button" class="pf-simple__arrow pf-simple__arrow--prev" aria-label="{% if vi %}Trước{% else %}Previous{% endif %}" disabled>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <div class="pf-simple__track" data-pf-cat-track>
+                  {%- assign pf_scope = section.id | append: '-' | append: block.id -%}
+                  {%- for p in col.products limit: limit -%}
+                    {%- render 'pf-flash-card', p: p, section_id: pf_scope -%}
+                  {%- endfor -%}
+                </div>
+                <button type="button" class="pf-simple__arrow pf-simple__arrow--next" aria-label="{% if vi %}Sau{% else %}Next{% endif %}">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+              </div>
+            </section>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  #pf-cat-{{ section.id }} .pf-cat__crumb { display: flex; gap: .8rem; align-items: center; font-size: 1.4rem; color: var(--mut); margin-bottom: 2rem; }
+  #pf-cat-{{ section.id }} .pf-cat__crumb a { color: var(--mut); text-decoration: none; }
+  #pf-cat-{{ section.id }} .pf-cat__crumb a:hover { color: var(--g); }
+  #pf-cat-{{ section.id }} .pf-cat__crumb span:last-child { color: var(--ink); }
+  #pf-cat-{{ section.id }} .pf-cat__layout { display: grid; grid-template-columns: 26rem minmax(0, 1fr); gap: 3.2rem; align-items: start; }
+
+  /* Cột trái: danh mục */
+  #pf-cat-{{ section.id }} .pf-cat__side { position: sticky; top: 9rem; max-height: calc(100vh - 11rem); overflow-y: auto; scrollbar-width: thin; }
+  #pf-cat-{{ section.id }} .pf-cat__menu { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .4rem; }
+  #pf-cat-{{ section.id }} .pf-cat__menu a {
+    display: flex; align-items: center; gap: 1.2rem; padding: .8rem 1.2rem; border-radius: 12px; text-decoration: none;
+    color: var(--ink); font-size: 1.5rem; line-height: 1.3; transition: background .15s ease, color .15s ease;
+  }
+  #pf-cat-{{ section.id }} .pf-cat__menu a:hover { background: var(--g-soft); }
+  #pf-cat-{{ section.id }} .pf-cat__menu a.is-active { background: var(--g-soft); color: var(--g-d); font-weight: 700; }
+  #pf-cat-{{ section.id }} .pf-cat__ic { flex: 0 0 4.4rem; width: 4.4rem; height: 4.4rem; border-radius: 50%; overflow: hidden; background: #f4f4f4; display: grid; place-items: center; }
+  #pf-cat-{{ section.id }} .pf-cat__ic img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #pf-cat-{{ section.id }} .pf-cat__nm { min-width: 0; }
+
+  /* Cột phải: từng danh mục */
+  #pf-cat-{{ section.id }} .pf-cat__row { scroll-margin-top: 10rem; }
+  #pf-cat-{{ section.id }} .pf-cat__row + .pf-cat__row { margin-top: 3.2rem; padding-top: 3.2rem; border-top: 1px solid var(--line); }
+  #pf-cat-{{ section.id }} .pf-cat__head { display: flex; align-items: center; justify-content: space-between; gap: 1.2rem; }
+  #pf-cat-{{ section.id }} .pf-cat__title { margin: 0; font-family: var(--font-heading-family, sans-serif); font-weight: 800; font-size: clamp(2.2rem, 2.2vw, 2.8rem); line-height: 1.2; color: var(--g-d); text-transform: none; }
+  #pf-cat-{{ section.id }} .pf-cat__more { flex: 0 0 auto; color: var(--g); font-size: 1.5rem; font-weight: 700; text-decoration: none; white-space: nowrap; }
+  #pf-cat-{{ section.id }} .pf-cat__more span { font-size: 2rem; vertical-align: -.1em; }
+  #pf-cat-{{ section.id }} .pf-cat__more:hover { color: var(--g-d); text-decoration: underline; }
+
+  @media (max-width: 1199px) { #pf-cat-{{ section.id }} .pf-simple__track { --per: 4; } #pf-cat-{{ section.id }} .pf-cat__layout { grid-template-columns: 22rem minmax(0, 1fr); gap: 2.4rem; } }
+  @media (max-width: 989px) { #pf-cat-{{ section.id }} .pf-simple__track { --per: 3; } }
+  @media (max-width: 749px) {
+    #pf-cat-{{ section.id }} .pf-cat__crumb { font-size: 1.25rem; margin-bottom: 1.2rem; }
+    #pf-cat-{{ section.id }} .pf-cat__layout { display: block; }
+    /* Danh mục thành 1 hàng chip trượt ngang, dính trên cùng */
+    #pf-cat-{{ section.id }} .pf-cat__side { position: sticky; top: 0; z-index: 4; max-height: none; overflow: visible; background: #fff; margin: 0 -1.6rem 1.6rem; padding: .8rem 1.6rem; border-bottom: 1px solid var(--line); }
+    #pf-cat-{{ section.id }} .pf-cat__menu { flex-direction: row; gap: .6rem; overflow-x: auto; scrollbar-width: none; }
+    #pf-cat-{{ section.id }} .pf-cat__menu::-webkit-scrollbar { display: none; }
+    #pf-cat-{{ section.id }} .pf-cat__menu a { flex-direction: column; gap: .4rem; padding: .4rem .6rem; width: 7.6rem; text-align: center; font-size: 1.1rem; }
+    #pf-cat-{{ section.id }} .pf-cat__ic { flex-basis: 4.4rem; }
+    #pf-cat-{{ section.id }} .pf-cat__nm { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    #pf-cat-{{ section.id }} .pf-cat__row { scroll-margin-top: 12rem; }
+    #pf-cat-{{ section.id }} .pf-cat__row + .pf-cat__row { margin-top: 2.4rem; padding-top: 2.4rem; }
+    #pf-cat-{{ section.id }} .pf-cat__title { font-size: 2rem; }
+    #pf-cat-{{ section.id }} .pf-cat__more { font-size: 1.3rem; }
+  }
+</style>
+
+<script>
+  (function () {
+    var root = document.getElementById('pf-cat-{{ section.id }}');
+    if (!root) return;
+    // Mũi tên trượt cho từng hàng
+    Array.prototype.forEach.call(root.querySelectorAll('[data-pf-cat-row]'), function (row) {
+      var track = row.querySelector('[data-pf-cat-track]');
+      var prev = row.querySelector('.pf-simple__arrow--prev');
+      var next = row.querySelector('.pf-simple__arrow--next');
+      if (!track || !prev || !next) return;
+      var step = function () {
+        var c = track.querySelector('.pf-fs__card');
+        var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+        return c ? (c.getBoundingClientRect().width + gap) * Math.max(1, Math.floor(track.clientWidth / (c.getBoundingClientRect().width + gap))) : track.clientWidth;
+      };
+      var update = function () {
+        var max = track.scrollWidth - track.clientWidth - 2;
+        prev.disabled = track.scrollLeft <= 2;
+        next.disabled = track.scrollLeft >= max;
+      };
+      prev.addEventListener('click', function () { track.scrollBy({ left: -step() }); });
+      next.addEventListener('click', function () { track.scrollBy({ left: step() }); });
+      var t;
+      track.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(update, 60); }, { passive: true });
+      window.addEventListener('resize', update);
+      window.addEventListener('load', update);
+      update();
+    });
+    // Tô sáng danh mục đang xem ở cột trái
+    var links = root.querySelectorAll('[data-pf-cat-menu] a');
+    if (!('IntersectionObserver' in window) || !links.length) return;
+    var byId = {};
+    Array.prototype.forEach.call(links, function (a) { byId[a.dataset.target] = a; });
+    var setActive = function (id) {
+      Array.prototype.forEach.call(links, function (a) { a.classList.toggle('is-active', a.dataset.target === id); });
+      var a = byId[id];
+      if (a && window.matchMedia('(max-width: 749px)').matches) {
+        var menu = a.closest('[data-pf-cat-menu]');
+        menu.scrollTo({ left: a.offsetLeft - menu.clientWidth / 2 + a.clientWidth / 2, behavior: 'smooth' });
+      }
+    };
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) setActive(e.target.id); });
+    }, { rootMargin: '-35% 0px -60% 0px' });
+    Array.prototype.forEach.call(root.querySelectorAll('[data-pf-cat-row]'), function (r) { io.observe(r); });
+  })();
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Danh mục kiểu siêu thị",
+  "tag": "section",
+  "max_blocks": 30,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Tên trang (breadcrumb)", "default": "Danh sách sản phẩm" },
+    { "type": "checkbox", "id": "only_all", "label": "Ở trang danh mục: chỉ hiện ở /collections/all", "info": "Bật khi đặt section trong template Danh mục (collection). Các danh mục khác vẫn hiện lưới sản phẩm bình thường.", "default": true },
+    { "type": "range", "id": "columns_desktop", "min": 3, "max": 6, "step": 1, "label": "Số sản phẩm mỗi hàng (desktop)", "default": 5 },
+    { "type": "range", "id": "products_per_row", "min": 4, "max": 24, "step": 1, "label": "Số sản phẩm tối đa mỗi danh mục", "default": 12 },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Danh mục",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Bộ sưu tập" },
+        { "type": "text", "id": "title", "label": "Tên hiển thị (để trống = tên bộ sưu tập)" },
+        { "type": "image_picker", "id": "icon", "label": "Icon (để trống = ảnh bộ sưu tập / ảnh sản phẩm đầu tiên)" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Danh mục kiểu siêu thị", "blocks": [ { "type": "category" }, { "type": "category" } ] } ]
+}
+{% endschema %}

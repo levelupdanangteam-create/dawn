@@ -1,0 +1,38 @@
+{%- comment -%}
+  Dòng note ưu đãi vận chuyển hiện tại ở giỏ hàng.
+  Dùng: {% render 'pf-cart-offer-note' %}
+{%- endcomment -%}
+{%- assign pf_on_vi = false -%}{%- if request.locale.iso_code == 'vi' -%}{%- assign pf_on_vi = true -%}{%- endif -%}
+<div class="pf-offer-note">
+  <span class="pf-offer-note__icon" aria-hidden="true">🚚</span>
+  <div class="pf-offer-note__text">
+    {%- if pf_on_vi -%}
+      <b>Ưu đãi vận chuyển theo quốc gia</b>
+      <ul class="pf-offer-note__list">
+        <li>🇨🇿 Séc · 🇩🇪 Đức · 🇵🇱 Ba Lan · 🇸🇰 Slovakia: <b>MIỄN PHÍ ship</b> đơn từ <b>149€</b></li>
+        <li>🇳🇱 Hà Lan · 🇫🇷 Pháp · 🇧🇪 Bỉ · 🇩🇰 Đan Mạch: <b>MIỄN PHÍ ship</b> đơn từ <b>189€</b></li>
+        <li>🌍 Các nước khác: <b>GIẢM 10%</b> giá trị đơn hàng</li>
+      </ul>
+    {%- else -%}
+      <b>Shipping offers by country</b>
+      <ul class="pf-offer-note__list">
+        <li>🇨🇿 Czechia · 🇩🇪 Germany · 🇵🇱 Poland · 🇸🇰 Slovakia: <b>FREE shipping</b> on orders from <b>€149</b></li>
+        <li>🇳🇱 Netherlands · 🇫🇷 France · 🇧🇪 Belgium · 🇩🇰 Denmark: <b>FREE shipping</b> on orders from <b>€189</b></li>
+        <li>🌍 Other countries: <b>10% OFF</b> your order</li>
+      </ul>
+    {%- endif -%}
+  </div>
+</div>
+<style>
+  .pf-offer-note {
+    display: flex; align-items: flex-start; gap: .7rem;
+    margin-top: .9rem; padding: .9rem 1.1rem;
+    background: #eaf4ec; border: 1px solid #cbe3d0; border-left: 4px solid #4a9c5d;
+    border-radius: 10px; line-height: 1.45;
+  }
+  .pf-offer-note__icon { font-size: 1.7rem; line-height: 1; flex-shrink: 0; }
+  .pf-offer-note__text { font-size: 1.3rem; color: #35513c; }
+  .pf-offer-note__text b { color: #234a2c; font-weight: 700; }
+  .pf-offer-note__list { margin: .4rem 0 0; padding-left: 1.2rem; }
+  .pf-offer-note__list li { margin: .25rem 0; }
+</style>

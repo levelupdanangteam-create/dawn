@@ -1,0 +1,295 @@
+{%- comment -%}
+  "Ưu đãi duy nhất hôm nay" — giao diện kiểu Flash Sale (26/10):
+  hàng tiêu đề nền trắng, chữ xanh thương hiệu (tia sét + tiêu đề + đồng hồ đếm ngược tới hết ngày + nút Xem tất cả),
+  bên dưới là một hàng thẻ trượt ngang có mũi tên. Thẻ: snippet pf-flash-card.
+  Nguồn sản phẩm giữ nguyên: blocks trong section, nếu không có thì dùng Theme settings → pf_deal_rows.
+  Bản giao diện cũ lưu ở pf-deal-hook.pre-flash (scratchpad), thẻ cũ là pf-deal-card-v2.
+{%- endcomment -%}
+{%- assign pf_dh_rows = settings.pf_deal_rows | remove: 'canh-chua-isoup||3,9€;;' | split: ';;' -%}
+{%- assign pf_gm = settings.pf_gift_min | default: 100 -%}
+{%- assign vi = false -%}{%- if request.locale.iso_code == 'vi' -%}{%- assign vi = true -%}{%- endif -%}
+{%- assign pf_all = section.settings.view_all_link | default: '/pages/uu-dai-hom-nay' -%}
+{%- assign pf_page = false -%}{%- if template.name == 'page' -%}{%- assign pf_page = true -%}{%- endif -%}
+
+<div class="pf-hd pf-fs{% if pf_page %} pf-fs--page{% endif %} color-scheme-1" id="pf-hd-{{ section.id }}" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    <div class="pf-fs__wrap">
+      <div class="pf-fs__bar-head">
+        <div class="pf-fs__title-wrap">
+          <svg class="pf-fs__bolt" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M13.5 2 4 13.5h6.2L9 22l10-12.4h-6.3L13.5 2z" fill="currentColor"/></svg>
+          <h2 class="pf-hd__title pf-fs__title">{% render 'pf-tr', s: section.settings.heading %}</h2>
+        </div>
+        {%- if section.settings.show_countdown -%}
+          <div class="pf-fs__timer" data-pf-hd-timer hidden>
+            <span class="pf-fs__timer-label">{% render 'pf-tr', s: section.settings.countdown_label %}</span>
+            <b data-h>00</b><span class="pf-fs__colon" aria-hidden="true">:</span><b data-m>00</b><span class="pf-fs__colon" aria-hidden="true">:</span><b data-s>00</b>
+          </div>
+        {%- endif -%}
+        {%- if section.settings.view_all_label != blank and pf_page == false -%}
+          <a class="pf-fs__all" href="{{ pf_all }}">{% render 'pf-tr', s: section.settings.view_all_label %}</a>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.subheading != blank -%}
+        <p class="pf-fs__sub">{% render 'pf-tr', s: section.settings.subheading %}</p>
+      {%- endif -%}
+
+      <div class="pf-fs__rail">
+        <button type="button" class="pf-fs__arrow pf-fs__arrow--prev" aria-label="{% if vi %}Sản phẩm trước{% else %}Previous{% endif %}" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <div class="pf-fs__track" data-pf-hd-track>
+          {%- if section.blocks.size > 0 -%}
+            {%- for block in section.blocks -%}
+              {%- assign p = block.settings.product -%}
+              {%- if p != blank and p.id -%}
+                {%- render 'pf-flash-card', p: p, deal_price: block.settings.deal_price, is_gift: block.settings.is_gift, gift_min: pf_gm, section_id: section.id, block_attrs: block.shopify_attributes -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- else -%}
+            {%- for row in pf_dh_rows -%}
+              {%- assign parts = row | split: '||' -%}
+              {%- assign p = all_products[parts[0]] -%}
+              {%- if p != blank and p.id -%}
+                {%- assign pf_is_gift = false -%}
+                {%- if settings.pf_gift_handle != blank and parts[0] == settings.pf_gift_handle -%}{%- assign pf_is_gift = true -%}{%- endif -%}
+                {%- render 'pf-flash-card', p: p, deal_price: parts[1], is_gift: pf_is_gift, gift_min: pf_gm, section_id: section.id -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+        <button type="button" class="pf-fs__arrow pf-fs__arrow--next" aria-label="{% if vi %}Xem thêm sản phẩm{% else %}Next{% endif %}" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+      {%- if pf_page and section.settings.more_label != blank -%}
+        <div class="pf-fs__more-wrap">
+          <a class="pf-fs__more" href="{{ section.settings.more_link | default: '/collections/all' }}">{% render 'pf-tr', s: section.settings.more_label %} <span aria-hidden="true">›</span></a>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  #pf-hd-{{ section.id }} { --fs-r: #d62828; --g: #1e8541; --g-d: #14672f; --g-soft: #eef6f0; --fs-line: #ececec; --ink: #2a2622; --mut: #8a8173; }
+  /* Khối nền xanh thương hiệu cho section nổi bật nhất trang */
+  #pf-hd-{{ section.id }} .pf-fs__wrap {
+    position: relative; overflow: hidden; border-radius: 20px; padding: 2.6rem clamp(1.6rem, 2.4vw, 3.2rem) 3rem;
+    background: radial-gradient(circle at 92% -10%, rgba(255, 198, 26, .28), rgba(255, 198, 26, 0) 38%),
+                radial-gradient(circle at -5% 110%, rgba(255, 255, 255, .12), rgba(255, 255, 255, 0) 40%),
+                linear-gradient(135deg, #1e8541 0%, #14672f 100%);
+    box-shadow: 0 14px 34px rgba(20, 103, 47, .22);
+  }
+  #pf-hd-{{ section.id }} .pf-fs__wrap > * { position: relative; }
+
+  /* Hàng tiêu đề: nền trắng, chữ xanh như các section khác */
+  #pf-hd-{{ section.id }} .pf-fs__bar-head { display: flex; align-items: center; gap: 1.6rem 2.4rem; flex-wrap: wrap; color: #fff; padding: 0 0 1.8rem; border-bottom: 1px solid rgba(255, 255, 255, .2); }
+  #pf-hd-{{ section.id }} .pf-fs__title-wrap { display: inline-flex; align-items: center; gap: 1.2rem; min-width: 0; }
+  #pf-hd-{{ section.id }} .pf-fs__bolt { flex: 0 0 auto; width: 5.2rem; height: 5.2rem; padding: 1.1rem; box-sizing: border-box; border-radius: 50%; background: #ffc61a; color: var(--g-d); }
+  #pf-hd-{{ section.id }} .pf-hd__title.pf-fs__title {
+    margin: 0; color: #fff !important; font-weight: 900 !important; font-size: clamp(3.4rem, 4.2vw, 5.6rem) !important;
+    line-height: 1.1 !important; text-transform: none !important; letter-spacing: -.01em !important; white-space: nowrap;
+    /* gạch vàng dưới chữ: tiêu đề nổi bật nhất trang */
+    background: linear-gradient(transparent 80%, #ffc61a 80%, #ffc61a 92%, transparent 92%) !important; padding: 0 .3rem !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, .15);
+  }
+  #pf-hd-{{ section.id }} .pf-fs__title::after { content: none !important; }
+  #pf-hd-{{ section.id }} .pf-fs__timer { display: inline-flex; align-items: center; gap: .5rem; }
+  #pf-hd-{{ section.id }} .pf-fs__timer[hidden] { display: none; }
+  #pf-hd-{{ section.id }} .pf-fs__timer-label { font-size: 1.4rem; font-weight: 600; color: rgba(255, 255, 255, .88); margin-right: .4rem; white-space: nowrap; }
+  #pf-hd-{{ section.id }} .pf-fs__timer b {
+    min-width: 3.6rem; text-align: center; background: #ffc61a; color: var(--g-d); border-radius: 8px;
+    font-size: 1.8rem; font-weight: 800; line-height: 1; padding: .6rem .5rem; font-variant-numeric: tabular-nums;
+  }
+  #pf-hd-{{ section.id }} .pf-fs__colon { font-size: 1.8rem; font-weight: 800; color: #ffc61a; }
+  #pf-hd-{{ section.id }} .pf-fs__all {
+    margin-left: auto; background: #fff; color: var(--g-d); border: 1.5px solid #fff; text-decoration: none; font-size: 1.4rem; font-weight: 700;
+    padding: .8rem 2rem; border-radius: 999px; white-space: nowrap; transition: background .15s ease;
+  }
+  #pf-hd-{{ section.id }} .pf-fs__all:hover { background: #ffc61a; border-color: #ffc61a; color: var(--g-d); }
+  #pf-hd-{{ section.id }} .pf-fs__sub { margin: 1rem 0 0; font-size: 1.4rem; color: rgba(255, 255, 255, .82); }
+
+  /* Hàng thẻ trượt ngang */
+  #pf-hd-{{ section.id }} .pf-fs__rail { position: relative; padding: 1.6rem 0 0; }
+  #pf-hd-{{ section.id }} .pf-fs__track {
+    --per: 6; --gap: 1.2rem; padding: .4rem 0 .8rem;
+    display: flex; gap: var(--gap); overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  }
+  #pf-hd-{{ section.id }} .pf-fs__track::-webkit-scrollbar { display: none; }
+  #pf-hd-{{ section.id }} .pf-fs__card {
+    flex: 0 0 calc((100% - (var(--per) - 1) * var(--gap)) / var(--per)); min-width: 0; scroll-snap-align: start;
+    display: flex; flex-direction: column; background: #fff; border: 0; border-radius: 12px; padding: 1rem 1rem 1.1rem;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .12);
+  }
+  #pf-hd-{{ section.id }} .pf-fs__media { position: relative; display: block; aspect-ratio: 1 / 1; border-radius: 8px; overflow: hidden; background: #fff; }
+  #pf-hd-{{ section.id }} .pf-fs__media img, #pf-hd-{{ section.id }} .pf-fs__media svg { width: 100%; height: 100%; object-fit: contain; display: block; transition: transform .3s ease; }
+  #pf-hd-{{ section.id }} .pf-fs__card:hover .pf-fs__media img { transform: scale(1.04); }
+  #pf-hd-{{ section.id }} .pf-fs__badge {
+    position: absolute; top: .4rem; left: .4rem; background: #fdecec; color: var(--fs-r); font-size: 1.2rem; font-weight: 700;
+    line-height: 1; padding: .45rem .6rem; border-radius: 6px;
+  }
+  #pf-hd-{{ section.id }} .pf-fs__card--gift .pf-fs__badge { background: #e3f4e8; color: #1e8541; }
+  #pf-hd-{{ section.id }} .pf-fs__name {
+    margin-top: 1rem; font-size: 1.5rem; line-height: 1.35; color: var(--ink); text-decoration: none;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  #pf-hd-{{ section.id }} .pf-fs__name:hover { color: var(--g); }
+  #pf-hd-{{ section.id }} .pf-fs__row { display: flex; align-items: flex-end; justify-content: space-between; gap: .6rem; margin-top: .6rem; }
+  #pf-hd-{{ section.id }} .pf-fs__price { display: flex; flex-direction: column; min-width: 0; }
+  #pf-hd-{{ section.id }} .pf-fs__now { font-size: 2rem; font-weight: 800; color: var(--g); line-height: 1.2; white-space: nowrap; }
+  #pf-hd-{{ section.id }} .pf-fs__was { font-size: 1.3rem; color: var(--mut); line-height: 1.3; white-space: nowrap; }
+  #pf-hd-{{ section.id }} .pf-fs__addform { margin: 0; flex: 0 0 auto; }
+  #pf-hd-{{ section.id }} .pf-fs__add {
+    position: relative; width: 4rem; height: 4rem; padding: 0; border: 1px solid var(--fs-line); border-radius: 10px; cursor: pointer;
+    display: grid; place-items: center; background: #fff; color: var(--ink); font-size: 0; overflow: hidden; transition: background .15s ease, color .15s ease;
+  }
+  #pf-hd-{{ section.id }} .pf-fs__add:hover { background: var(--g); color: #fff; border-color: var(--g); }
+  #pf-hd-{{ section.id }} .pf-fs__add[disabled] { background: var(--g); color: #fff; border-color: var(--g); }
+  #pf-hd-{{ section.id }} .pf-fs__add[disabled]::after { content: "✓"; font-size: 1.8rem; font-weight: 800; }
+  #pf-hd-{{ section.id }} .pf-fs__bar {
+    position: relative; margin-top: 1rem; height: 2rem; border-radius: 999px; background: var(--g-soft); overflow: hidden;
+  }
+  #pf-hd-{{ section.id }} .pf-fs__bar i { position: absolute; inset: 0 auto 0 0; border-radius: 999px; background: #cfe8d6; }
+  #pf-hd-{{ section.id }} .pf-fs__bar span {
+    position: relative; display: block; text-align: center; font-size: 1.2rem; font-weight: 700; line-height: 2rem; color: var(--g-d);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 .6rem;
+  }
+  #pf-hd-{{ section.id }} .pf-fs__bar--out { background: #f0f0f0; }
+  #pf-hd-{{ section.id }} .pf-fs__bar--out i { background: #e0e0e0; }
+  #pf-hd-{{ section.id }} .pf-fs__bar--out span { color: var(--mut); }
+
+  /* Mũi tên */
+  #pf-hd-{{ section.id }} .pf-fs__arrow {
+    position: absolute; top: 40%; z-index: 3; width: 4rem; height: 4rem; border-radius: 50%; border: 1px solid #e6e6e6; padding: 0; cursor: pointer;
+    display: grid; place-items: center; background: #fff; color: var(--ink); box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  }
+  #pf-hd-{{ section.id }} .pf-fs__arrow:hover { color: #fff; background: var(--g); border-color: var(--g); }
+  #pf-hd-{{ section.id }} .pf-fs__arrow[hidden] { display: none; }
+  #pf-hd-{{ section.id }} .pf-fs__arrow--prev { left: -.6rem; }
+  #pf-hd-{{ section.id }} .pf-fs__arrow--next { right: -.6rem; }
+
+  @media (max-width: 1199px) { #pf-hd-{{ section.id }} .pf-fs__track { --per: 5; } }
+  @media (max-width: 989px) { #pf-hd-{{ section.id }} .pf-fs__track { --per: 4; } }
+  @media (max-width: 749px) {
+    #pf-hd-{{ section.id }} .pf-fs__wrap { border-radius: 16px; padding: 1.8rem 1.2rem 2rem; }
+    #pf-hd-{{ section.id }} .pf-fs__bar-head { padding: 0 0 1rem; gap: .8rem 1rem; }
+    #pf-hd-{{ section.id }} .pf-fs__bolt { width: 3.8rem; height: 3.8rem; padding: .8rem; }
+    #pf-hd-{{ section.id }} .pf-hd__title.pf-fs__title { font-size: clamp(2.6rem, 7.4vw, 3.2rem) !important; white-space: normal; }
+    #pf-hd-{{ section.id }} .pf-fs__all { font-size: 1.2rem; padding: .5rem 1.2rem; }
+    #pf-hd-{{ section.id }} .pf-fs__timer { order: 3; width: 100%; }
+    #pf-hd-{{ section.id }} .pf-fs__timer-label { font-size: 1.15rem; }
+    #pf-hd-{{ section.id }} .pf-fs__timer b { min-width: 3rem; font-size: 1.5rem; padding: .45rem .4rem; border-radius: 6px; }
+    #pf-hd-{{ section.id }} .pf-fs__colon { font-size: 1.5rem; }
+    #pf-hd-{{ section.id }} .pf-fs__sub { margin: .8rem 0 0; font-size: 1.25rem; }
+    #pf-hd-{{ section.id }} .pf-fs__rail { padding: 1.2rem 0 0; }
+    #pf-hd-{{ section.id }} .pf-fs__track { --per: 2.3; --gap: .8rem; }
+    #pf-hd-{{ section.id }} .pf-fs__card { padding: .7rem .7rem .8rem; }
+    #pf-hd-{{ section.id }} .pf-fs__badge { font-size: 1.05rem; padding: .35rem .45rem; }
+    #pf-hd-{{ section.id }} .pf-fs__name { font-size: 1.3rem; margin-top: .7rem; }
+    #pf-hd-{{ section.id }} .pf-fs__now { font-size: 1.6rem; }
+    #pf-hd-{{ section.id }} .pf-fs__was { font-size: 1.15rem; }
+    #pf-hd-{{ section.id }} .pf-fs__add { width: 3.4rem; height: 3.4rem; border-radius: 8px; }
+    #pf-hd-{{ section.id }} .pf-fs__add svg { width: 19px; height: 19px; }
+    #pf-hd-{{ section.id }} .pf-fs__bar { height: 1.8rem; margin-top: .8rem; }
+    #pf-hd-{{ section.id }} .pf-fs__bar span { font-size: 1.05rem; line-height: 1.8rem; }
+    #pf-hd-{{ section.id }} .pf-fs__arrow { display: none !important; }
+  }
+  /* Trang riêng /pages/uu-dai-hom-nay: hiện hết sản phẩm dạng lưới thay vì 1 hàng trượt */
+  #pf-hd-{{ section.id }}.pf-fs--page .pf-fs__track { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); overflow: visible; scroll-snap-type: none; }
+  #pf-hd-{{ section.id }}.pf-fs--page .pf-fs__track > .pf-fs__card { flex: none; }
+  #pf-hd-{{ section.id }}.pf-fs--page .pf-fs__arrow { display: none !important; }
+  @media (max-width: 1199px) { #pf-hd-{{ section.id }}.pf-fs--page .pf-fs__track { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+  @media (max-width: 989px) { #pf-hd-{{ section.id }}.pf-fs--page .pf-fs__track { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 749px) { #pf-hd-{{ section.id }}.pf-fs--page .pf-fs__track { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  /* Nút xem các sản phẩm khác (chỉ trên trang riêng) */
+  #pf-hd-{{ section.id }} .pf-fs__more-wrap { display: flex; justify-content: center; margin-top: 2.6rem; }
+  #pf-hd-{{ section.id }} .pf-fs__more {
+    display: inline-flex; align-items: center; gap: .6rem; background: #ffc61a; color: var(--g-d); text-decoration: none;
+    font-size: 1.6rem; font-weight: 800; padding: 1.2rem 3.2rem; border-radius: 999px; box-shadow: 0 6px 16px rgba(0, 0, 0, .15);
+    transition: transform .15s ease, background .15s ease;
+  }
+  #pf-hd-{{ section.id }} .pf-fs__more:hover { background: #fff; transform: translateY(-1px); }
+  #pf-hd-{{ section.id }} .pf-fs__more span { font-size: 2rem; line-height: 1; }
+  @media (max-width: 749px) { #pf-hd-{{ section.id }} .pf-fs__more { width: 100%; justify-content: center; font-size: 1.45rem; padding: 1.1rem 1.6rem; } }
+  @media (prefers-reduced-motion: reduce) { #pf-hd-{{ section.id }} .pf-fs__media img { transition: none; } }
+</style>
+
+<script>
+  (function () {
+    var root = document.getElementById('pf-hd-{{ section.id }}');
+    if (!root) return;
+
+    // Đồng hồ đếm ngược tới 23:59:59 theo giờ trên máy khách, hết giờ tự quay vòng sang ngày mới.
+    var timer = root.querySelector('[data-pf-hd-timer]');
+    if (timer) {
+      var h = timer.querySelector('[data-h]'), m = timer.querySelector('[data-m]'), s = timer.querySelector('[data-s]');
+      var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+      var tick = function () {
+        var now = new Date(), end = new Date(now);
+        end.setHours(23, 59, 59, 999);
+        var left = Math.max(0, Math.floor((end - now) / 1000));
+        h.textContent = pad(Math.floor(left / 3600));
+        m.textContent = pad(Math.floor(left % 3600 / 60));
+        s.textContent = pad(left % 60);
+      };
+      tick();
+      timer.hidden = false;
+      setInterval(tick, 1000);
+    }
+
+    // Mũi tên trượt khi thẻ tràn khỏi khung
+    var track = root.querySelector('[data-pf-hd-track]');
+    var prev = root.querySelector('.pf-fs__arrow--prev');
+    var next = root.querySelector('.pf-fs__arrow--next');
+    if (!track) return;
+    var step = function () { var c = track.querySelector('.pf-fs__card'); return c ? (c.offsetWidth + 12) * 2 : track.clientWidth * .8; };
+    var update = function () {
+      var max = track.scrollWidth - track.clientWidth;
+      var can = max > 4;
+      prev.hidden = !can || track.scrollLeft < 8;
+      next.hidden = !can || track.scrollLeft > max - 8;
+    };
+    next.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: 'smooth' }); });
+    prev.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    window.addEventListener('load', update);
+    update();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Ưu đãi đặc biệt",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "paragraph", "content": "Tự thêm sản phẩm: bấm “Thêm khối → Sản phẩm deal” bên dưới, chọn sản phẩm và nhập giá deal. Nếu KHÔNG thêm khối nào, section sẽ tự dùng danh sách chung ở Theme settings → 🔥 Ưu đãi đặc biệt (Deal)." },
+    { "type": "text", "id": "eyebrow", "label": "Nhãn vàng phía trên", "default": "Số lượng có hạn" },
+    { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Ưu Đãi Đặc Biệt" },
+    { "type": "text", "id": "subheading", "label": "Mô tả ngắn", "default": "Giá sốc cho món Việt quen thuộc — hết là thôi" },
+    { "type": "checkbox", "id": "show_countdown", "label": "Hiện đồng hồ đếm ngược (tới hết ngày)", "default": true },
+    { "type": "text", "id": "countdown_label", "label": "Chữ cạnh đồng hồ", "default": "Kết thúc sau" },
+    { "type": "text", "id": "view_all_label", "label": "Chữ nút bên phải thanh tiêu đề", "default": "Xem tất cả" },
+    { "type": "url", "id": "view_all_link", "label": "Link nút (để trống = trang Duy nhất hôm nay)" },
+    { "type": "text", "id": "more_label", "label": "Nút cuối trang ưu đãi riêng", "default": "Xem các sản phẩm khác" },
+    { "type": "url", "id": "more_link", "label": "Link nút cuối trang (để trống = tất cả sản phẩm)" },
+    { "type": "header", "content": "Các bước nhận deal (dưới tiêu đề)" },
+    { "type": "checkbox", "id": "show_steps", "label": "Hiện các bước nhận deal", "default": true },
+    { "type": "text", "id": "step_1", "label": "Bước 1", "default": "Chọn 1 món giá deal" },
+    { "type": "text", "id": "step_2", "label": "Bước 2", "default": "Thêm vào giỏ cùng đơn hàng" },
+    { "type": "text", "id": "step_3", "label": "Bước 3", "default": "Thanh toán — giá deal áp dụng ngay" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 40 }
+  ],
+  "max_blocks": 20,
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Sản phẩm deal",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Chọn sản phẩm" },
+        { "type": "text", "id": "deal_price", "label": "Giá deal (chỉ nhập số, vd: 0 hoặc 1.9)", "info": "€ tự thêm. Để trống = hiển thị giá gốc. Giá tính tiền thật vẫn set trong Shopify (variant + giới hạn mua 1)." },
+        { "type": "checkbox", "id": "is_gift", "label": "Đây là quà tặng (hiển thị 0€)", "default": false }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Ưu đãi đặc biệt" } ]
+}
+{% endschema %}

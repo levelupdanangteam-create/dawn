@@ -1,0 +1,200 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "pf_deal_hook": {
+      "type": "pf-deal-hook",
+      "blocks": {
+        "product_Db8cPB": {
+          "type": "product",
+          "settings": {
+            "product": "chan-ga-ba-tuyết",
+            "deal_price": "1.9",
+            "is_gift": false
+          }
+        },
+        "product_77RH79": {
+          "type": "product",
+          "settings": {
+            "product": "pate-cot-den-hai-phong-150g-48",
+            "deal_price": "2.9",
+            "is_gift": false
+          }
+        },
+        "product_R3UDyK": {
+          "type": "product",
+          "settings": {
+            "product": "gia-vị-nấu-nước-dung-hoan-chỉnh-barona-phở-bo",
+            "deal_price": "3.9",
+            "is_gift": false
+          }
+        },
+        "stock_01": {
+          "type": "product",
+          "settings": {
+            "product": "banh-da-nem-tho-ha-250g-x-50-goi",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_02": {
+          "type": "product",
+          "settings": {
+            "product": "pho-3-cay-tre-3mm-400g-x-30-tui",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_03": {
+          "type": "product",
+          "settings": {
+            "product": "mi-tom-omachi-tom-chua-cay",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_04": {
+          "type": "product",
+          "settings": {
+            "product": "thanh-thuy-gao-nep-cai-hoa-vang-1kg-x-30-goi",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_05": {
+          "type": "product",
+          "settings": {
+            "product": "ngọc-lien-dưa-mon",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_06": {
+          "type": "product",
+          "settings": {
+            "product": "tp-banh-hoi-3-cay-tre-340g-x-40-goi",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_07": {
+          "type": "product",
+          "settings": {
+            "product": "bun-thanh-loc-soi-vua-500g-x-40-goi",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_08": {
+          "type": "product",
+          "settings": {
+            "product": "mien-phu-huong-suon-heo-55g-x-24-goi",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_09": {
+          "type": "product",
+          "settings": {
+            "product": "moc-nhi-100g-x-50-goi",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_10": {
+          "type": "product",
+          "settings": {
+            "product": "sua-kun-huong-socola-lua-mach-180ml-x-48-hop",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_11": {
+          "type": "product",
+          "settings": {
+            "product": "sua-kun-trai-cay-huong-nho-180ml-x-48-hop",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_12": {
+          "type": "product",
+          "settings": {
+            "product": "sua-kun-trai-cay-huong-dau-180ml-x-48-hop",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_14": {
+          "type": "product",
+          "settings": {
+            "product": "sua-kun-trai-cay-huong-cam-180ml-x-48-hop",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_13": {
+          "type": "product",
+          "settings": {
+            "product": "sua-kun-trai-cay-huong-cam-co-thach",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_15": {
+          "type": "product",
+          "settings": {
+            "product": "sua-kun-trai-cay-huong-dau-co-thach-170ml-x-48",
+            "deal_price": "",
+            "is_gift": false
+          }
+        }
+      },
+      "block_order": [
+        "product_Db8cPB",
+        "product_77RH79",
+        "product_R3UDyK",
+        "stock_01",
+        "stock_02",
+        "stock_03",
+        "stock_04",
+        "stock_05",
+        "stock_06",
+        "stock_07",
+        "stock_08",
+        "stock_09",
+        "stock_10",
+        "stock_11",
+        "stock_12",
+        "stock_14",
+        "stock_13",
+        "stock_15"
+      ],
+      "settings": {
+        "eyebrow": "Số lượng có hạn",
+        "heading": "Duy nhất hôm nay",
+        "subheading": "Giá tốt chỉ trong hôm nay — hết giờ là thôi",
+        "show_countdown": true,
+        "countdown_label": "Kết thúc sau",
+        "view_all_label": "Xem tất cả",
+        "view_all_link": "",
+        "show_steps": false,
+        "step_1": "Chọn 1 món giá deal",
+        "step_2": "Thêm vào giỏ cùng đơn hàng",
+        "step_3": "Thanh toán — giá deal áp dụng ngay",
+        "padding_top": 40,
+        "padding_bottom": 48
+      }
+    }
+  },
+  "order": [
+    "pf_deal_hook"
+  ]
+}

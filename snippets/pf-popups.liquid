@@ -1,0 +1,174 @@
+{%- comment -%}
+  PHOMIFOOD promotional popups (one per pageview, each once per session):
+    Pageview 1 → Free-ship popup (10s after landing).
+    Pageview 2+ → New-customer voucher popup.
+  Both are dismissible (X, backdrop, Esc).
+  (The weekly-deals promo now lives as a homepage section, not a popup.)
+{%- endcomment -%}
+
+{%- assign pf_pop_link = routes.all_products_collection_url -%}
+
+<div class="pf-pop" id="pf-pop-freeship" hidden aria-hidden="true">
+  <div class="pf-pop__backdrop" data-pf-pop-close></div>
+  <div class="pf-pop__box" role="dialog" aria-modal="true" aria-label="Ưu đãi miễn phí vận chuyển">
+    <button type="button" class="pf-pop__x" data-pf-pop-close aria-label="Đóng">&times;</button>
+    <a class="pf-pop__imglink" href="{{ pf_pop_link }}">
+      <img class="pf-pop__img" src="https://cdn.shopify.com/s/files/1/0749/9353/3018/files/40d4fbab-dabf-4309-bcb5-3349148fc772.png?v=1792834087" alt="Ưu đãi vận chuyển Phomifood" width="440" loading="lazy">
+    </a>
+  </div>
+</div>
+
+<style>
+  .pf-pop {
+    position: fixed; inset: 0; z-index: 9999;
+    display: none; align-items: center; justify-content: center; padding: 2rem;
+  }
+  .pf-pop.is-open { display: flex; }
+  .pf-pop__backdrop {
+    position: absolute; inset: 0; background: rgba(0, 0, 0, .62);
+    backdrop-filter: blur(2px); animation: pf-pop-fade .25s ease;
+    cursor: pointer; /* iOS Safari chỉ phát sự kiện click trên phần tử có cursor:pointer */
+  }
+  .pf-pop__box {
+    position: relative; width: min(90vw, 440px);
+    animation: pf-pop-in .32s cubic-bezier(.2, .9, .3, 1.2);
+  }
+  .pf-pop__imglink { display: block; }
+  .pf-pop__img {
+    display: block; width: 100%; height: auto; border-radius: 16px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .45);
+  }
+  .pf-pop__x {
+    position: absolute; top: -1.4rem; right: -1.4rem; z-index: 2;
+    width: 3.8rem; height: 3.8rem; border-radius: 50%;
+    background: #ffffff; color: #333; border: 0; cursor: pointer;
+    font-size: 2.4rem; line-height: 1; font-weight: 400;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, .3); transition: transform .15s ease, background .15s ease;
+  }
+  .pf-pop__x:hover { transform: scale(1.08); background: #f3f3f3; }
+  @keyframes pf-pop-fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pf-pop-in { from { opacity: 0; transform: translateY(18px) scale(.94); } to { opacity: 1; transform: none; } }
+  @media (max-width: 599px) {
+    .pf-pop { padding: 1.6rem; }
+    .pf-pop__box { width: min(80vw, 340px); }
+    .pf-pop__x { top: -1rem; right: -1rem; width: 3.4rem; height: 3.4rem; font-size: 2.1rem; }
+  }
+</style>
+
+<script>
+  (function () {
+    if (window.__pfPopups) return;
+    window.__pfPopups = true;
+
+    var FREESHIP_DELAY = 20000; // 20s after landing
+    var VOUCHER_DELAY = 1500;   // shortly after opening a later page
+
+    function ss(key, val) {
+      try {
+        if (val === undefined) return sessionStorage.getItem(key);
+        sessionStorage.setItem(key, val);
+      } catch (e) { return null; }
+    }
+
+    // Shared coordinator so the free-ship, voucher and exit-intent popups never
+    // overlap and never fire back-to-back.
+    window.PFPopups = window.PFPopups || {};
+    window.PFPopups.COOLDOWN = 30000; // ms giữa 2 popup — tránh hiện liên tiếp nhau
+    if (window.PFPopups._lock === undefined) window.PFPopups._lock = false;
+
+    // RULE: at most ONE popup on screen at any time. A popup is "open" if the
+    // lock is held OR any popup element is visible in the DOM.
+    window.PFPopups.anyOpen = function () {
+      if (window.PFPopups._lock) return true;
+      return !!document.querySelector('.pf-pop.is-open, #pf-exit-intent:not([hidden]), #pf-lead-popup:not([hidden])');
+    };
+    window.PFPopups.busy = function () {
+      if (window.PFPopups.anyOpen()) return true;
+      try {
+        var l = parseInt(sessionStorage.getItem('pf_pop_closed_at') || '0', 10);
+        if (l && (Date.now() - l) < window.PFPopups.COOLDOWN) return true;
+      } catch (e) {}
+      return false;
+    };
+    // Claim the single slot. Returns false if another popup already holds it.
+    window.PFPopups.claim = function (ignoreCooldown) {
+      if (window.PFPopups.anyOpen()) return false;
+      if (!ignoreCooldown) {
+        try {
+          var l = parseInt(sessionStorage.getItem('pf_pop_closed_at') || '0', 10);
+          if (l && (Date.now() - l) < window.PFPopups.COOLDOWN) return false;
+        } catch (e) {}
+      }
+      window.PFPopups._lock = true;
+      return true;
+    };
+    window.PFPopups.markClosed = function () {
+      window.PFPopups._lock = false;
+      try { sessionStorage.setItem('pf_pop_closed_at', String(Date.now())); } catch (e) {}
+    };
+
+    function open(id, ignoreCd) {
+      var el = document.getElementById(id);
+      if (!el || !window.PFPopups.claim(ignoreCd)) return false;
+      el.hidden = false;
+      el.setAttribute('aria-hidden', 'false');
+      el.classList.add('is-open');
+      document.documentElement.style.overflow = 'hidden';
+      return true;
+    }
+    function close(el) {
+      if (!el) return;
+      el.classList.remove('is-open');
+      el.setAttribute('aria-hidden', 'true');
+      el.hidden = true;
+      document.documentElement.style.overflow = '';
+      window.PFPopups.markClosed();
+    }
+    // Điện thoại: nhớ "đã xem" 24h bằng localStorage (sessionStorage trên mobile hay bị
+    // xoá khi đóng tab / chuyển app / mở từ Facebook, Zalo → popup hiện lại nhiều lần).
+    // Máy tính: giữ nguyên 1 lần mỗi phiên.
+    var IS_MOBILE = false;
+    try { IS_MOBILE = window.matchMedia('(max-width: 749px)').matches; } catch (e) {}
+    var MOBILE_TTL = 24 * 60 * 60 * 1000; // 24 giờ
+    function seen(flag) {
+      if (ss(flag)) return true;
+      if (!IS_MOBILE) return false;
+      try {
+        var t = parseInt(localStorage.getItem(flag) || '0', 10);
+        return !!t && (Date.now() - t) < MOBILE_TTL;
+      } catch (e) { return false; }
+    }
+    function markSeen(flag) {
+      ss(flag, '1');
+      if (IS_MOBILE) { try { localStorage.setItem(flag, String(Date.now())); } catch (e) {} }
+    }
+
+    function schedule(flag, id, delay, ignoreCd) {
+      if (seen(flag)) return;
+      setTimeout(function tryOpen() {
+        if (seen(flag)) return;
+        if (!open(id, ignoreCd)) { setTimeout(tryOpen, 3000); return; } // slot busy — wait, don't waste the turn
+        markSeen(flag);
+      }, delay);
+    }
+
+    // Đóng khi bấm nút X hoặc bấm/chạm bất kỳ đâu bên ngoài ảnh popup.
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      if (!t || !t.closest) return;
+      var pop = t.closest('.pf-pop');
+      if (!pop) return;
+      if (t.closest('[data-pf-pop-close]') || !t.closest('.pf-pop__box')) {
+        e.preventDefault();
+        close(pop);
+      }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { close(document.querySelector('.pf-pop.is-open')); }
+    });
+
+    // Single promo popup — 20s after landing; desktop: once per session, mobile: once per 24h.
+    schedule('pf_fs_shown', 'pf-pop-freeship', FREESHIP_DELAY);
+  })();
+</script>

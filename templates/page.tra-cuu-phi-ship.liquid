@@ -1,0 +1,235 @@
+{%- comment -%}
+  Trang Tra cứu phí ship. Số liệu lấy từ cấu hình vận chuyển trong Shopify
+  (Settings → Shipping and delivery → General profile) ngày 23/10/2026.
+  Khi đổi phí ship trong Shopify, nhớ cập nhật lại bảng này.
+{%- endcomment -%}
+<style>
+  .pfs { --g: #1f8a43; --g-d: #14672f; --y: #ffc61a; --ink: #22201c; --mut: #6b645a; --line: #e7e2d6; --soft: #f4f8f1;
+    padding: 3.2rem 0 6rem; color: var(--ink); }
+  .pfs__wrap { max-width: 112rem; margin-inline: auto; padding-inline: clamp(1.6rem, 4vw, 4rem); }
+  .pfs__head { text-align: center; max-width: 72rem; margin: 0 auto 2.8rem; }
+  .pfs__eyebrow { display: inline-block; font-size: 1.25rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--g); background: #e6f3e9; padding: .5rem 1.2rem; border-radius: 999px; }
+  .pfs__title { font-family: var(--font-heading-family, sans-serif); font-weight: 900; font-size: clamp(2.8rem, 4.4vw, 4.4rem);
+    line-height: 1.1; margin: 1.2rem 0 1rem; color: var(--g-d); }
+  .pfs__lead { font-size: 1.6rem; line-height: 1.6; color: var(--mut); margin: 0; }
+
+  .pfs__notes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; margin-bottom: 2.4rem; }
+  .pfs-note { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 1.6rem 1.8rem; }
+  .pfs-note h2 { display: flex; align-items: center; gap: .8rem; margin: 0 0 .8rem; font-size: 1.6rem; line-height: 1.3; color: var(--ink); }
+  .pfs-note h2 i { flex: none; width: 3rem; height: 3rem; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-size: 1.5rem; }
+  .pfs-note p, .pfs-note li { margin: 0; font-size: 1.4rem; line-height: 1.6; color: #4a453d; }
+  .pfs-note ul { margin: 0; padding-left: 1.8rem; }
+  .pfs-note li + li { margin-top: .3rem; }
+  .pfs-note--w i { background: #e6f3e9; }
+  .pfs-note--f { border-color: #bfe0c8; background: #f3faf4; }
+  .pfs-note--f i { background: var(--g); color: #fff; }
+  .pfs-note--d { border-color: #f1dc9c; background: #fffaea; }
+  .pfs-note--d i { background: var(--y); }
+
+  .pfs__bar { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.4rem; background: #fff; border: 1px solid var(--line);
+    border-radius: 14px 14px 0 0; border-bottom: 0; padding: 1.4rem 1.6rem; }
+  .pfs__select { position: relative; flex: 0 1 28rem; }
+  .pfs__select label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .pfs__select select { width: 100%; appearance: none; -webkit-appearance: none; font: inherit; font-size: 1.5rem; font-weight: 600;
+    color: var(--ink); background: var(--soft); border: 1.5px solid #cfe3d3; border-radius: 10px; padding: 1rem 3.6rem 1rem 1.4rem; cursor: pointer; }
+  .pfs__select select:focus-visible { outline: 2px solid var(--g); outline-offset: 2px; }
+  .pfs__select::after { content: ""; position: absolute; right: 1.4rem; top: 50%; width: .8rem; height: .8rem; margin-top: -.6rem;
+    border-right: 2px solid var(--g); border-bottom: 2px solid var(--g); transform: rotate(45deg); pointer-events: none; }
+  .pfs__chips { display: flex; flex-wrap: wrap; gap: .8rem; }
+  .pfs-chip { font: inherit; font-size: 1.35rem; font-weight: 700; cursor: pointer; border: 1.5px solid var(--line); background: #fff;
+    color: #4a453d; border-radius: 999px; padding: .75rem 1.4rem; transition: background .15s, border-color .15s, color .15s; }
+  .pfs-chip:hover { border-color: #b9d8c1; }
+  .pfs-chip[aria-pressed="true"] { background: var(--g); border-color: var(--g); color: #fff; }
+  .pfs-chip small { font-size: 1.15rem; font-weight: 700; opacity: .75; margin-left: .3rem; }
+  .pfs__count { margin-left: auto; font-size: 1.3rem; color: var(--mut); }
+
+  .pfs__table-wrap { background: #fff; border: 1px solid var(--line); border-radius: 0 0 14px 14px; overflow: hidden; }
+  .pfs table { width: 100%; border-collapse: collapse; }
+  .pfs thead th { background: var(--g-d); color: #fff; font-size: 1.25rem; font-weight: 800; letter-spacing: .02em; text-align: left;
+    padding: 1.2rem 1.4rem; white-space: nowrap; }
+  .pfs thead th:first-child { padding-left: 1.8rem; }
+  .pfs tbody th, .pfs tbody td { padding: 1.2rem 1.4rem; border-top: 1px solid var(--line); text-align: left; vertical-align: middle; font-weight: 400; }
+  .pfs tbody th { padding-left: 1.8rem; }
+  .pfs tbody tr:nth-child(even) { background: #fbfaf6; }
+  .pfs tbody tr:hover { background: var(--soft); }
+  .pfs tbody tr.is-hit { background: #fff6d6; }
+  .pfs tbody tr[hidden] { display: none !important; }
+  .pfs-country { display: inline-flex; align-items: center; gap: 1rem; font-size: 1.5rem; font-weight: 700; white-space: nowrap; }
+  .pfs-country img { width: 2.4rem; height: 1.6rem; object-fit: cover; border-radius: 2px; box-shadow: 0 0 0 1px rgba(0,0,0,.08); }
+  .pfs-price { display: block; font-size: 1.55rem; font-weight: 800; color: var(--ink); white-space: nowrap; }
+  .pfs-free { display: block; font-size: 1.15rem; font-weight: 700; color: var(--g); white-space: nowrap; margin-top: .1rem; }
+  .pfs-na { font-size: 1.35rem; font-weight: 600; color: var(--mut); font-style: italic; }
+  .pfs-badge { display: inline-block; font-size: 1.2rem; font-weight: 800; padding: .45rem 1rem; border-radius: 999px; white-space: nowrap; }
+  .pfs-badge--free { background: #e2f3e6; color: var(--g-d); }
+  .pfs-badge--d10 { background: #fff0bf; color: #6a5200; }
+  .pfs-badge--none { background: #f1efea; color: var(--mut); font-weight: 700; }
+  .pfs__empty { display: none; padding: 2.4rem; text-align: center; font-size: 1.5rem; color: var(--mut); }
+  .pfs__foot { margin-top: 1.6rem; font-size: 1.3rem; line-height: 1.6; color: var(--mut); }
+  .pfs__foot a { color: var(--g); font-weight: 700; }
+
+  @media screen and (max-width: 989px) {
+    .pfs__notes { grid-template-columns: 1fr; }
+    .pfs__count { margin-left: 0; width: 100%; }
+  }
+  /* Điện thoại: mỗi nước thành một thẻ */
+  @media screen and (max-width: 749px) {
+    .pfs { padding-top: 2.2rem; }
+    .pfs__wrap { display: flex; flex-direction: column; }
+    .pfs__head { order: 1; margin-bottom: 1.8rem; }
+    .pfs__bar { order: 2; }
+    .pfs__table-wrap { order: 3; }
+    .pfs__notes { order: 4; margin: 1.4rem 0 0; }
+    .pfs__foot { order: 5; }
+    .pfs__lead { font-size: 1.45rem; }
+    .pfs__bar { border-radius: 14px; border-bottom: 1px solid var(--line); margin-bottom: 1.2rem; padding: 1.2rem; }
+    .pfs__select { flex: 1 1 100%; }
+    .pfs-chip { font-size: 1.25rem; padding: .65rem 1.1rem; }
+    .pfs__table-wrap { background: none; border: 0; border-radius: 0; overflow: visible; }
+    .pfs thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .pfs table, .pfs tbody { display: block; }
+    .pfs tbody tr { display: grid; grid-template-columns: 1fr 1fr; background: #fff !important; border: 1px solid var(--line);
+      border-radius: 14px; margin-bottom: 1rem; overflow: hidden; }
+    .pfs tbody tr.is-hit { border-color: var(--y); box-shadow: 0 0 0 2px var(--y); }
+    .pfs tbody th { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      border-top: 0; background: var(--soft); padding: 1.1rem 1.4rem; }
+    .pfs tbody td { border-top: 1px solid var(--line); padding: 1rem 1.4rem; }
+    .pfs tbody td:nth-of-type(odd) { border-left: 1px solid var(--line); }
+    .pfs tbody td::before { content: attr(data-label); display: block; font-size: 1.15rem; font-weight: 700; color: var(--mut); margin-bottom: .2rem; }
+    .pfs tbody td.pfs-offer-cell { display: none; }
+    .pfs-row-badge { display: inline-block; }
+  }
+  @media screen and (min-width: 750px) { .pfs-row-badge { display: none; } }
+</style>
+
+<div class="pfs">
+  <div class="pfs__wrap">
+    <header class="pfs__head">
+      <span class="pfs__eyebrow">Giao từ tổng kho Praha</span>
+      <h1 class="pfs__title">Tra cứu phí ship</h1>
+      <p class="pfs__lead">Phí giao hàng đến 25 nước châu Âu, tính theo tổng cân nặng đơn hàng. Chọn nước của bạn để xem nhanh. Cách tính cân và ưu đãi xem ở phần ghi chú.</p>
+    </header>
+
+    <div class="pfs__notes">
+      <section class="pfs-note pfs-note--w">
+        <h2><i aria-hidden="true">⚖️</i>Phí tính theo cân như thế nào?</h2>
+        <ul>
+          <li>Tính theo <strong>tổng cân nặng cả đơn</strong> (cộng tất cả sản phẩm trong giỏ), không tính riêng từng món.</li>
+          <li>Đơn rơi vào bậc cân nào thì trả đúng mức phí của bậc đó.</li>
+          <li>Phí chính xác hiển thị ở <strong>bước thanh toán</strong>. Đơn trên 40 kg vui lòng liên hệ.</li>
+        </ul>
+      </section>
+      <section class="pfs-note pfs-note--f">
+        <h2><i aria-hidden="true">✓</i>Freeship đơn từ 139€</h2>
+        <p><strong>18 nước:</strong> Áo, Ba Lan, Bỉ, Bồ Đào Nha, Bulgaria, Croatia, Đức, Hà Lan, Hungary, Hy Lạp, Luxembourg, Pháp, Romania, Séc, Slovakia, Slovenia, Tây Ban Nha, Ý.</p>
+        <p style="margin-top:.6rem">Áp dụng cho đơn đến 30 kg.</p>
+      </section>
+      <section class="pfs-note pfs-note--d">
+        <h2><i aria-hidden="true">%</i>Giảm 10% đơn từ 139€</h2>
+        <p><strong>4 nước:</strong> Đan Mạch, Ireland, Phần Lan, Thụy Điển.</p>
+        <p style="margin-top:.6rem">Phí ship vẫn tính theo bảng bên dưới.</p>
+      </section>
+    </div>
+
+    <div class="pfs__bar" role="search">
+      <div class="pfs__select">
+        <label for="pfs-country">Chọn nước nhận hàng</label>
+        <select id="pfs-country">
+          <option value="">Tất cả các nước</option>
+          <option value="AT">Áo</option><option value="PL">Ba Lan</option><option value="BE">Bỉ</option><option value="PT">Bồ Đào Nha</option><option value="BG">Bulgaria</option><option value="HR">Croatia</option><option value="DK">Đan Mạch</option><option value="DE">Đức</option><option value="EE">Estonia</option><option value="NL">Hà Lan</option><option value="HU">Hungary</option><option value="GR">Hy Lạp</option><option value="IE">Ireland</option><option value="LV">Latvia</option><option value="LT">Litva</option><option value="LU">Luxembourg</option><option value="FI">Phần Lan</option><option value="FR">Pháp</option><option value="RO">Romania</option><option value="CZ">Séc</option><option value="SK">Slovakia</option><option value="SI">Slovenia</option><option value="ES">Tây Ban Nha</option><option value="SE">Thụy Điển</option><option value="IT">Ý</option>
+        </select>
+      </div>
+      <div class="pfs__chips" role="group" aria-label="Lọc theo ưu đãi">
+        <button type="button" class="pfs-chip" data-filter="all" aria-pressed="true">Tất cả<small>25</small></button>
+        <button type="button" class="pfs-chip" data-filter="free" aria-pressed="false">Freeship<small>18</small></button>
+        <button type="button" class="pfs-chip" data-filter="d10" aria-pressed="false">Giảm 10%<small>4</small></button>
+      </div>
+      <span class="pfs__count" aria-live="polite"></span>
+    </div>
+
+    <div class="pfs__table-wrap">
+      <table>
+        <caption class="visually-hidden">Bảng phí ship theo nước và bậc cân</caption>
+        <thead>
+          <tr><th scope="col">Nước nhận</th><th scope="col">0 – 10 kg</th><th scope="col">Trên 10 – 20 kg</th><th scope="col">Trên 20 – 30 kg</th><th scope="col">Trên 30 – 40 kg</th><th scope="col">Đơn từ 139€</th></tr>
+        </thead>
+        <tbody>
+          <tr data-cc="AT" data-offer="free"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/at.png" alt="" width="24" height="16" loading="lazy">Áo</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€11,20</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€12,93</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€14,45</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-na">Liên hệ</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--free">Freeship từ 139€</span></td></tr>
+          <tr data-cc="PL" data-offer="free"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/pl.png" alt="" width="24" height="16" loading="lazy">Ba Lan</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€9,73</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€11,13</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€12,65</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€9,73</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--free">Freeship từ 139€</span></td></tr>
+          <tr data-cc="BE" data-offer="free"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/be.png" alt="" width="24" height="16" loading="lazy">Bỉ</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€13,32</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€15,32</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€17,44</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€13,32</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--free">Freeship từ 139€</span></td></tr>
+          <tr data-cc="PT" data-offer="free"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/pt.png" alt="" width="24" height="16" loading="lazy">Bồ Đào Nha</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€13,32</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€15,32</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€17,44</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€13,32</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--free">Freeship từ 139€</span></td></tr>
+          <tr data-cc="BG" data-offer="free"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/bg.png" alt="" width="24" height="16" loading="lazy">Bulgaria</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€9,73</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€11,13</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€12,65</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€9,73</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--free">Freeship từ 139€</span></td></tr>
+          <tr data-cc="HR" data-offer="free"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/hr.png" alt="" width="24" height="16" loading="lazy">Croatia</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€12,12</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€15,65</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€15,65</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-na">Liên hệ</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--free">Freeship từ 139€</span></td></tr>
+          <tr data-cc="DK" data-offer="d10"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/dk.png" alt="" width="24" height="16" loading="lazy">Đan Mạch</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€30,08</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€40,01</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€46,31</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€60,60</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--d10">Giảm 10% từ 139€</span></td></tr>
+          <tr data-cc="DE" data-offer="free"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/de.png" alt="" width="24" height="16" loading="lazy">Đức</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€9,73</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€11,13</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€12,65</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€9,73</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--free">Freeship từ 139€</span></td></tr>
+          <tr data-cc="EE" data-offer="none"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/ee.png" alt="" width="24" height="16" loading="lazy">Estonia</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€15,72</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€18,32</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€22,24</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€15,72</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--none">Không áp dụng</span></td></tr>
+          <tr data-cc="NL" data-offer="free"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/nl.png" alt="" width="24" height="16" loading="lazy">Hà Lan</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€13,32</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€15,32</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€17,44</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€13,32</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--free">Freeship từ 139€</span></td></tr>
+          <tr data-cc="HU" data-offer="free"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/hu.png" alt="" width="24" height="16" loading="lazy">Hungary</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€9,73</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€11,13</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€12,65</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€9,73</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--free">Freeship từ 139€</span></td></tr>
+          <tr data-cc="GR" data-offer="free"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/gr.png" alt="" width="24" height="16" loading="lazy">Hy Lạp</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€13,32</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€15,32</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€17,44</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€13,32</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--free">Freeship từ 139€</span></td></tr>
+          <tr data-cc="IE" data-offer="d10"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/ie.png" alt="" width="24" height="16" loading="lazy">Ireland</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€15,72</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€18,32</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€22,24</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€15,72</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--d10">Giảm 10% từ 139€</span></td></tr>
+          <tr data-cc="LV" data-offer="none"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/lv.png" alt="" width="24" height="16" loading="lazy">Latvia</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€15,72</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€18,32</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€22,24</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€15,72</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--none">Không áp dụng</span></td></tr>
+          <tr data-cc="LT" data-offer="none"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/lt.png" alt="" width="24" height="16" loading="lazy">Litva</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€15,72</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€18,32</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€22,24</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€15,72</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--none">Không áp dụng</span></td></tr>
+          <tr data-cc="LU" data-offer="free"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/lu.png" alt="" width="24" height="16" loading="lazy">Luxembourg</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€13,32</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€15,32</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€17,44</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€13,32</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--free">Freeship từ 139€</span></td></tr>
+          <tr data-cc="FI" data-offer="d10"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/fi.png" alt="" width="24" height="16" loading="lazy">Phần Lan</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€30,08</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€40,01</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€46,31</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€60,60</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--d10">Giảm 10% từ 139€</span></td></tr>
+          <tr data-cc="FR" data-offer="free"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/fr.png" alt="" width="24" height="16" loading="lazy">Pháp</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€13,32</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€15,32</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€17,44</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€13,32</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--free">Freeship từ 139€</span></td></tr>
+          <tr data-cc="RO" data-offer="free"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/ro.png" alt="" width="24" height="16" loading="lazy">Romania</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€9,73</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€11,13</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€12,65</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€9,73</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--free">Freeship từ 139€</span></td></tr>
+          <tr data-cc="CZ" data-offer="free"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/cz.png" alt="" width="24" height="16" loading="lazy">Séc</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€9,73</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€11,13</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€12,65</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€9,73</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--free">Freeship từ 139€</span></td></tr>
+          <tr data-cc="SK" data-offer="free"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/sk.png" alt="" width="24" height="16" loading="lazy">Slovakia</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€9,73</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€11,13</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€12,65</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€9,73</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--free">Freeship từ 139€</span></td></tr>
+          <tr data-cc="SI" data-offer="free"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/si.png" alt="" width="24" height="16" loading="lazy">Slovenia</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€13,32</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€15,32</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€17,44</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€13,32</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--free">Freeship từ 139€</span></td></tr>
+          <tr data-cc="ES" data-offer="free"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/es.png" alt="" width="24" height="16" loading="lazy">Tây Ban Nha</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€13,32</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€15,32</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€17,44</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€13,32</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--free">Freeship từ 139€</span></td></tr>
+          <tr data-cc="SE" data-offer="d10"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/se.png" alt="" width="24" height="16" loading="lazy">Thụy Điển</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€30,08</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€40,01</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€46,31</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€60,60</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--d10">Giảm 10% từ 139€</span></td></tr>
+          <tr data-cc="IT" data-offer="free"><th scope="row"><span class="pfs-country"><img src="https://flagcdn.com/w40/it.png" alt="" width="24" height="16" loading="lazy">Ý</span></th><td data-label="0 – 10 kg"><span class="pfs-price">€12,12</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 10 – 20 kg"><span class="pfs-price">€13,53</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 20 – 30 kg"><span class="pfs-price">€15,65</span><span class="pfs-free">0€ nếu đơn từ 139€</span></td><td data-label="Trên 30 – 40 kg"><span class="pfs-price">€12,12</span></td><td class="pfs-offer-cell" data-label="Ưu đãi"><span class="pfs-badge pfs-badge--free">Freeship từ 139€</span></td></tr>
+        </tbody>
+      </table>
+      <p class="pfs__empty">Không có nước nào khớp bộ lọc.</p>
+    </div>
+
+    <p class="pfs__foot">
+      Giá bằng euro, đã gồm phí vận chuyển đến tận nhà. Bảng cập nhật ngày 23/10/2026; nếu có chênh lệch, phí ở trang thanh toán là phí chính thức.
+      Cần hỗ trợ? <a href="/pages/contact">Liên hệ Phomifood</a>.
+    </p>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.querySelector('.pfs');
+    if (!root) return;
+    var sel = root.querySelector('#pfs-country');
+    var chips = root.querySelectorAll('.pfs-chip');
+    var rows = root.querySelectorAll('tbody tr');
+    var empty = root.querySelector('.pfs__empty');
+    var count = root.querySelector('.pfs__count');
+    var filter = 'all';
+
+    // Thêm nhãn ưu đãi cạnh tên nước (hiện trên điện thoại)
+    rows.forEach(function (r) {
+      var b = r.querySelector('.pfs-offer-cell .pfs-badge');
+      if (b) { var c = b.cloneNode(true); c.classList.add('pfs-row-badge'); r.querySelector('th').appendChild(c); }
+    });
+
+    function apply() {
+      var cc = sel.value, shown = 0;
+      rows.forEach(function (r) {
+        var ok = (!cc || r.dataset.cc === cc) && (cc || filter === 'all' || r.dataset.offer === filter);
+        r.hidden = !ok;
+        r.classList.toggle('is-hit', !!cc && ok);
+        if (ok) shown++;
+      });
+      empty.style.display = shown ? 'none' : 'block';
+      count.textContent = 'Đang hiển thị ' + shown + ' / ' + rows.length + ' nước';
+    }
+    sel.addEventListener('change', function () {
+      if (sel.value) { filter = 'all'; chips.forEach(function (c) { c.setAttribute('aria-pressed', c.dataset.filter === 'all'); }); }
+      apply();
+    });
+    chips.forEach(function (c) {
+      c.addEventListener('click', function () {
+        filter = c.dataset.filter; sel.value = '';
+        chips.forEach(function (x) { x.setAttribute('aria-pressed', x === c); });
+        apply();
+      });
+    });
+    apply();
+  })();
+</script>

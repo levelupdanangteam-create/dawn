@@ -75,7 +75,18 @@
                   style="--animation-order: {{ forloop.index }};"
                 {% endif %}
               >
-                {%- if block.settings.heading != blank -%}
+                {%- comment -%}
+                  PHOMIFOOD: turn the "Business Information" text block into a
+                  click-to-expand accordion, and make sure the company info page
+                  link is present in the policies list — independent of the
+                  editor-managed footer-group.json.
+                {%- endcomment -%}
+                {%- assign pf_is_biz = false -%}
+                {%- if block.type == 'text' and block.settings.subtext contains 'Business Reg' -%}
+                  {%- assign pf_is_biz = true -%}
+                {%- endif -%}
+
+                {%- if block.settings.heading != blank and pf_is_biz == false -%}
                   <h2 class="footer-block__heading inline-richtext">{{- block.settings.heading -}}</h2>
                 {%- endif -%}
 
@@ -83,9 +94,34 @@
                   {%- when '@app' -%}
                     {% render block %}
                   {%- when 'text' -%}
-                    <div class="footer-block__details-content rte">
-                      {{ block.settings.subtext }}
-                    </div>
+                    {%- if pf_is_biz -%}
+                      {%- if block.settings.subtext contains '<details' -%}
+                        <div class="footer-block__details-content rte">{{ block.settings.subtext }}</div>
+                      {%- else -%}
+                        <details class="pf-biz-acc">
+                          <summary class="pf-biz-acc__sum">Business Information</summary>
+                          <div class="pf-biz-acc__body footer-block__details-content rte">{{ block.settings.subtext }}</div>
+                        </details>
+                      {%- endif -%}
+                    {%- else -%}
+                      {%- assign pf_has_biz_link = false -%}
+                      {%- assign pf_has_tos_link = false -%}
+                      {%- if block.settings.subtext contains 'thong-tin-doanh-nghiep' -%}
+                        {%- assign pf_has_biz_link = true -%}
+                      {%- endif -%}
+                      {%- if block.settings.subtext contains 'dieu-khoan-dich-vu' -%}
+                        {%- assign pf_has_tos_link = true -%}
+                      {%- endif -%}
+                      <div class="footer-block__details-content rte">
+                        {{ block.settings.subtext }}
+                        {%- if block.settings.heading contains 'Chính sách' and pf_has_biz_link == false -%}
+                          <p><a href="/pages/thong-tin-doanh-nghiep">Thông tin doanh nghiệp</a></p>
+                        {%- endif -%}
+                        {%- if block.settings.heading contains 'Chính sách' and pf_has_tos_link == false -%}
+                          <p><a href="/pages/dieu-khoan-dich-vu">Điều khoản dịch vụ</a></p>
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
                   {%- when 'link_list' -%}
                     {%- if block.settings.menu != blank -%}
                       <ul class="footer-block__details-content list-unstyled">
@@ -167,9 +203,8 @@
         >
           {%- if section.settings.newsletter_enable -%}
             <div class="footer-block__newsletter">
-              {%- if section.settings.newsletter_heading != blank -%}
-                <h2 class="footer-block__heading inline-richtext">{{ section.settings.newsletter_heading }}</h2>
-              {%- endif -%}
+              {%- comment -%}PHOMIFOOD: force the newsletter heading text.{%- endcomment -%}
+              <h2 class="footer-block__heading inline-richtext">Nhận ưu đãi ngay</h2>
               {%- form 'customer', id: 'ContactFooter', class: 'footer__newsletter newsletter-form' -%}
                 <input type="hidden" name="contact[tags]" value="newsletter">
                 <div class="newsletter-form__field-wrapper">

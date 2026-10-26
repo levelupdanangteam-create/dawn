@@ -24,20 +24,23 @@
 >
   <div class="page-width">
     <div class="cart__footer isolate section-{{ section.id }}-padding">
-      {%- if settings.show_cart_note -%}
-        <cart-note class="cart__note field">
-          <label for="Cart-note">{{ 'sections.cart.note' | t }}</label>
-          <textarea
-            class="text-area field__input"
-            name="note"
-            form="cart"
-            id="Cart-note"
-            placeholder="{{ 'sections.cart.note' | t }}"
-          >{{ cart.note }}</textarea>
-        </cart-note>
-      {%- endif -%}
+      {%- comment -%}
+        Khung "Tóm tắt đơn hàng" (cột phải trên máy tính, xếp dưới bảng SP trên điện thoại):
+        Mã giảm giá → Phí ship theo nước → Ưu đãi đã áp → Tạm tính / Giảm / Ship → Tổng → Ghi chú → Thanh toán.
+      {%- endcomment -%}
+      <div class="cart__blocks pf-sum">
+        <h2 class="pf-sum__title">{% render 'pf-ui', k: 'order_summary' %}</h2>
 
-      <div class="cart__blocks">
+        <div class="pf-disc">
+          <label class="pf-disc__label" for="PfDiscCode">{% render 'pf-ui', k: 'discounts' %}</label>
+          <div class="pf-disc__row">
+            <input type="text" id="PfDiscCode" class="pf-disc__input" autocomplete="off" placeholder="{% render 'pf-ui', k: 'disc_ph' %}">
+            <button type="button" class="pf-disc__btn" id="PfDiscApply">{% render 'pf-ui', k: 'apply' %}</button>
+          </div>
+        </div>
+
+        {% render 'pf-ship-table' %}
+
         {% for block in section.blocks %}
           {%- case block.type -%}
             {%- when '@app' -%}
@@ -46,22 +49,22 @@
               <div class="js-contents" {{ block.shopify_attributes }}>
                 <div>
                   {%- if cart.cart_level_discount_applications.size > 0 -%}
-                    <ul class="discounts list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
-                      {%- for discount in cart.cart_level_discount_applications -%}
-                        <li class="discounts__discount discounts__discount--position">
-                          {{- 'icon-discount.svg' | inline_asset_content -}}
-                          {{ discount.title | escape }}
-                          (-{{ discount.total_allocated_amount | money }})
-                        </li>
-                      {%- endfor -%}
-                    </ul>
+                    <div class="pf-applied">
+                      <div class="pf-applied__head">🎉 Ưu đãi đã được áp dụng!</div>
+                      <ul class="pf-applied__list list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
+                        {%- for discount in cart.cart_level_discount_applications -%}
+                          <li class="pf-applied__item">
+                            <span class="pf-applied__code">🏷️ {{ discount.title | escape }}</span>
+                            <span class="pf-applied__amount">−{{ discount.total_allocated_amount | money }}</span>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    </div>
                   {%- endif -%}
                 </div>
 
-                <div class="totals">
-                  <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
-                  <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
-                </div>
+                {% render 'pf-cart-totals' %}
+                {% render 'pf-cart-stickybar' %}
 
                 <small class="tax-note caption-large rte">
                   {%- if cart.duties_included and cart.taxes_included -%}
@@ -102,19 +105,33 @@
                     {%- endif -%}
                   {%- endif -%}
                 </small>
+
               </div>
             {%- else -%}
+              <cart-note class="pf-note">
+                <label class="pf-disc__label" for="Cart-note">{% render 'pf-ui', k: 'note' %}</label>
+                <textarea
+                  class="pf-note__input"
+                  name="note"
+                  form="cart"
+                  id="Cart-note"
+                  rows="4"
+                  maxlength="500"
+                  placeholder="{% render 'pf-ui', k: 'note_ph' %}"
+                >{{ cart.note }}</textarea>
+              </cart-note>
               <div class="cart__ctas" {{ block.shopify_attributes }}>
                 <button
                   type="submit"
                   id="checkout"
-                  class="cart__checkout-button button"
+                  class="cart__checkout-button button pf-checkout-btn"
                   name="checkout"
                   {% if cart == empty %}
                     disabled
                   {% endif %}
                   form="cart"
                 >
+                  <svg class="pf-checkout-btn__icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
                   {{ 'sections.cart.checkout' | t }}
                 </button>
               </div>
@@ -124,6 +141,7 @@
                   {{ content_for_additional_checkout_buttons }}
                 </div>
               {%- endif -%}
+
           {%- endcase -%}
         {% endfor %}
 
@@ -132,6 +150,45 @@
     </div>
   </div>
 </div>
+
+<script>
+  // Ô "Mã giảm giá": áp mã qua đường dẫn /discount/MÃ rồi quay lại giỏ.
+  (function () {
+    var btn = document.getElementById('PfDiscApply'), inp = document.getElementById('PfDiscCode');
+    if (!btn || !inp) return;
+    function go(){ var c = inp.value.trim(); if (!c) { inp.focus(); return; } window.location.href = '/discount/' + encodeURIComponent(c) + '?redirect={{ routes.cart_url | url_encode }}'; }
+    btn.addEventListener('click', go);
+    inp.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); go(); } });
+  })();
+</script>
+
+<script>
+  // Điền ngày cho box "Quy trình đơn hàng" trên trang giỏ — bền với việc
+  // giỏ tự cập nhật (đổi số lượng) làm re-render vùng .js-contents.
+  (function () {
+    var root = document.getElementById('main-cart-footer');
+    if (!root) return;
+    function fmt(d){ return ('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2); }
+    function addDays(b,n){ var d=new Date(b.getTime()); d.setDate(d.getDate()+n); return d; }
+    var mo;
+    function fill(){
+      var boxes = root.querySelectorAll('[data-pf-otl]');
+      if(!boxes.length) return;
+      if(mo) mo.disconnect();
+      boxes.forEach(function(box){
+        var now=new Date(), c=addDays(now,1), f=addDays(now,4), t=addDays(now,6);
+        var set=function(k,v){ var el=box.querySelector('[data-otl="'+k+'"]'); if(el && el.textContent!==v) el.textContent=v; };
+        set('order', fmt(now));
+        set('confirm', fmt(c));
+        var same=f.getMonth()===t.getMonth();
+        set('deliver', same ? (('0'+f.getDate()).slice(-2)+' – '+fmt(t)) : (fmt(f)+' – '+fmt(t)));
+      });
+      if(mo) mo.observe(root,{childList:true,subtree:true});
+    }
+    mo = new MutationObserver(function(){ fill(); });
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', fill); else fill();
+  })();
+</script>
 
 {% schema %}
 {

@@ -1,0 +1,90 @@
+{%- comment -%}
+  PHOMIFOOD gift-with-purchase.
+  When the cart subtotal (excluding the gift itself) reaches the threshold,
+  auto-add 1 free gift; remove it again when the cart drops below.
+  IMPORTANT: the gift must be free — set the gift product's price to €0, OR
+  create a "Buy X get Y" automatic discount (min spend → gift 100% off).
+  Configure in Theme settings → 🎁 Quà tặng theo đơn (Gift).
+{%- endcomment -%}
+{%- if settings.pf_gift_enable and settings.pf_gift_handle != blank -%}
+  {%- assign pf_gift_p = all_products[settings.pf_gift_handle] -%}
+  {%- if pf_gift_p != blank and pf_gift_p.id and pf_gift_p.available -%}
+    {%- assign pf_gift_vid = pf_gift_p.selected_or_first_available_variant.id -%}
+    <script>
+      (function () {
+        if (window.__pfGift) return;
+        window.__pfGift = true;
+
+        var VID = {{ pf_gift_vid }};
+        var MIN = {{ settings.pf_gift_min | default: 100 | times: 100 }};   // cents
+        var MAXV = {{ settings.pf_gift_max | default: 0 }};
+        var MAX = MAXV > 0 ? MAXV * 100 : 0;                                // cents, 0 = none
+        var root = (window.Shopify && Shopify.routes ? Shopify.routes.root : '/');
+        var busy = false, timer;
+
+        function isGift(it) {
+          return it.variant_id === VID && it.properties && (it.properties._gift === '1' || it.properties._gift === 1);
+        }
+        function subExcl(cart) {
+          var s = 0;
+          (cart.items || []).forEach(function (it) {
+            if (!isGift(it)) s += (it.final_line_price != null ? it.final_line_price : it.price * it.quantity);
+          });
+          return s;
+        }
+        function findGift(cart) { return (cart.items || []).filter(isGift)[0]; }
+        function qualifies(sub) {
+          if (sub < MIN) return false;
+          if (MAX > 0 && sub >= MAX) return false;
+          return true;
+        }
+        function post(url, body) {
+          return fetch(root + url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify(body)
+          });
+        }
+        function onCartPage() {
+          return !!document.querySelector('cart-items, #main-cart-items') || /\/cart(\/|$|\?)/.test(location.pathname);
+        }
+        function afterChange() { if (onCartPage()) location.reload(); }
+
+        function sync() {
+          if (busy) return;
+          busy = true;
+          fetch(root + 'cart.js', { headers: { Accept: 'application/json' } })
+            .then(function (r) { return r.json(); })
+            .then(function (cart) {
+              var g = findGift(cart), sub = subExcl(cart), q = qualifies(sub);
+              if (q && !g) {
+                return post('cart/add.js', { items: [{ id: VID, quantity: 1, properties: { _gift: '1' } }] })
+                  .then(function () { busy = false; afterChange(); });
+              }
+              if (!q && g) {
+                return post('cart/change.js', { id: g.key, quantity: 0 })
+                  .then(function () { busy = false; afterChange(); });
+              }
+              if (g && g.quantity !== 1) {
+                return post('cart/change.js', { id: g.key, quantity: 1 })
+                  .then(function () { busy = false; afterChange(); });
+              }
+              busy = false;
+            })
+            .catch(function () { busy = false; });
+        }
+        function schedule() { clearTimeout(timer); timer = setTimeout(sync, 400); }
+
+        // Re-sync whenever Dawn re-renders the cart bubble (fires on cart changes).
+        var bubble = document.getElementById('cart-icon-bubble');
+        if (bubble && 'MutationObserver' in window) {
+          new MutationObserver(schedule).observe(bubble, { childList: true, subtree: true });
+        }
+        document.addEventListener('pf:cart:added', schedule);
+
+        if (document.readyState !== 'loading') sync();
+        else document.addEventListener('DOMContentLoaded', sync);
+      })();
+    </script>
+  {%- endif -%}
+{%- endif -%}

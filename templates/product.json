@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -5,16 +14,19 @@
       "blocks": {
         "vendor": {
           "type": "text",
+          "disabled": true,
           "settings": {
             "text": "{{ product.vendor }}",
             "text_style": "uppercase"
           }
         },
         "title": {
-          "type": "title"
+          "type": "title",
+          "settings": {}
         },
         "price": {
-          "type": "price"
+          "type": "price",
+          "settings": {}
         },
         "variant_picker": {
           "type": "variant_picker",
@@ -24,7 +36,8 @@
           }
         },
         "quantity_selector": {
-          "type": "quantity_selector"
+          "type": "quantity_selector",
+          "settings": {}
         },
         "buy_buttons": {
           "type": "buy_buttons",
@@ -34,7 +47,9 @@
           }
         },
         "description": {
-          "type": "description"
+          "type": "description",
+          "disabled": true,
+          "settings": {}
         },
         "share": {
           "type": "share",
@@ -56,48 +71,256 @@
       "settings": {
         "enable_sticky_info": true,
         "color_scheme": "scheme-1",
-        "media_position": "left",
-        "gallery_layout": "stacked",
         "media_size": "large",
         "constrain_to_viewport": true,
         "media_fit": "contain",
+        "gallery_layout": "thumbnail_slider",
+        "mobile_thumbnails": "show",
+        "media_position": "left",
         "image_zoom": "lightbox",
-        "mobile_thumbnails": "hide",
-        "hide_variants": true,
+        "hide_variants": false,
         "enable_video_looping": false,
         "padding_top": 36,
         "padding_bottom": 12
       }
     },
+    "pf_frequently_bought": {
+      "type": "pf-frequently-bought",
+      "disabled": true,
+      "settings": {}
+    },
+    "pf_review_video": {
+      "type": "pf-review-video",
+      "settings": {
+        "padding_top": 32,
+        "padding_bottom": 32
+      }
+    },
+    "pf_reviews": {
+      "type": "pf-product-reviews",
+      "blocks": {
+        "r4": {
+          "type": "review",
+          "settings": {
+            "author": "Lê Hoàng Nam",
+            "location": "Warszawa, Ba Lan",
+            "rating": 5,
+            "date": "15/07/2026",
+            "verified": true,
+            "body": "Hàng Việt xa xứ mà chất lượng như ở nhà. Đóng thùng chắc chắn, không móp méo gì cả. Cảm ơn shop!"
+          }
+        },
+        "r5": {
+          "type": "review",
+          "settings": {
+            "author": "Vũ Thị Mai",
+            "location": "Amsterdam, Hà Lan",
+            "rating": 5,
+            "date": "08/07/2026",
+            "verified": true,
+            "body": "Lần đầu đặt hơi lo, nhưng nhận hàng xong yên tâm hẳn. Sản phẩm chất lương, hạn dùng còn dài, giá hợp lý."
+          }
+        },
+        "r6": {
+          "type": "review",
+          "settings": {
+            "author": "Đặng Quốc Việt",
+            "location": "Bruxelles, Bỉ",
+            "rating": 5,
+            "date": "30/06/2026",
+            "verified": true,
+            "body": "Mình mở quán ăn nên hay lấy sỉ ở đây. Giá tốt, giao đều đặn, có gì shop hỗ trợ rất nhanh."
+          }
+        }
+      },
+      "block_order": [
+        "r4",
+        "r5",
+        "r6"
+      ],
+      "settings": {
+        "heading": "Khách hàng nói gì về sản phẩm",
+        "subheading": "Đánh giá thật từ khách hàng PHOMIFOOD",
+        "show_summary": true,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "pf_product_faq": {
+      "type": "pf-product-faq",
+      "blocks": {
+        "g1": {
+          "type": "group",
+          "settings": {
+            "title": "Vận chuyển & đơn hàng"
+          }
+        },
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "Bao lâu thì tôi nhận được hàng?",
+            "answer": "<p>Đơn được đóng gói trong <strong>ngày làm việc kế tiếp</strong> tại kho EU của PHOMIFOOD (Praha, CH Séc) và giao trong <strong>2–5 ngày làm việc</strong> đến hầu hết các nước châu Âu (không tính cuối tuần, ngày lễ).</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "Có miễn phí vận chuyển không?",
+            "answer": "<p>Có. Đơn từ <strong>139€</strong> được <strong>Freeship</strong> hoặc <strong>giảm 10%</strong>. Thanh tiến độ trong giỏ hàng cho biết bạn còn thiếu bao nhiêu.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "Tôi có thể mua nguyên thùng không?",
+            "answer": "<p>Được. Phần lớn sản phẩm có quy cách <strong>Thùng</strong> với giá tốt hơn mua lẻ — chọn ở mục quy cách phía trên. Cần số lượng lớn, nhắn PHOMIFOOD qua WhatsApp hoặc Messenger để được báo giá sỉ.</p>"
+          }
+        },
+        "q4": {
+          "type": "question",
+          "settings": {
+            "question": "Làm sao để theo dõi đơn hàng?",
+            "answer": "<p>Bấm <strong>Theo dõi đơn hàng</strong> ở đầu trang để nhắn PHOMIFOOD qua WhatsApp, hoặc nhắn qua Messenger — shop sẽ gửi tình trạng đơn cho bạn.</p>"
+          }
+        },
+        "g2": {
+          "type": "group",
+          "settings": {
+            "title": "Thanh toán & đổi trả"
+          }
+        },
+        "q5": {
+          "type": "question",
+          "settings": {
+            "question": "Hàng bị lỗi khi nhận thì sao?",
+            "answer": "<p>Sản phẩm bị lỗi khi giao nhận được <strong>hoàn tiền 100%</strong>. Nếu phát hiện hàng giả, PHOMIFOOD hoàn <strong>120%</strong> giá trị sản phẩm. Chụp ảnh tình trạng hàng và nhắn shop ngay khi nhận.</p>"
+          }
+        },
+        "q6": {
+          "type": "question",
+          "settings": {
+            "question": "Tôi có thể thanh toán bằng gì?",
+            "answer": "<p>Thanh toán trực tuyến an toàn qua Shopify. Các phương thức khả dụng (thẻ, ví điện tử…) hiển thị ở bước thanh toán.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "g1",
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "g2",
+        "q5",
+        "q6"
+      ],
+      "settings": {
+        "heading": "Câu hỏi thường gặp",
+        "padding_top": 32,
+        "padding_bottom": 24
+      }
+    },
+    "pf_same_category": {
+      "type": "pf-same-category",
+      "settings": {
+        "heading": "Sản phẩm cùng danh mục",
+        "fixed_collection": "",
+        "related_heading": "Sản phẩm liên quan",
+        "category_handles": "bun-phở-kho\nmi-an-liền\nbột-gia-vị\ndồ-uống\nsữa-cac-loại\nbanh-kẹo-dồ-an-vặt\nthực-phẩm-chế-biến-sẵn\ngạo-nếp-cac-loại\nbanh-trang-cac-loại\ncombo",
+        "exclude_handles": "ban-chay-nhat\nsieu-sale-10-10\nhang-dộc-quyền\nall\nfrontpage",
+        "products_to_show": 12,
+        "initial_count": 8,
+        "padding_top": 24,
+        "padding_bottom": 40
+      }
+    },
     "disclosures": {
       "type": "disclosures",
       "settings": {
+        "heading": "Disclosures",
+        "heading_size": "h2",
+        "open_by_default": false,
+        "color_scheme": "",
         "padding_top": 36,
         "padding_bottom": 0
       }
     },
     "related-products": {
       "type": "related-products",
+      "disabled": true,
       "settings": {
-        "heading": "You may also like",
+        "heading": "Thường Được Mua Kèm",
         "heading_size": "h2",
         "products_to_show": 4,
         "columns_desktop": 4,
+        "columns_mobile": "2",
         "color_scheme": "scheme-1",
         "image_ratio": "square",
         "image_shape": "default",
         "show_secondary_image": true,
         "show_vendor": false,
         "show_rating": false,
-        "columns_mobile": "2",
         "padding_top": 36,
         "padding_bottom": 28
+      }
+    },
+    "pf_trust_strip": {
+      "type": "pf-trust-strip",
+      "blocks": {
+        "t1": {
+          "type": "item",
+          "settings": {
+            "icon": "🚚",
+            "title": "Freeship từ 139€",
+            "text": "hoặc giảm 10% đơn hàng"
+          }
+        },
+        "t2": {
+          "type": "item",
+          "settings": {
+            "icon": "📦",
+            "title": "Gửi từ kho EU",
+            "text": "Praha, CH Séc"
+          }
+        },
+        "t3": {
+          "type": "item",
+          "settings": {
+            "icon": "🔒",
+            "title": "Thanh toán an toàn",
+            "text": "qua Shopify"
+          }
+        },
+        "t4": {
+          "type": "item",
+          "settings": {
+            "icon": "💬",
+            "title": "Hỗ trợ tiếng Việt",
+            "text": "WhatsApp / Messenger"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "settings": {
+        "margin_top": 32,
+        "speed": 40
       }
     }
   },
   "order": [
     "main",
+    "pf_frequently_bought",
+    "pf_review_video",
+    "pf_reviews",
+    "pf_product_faq",
+    "pf_same_category",
     "disclosures",
-    "related-products"
+    "related-products",
+    "pf_trust_strip"
   ]
 }

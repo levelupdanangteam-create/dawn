@@ -9,8 +9,12 @@
  */
 {
   "current": {
+    "pf_deal_rows": "chip-oishi-ngo-80-goi-32g-x-80-goi-bich||0€;;banh-da-nem-totaco-250g-x-80-goi||0,9€;;ngoc-lien-ca-phao-trang-365g-x-24-lo||1,9€;;mỳ-quảng-hội-an-an-liền-cathifood-4-vị||2,9€;;canh-chua-isoup||3,9€;;pate-cot-den-hai-phong-150g-48||2,9€||áp dụng cho 1 hộp lẻ — mua thêm sẽ tính theo giá gốc;;gia-vị-nấu-nước-dung-hoan-chỉnh-barona-phở-bo||3,9€||áp dụng cho 1 sản phẩm — mua thêm sẽ tính theo giá gốc",
+    "pf_gift_enable": false,
+    "pf_gift_handle": "",
     "logo": "shopify://shop_images/ChatGPT_Image_Jun_23_2026_03_41_00_PM.png",
-    "logo_width": 90,
+    "logo_width": 250,
+    "favicon": "shopify://shop_images/ChatGPT_Image_Jul_19_2026_09_50_36_PM.png",
     "type_header_font": "assistant_n4",
     "heading_scale": 100,
     "type_body_font": "assistant_n4",
@@ -107,8 +111,9 @@
     "sale_badge_color_scheme": "scheme-4",
     "sold_out_badge_color_scheme": "scheme-3",
     "brand_headline": "",
-    "brand_description": "<p></p>",
-    "brand_image_width": 100,
+    "brand_description": "<p>PHOMIFOOD EU<br/>Sapa Market, Prague-Libuš, Czech Republic<br/></p>",
+    "brand_image": "shopify://shop_images/ChatGPT_Image_Jun_23_2026_03_41_00_PM.png",
+    "brand_image_width": 150,
     "social_facebook_link": "",
     "social_instagram_link": "",
     "social_youtube_link": "",
@@ -121,12 +126,14 @@
     "predictive_search_enabled": true,
     "predictive_search_show_vendor": false,
     "predictive_search_show_price": false,
-    "currency_code_enabled": true,
-    "cart_type": "notification",
+    "currency_code_enabled": false,
+    "cart_type": "drawer",
     "show_vendor": false,
     "show_cart_note": false,
     "cart_drawer_collection": "",
     "cart_color_scheme": "scheme-1",
+    "pf_geoblock_on": true,
+    "pf_geoblock_countries": "US",
     "sections": {
       "main-password-header": {
         "type": "main-password-header",
@@ -142,6 +149,23 @@
       }
     },
     "content_for_index": [],
+    "blocks": {
+      "2567389343055140935": {
+        "type": "shopify://apps/microsoft-clarity/blocks/clarity_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
+        "disabled": false,
+        "settings": {}
+      },
+      "855628211100114053": {
+        "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
+        "disabled": false,
+        "settings": {}
+      },
+      "2200952712151285029": {
+        "type": "shopify://apps/microsoft-clarity/blocks/brandAgents_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
+        "disabled": true,
+        "settings": {}
+      }
+    },
     "color_schemes": {
       "scheme-1": {
         "settings": {
@@ -391,5 +415,21 @@
         }
       }
     }
+  },
+  "platform_customizations": {
+    "custom_css": [
+      ".pf-flash__disc,.pf-s10__badge,.pf-flash__badge {background: linear-gradient(135deg, #2e8b47, #1d6b35) !important; color: #fff !important; box-shadow: none !important;}",
+      ".pf-flash__price .now,.pf-s10__price .now,.pf-s10__title {color: #1e8541 !important;}",
+      ".pf-s10__title:after {background: #1e8541 !important;}",
+      ".pf-flash__card,.pf-s10__card {border: 1px solid #f0e6d8 !important;}",
+      ".pf-flash__card:hover,.pf-s10__card:hover {border-color: #a8d5b5 !important; box-shadow: 0 16px 34px rgba(30, 133, 65, 0.14) !important;}",
+      ".pf-flash__nm a:hover,.pf-s10__nm a:hover {color: #1e8541 !important;}",
+      ".pf-s10__more,.pf-flash__more-btn {background: #fff !important; border: 2px solid #1e8541 !important; color: #1e8541 !important;}",
+      ".pf-s10__more:hover,.pf-flash__more-btn:hover {background: #1e8541 !important; color: #fff !important;}",
+      ".pf-hd__tag--sale,.pf-deal__ribbon {background: linear-gradient(135deg, #2e8b47, #1d6b35) !important; color: #fff !important;}",
+      ".pf-po {background: #fff !important; color: #1e8541 !important; border: 1.5px solid #1e8541 !important; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12) !important;}",
+      "#MainContent[data-template=\"index\"] .pf-boxed-section .pf-wrap {max-width: none !important; margin-inline: clamp(0.8rem, 1.2vw, 1.6rem) !important; padding-inline: clamp(1.6rem, 2.4vw, 3.2rem) !important;}",
+      "#MainContent[data-template=\"index\"] .pf-hd > .page-width {max-width: none !important; padding-inline: clamp(1.6rem, 2.4vw, 3.2rem) !important;}"
+    ]
   }
 }
