@@ -1,0 +1,52 @@
+{%- comment -%}
+  Ô đếm ngược 3 phút trong giỏ (27/10, theo yêu cầu chủ shop): "Ưu đãi sẽ thay đổi sau 03:00 — thanh toán ngay để giữ nguyên ưu đãi".
+  Mốc kết thúc lưu sessionStorage nên không bị reset khi chuyển trang / giỏ trượt cập nhật; hết giờ thì tự bắt đầu lại 3 phút.
+  Dùng ở cart-drawer.liquid và main-cart-footer.liquid. Script chạy một lần cho mọi ô [data-pf-cd] (kể cả ô mới sau khi giỏ render lại).
+{%- endcomment -%}
+{%- if cart.item_count > 0 -%}
+  <div class="pf-cd" data-pf-cd role="timer" aria-live="off">
+    <span class="pf-cd__icon" aria-hidden="true">⏰</span>
+    <span class="pf-cd__text">
+      {%- if request.locale.iso_code == 'vi' -%}
+        Ưu đãi sẽ thay đổi sau <b class="pf-cd__time" data-pf-cd-time>03:00</b><small>Thanh toán ngay để giữ nguyên ưu đãi</small>
+      {%- else -%}
+        Offer changes in <b class="pf-cd__time" data-pf-cd-time>03:00</b><small>Check out now to keep this offer</small>
+      {%- endif -%}
+    </span>
+  </div>
+{%- endif -%}
+  <style>
+    .pf-cd { display: flex; align-items: center; gap: 1rem; margin: 1rem 0 1.2rem; padding: 1rem 1.4rem; border-radius: 12px; background: #fff7d6; border: 1.5px dashed #ffc61a; color: #2a2622; text-align: left; }
+    .pf-cd__icon { font-size: 2.2rem; line-height: 1; animation: pf-cd-shake 1.6s ease-in-out infinite; }
+    .pf-cd__text { display: flex; flex-direction: column; gap: .2rem; font-size: 1.4rem; font-weight: 700; line-height: 1.35; }
+    .pf-cd__text small { font-size: 1.25rem; font-weight: 500; color: #6b6357; }
+    .pf-cd__time { display: inline-block; min-width: 5.2rem; padding: .1rem .6rem; margin-left: .2rem; border-radius: 6px; background: #d62828; color: #fff; font-variant-numeric: tabular-nums; text-align: center; }
+    @keyframes pf-cd-shake { 0%, 70%, 100% { transform: rotate(0); } 75% { transform: rotate(-14deg); } 85% { transform: rotate(14deg); } }
+    @media (prefers-reduced-motion: reduce) { .pf-cd__icon { animation: none; } }
+  </style>
+  <script>
+    (function () {
+      if (window.pfCartCountdown) return;
+      window.pfCartCountdown = true;
+      var KEY = 'pf_cd_end', LEN = 180000, mem = 0;
+      var getEnd = function () {
+        var end = 0;
+        try { end = parseInt(sessionStorage.getItem(KEY), 10) || 0; } catch (e) { end = mem; }
+        if (!end || end <= Date.now()) {
+          end = Date.now() + LEN; mem = end;
+          try { sessionStorage.setItem(KEY, String(end)); } catch (e) {}
+        }
+        return end;
+      };
+      var pad = function (n) { return n < 10 ? '0' + n : '' + n; };
+      var tick = function () {
+        var els = document.querySelectorAll('[data-pf-cd-time]');
+        if (!els.length) return;
+        var s = Math.max(0, Math.ceil((getEnd() - Date.now()) / 1000));
+        var txt = pad(Math.floor(s / 60)) + ':' + pad(s % 60);
+        for (var i = 0; i < els.length; i++) els[i].textContent = txt;
+      };
+      tick();
+      setInterval(tick, 1000);
+    })();
+  </script>

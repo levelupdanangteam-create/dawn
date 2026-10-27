@@ -120,6 +120,7 @@
                   placeholder="{% render 'pf-ui', k: 'note_ph' %}"
                 >{{ cart.note }}</textarea>
               </cart-note>
+              {% render 'pf-cart-countdown' %}
               <div class="cart__ctas" {{ block.shopify_attributes }}>
                 <button
                   type="submit"
