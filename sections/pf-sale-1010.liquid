@@ -32,7 +32,7 @@
     assign vi = true
   endif
 -%}
-<div id="pf-s10-{{ section.id }}" class="pf-xk">
+<div id="pf-s10-{{ section.id }}" class="pf-xk pf-simple">
   <div class="page-width pf-xk__full">
     <div class="pf-s10" style="--cols: {{ section.settings.columns_desktop }};">
       <div class="pf-xk__head">
@@ -59,18 +59,22 @@
       {%- endif -%}
 
       {%- assign pf_shown = 0 -%}
-      <div class="pf-s10__grid pf-xk__grid">
+      <div class="pf-simple__slider pf-xk__slider">
+        <button type="button" class="pf-simple__arrow pf-simple__arrow--prev" aria-label="{% if vi %}Trước{% else %}Previous{% endif %}" disabled><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="pf-s10__grid pf-xk__grid pf-simple__track" data-pf-sl-track>
         {%- for product in pf_col.products limit: 50 -%}
           {%- if product != blank and product.id -%}
             {%- assign pf_shown = pf_shown | plus: 1 -%}
             {%- assign pf_hide = false -%}
             {%- if pf_shown > pf_initial -%}{%- assign pf_hide = true -%}{%- endif -%}
-            {%- render 'pf-flash-card', p: product, section_id: section.id, extra_class: 'pf-s10__card', hidden: pf_hide, low_stock: section.settings.low_stock -%}
+            {%- render 'pf-flash-card', p: product, section_id: section.id, extra_class: 'pf-s10__card', hidden: false, low_stock: section.settings.low_stock -%}
           {%- endif -%}
         {%- endfor -%}
       </div>
+        <button type="button" class="pf-simple__arrow pf-simple__arrow--next" aria-label="{% if vi %}Sau{% else %}Next{% endif %}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
 
-      {%- if pf_shown > pf_initial -%}
+      {%- if false -%}
         <div class="pf-s10__more-wrap">
           <button type="button" class="pf-s10__more">
             <span class="pf-s10__more-txt">{% if vi %}Xem thêm{% else %}View more{% endif %}</span>
@@ -116,7 +120,7 @@
   #pf-s10-{{ section.id }} .pf-xk__sub b { color: var(--g-d); font-weight: 700; }
 
   /* Lưới thẻ */
-  #pf-s10-{{ section.id }} .pf-xk__grid { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 1.2rem; margin-top: 1.6rem; }
+  #pf-s10-{{ section.id }} .pf-xk__slider { margin-top: 1.6rem; }
   #pf-s10-{{ section.id }} .pf-fs__card { display: flex; flex-direction: column; min-width: 0; background: #fff; border: 1px solid var(--fs-line); border-radius: 12px; padding: 1rem 1rem 1.1rem; }
   #pf-s10-{{ section.id }} .pf-s10__card--hidden { display: none; }
   #pf-s10-{{ section.id }} .pf-s10.is-expanded .pf-s10__card--hidden { display: flex; }
@@ -156,9 +160,6 @@
   #pf-s10-{{ section.id }} .pf-s10__more .arw { transition: transform .2s ease; }
   #pf-s10-{{ section.id }} .pf-s10.is-expanded .pf-s10__more .arw { transform: rotate(180deg); }
 
-  @media (min-width: 1600px) { #pf-s10-{{ section.id }} .pf-xk__grid { gap: 1.6rem; } }
-  @media (max-width: 1199px) { #pf-s10-{{ section.id }} .pf-xk__grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
-  @media (max-width: 989px) { #pf-s10-{{ section.id }} .pf-xk__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   @media (max-width: 749px) {
     #pf-s10-{{ section.id }} .pf-xk__head { padding: 0 0 1rem; gap: .8rem 1rem; }
     #pf-s10-{{ section.id }} .pf-xk__bolt { width: 20px; height: 20px; }
@@ -174,7 +175,7 @@
     #pf-s10-{{ section.id }} .pf-xk__colon { font-size: 1.25rem; }
     #pf-s10-{{ section.id }} .pf-xk__all { padding: .45rem 1rem; }
     #pf-s10-{{ section.id }} .pf-xk__sub { margin: .8rem 0 0; font-size: 1.25rem; }
-    #pf-s10-{{ section.id }} .pf-xk__grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: .8rem !important; margin-top: 1.2rem; }
+    #pf-s10-{{ section.id }} .pf-xk__slider { margin-top: 1.2rem; }
     #pf-s10-{{ section.id }} .pf-fs__card { padding: .7rem .7rem .8rem; }
     #pf-s10-{{ section.id }} .pf-fs__badge { font-size: 1.05rem; padding: .35rem .45rem; }
     #pf-s10-{{ section.id }} .pf-fs__name { font-size: 1.3rem; margin-top: .7rem; }
@@ -190,6 +191,27 @@
   @media (prefers-reduced-motion: reduce) { #pf-s10-{{ section.id }} .pf-fs__media img { transition: none; } }
 </style>
 
+<script>
+  /* Hàng trượt ngang: nút trước/sau (27/10) */
+  (function () {
+    var root = document.getElementById('pf-s10-{{ section.id }}');
+    if (!root) return;
+    var track = root.querySelector('[data-pf-sl-track]');
+    var prev = root.querySelector('.pf-simple__arrow--prev'), next = root.querySelector('.pf-simple__arrow--next');
+    if (!track || !prev || !next) return;
+    var step = function () {
+      var c = track.querySelector('.pf-fs__card'); var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      if (!c) return track.clientWidth;
+      var w = c.getBoundingClientRect().width + gap;
+      return w * Math.max(1, Math.floor(track.clientWidth / w));
+    };
+    var update = function () { var max = track.scrollWidth - track.clientWidth - 2; prev.disabled = track.scrollLeft <= 2; next.disabled = track.scrollLeft >= max; };
+    prev.addEventListener('click', function () { track.scrollBy({ left: -step() }); });
+    next.addEventListener('click', function () { track.scrollBy({ left: step() }); });
+    var t; track.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(update, 60); }, { passive: true });
+    window.addEventListener('resize', update); window.addEventListener('load', update); update();
+  })();
+</script>
 <script>
   (function () {
     var root = document.getElementById('pf-s10-{{ section.id }}');

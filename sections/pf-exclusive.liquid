@@ -1,5 +1,5 @@
 {%- comment -%}
-  "Chỉ có tại Phomifood" — sản phẩm độc quyền. Kiểu đơn giản (26/10): tiêu đề xanh căn trái + "Xem tất cả", lưới thẻ pf-flash-card.
+  "Chỉ có tại Phomifood" — sản phẩm độc quyền. Kiểu đơn giản (26/10): tiêu đề xanh căn trái + "Xem tất cả"; từ 27/10 là 1 hàng thẻ pf-flash-card trượt ngang có nút trước/sau.
   CSS chung ở snippet pf-flash-card (.pf-simple). Giữ class pf-ex__grid / pf-ex__card / data-pf-ex-more cho script "Xem thêm" mobile.
   Bản cũ lưu ở scratchpad: simple/pf-exclusive.orig.liquid.
 {%- endcomment -%}
@@ -30,13 +30,15 @@
       {%- if section.settings.subheading != blank -%}<p class="pf-simple__sub">{% render 'pf-tr', s: section.settings.subheading %}</p>{%- endif -%}
 
       {%- assign pf_shown = 0 -%}
-      <div class="pf-ex__grid pf-simple__grid">
+      <div class="pf-simple__slider">
+        <button type="button" class="pf-simple__arrow pf-simple__arrow--prev" aria-label="{% if vi %}Trước{% else %}Previous{% endif %}" disabled><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="pf-ex__grid pf-simple__track" data-pf-sl-track>
         {%- if pf_use_col -%}
           {%- for product in pf_col.products -%}
             {%- if product != blank and product.id -%}
               {%- assign pf_shown = pf_shown | plus: 1 -%}
               {%- assign pf_hide = false -%}{%- if pf_shown > pf_initial -%}{%- assign pf_hide = true -%}{%- endif -%}
-              {%- render 'pf-flash-card', p: product, section_id: section.id, extra_class: 'pf-ex__card', hidden: pf_hide -%}
+              {%- render 'pf-flash-card', p: product, section_id: section.id, extra_class: 'pf-ex__card', hidden: false -%}
             {%- endif -%}
           {%- endfor -%}
         {%- else -%}
@@ -46,27 +48,42 @@
             {%- if hh != blank and product != blank and product.id -%}
               {%- assign pf_shown = pf_shown | plus: 1 -%}
               {%- assign pf_hide = false -%}{%- if pf_shown > pf_initial -%}{%- assign pf_hide = true -%}{%- endif -%}
-              {%- render 'pf-flash-card', p: product, section_id: section.id, extra_class: 'pf-ex__card', hidden: pf_hide -%}
+              {%- render 'pf-flash-card', p: product, section_id: section.id, extra_class: 'pf-ex__card', hidden: false -%}
             {%- endif -%}
           {%- endfor -%}
         {%- endif -%}
+      </div>
+        <button type="button" class="pf-simple__arrow pf-simple__arrow--next" aria-label="{% if vi %}Sau{% else %}Next{% endif %}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
       </div>
       {%- if pf_valid == 0 -%}
         <p class="pf-simple__sub">{% if vi %}Chưa có sản phẩm — chọn Danh mục hàng độc quyền hoặc thêm handle trong cài đặt section.{% else %}No products yet — pick a collection or add product handles in section settings.{% endif %}</p>
       {%- endif -%}
 
-      {%- if pf_valid > pf_initial -%}
-        <div class="pf-ex__more-wrap pf-simple__more-wrap">
-          <button type="button" class="pf-simple__more" data-pf-ex-more>
-            <span class="pf-ex__more-txt">{% if vi %}Xem thêm{% else %}View more{% endif %}</span>
-            <span class="arw" aria-hidden="true">▾</span>
-          </button>
-        </div>
-      {%- endif -%}
     </div>
   </div>
 </div>
 
+<script>
+  /* Hàng trượt ngang: nút trước/sau (27/10) */
+  (function () {
+    var root = document.getElementById('pf-ex-{{ section.id }}');
+    if (!root) return;
+    var track = root.querySelector('[data-pf-sl-track]');
+    var prev = root.querySelector('.pf-simple__arrow--prev'), next = root.querySelector('.pf-simple__arrow--next');
+    if (!track || !prev || !next) return;
+    var step = function () {
+      var c = track.querySelector('.pf-fs__card'); var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      if (!c) return track.clientWidth;
+      var w = c.getBoundingClientRect().width + gap;
+      return w * Math.max(1, Math.floor(track.clientWidth / w));
+    };
+    var update = function () { var max = track.scrollWidth - track.clientWidth - 2; prev.disabled = track.scrollLeft <= 2; next.disabled = track.scrollLeft >= max; };
+    prev.addEventListener('click', function () { track.scrollBy({ left: -step() }); });
+    next.addEventListener('click', function () { track.scrollBy({ left: step() }); });
+    var t; track.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(update, 60); }, { passive: true });
+    window.addEventListener('resize', update); window.addEventListener('load', update); update();
+  })();
+</script>
 <script>
   (function () {
     var root = document.getElementById('pf-ex-{{ section.id }}');
