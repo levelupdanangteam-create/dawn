@@ -483,6 +483,9 @@
   .pfa-cta p { margin: 0 auto; max-width: 46rem; font-size: 1.7rem; line-height: 1.6; color: rgba(255, 255, 255, .9); }
   .pfa-cta .pfa-cta__lead { max-width: none; }
   @media (min-width: 750px) { .pfa-cta .pfa-cta__lead { white-space: nowrap; } }
+  .pfa-cta__btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.2rem; margin: 2.6rem 0 0; }
+  .pfa-btn--white { background: #fff; color: var(--g-d); }
+  .pfa-btn--white:hover { background: #ffc61a; color: var(--g-d); }
   /* CTA mobile: chữ nhỏ lại theo bề ngang màn hình, không rớt dòng (27/10) */
   @media (max-width: 749px) {
     .pfa-cta h2 { font-size: min(6.6vw, 3rem); white-space: nowrap; }
@@ -490,9 +493,6 @@
     .pfa-cta__btns { flex-wrap: nowrap; gap: 2vw; margin-top: 2rem; }
     .pfa-cta__btns .pfa-btn { font-size: min(3.4vw, 1.4rem); padding: 1.1rem min(4vw, 2rem); white-space: nowrap; }
   }
-  .pfa-cta__btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.2rem; margin: 2.6rem 0 0; }
-  .pfa-btn--white { background: #fff; color: var(--g-d); }
-  .pfa-btn--white:hover { background: #ffc61a; color: var(--g-d); }
   .pfa-btn--line { background: transparent; border: 2px solid #fff; color: #fff; }
   .pfa-btn--line:hover { background: rgba(255, 255, 255, .12); }
 
