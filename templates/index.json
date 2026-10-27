@@ -962,6 +962,64 @@
         "padding_top": 56,
         "padding_bottom": 56
       }
+    },
+    "pf_stats": {
+      "type": "pf-stats",
+      "blocks": {
+        "stat_1": {
+          "type": "stat",
+          "settings": {
+            "number": "300",
+            "prefix": "",
+            "suffix": "+",
+            "label": "sản phẩm Việt",
+            "sub": "được cập nhật thường xuyên"
+          }
+        },
+        "stat_2": {
+          "type": "stat",
+          "settings": {
+            "number": "1.000",
+            "prefix": "",
+            "suffix": "+",
+            "label": "đơn hàng",
+            "sub": "đã được trao tận tay khách hàng"
+          }
+        },
+        "stat_3": {
+          "type": "stat",
+          "settings": {
+            "number": "25",
+            "prefix": "",
+            "suffix": "",
+            "label": "nước Châu Âu",
+            "sub": "Phomifood giao tới tận cửa"
+          }
+        },
+        "stat_4": {
+          "type": "stat",
+          "settings": {
+            "number": "35",
+            "prefix": "",
+            "suffix": "+",
+            "label": "sản phẩm độc quyền",
+            "sub": "chỉ có tại Phomifood"
+          }
+        }
+      },
+      "block_order": [
+        "stat_1",
+        "stat_2",
+        "stat_3",
+        "stat_4"
+      ],
+      "settings": {
+        "kicker": "Phomifood qua những con số",
+        "heading": "Những con số biết nói",
+        "full_width": true,
+        "padding_top": 48,
+        "padding_bottom": 24
+      }
     }
   },
   "order": [
@@ -982,6 +1040,7 @@
     "pf_promo_banner_deal",
     "pf_cat_rows",
     "pf_ship_europe",
+    "pf_stats",
     "pf_testimonials",
     "pf_lead",
     "pf_buying_guide"

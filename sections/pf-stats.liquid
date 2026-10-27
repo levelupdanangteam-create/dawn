@@ -1,0 +1,116 @@
+{%- comment -%}
+  "Những con số biết nói" (27/10): 4 con số chạy kiểu đồng hồ cơ khi cuộn tới, mỗi chữ số dừng so le.
+  Mỗi khối = 1 con số (số, chữ nhỏ phía trước, hậu tố, tiêu đề, mô tả). Không có JS / tắt hiệu ứng thì hiện sẵn số cuối.
+  Cùng giao diện với phần con số ở trang Về chúng tôi.
+{%- endcomment -%}
+<div id="pf-st-{{ section.id }}" class="pf-st" style="padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
+  <div class="page-width{% if section.settings.full_width %} pf-st__full{% endif %}">
+    {%- if section.settings.kicker != blank -%}<p class="pf-st__kicker">{{ section.settings.kicker }}</p>{%- endif -%}
+    {%- if section.settings.heading != blank -%}<h2 class="pf-st__title">{{ section.settings.heading }}</h2>{%- endif -%}
+    <div class="pf-st__grid" data-pf-st>
+      {%- for block in section.blocks -%}
+        {%- assign digits = block.settings.number | strip | split: '' -%}
+        <div class="pf-st__item" {{ block.shopify_attributes }}>
+          <div class="pf-st__num" aria-label="{{ block.settings.prefix }} {{ block.settings.number }}{{ block.settings.suffix }}">
+            {%- if block.settings.prefix != blank -%}<span class="pf-st__pre">{{ block.settings.prefix }}</span>{%- endif -%}
+            <span class="pf-odo" aria-hidden="true">
+              {%- for d in digits -%}
+                {%- if '0123456789' contains d -%}
+                  {%- assign to = d | plus: 10 -%}
+                  <span class="pf-odo__col"><span class="pf-odo__strip" style="--to: {{ to }}; --i: {{ forloop.index0 }}; --n: {{ digits.size }};">
+                    {%- for k in (0..19) -%}<span>{{ k | modulo: 10 }}</span>{%- endfor -%}
+                  </span></span>
+                {%- else -%}
+                  <span class="pf-odo__sep">{{ d }}</span>
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if block.settings.suffix != blank -%}<span class="pf-odo__sep">{{ block.settings.suffix }}</span>{%- endif -%}
+            </span>
+          </div>
+          {%- if block.settings.label != blank -%}<p class="pf-st__label">{{ block.settings.label }}</p>{%- endif -%}
+          {%- if block.settings.sub != blank -%}<p class="pf-st__sub">{{ block.settings.sub }}</p>{%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  #pf-st-{{ section.id }} { --g: #1e8541; --g-d: #14672f; --red: #c0261f; --ink: #2f2b25; --mut: #6b6357; background: #fff; }
+  #pf-st-{{ section.id }} .pf-st__full { max-width: none; padding-inline: clamp(1.6rem, 3vw, 4.8rem); }
+  #pf-st-{{ section.id }} .pf-st__kicker { margin: 0 0 .8rem; font-size: 1.2rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--red); }
+  #pf-st-{{ section.id }} .pf-st__title { margin: 0; font-family: var(--font-heading-family, sans-serif); font-weight: 900; font-size: clamp(2.6rem, 3.4vw, 3.8rem); line-height: 1.15; color: var(--g); }
+  #pf-st-{{ section.id }} .pf-st__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2.4rem; margin-top: 2.8rem; }
+  #pf-st-{{ section.id }} .pf-st__item { padding-top: 1.8rem; border-top: 5px solid var(--g-d); }
+  #pf-st-{{ section.id }} .pf-st__num { display: flex; align-items: baseline; gap: .6rem; color: var(--g-d); font-weight: 900; font-size: clamp(4rem, 5.2vw, 6.4rem); line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+  #pf-st-{{ section.id }} .pf-st__pre { font-size: .34em; font-weight: 800; letter-spacing: 0; }
+  #pf-st-{{ section.id }} .pf-odo { display: inline-flex; align-items: flex-start; }
+  #pf-st-{{ section.id }} .pf-odo__col { display: inline-block; height: 1em; overflow: hidden; }
+  #pf-st-{{ section.id }} .pf-odo__strip { display: flex; flex-direction: column; transform: translateY(calc(var(--to) * -1em)); }
+  #pf-st-{{ section.id }} .pf-odo__strip > span { display: block; height: 1em; line-height: 1; text-align: center; }
+  #pf-st-{{ section.id }} .pf-odo.is-armed .pf-odo__strip { transform: translateY(0); transition: none; }
+  #pf-st-{{ section.id }} .pf-odo.is-on .pf-odo__strip {
+    transform: translateY(calc(var(--to) * -1em));
+    transition: transform calc(1.4s + (var(--n) - var(--i)) * .35s) cubic-bezier(.16, .84, .3, 1) calc(var(--i) * .12s);
+  }
+  #pf-st-{{ section.id }} .pf-odo__sep { display: inline-block; line-height: 1; }
+  #pf-st-{{ section.id }} .pf-st__label { margin: 1rem 0 .3rem; font-size: 1.8rem; font-weight: 700; color: var(--ink); }
+  #pf-st-{{ section.id }} .pf-st__sub { margin: 0; font-size: 1.4rem; color: var(--mut); }
+  @media (max-width: 989px) { #pf-st-{{ section.id }} .pf-st__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.4rem 1.6rem; } }
+  @media (max-width: 749px) {
+    #pf-st-{{ section.id }} .pf-st__title { font-size: 2.4rem; }
+    #pf-st-{{ section.id }} .pf-st__item { padding-top: 1.2rem; border-top-width: 4px; }
+    #pf-st-{{ section.id }} .pf-st__num { font-size: 3.6rem; }
+    #pf-st-{{ section.id }} .pf-st__label { font-size: 1.5rem; margin-top: .7rem; }
+    #pf-st-{{ section.id }} .pf-st__sub { font-size: 1.25rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { #pf-st-{{ section.id }} .pf-odo.is-on .pf-odo__strip { transition: none; } }
+</style>
+
+<script>
+  (function () {
+    var box = document.querySelector('#pf-st-{{ section.id }} [data-pf-st]');
+    if (!box || !('IntersectionObserver' in window)) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var odos = box.querySelectorAll('.pf-odo');
+    Array.prototype.forEach.call(odos, function (o) { o.classList.add('is-armed'); });
+    void box.offsetWidth;
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        io.disconnect();
+        Array.prototype.forEach.call(odos, function (o) { o.classList.remove('is-armed'); o.classList.add('is-on'); });
+      });
+    }, { threshold: .35 });
+    io.observe(box);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Những con số biết nói",
+  "tag": "section",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Nhãn nhỏ phía trên", "default": "Phomifood qua những con số" },
+    { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Những con số biết nói" },
+    { "type": "checkbox", "id": "full_width", "label": "Tràn hết chiều ngang màn hình", "default": true },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Con số",
+      "settings": [
+        { "type": "text", "id": "number", "label": "Số (chỉ chữ số, có thể có dấu chấm)", "default": "300" },
+        { "type": "text", "id": "prefix", "label": "Chữ nhỏ phía trước (không bắt buộc)" },
+        { "type": "text", "id": "suffix", "label": "Hậu tố (vd: +)", "default": "+" },
+        { "type": "text", "id": "label", "label": "Tiêu đề", "default": "sản phẩm Việt" },
+        { "type": "text", "id": "sub", "label": "Mô tả", "default": "được cập nhật thường xuyên" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Những con số biết nói", "blocks": [ { "type": "stat" }, { "type": "stat" }, { "type": "stat" }, { "type": "stat" } ] } ]
+}
+{% endschema %}
