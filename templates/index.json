@@ -433,6 +433,22 @@
             "deal_price": "",
             "is_gift": false
           }
+        },
+        "stock_16": {
+          "type": "product",
+          "settings": {
+            "product": "sua-dinh-duong-fristi-vi-tao-80ml-x-48-hop",
+            "deal_price": "",
+            "is_gift": false
+          }
+        },
+        "stock_17": {
+          "type": "product",
+          "settings": {
+            "product": "sua-dinh-duong-fristi-vi-dao-tien-nhat-ban-80ml-x-48-hop",
+            "deal_price": "",
+            "is_gift": false
+          }
         }
       },
       "block_order": [
@@ -453,7 +469,9 @@
         "stock_12",
         "stock_14",
         "stock_13",
-        "stock_15"
+        "stock_15",
+        "stock_16",
+        "stock_17"
       ],
       "settings": {
         "eyebrow": "Số lượng có hạn",
