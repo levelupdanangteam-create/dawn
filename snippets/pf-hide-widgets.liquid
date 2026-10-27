@@ -123,10 +123,12 @@
   #MainContent[data-template="index"] > .shopify-section > [id^="pf-promo-"],
   #MainContent[data-template="index"] > .shopify-section > [id^="pf-se-"],
   #MainContent[data-template="index"] > .shopify-section > [id^="pf-tm-"],
-  #MainContent[data-template="index"] > .shopify-section > [id^="pf-lo-"] {
-    padding-top: 2rem !important; padding-bottom: 2rem !important;
+  #MainContent[data-template="index"] > .shopify-section > [id^="pf-lo-"],
+  #MainContent[data-template="index"] > .shopify-section > [id^="pf-st-"] {
+    /* 27/10: 25px trên + 25px dưới + 10px margin giữa section = 60px từ nội dung section trên tới tiêu đề section dưới */
+    padding-top: 25px !important; padding-bottom: 25px !important;
   }
-  #MainContent[data-template="index"] > .shopify-section > [id^="pf-hf-"] { padding-bottom: 2rem !important; }
+  #MainContent[data-template="index"] > .shopify-section > [id^="pf-hf-"] { padding-bottom: 25px !important; }
   #MainContent[data-template="index"] .pf-cr__row + .pf-cr__row { margin-top: 4rem !important; }
   @media (max-width: 749px) {
     #MainContent[data-template="index"] > .shopify-section > [id^="pf-usp-"],
@@ -141,10 +143,11 @@
     #MainContent[data-template="index"] > .shopify-section > [id^="pf-promo-"],
     #MainContent[data-template="index"] > .shopify-section > [id^="pf-se-"],
     #MainContent[data-template="index"] > .shopify-section > [id^="pf-tm-"],
-    #MainContent[data-template="index"] > .shopify-section > [id^="pf-lo-"] {
-      padding-top: 1.2rem !important; padding-bottom: 1.2rem !important;
+    #MainContent[data-template="index"] > .shopify-section > [id^="pf-lo-"],
+    #MainContent[data-template="index"] > .shopify-section > [id^="pf-st-"] {
+      padding-top: 25px !important; padding-bottom: 25px !important;
     }
-    #MainContent[data-template="index"] > .shopify-section > [id^="pf-hf-"] { padding-bottom: 1.2rem !important; }
+    #MainContent[data-template="index"] > .shopify-section > [id^="pf-hf-"] { padding-bottom: 25px !important; }
     #MainContent[data-template="index"] .pf-cr__row + .pf-cr__row { margin-top: 2.4rem !important; }
   }
 
