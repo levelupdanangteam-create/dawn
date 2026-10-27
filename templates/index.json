@@ -494,7 +494,7 @@
     "pf_promo_banner": {
       "type": "pf-promo-banner",
       "settings": {
-        "image": "shopify://shop_images/phomifood_banner_no_white_padding.png",
+        "image": "shopify://shop_images/8861ac51-3fbf-42ea-add7-9feb9954521b_1f66bfaf-cb37-41f1-a832-b3a9a513a9b5.png",
         "image_mobile": "shopify://shop_images/8861ac51-3fbf-42ea-add7-9feb9954521b.png",
         "link": "shopify://pages/tra-cuu-phi-ship",
         "alt": "Đơn từ 139€ Freeship hoặc giảm 10% giá trị đơn hàng",
@@ -721,16 +721,6 @@
         "padding_bottom": 48
       }
     },
-    "pf_promo_banner_deal": {
-      "type": "pf-promo-banner",
-      "settings": {
-        "image": "shopify://shop_images/uu-dai-duy-nhat-hom-nay-banner.webp",
-        "link": "shopify://pages/uu-dai-hom-nay",
-        "alt": "Ưu đãi duy nhất trong hôm nay - giảm sâu tới 17%",
-        "padding_top": 16,
-        "padding_bottom": 16
-      }
-    },
     "pf_bestsellers": {
       "type": "pf-bestsellers",
       "disabled": true,
@@ -744,6 +734,16 @@
         "columns_desktop": 6,
         "padding_top": 40,
         "padding_bottom": 40
+      }
+    },
+    "pf_promo_banner_deal": {
+      "type": "pf-promo-banner",
+      "settings": {
+        "image": "shopify://shop_images/uu-dai-duy-nhat-hom-nay-banner.webp",
+        "link": "shopify://pages/uu-dai-hom-nay",
+        "alt": "Ưu đãi duy nhất trong hôm nay - giảm sâu tới 17%",
+        "padding_top": 16,
+        "padding_bottom": 16
       }
     },
     "pf_cat_rows": {
@@ -799,6 +799,14 @@
             "subtitle": ""
           }
         },
+        "banner_xa_kho": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/uu-dai-xa-kho-banner.webp",
+            "link": "shopify://pages/flash-sale",
+            "alt": "Ưu đãi xả kho - giảm sốc tới 17%"
+          }
+        },
         "c6": {
           "type": "category",
           "settings": {
@@ -837,15 +845,6 @@
             "eyebrow": "Sữa Việt",
             "title": "Sữa các loại",
             "subtitle": ""
-          }
-        },
-        "banner_xa_kho": {
-          "type": "banner",
-          "settings": {
-            "image": "shopify://shop_images/uu-dai-xa-kho-banner.webp",
-            "image_mobile": "",
-            "link": "shopify://pages/flash-sale",
-            "alt": "Ưu đãi xả kho - giảm sốc tới 17%"
           }
         }
       },
