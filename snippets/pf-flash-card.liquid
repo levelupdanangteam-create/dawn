@@ -148,6 +148,11 @@
   .pf-simple .pf-simple__arrow--prev { left: -1rem; }
   .pf-simple .pf-simple__arrow--next { right: -1rem; }
   .pf-simple .pf-simple__more-wrap { text-align: center; margin-top: 2.4rem; }
+  @keyframes pf-arrow-blink {
+    0%, 100% { transform: scale(1); box-shadow: 0 2px 10px rgba(0,0,0,.22), 0 0 0 0 rgba(255, 198, 26, .85); }
+    50% { transform: scale(1.12); box-shadow: 0 2px 10px rgba(0,0,0,.22), 0 0 0 9px rgba(255, 198, 26, 0); }
+  }
+  @media (prefers-reduced-motion: reduce) { .pf-simple .pf-simple__arrow--next, .pf-fs__arrow--next { animation: none !important; } }
   .pf-simple .pf-simple__more {
     display: inline-flex; align-items: center; gap: .6rem; cursor: pointer; font-family: inherit;
     background: #fff; border: 1.5px solid var(--g); color: var(--g-d); font-weight: 700; font-size: 1.5rem;
@@ -185,7 +190,12 @@
     .pf-simple .pf-simple__grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: .8rem !important; margin-top: 1.2rem; }
     .pf-simple .pf-simple__slider { margin-top: 1.2rem; }
     .pf-simple .pf-simple__track { --per: 2.3; --gap: .8rem; }
-    .pf-simple .pf-simple__arrow { display: none !important; }
+    /* Mobile (27/10): hiện nút trước/sau nhỏ trong khung; nút sau màu vàng nhấp nháy cho khách để ý */
+    .pf-simple .pf-simple__arrow { top: 34%; width: 3.4rem; height: 3.4rem; box-shadow: 0 2px 10px rgba(0,0,0,.22); }
+    .pf-simple .pf-simple__arrow svg { width: 16px; height: 16px; }
+    .pf-simple .pf-simple__arrow--prev { left: .2rem; }
+    .pf-simple .pf-simple__arrow--next { right: .2rem; }
+    .pf-simple .pf-simple__arrow--next:not([disabled]) { background: #ffc61a; border-color: #ffc61a; color: #14672f; animation: pf-arrow-blink 1.3s ease-in-out infinite; }
     .pf-simple .pf-fs__card { padding: .7rem .7rem .8rem; }
     .pf-simple .pf-fs__badge { font-size: 1.05rem; padding: .35rem .45rem; }
     .pf-simple .pf-fs__name { font-size: 1.3rem; margin-top: .7rem; }
