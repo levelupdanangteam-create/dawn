@@ -1,6 +1,6 @@
 {%- comment -%}
-  Ô đếm ngược 3 phút trong giỏ (27/10, theo yêu cầu chủ shop): "Ưu đãi sẽ thay đổi sau 03:00 — thanh toán ngay để giữ nguyên ưu đãi".
-  Mốc kết thúc lưu sessionStorage nên không bị reset khi chuyển trang / giỏ trượt cập nhật; hết giờ thì tự bắt đầu lại 3 phút.
+  Ô đếm ngược 5 phút trong giỏ (27/10, theo yêu cầu chủ shop): "Ưu đãi sẽ thay đổi sau 05:00 — thanh toán ngay để giữ nguyên ưu đãi".
+  Mốc kết thúc lưu sessionStorage nên không bị reset khi chuyển trang / giỏ trượt cập nhật; hết giờ thì tự bắt đầu lại 5 phút.
   Dùng ở cart-drawer.liquid và main-cart-footer.liquid. Script chạy một lần cho mọi ô [data-pf-cd] (kể cả ô mới sau khi giỏ render lại).
 {%- endcomment -%}
 {%- if cart.item_count > 0 -%}
@@ -8,9 +8,9 @@
     <span class="pf-cd__icon" aria-hidden="true">⏰</span>
     <span class="pf-cd__text">
       {%- if request.locale.iso_code == 'vi' -%}
-        Ưu đãi sẽ thay đổi sau <b class="pf-cd__time" data-pf-cd-time>03:00</b><small>Thanh toán ngay để giữ nguyên ưu đãi</small>
+        Ưu đãi sẽ thay đổi sau <b class="pf-cd__time" data-pf-cd-time>05:00</b><small>Thanh toán ngay để giữ nguyên ưu đãi</small>
       {%- else -%}
-        Offer changes in <b class="pf-cd__time" data-pf-cd-time>03:00</b><small>Check out now to keep this offer</small>
+        Offer changes in <b class="pf-cd__time" data-pf-cd-time>05:00</b><small>Check out now to keep this offer</small>
       {%- endif -%}
     </span>
   </div>
@@ -28,7 +28,7 @@
     (function () {
       if (window.pfCartCountdown) return;
       window.pfCartCountdown = true;
-      var KEY = 'pf_cd_end', LEN = 180000, mem = 0;
+      var KEY = 'pf_cd_end', LEN = 300000, mem = 0;
       var getEnd = function () {
         var end = 0;
         try { end = parseInt(sessionStorage.getItem(KEY), 10) || 0; } catch (e) { end = mem; }
