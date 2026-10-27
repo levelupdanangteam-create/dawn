@@ -77,10 +77,45 @@
     </div>
   </section>
 
-  {%- comment -%}============ 03 · SẢN PHẨM ============{%- endcomment -%}
+  {%- comment -%}============ 03 · NHỮNG CON SỐ BIẾT NÓI — sửa số ở pfa_stats: số|tiền tố nhỏ|hậu tố|tiêu đề|mô tả ============{%- endcomment -%}
+  {%- assign pfa_stats = '300||+|sản phẩm Việt|được cập nhật thường xuyên;1.000|Gần||đơn hàng|đã được trao tận tay khách hàng;25|||nước Châu Âu|Phomifood giao tới tận cửa;35||+|sản phẩm độc quyền|chỉ có tại Phomifood' | split: ';' -%}
+  <section class="pfa-sec">
+    <div class="pfa-wrap">
+      <p class="pfa-kicker">03 · Con số</p>
+      <h2 class="pfa-h2">Những con số biết nói</h2>
+      <div class="pfa-stats" data-pfa-stats>
+        {%- for row in pfa_stats -%}
+          {%- assign st = row | split: '|' -%}
+          {%- assign digits = st[0] | split: '' -%}
+          <div class="pfa-stat">
+            <div class="pfa-stat__num" aria-label="{{ st[1] }} {{ st[0] }}{{ st[2] }}">
+              {%- if st[1] != blank -%}<span class="pfa-stat__pre">{{ st[1] }}</span>{%- endif -%}
+              <span class="pfa-odo" aria-hidden="true">
+                {%- for d in digits -%}
+                  {%- if '0123456789' contains d -%}
+                    {%- assign to = d | plus: 10 -%}
+                    <span class="pfa-odo__col"><span class="pfa-odo__strip" style="--to: {{ to }}; --i: {{ forloop.index0 }}; --n: {{ digits.size }};">
+                      {%- for k in (0..19) -%}<span>{{ k | modulo: 10 }}</span>{%- endfor -%}
+                    </span></span>
+                  {%- else -%}
+                    <span class="pfa-odo__sep">{{ d }}</span>
+                  {%- endif -%}
+                {%- endfor -%}
+                {%- if st[2] != blank -%}<span class="pfa-odo__sep">{{ st[2] }}</span>{%- endif -%}
+              </span>
+            </div>
+            <p class="pfa-stat__label">{{ st[3] }}</p>
+            <p class="pfa-stat__sub">{{ st[4] }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%}============ 04 · SẢN PHẨM ============{%- endcomment -%}
   <section class="pfa-sec pfa-sec--cream">
     <div class="pfa-wrap">
-      <p class="pfa-kicker">03 · Sản phẩm</p>
+      <p class="pfa-kicker">04 · Sản phẩm</p>
       <p class="pfa-q">Có phải bạn luôn nhớ hương vị quen thuộc nơi xa xứ?</p>
       <h2 class="pfa-h2 pfa-h2--narrow">Phomifood gửi vị Việt đến gian bếp của bạn</h2>
       <p class="pfa-p pfa-p--narrow">Sản phẩm của chúng tôi rất đa dạng. Đặc biệt, chúng tôi chọn lọc một số mặt hàng độc quyền nhập về kho, những món bạn không thể tìm thấy ở nơi khác.</p>
@@ -106,10 +141,10 @@
     </div>
   </section>
 
-  {%- comment -%}============ 04 · KHO HÀNG ============{%- endcomment -%}
+  {%- comment -%}============ 05 · KHO HÀNG ============{%- endcomment -%}
   <section class="pfa-sec">
     <div class="pfa-wrap">
-      <p class="pfa-kicker">04 · Kho hàng</p>
+      <p class="pfa-kicker">05 · Kho hàng</p>
       <h2 class="pfa-h2">Kho thật tại Praha</h2>
       <p class="pfa-p">Lưu kho, kiểm tra, đóng gói ngay tại Praha, rồi giao tận nhà bạn trong 1–3 ngày.</p>
       <ol class="pfa-steps">
@@ -128,10 +163,10 @@
     </div>
   </section>
 
-  {%- comment -%}============ 05 · ĐỐI TÁC (thương hiệu có tại kho; ảnh = 1 sản phẩm tiêu biểu của hãng) ============{%- endcomment -%}
+  {%- comment -%}============ 06 · ĐỐI TÁC (thương hiệu có tại kho; ảnh = 1 sản phẩm tiêu biểu của hãng) ============{%- endcomment -%}
   <section class="pfa-sec pfa-sec--mint">
     <div class="pfa-wrap">
-      <p class="pfa-kicker">05 · Đối tác</p>
+      <p class="pfa-kicker">06 · Đối tác</p>
       <h2 class="pfa-h2">Đối tác của Phomifood</h2>
       <p class="pfa-p">Những thương hiệu Việt quen thuộc luôn có sẵn tại kho Phomifood.</p>
       <ul class="pfa-brands" data-pfa-brands>
@@ -154,10 +189,10 @@
     </div>
   </section>
 
-  {%- comment -%}============ 06 · VÌ SAO ============{%- endcomment -%}
+  {%- comment -%}============ 07 · VÌ SAO ============{%- endcomment -%}
   <section class="pfa-sec pfa-sec--cream">
     <div class="pfa-wrap">
-      <p class="pfa-kicker">06 · Vì sao</p>
+      <p class="pfa-kicker">07 · Vì sao</p>
       <h2 class="pfa-h2">Vì sao chọn Phomifood</h2>
       <div class="pfa-grid pfa-grid--4">
         <div class="pfa-card">
@@ -187,10 +222,10 @@
     </div>
   </section>
 
-  {%- comment -%}============ 07 · ƯU ĐÃI ============{%- endcomment -%}
+  {%- comment -%}============ 08 · ƯU ĐÃI ============{%- endcomment -%}
   <section class="pfa-sec pfa-sec--rose">
     <div class="pfa-wrap pfa-center">
-      <p class="pfa-kicker">07 · Ưu đãi</p>
+      <p class="pfa-kicker">08 · Ưu đãi</p>
       <h2 class="pfa-h2 pfa-h2--red">Nhẹ ví hơn cùng Phomifood</h2>
       <p class="pfa-p">Freeship, giảm giá, combo: mua cho cả nhà mà không lo xót ví.</p>
       <div class="pfa-grid pfa-grid--3">
@@ -216,7 +251,7 @@
     </div>
   </section>
 
-  {%- comment -%}============ 08 · KHÁCH HÀNG — giống section "Khách hàng nói gì" trang chủ (pf-testimonials) ============{%- endcomment -%}
+  {%- comment -%}============ 09 · KHÁCH HÀNG — giống section "Khách hàng nói gì" trang chủ (pf-testimonials) ============{%- endcomment -%}
 {%- assign pf_imgs = 'https://cdn.shopify.com/s/files/1/0749/9353/3018/files/765158470_122111552733396579_5765327748659751309_n.jpg,https://cdn.shopify.com/s/files/1/0749/9353/3018/files/765818079_122111552829396579_5401768943136104717_n.jpg,https://cdn.shopify.com/s/files/1/0749/9353/3018/files/764800463_122111552685396579_4072291594541595060_n.jpg,https://cdn.shopify.com/s/files/1/0749/9353/3018/files/763671755_122111552835396579_3096848449742426825_n.jpg,https://cdn.shopify.com/s/files/1/0749/9353/3018/files/764752298_122111552739396579_7507345758427458679_n.jpg,https://cdn.shopify.com/s/files/1/0749/9353/3018/files/image.png' | split: ',' -%}
 {%- assign pf_n = 0 -%}
 {%- capture pf_cards -%}
@@ -408,6 +443,32 @@
   .pfa-brand__logo img { display: block; width: 100%; height: 100%; object-fit: contain; }
   .pfa-brands b { font-size: 1.35rem; font-weight: 800; line-height: 1.25; text-align: center; }
 
+  /* Những con số biết nói: số chạy kiểu đồng hồ cơ, mỗi chữ số dừng so le */
+  .pfa-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2.4rem; margin-top: 2.8rem; }
+  .pfa-stat { padding-top: 1.8rem; border-top: 5px solid var(--g-d); }
+  .pfa-stat__num { display: flex; align-items: baseline; gap: .6rem; color: var(--g-d); font-weight: 900; font-size: clamp(4rem, 5.2vw, 6.4rem); line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+  .pfa-stat__pre { font-size: .34em; font-weight: 800; letter-spacing: 0; }
+  .pfa-odo { display: inline-flex; align-items: flex-start; }
+  .pfa-odo__col { display: inline-block; height: 1em; overflow: hidden; }
+  .pfa-odo__strip { display: flex; flex-direction: column; transform: translateY(calc(var(--to) * -1em)); }
+  .pfa-odo__strip > span { display: block; height: 1em; line-height: 1; text-align: center; }
+  .pfa-odo.is-armed .pfa-odo__strip { transform: translateY(0); transition: none; }
+  .pfa-odo.is-on .pfa-odo__strip {
+    transform: translateY(calc(var(--to) * -1em));
+    transition: transform calc(1.4s + (var(--n) - var(--i)) * .35s) cubic-bezier(.16, .84, .3, 1) calc(var(--i) * .12s);
+  }
+  .pfa-odo__sep { display: inline-block; line-height: 1; }
+  .pfa-stat__label { margin: 1rem 0 .3rem; font-size: 1.8rem; font-weight: 700; color: var(--ink); }
+  .pfa-stat__sub { margin: 0; font-size: 1.4rem; color: var(--mut); }
+  @media (max-width: 989px) { .pfa-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.4rem 1.6rem; } }
+  @media (max-width: 749px) {
+    .pfa-stat { padding-top: 1.2rem; border-top-width: 4px; }
+    .pfa-stat__num { font-size: 3.6rem; }
+    .pfa-stat__label { font-size: 1.5rem; margin-top: .7rem; }
+    .pfa-stat__sub { font-size: 1.25rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { .pfa-odo.is-on .pfa-odo__strip { transition: none; } }
+
   .pfa-offer { padding: 2.6rem 2.2rem; border: 1.5px solid #f2c4b4; border-radius: 18px; background: #fff; }
   .pfa-pill { display: inline-block; padding: .5rem 1.4rem; border-radius: 999px; background: var(--rose); color: var(--red); font-size: 1.25rem; font-weight: 800; }
   .pfa-offer h3 { margin: 1.2rem 0 1rem; font-size: 2.4rem; font-weight: 900; color: var(--red); }
@@ -472,5 +533,25 @@
     list.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(mark, 60); }, { passive: true });
     window.addEventListener('resize', build);
     build();
+  })();
+</script>
+
+<script>
+  /* Những con số biết nói: chạy số khi cuộn tới (không có JS thì hiện sẵn số cuối) */
+  (function () {
+    var box = document.querySelector('[data-pfa-stats]');
+    if (!box || !('IntersectionObserver' in window)) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var odos = box.querySelectorAll('.pfa-odo');
+    Array.prototype.forEach.call(odos, function (o) { o.classList.add('is-armed'); });
+    void box.offsetWidth;
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        io.disconnect();
+        Array.prototype.forEach.call(odos, function (o) { o.classList.remove('is-armed'); o.classList.add('is-on'); });
+      });
+    }, { threshold: .35 });
+    io.observe(box);
   })();
 </script>
