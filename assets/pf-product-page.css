@@ -14,12 +14,12 @@
   background: #d62828; color: #fff; border: 0; border-radius: 999px; font-weight: 800; padding: .3rem 1rem;
 }
 #MainContent[data-template='product'] .product__info-container .product-form__submit {
-  background-color: #1e8541 !important; border-color: #1e8541 !important; color: #fff !important;
+  background-color: #ffc61a !important; border-color: #ffc61a !important; color: #14672f !important;
   border-radius: 999px; min-height: 5rem; font-weight: 800; font-size: 1.6rem;
-  box-shadow: 0 8px 18px rgba(30, 133, 65, .22);
+  box-shadow: 0 8px 18px rgba(255, 198, 26, .3);
 }
 #MainContent[data-template='product'] .product__info-container .product-form__submit:not([disabled]):hover {
-  background-color: #166b34 !important; border-color: #166b34 !important;
+  background-color: #f5b400 !important; border-color: #f5b400 !important; color: #14672f !important;
 }
 #MainContent[data-template='product'] .product__info-container .product-form__submit::after { display: none; }
 #MainContent[data-template='product'] .product__info-container .shopify-payment-button__button--unbranded {

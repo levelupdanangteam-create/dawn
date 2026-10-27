@@ -407,8 +407,8 @@ body.gradient {
   padding: 0.9rem 0.6rem; border-radius: 8px; border: 1.5px solid #1e63c8; cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
 }
-.pf-btn-cart { background: #1e63c8; color: #ffffff; }
-.pf-btn-cart:hover { background: #164fa0; border-color: #164fa0; }
+.pf-btn-cart { background: #ffc61a; color: #14672f; border-color: #ffc61a; }
+.pf-btn-cart:hover { background: #f5b400; border-color: #f5b400; }
 .pf-btn-cart[disabled] { opacity: 0.5; cursor: not-allowed; }
 .pf-btn-view { background: #ffffff; color: #1e63c8; text-decoration: none; display: flex; align-items: center; justify-content: center; }
 .pf-btn-view:hover { background: #1e63c8; color: #ffffff; }
