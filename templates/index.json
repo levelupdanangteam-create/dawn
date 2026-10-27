@@ -469,6 +469,7 @@
         "step_1": "Chọn 1 món giá deal",
         "step_2": "Thêm vào giỏ cùng đơn hàng",
         "step_3": "Thanh toán — giá deal áp dụng ngay",
+        "full_width": false,
         "padding_top": 60,
         "padding_bottom": 60
       }
@@ -516,7 +517,7 @@
       "type": "pf-exclusive",
       "settings": {
         "eyebrow": "Sản phẩm độc quyền",
-        "heading": "Chỉ có tại Phomifood",
+        "heading": "Hàng Độc Quyền Tại Châu Âu",
         "subheading": "",
         "collection": "hang-dộc-quyền",
         "product_handles": "miến-lẩu-thai-vifon\ncombo-4-hộp-ca-thu-chien-sốt-tương-ớt-roza\nkho-quẹt-chay\ncốt-lếch-chay\nsườn-chay-xao-sả-ớt\nsườn-non-chay\nbun-bo-huế-vifon-thịt-thật\ncombo-5-goi-banh-da-trộn-vifon\nmỳ-quảng-hội-an-an-liền-cathifood-4-vị\ncanh-chua-isoup\nca-biển-an-liền-taki-deli\ncombo-5-ly-soup-hải-sản-i-soup\nmiến-dong-dồi-cao",
@@ -883,6 +884,64 @@
         "padding_bottom": 60
       }
     },
+    "pf_stats": {
+      "type": "pf-stats",
+      "blocks": {
+        "stat_1": {
+          "type": "stat",
+          "settings": {
+            "number": "300",
+            "prefix": "",
+            "suffix": "+",
+            "label": "sản phẩm Việt",
+            "sub": "được cập nhật thường xuyên"
+          }
+        },
+        "stat_2": {
+          "type": "stat",
+          "settings": {
+            "number": "1.000",
+            "prefix": "",
+            "suffix": "+",
+            "label": "đơn hàng",
+            "sub": "đã được trao tận tay khách hàng"
+          }
+        },
+        "stat_3": {
+          "type": "stat",
+          "settings": {
+            "number": "25",
+            "prefix": "",
+            "suffix": "",
+            "label": "nước Châu Âu",
+            "sub": "Phomifood giao tới tận cửa"
+          }
+        },
+        "stat_4": {
+          "type": "stat",
+          "settings": {
+            "number": "35",
+            "prefix": "",
+            "suffix": "+",
+            "label": "sản phẩm độc quyền",
+            "sub": "chỉ có tại Phomifood"
+          }
+        }
+      },
+      "block_order": [
+        "stat_1",
+        "stat_2",
+        "stat_3",
+        "stat_4"
+      ],
+      "settings": {
+        "kicker": "Phomifood qua những con số",
+        "heading": "Những con số biết nói",
+        "full_width": true,
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
     "pf_testimonials": {
       "type": "pf-testimonials",
       "settings": {
@@ -961,64 +1020,6 @@
         "heading": "Mua Hàng Dễ Dàng",
         "padding_top": 56,
         "padding_bottom": 56
-      }
-    },
-    "pf_stats": {
-      "type": "pf-stats",
-      "blocks": {
-        "stat_1": {
-          "type": "stat",
-          "settings": {
-            "number": "300",
-            "prefix": "",
-            "suffix": "+",
-            "label": "sản phẩm Việt",
-            "sub": "được cập nhật thường xuyên"
-          }
-        },
-        "stat_2": {
-          "type": "stat",
-          "settings": {
-            "number": "1.000",
-            "prefix": "",
-            "suffix": "+",
-            "label": "đơn hàng",
-            "sub": "đã được trao tận tay khách hàng"
-          }
-        },
-        "stat_3": {
-          "type": "stat",
-          "settings": {
-            "number": "25",
-            "prefix": "",
-            "suffix": "",
-            "label": "nước Châu Âu",
-            "sub": "Phomifood giao tới tận cửa"
-          }
-        },
-        "stat_4": {
-          "type": "stat",
-          "settings": {
-            "number": "35",
-            "prefix": "",
-            "suffix": "+",
-            "label": "sản phẩm độc quyền",
-            "sub": "chỉ có tại Phomifood"
-          }
-        }
-      },
-      "block_order": [
-        "stat_1",
-        "stat_2",
-        "stat_3",
-        "stat_4"
-      ],
-      "settings": {
-        "kicker": "Phomifood qua những con số",
-        "heading": "Những con số biết nói",
-        "full_width": true,
-        "padding_top": 60,
-        "padding_bottom": 60
       }
     }
   },
