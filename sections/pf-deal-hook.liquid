@@ -172,10 +172,12 @@
     #pf-hd-{{ section.id }} .pf-fs__bolt { width: 3.8rem; height: 3.8rem; padding: .8rem; }
     #pf-hd-{{ section.id }} .pf-hd__title.pf-fs__title { font-size: clamp(2.6rem, 7.4vw, 3.2rem) !important; white-space: normal; }
     #pf-hd-{{ section.id }} .pf-fs__all { font-size: 1.2rem; padding: .5rem 1.2rem; }
-    #pf-hd-{{ section.id }} .pf-fs__timer { order: 3; width: 100%; }
-    #pf-hd-{{ section.id }} .pf-fs__timer-label { font-size: 1.15rem; }
-    #pf-hd-{{ section.id }} .pf-fs__timer b { min-width: 3rem; font-size: 1.5rem; padding: .45rem .4rem; border-radius: 6px; }
-    #pf-hd-{{ section.id }} .pf-fs__colon { font-size: 1.5rem; }
+    /* Mobile: tiêu đề 1 hàng riêng; đồng hồ + nút Xem tất cả chung 1 hàng ngang */
+    #pf-hd-{{ section.id }} .pf-fs__title-wrap { flex: 1 1 100%; }
+    #pf-hd-{{ section.id }} .pf-fs__timer { flex: 0 1 auto; gap: .3rem; min-width: 0; }
+    #pf-hd-{{ section.id }} .pf-fs__timer-label { font-size: 1.1rem; margin-right: .2rem; }
+    #pf-hd-{{ section.id }} .pf-fs__timer b { min-width: 2.6rem; font-size: 1.3rem; padding: .4rem .3rem; border-radius: 6px; }
+    #pf-hd-{{ section.id }} .pf-fs__colon { font-size: 1.3rem; }
     #pf-hd-{{ section.id }} .pf-fs__sub { margin: .8rem 0 0; font-size: 1.25rem; }
     #pf-hd-{{ section.id }} .pf-fs__rail { padding: 1.2rem 0 0; }
     #pf-hd-{{ section.id }} .pf-fs__track { --per: 2.3; --gap: .8rem; }

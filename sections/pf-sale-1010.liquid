@@ -165,10 +165,14 @@
     #pf-s10-{{ section.id }} .pf-s10__title.pf-xk__title { font-size: 2.1rem !important; }
     #pf-s10-{{ section.id }} .pf-xk__max { font-size: 1.1rem; padding: .35rem .7rem; }
     #pf-s10-{{ section.id }} .pf-xk__all { font-size: 1.2rem; padding: .5rem 1.2rem; }
-    #pf-s10-{{ section.id }} .pf-xk__timer { order: 3; width: 100%; }
-    #pf-s10-{{ section.id }} .pf-xk__timer-label { font-size: 1.15rem; }
-    #pf-s10-{{ section.id }} .pf-xk__timer b { min-width: 3rem; font-size: 1.5rem; padding: .45rem .4rem; border-radius: 6px; }
-    #pf-s10-{{ section.id }} .pf-xk__colon { font-size: 1.5rem; }
+    /* Mobile: tiêu đề 1 hàng riêng; đồng hồ + nút Xem tất cả chung 1 hàng ngang */
+    #pf-s10-{{ section.id }} .pf-xk__title-wrap { flex: 1 1 100%; }
+    #pf-s10-{{ section.id }} .pf-xk__timer { flex: 0 1 auto; gap: .25rem; min-width: 0; }
+    #pf-s10-{{ section.id }} .pf-xk__timer-label { font-size: 1.05rem; margin-right: .2rem; }
+    #pf-s10-{{ section.id }} .pf-xk__timer b { min-width: 2.4rem; font-size: 1.25rem; padding: .4rem .25rem; border-radius: 6px; }
+    #pf-s10-{{ section.id }} .pf-xk__unit { font-size: 1.05rem; margin-right: .1rem; }
+    #pf-s10-{{ section.id }} .pf-xk__colon { font-size: 1.25rem; }
+    #pf-s10-{{ section.id }} .pf-xk__all { padding: .45rem 1rem; }
     #pf-s10-{{ section.id }} .pf-xk__sub { margin: .8rem 0 0; font-size: 1.25rem; }
     #pf-s10-{{ section.id }} .pf-xk__grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: .8rem !important; margin-top: 1.2rem; }
     #pf-s10-{{ section.id }} .pf-fs__card { padding: .7rem .7rem .8rem; }
@@ -181,6 +185,8 @@
     #pf-s10-{{ section.id }} .pf-fs__bar { height: 1.8rem; margin-top: .8rem; }
     #pf-s10-{{ section.id }} .pf-fs__bar span { font-size: 1.05rem; line-height: 1.8rem; }
   }
+  /* Màn hẹp: bỏ chữ "Kết thúc sau" để đồng hồ + nút vừa 1 hàng */
+  @media (max-width: 389px) { #pf-s10-{{ section.id }} .pf-xk__timer-label { display: none; } }
   @media (prefers-reduced-motion: reduce) { #pf-s10-{{ section.id }} .pf-fs__media img { transition: none; } }
 </style>
 
