@@ -73,7 +73,7 @@
         "button_label": "Đi chợ ngay",
         "button_link": "shopify://collections/all",
         "padding_top": 48,
-        "padding_bottom": 44
+        "padding_bottom": 60
       }
     },
     "pf_story": {
@@ -469,8 +469,8 @@
         "step_1": "Chọn 1 món giá deal",
         "step_2": "Thêm vào giỏ cùng đơn hàng",
         "step_3": "Thanh toán — giá deal áp dụng ngay",
-        "padding_top": 44,
-        "padding_bottom": 44
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     },
     "pf_sale_1010": {
@@ -487,8 +487,8 @@
         "collection": "gia-xa-kho",
         "columns_desktop": 6,
         "pf_initial": 12,
-        "padding_top": 44,
-        "padding_bottom": 44
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     },
     "pf_promo_banner": {
@@ -498,8 +498,8 @@
         "image_mobile": "shopify://shop_images/8861ac51-3fbf-42ea-add7-9feb9954521b_1f66bfaf-cb37-41f1-a832-b3a9a513a9b5.png",
         "link": "shopify://pages/tra-cuu-phi-ship",
         "alt": "Đơn từ 139€ Freeship hoặc giảm 10% giá trị đơn hàng",
-        "padding_top": 44,
-        "padding_bottom": 44
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     },
     "custom_liquid_m33TFL": {
@@ -522,8 +522,8 @@
         "product_handles": "miến-lẩu-thai-vifon\ncombo-4-hộp-ca-thu-chien-sốt-tương-ớt-roza\nkho-quẹt-chay\ncốt-lếch-chay\nsườn-chay-xao-sả-ớt\nsườn-non-chay\nbun-bo-huế-vifon-thịt-thật\ncombo-5-goi-banh-da-trộn-vifon\nmỳ-quảng-hội-an-an-liền-cathifood-4-vị\ncanh-chua-isoup\nca-biển-an-liền-taki-deli\ncombo-5-ly-soup-hải-sản-i-soup\nmiến-dong-dồi-cao",
         "columns_desktop": 6,
         "pf_initial": 12,
-        "padding_top": 44,
-        "padding_bottom": 44
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     },
     "pf_weekly_deals": {
@@ -703,8 +703,8 @@
         "show_view_all": true,
         "view_all_label": "Xem thêm",
         "columns_desktop": 6,
-        "padding_top": 44,
-        "padding_bottom": 44
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     },
     "pf_flash_sale": {
@@ -743,8 +743,8 @@
         "image_mobile": "shopify://shop_images/5c657608-7ba4-40c6-baf3-5b62329e1a2b.webp",
         "link": "shopify://pages/uu-dai-hom-nay",
         "alt": "Ưu đãi duy nhất trong hôm nay - giảm sâu tới 17%",
-        "padding_top": 44,
-        "padding_bottom": 44
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     },
     "pf_cat_rows": {
@@ -866,8 +866,8 @@
         "columns_desktop": 6,
         "products_per_row": 12,
         "full_width": true,
-        "padding_top": 44,
-        "padding_bottom": 44
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     },
     "pf_ship_europe": {
@@ -879,8 +879,8 @@
         "button_label": "Tra cứu phí ship chi tiết",
         "button_link": "shopify://pages/tra-cuu-phi-ship",
         "full_width": true,
-        "padding_top": 44,
-        "padding_bottom": 44
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     },
     "pf_testimonials": {
@@ -894,8 +894,8 @@
         "button_link": "shopify://pages/feedback-khach-hang",
         "images": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/765158470_122111552733396579_5765327748659751309_n.jpg\nhttps://cdn.shopify.com/s/files/1/0749/9353/3018/files/765818079_122111552829396579_5401768943136104717_n.jpg\nhttps://cdn.shopify.com/s/files/1/0749/9353/3018/files/764800463_122111552685396579_4072291594541595060_n.jpg\nhttps://cdn.shopify.com/s/files/1/0749/9353/3018/files/763671755_122111552835396579_3096848449742426825_n.jpg\nhttps://cdn.shopify.com/s/files/1/0749/9353/3018/files/764752298_122111552739396579_7507345758427458679_n.jpg\nhttps://cdn.shopify.com/s/files/1/0749/9353/3018/files/image.png",
         "speed": 60,
-        "padding_top": 44,
-        "padding_bottom": 44
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     },
     "pf_lead": {
@@ -914,8 +914,8 @@
         "reward_note": "Nhập mã ở bước thanh toán",
         "success_text": "Cảm ơn bạn! Phomifood sẽ gửi ưu đãi mới nhất qua email cho bạn.",
         "tag": "lead-trang-chu",
-        "padding_top": 44,
-        "padding_bottom": 44
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     },
     "pf_buying_guide": {
@@ -1017,8 +1017,8 @@
         "kicker": "Phomifood qua những con số",
         "heading": "Những con số biết nói",
         "full_width": true,
-        "padding_top": 44,
-        "padding_bottom": 44
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     }
   },

@@ -25,8 +25,8 @@
         "image_mobile": "shopify://shop_images/5c657608-7ba4-40c6-baf3-5b62329e1a2b.webp",
         "link": "shopify://pages/uu-dai-hom-nay",
         "alt": "Ưu đãi duy nhất trong hôm nay - giảm sâu tới 17%",
-        "padding_top": 44,
-        "padding_bottom": 44
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     },
     "pf_deal": {
@@ -211,8 +211,8 @@
         "step_1": "Chọn 1 món giá deal",
         "step_2": "Thêm vào giỏ cùng đơn hàng",
         "step_3": "Thanh toán — giá deal áp dụng ngay",
-        "padding_top": 44,
-        "padding_bottom": 44,
+        "padding_top": 60,
+        "padding_bottom": 60,
         "full_width": true
       }
     },
@@ -223,8 +223,8 @@
         "image_mobile": "shopify://shop_images/fd08548d-e227-48d0-a1ee-35653a76516b.png",
         "link": "shopify://pages/flash-sale",
         "alt": "Ưu đãi xả kho - giảm sốc tới 17%",
-        "padding_top": 44,
-        "padding_bottom": 44
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     },
     "pf_xk": {
@@ -241,8 +241,8 @@
         "collection": "gia-xa-kho",
         "columns_desktop": 6,
         "pf_initial": 12,
-        "padding_top": 44,
-        "padding_bottom": 44
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     },
     "pf_ship_banner": {
@@ -252,8 +252,8 @@
         "image_mobile": "shopify://shop_images/8861ac51-3fbf-42ea-add7-9feb9954521b_1f66bfaf-cb37-41f1-a832-b3a9a513a9b5.png",
         "link": "shopify://pages/tra-cuu-phi-ship",
         "alt": "Đơn từ 139€ Freeship hoặc giảm 10% giá trị đơn hàng",
-        "padding_top": 44,
-        "padding_bottom": 44
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     },
     "pf_combo": {
@@ -267,8 +267,8 @@
         "show_view_all": true,
         "view_all_label": "Xem thêm",
         "columns_desktop": 6,
-        "padding_top": 44,
-        "padding_bottom": 44
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     }
   },
