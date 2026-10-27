@@ -129,6 +129,9 @@
     padding-top: 25px !important; padding-bottom: 25px !important;
   }
   #MainContent[data-template="index"] > .shopify-section > [id^="pf-hf-"] { padding-bottom: 25px !important; }
+  /* 27/10: banner cách sản phẩm phía trên 20px (25 + 10 - 15), phía dưới vẫn 60px */
+  #MainContent[data-template="index"] > .shopify-section > [id^="pf-promo-"] { padding-top: 0 !important; }
+  #MainContent[data-template="index"] > .shopify-section:has(> [id^="pf-promo-"]) { margin-top: -15px; }
   #MainContent[data-template="index"] .pf-cr__row + .pf-cr__row { margin-top: 60px !important; }
   @media (max-width: 749px) {
     #MainContent[data-template="index"] > .shopify-section > [id^="pf-usp-"],
