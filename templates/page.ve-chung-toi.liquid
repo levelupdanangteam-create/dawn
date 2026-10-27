@@ -119,7 +119,7 @@
       <p class="pfa-q">Có phải bạn luôn nhớ hương vị quen thuộc nơi xa xứ?</p>
       <h2 class="pfa-h2 pfa-h2--narrow">Phomifood gửi vị Việt đến gian bếp của bạn</h2>
       <p class="pfa-p pfa-p--narrow">Sản phẩm của chúng tôi rất đa dạng. Đặc biệt, chúng tôi chọn lọc một số mặt hàng độc quyền nhập về kho, những món bạn không thể tìm thấy ở nơi khác.</p>
-      <div class="pfa-grid pfa-grid--4">
+      <div class="pfa-grid pfa-grid--4 pfa-cats" data-pfa-swipe>
         {%- for row in pfa_cats -%}
           {%- assign parts = row | split: '|' -%}
           {%- assign col = collections[parts[0]] -%}
@@ -138,6 +138,7 @@
           <b>Khám phá tất cả sản phẩm</b><span aria-hidden="true">→</span>
         </a>
       </div>
+      <div class="pfa-dots" data-pfa-dots hidden></div>
     </div>
   </section>
 
@@ -169,7 +170,7 @@
       <p class="pfa-kicker">06 · Đối tác</p>
       <h2 class="pfa-h2">Đối tác của Phomifood</h2>
       <p class="pfa-p">Những thương hiệu Việt quen thuộc luôn có sẵn tại kho Phomifood.</p>
-      <ul class="pfa-brands" data-pfa-brands>
+      <ul class="pfa-brands" data-pfa-brands data-pfa-swipe>
         {%- for row in pfa_brands -%}
           {%- assign parts = row | split: '|' -%}
           {%- assign bp = all_products[parts[1]] -%}
@@ -499,6 +500,12 @@
     .pfa-cat b { font-size: 1.4rem; }
     .pfa-cat--all { padding: 1.8rem; }
     .pfa-cat--all b { font-size: 1.6rem; }
+    /* Sản phẩm: lướt ngang trên điện thoại (27/10) */
+    .pfa-cats { display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; scrollbar-width: none; margin-inline: -1.6rem; padding: .4rem 1.6rem 1rem; scroll-padding-inline: 1.6rem; }
+    .pfa-cats::-webkit-scrollbar { display: none; }
+    .pfa-cats > .pfa-cat { flex: 0 0 62%; scroll-snap-align: start; }
+    .pfa-cats > .pfa-cat:hover { transform: none; }
+    .pfa-cats > .pfa-cat--all { flex-direction: column; justify-content: center; gap: 1rem; text-align: center; }
     .pfa-brands { gap: .8rem; }
     .pfa-brands a { width: 9.6rem; padding: 1.1rem .6rem 1rem; }
     .pfa-brand__logo { width: 6rem; height: 6rem; }
@@ -508,10 +515,10 @@
 </style>
 
 <script>
-  /* Đối tác: chấm phân trang thay thanh cuộn */
-  (function () {
-    var list = document.querySelector('[data-pfa-brands]'), dots = document.querySelector('[data-pfa-dots]');
-    if (!list || !dots) return;
+  /* Đối tác + Sản phẩm (mobile): chấm phân trang thay thanh cuộn */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-pfa-swipe]'), function (list) {
+    var dots = list.parentNode.querySelector('[data-pfa-dots]');
+    if (!dots) return;
     var pages = 0;
     var mark = function () {
       var max = list.scrollWidth - list.clientWidth;
@@ -534,7 +541,7 @@
     list.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(mark, 60); }, { passive: true });
     window.addEventListener('resize', build);
     build();
-  })();
+  });
 </script>
 
 <script>
