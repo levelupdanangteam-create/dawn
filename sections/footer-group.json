@@ -30,8 +30,8 @@
         "business_info": {
           "type": "text",
           "settings": {
-            "heading": "Business Information",
-            "subtext": "<p><strong>LEVELUPVN LIMITED</strong></p><p>Business Reg. No.: 77795525-000-03-26-8</p><p>Unit E01, 10/F, Wong King Industrial Building, 2-4 Tai Yau Street, San Po Kong, Hong Kong</p><p><a href=\"mailto:nhatngo@levelupvn.com\">nhatngo@levelupvn.com</a></p><p><a href=\"tel:+84988818036\">+84 988 818 036</a></p>"
+            "heading": "Thông tin kho hàng",
+            "subtext": "<p><strong>ABC INTERNATIONAL S.R.O</strong></p><p>Địa chỉ: Praha, Czech Republic</p><p>Email: <a href=\"mailto:support@phomifood.eu\">support@phomifood.eu</a></p>"
           }
         }
       },
