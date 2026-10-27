@@ -739,7 +739,7 @@
     "pf_promo_banner_deal": {
       "type": "pf-promo-banner",
       "settings": {
-        "image": "shopify://shop_images/uu-dai-duy-nhat-hom-nay-banner.webp",
+        "image": "shopify://shop_images/Untitled_Design_7.png",
         "image_mobile": "shopify://shop_images/5c657608-7ba4-40c6-baf3-5b62329e1a2b.webp",
         "link": "shopify://pages/uu-dai-hom-nay",
         "alt": "Ưu đãi duy nhất trong hôm nay - giảm sâu tới 17%",
@@ -804,6 +804,7 @@
           "type": "banner",
           "settings": {
             "image": "shopify://shop_images/uu-dai-xa-kho-banner.webp",
+            "image_mobile": "shopify://shop_images/fd08548d-e227-48d0-a1ee-35653a76516b.png",
             "link": "shopify://pages/flash-sale",
             "alt": "Ưu đãi xả kho - giảm sốc tới 17%"
           }
