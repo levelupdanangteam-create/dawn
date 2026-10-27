@@ -494,8 +494,8 @@
     "pf_promo_banner": {
       "type": "pf-promo-banner",
       "settings": {
-        "image": "shopify://shop_images/8861ac51-3fbf-42ea-add7-9feb9954521b_1f66bfaf-cb37-41f1-a832-b3a9a513a9b5.png",
-        "image_mobile": "shopify://shop_images/8861ac51-3fbf-42ea-add7-9feb9954521b.png",
+        "image": "shopify://shop_images/phomifood_banner_no_white_padding.png",
+        "image_mobile": "shopify://shop_images/8861ac51-3fbf-42ea-add7-9feb9954521b_1f66bfaf-cb37-41f1-a832-b3a9a513a9b5.png",
         "link": "shopify://pages/tra-cuu-phi-ship",
         "alt": "Đơn từ 139€ Freeship hoặc giảm 10% giá trị đơn hàng",
         "padding_top": 16,
