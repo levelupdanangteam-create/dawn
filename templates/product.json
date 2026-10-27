@@ -138,6 +138,7 @@
         "r5",
         "r6"
       ],
+      "disabled": true,
       "settings": {
         "heading": "Khách hàng nói gì về sản phẩm",
         "subheading": "Đánh giá thật từ khách hàng PHOMIFOOD",
