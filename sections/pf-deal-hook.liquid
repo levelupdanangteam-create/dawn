@@ -15,7 +15,7 @@
 {%- if pf_show -%}
 
 <div class="pf-hd pf-fs{% if pf_page %} pf-fs--page{% endif %} color-scheme-1" id="pf-hd-{{ section.id }}" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
-  <div class="page-width">
+  <div class="page-width{% if section.settings.full_width %} pf-fs__full{% endif %}">
     <div class="pf-fs__wrap">
       <div class="pf-fs__bar-head">
         <div class="pf-fs__title-wrap">
@@ -80,6 +80,8 @@
     box-shadow: 0 14px 34px rgba(20, 103, 47, .22);
   }
   #pf-hd-{{ section.id }} .pf-fs__wrap > * { position: relative; }
+  /* Tràn hết chiều ngang màn hình (chỉ chừa lề 2 bên) */
+  #pf-hd-{{ section.id }} .pf-fs__full { max-width: none; padding-inline: clamp(1.6rem, 3vw, 4.8rem); }
 
   /* Hàng tiêu đề: nền trắng, chữ xanh như các section khác */
   #pf-hd-{{ section.id }} .pf-fs__bar-head { display: flex; align-items: center; gap: 1.6rem 2.4rem; flex-wrap: wrap; color: #fff; padding: 0 0 1.8rem; border-bottom: 1px solid rgba(255, 255, 255, .2); }
@@ -285,6 +287,7 @@
     { "type": "text", "id": "step_1", "label": "Bước 1", "default": "Chọn 1 món giá deal" },
     { "type": "text", "id": "step_2", "label": "Bước 2", "default": "Thêm vào giỏ cùng đơn hàng" },
     { "type": "text", "id": "step_3", "label": "Bước 3", "default": "Thanh toán — giá deal áp dụng ngay" },
+    { "type": "checkbox", "id": "full_width", "label": "Tràn hết chiều ngang màn hình", "default": false },
     { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 40 },
     { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 40 }
   ],

@@ -349,7 +349,8 @@
         "step_2": "Thêm vào giỏ cùng đơn hàng",
         "step_3": "Thanh toán — giá deal áp dụng ngay",
         "padding_top": 24,
-        "padding_bottom": 16
+        "padding_bottom": 16,
+        "full_width": true
       }
     }
   },
