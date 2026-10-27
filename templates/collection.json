@@ -9,163 +9,6 @@
  */
 {
   "sections": {
-    "pf_catalog": {
-      "type": "pf-catalog",
-      "blocks": {
-        "cat_01": {
-          "type": "category",
-          "settings": {
-            "collection": "gia-xa-kho",
-            "title": "Giá xả kho"
-          }
-        },
-        "cat_02": {
-          "type": "category",
-          "settings": {
-            "collection": "hang-dộc-quyền",
-            "title": "Chỉ có tại Phomifood"
-          }
-        },
-        "cat_03": {
-          "type": "category",
-          "settings": {
-            "collection": "combo",
-            "title": "Combo tiết kiệm"
-          }
-        },
-        "cat_04": {
-          "type": "category",
-          "settings": {
-            "collection": "mi-an-liền",
-            "title": "Mì ăn liền"
-          }
-        },
-        "cat_05": {
-          "type": "category",
-          "settings": {
-            "collection": "bun-phở-kho",
-            "title": "Bún, phở khô"
-          }
-        },
-        "cat_06": {
-          "type": "category",
-          "settings": {
-            "collection": "gạo-nếp-cac-loại",
-            "title": "Gạo, nếp các loại"
-          }
-        },
-        "cat_07": {
-          "type": "category",
-          "settings": {
-            "collection": "bột-gia-vị",
-            "title": "Gia vị & bột nấu ăn"
-          }
-        },
-        "cat_08": {
-          "type": "category",
-          "settings": {
-            "collection": "banh-trang-cac-loại",
-            "title": "Bánh tráng các loại"
-          }
-        },
-        "cat_09": {
-          "type": "category",
-          "settings": {
-            "collection": "thực-phẩm-chế-biến-sẵn",
-            "title": "Thực phẩm chế biến sẵn"
-          }
-        },
-        "cat_10": {
-          "type": "category",
-          "settings": {
-            "collection": "ca-phe",
-            "title": "Cà phê & trà"
-          }
-        },
-        "cat_11": {
-          "type": "category",
-          "settings": {
-            "collection": "dồ-uống",
-            "title": "Đồ uống"
-          }
-        },
-        "cat_12": {
-          "type": "category",
-          "settings": {
-            "collection": "sữa-cac-loại",
-            "title": "Sữa các loại"
-          }
-        },
-        "cat_13": {
-          "type": "category",
-          "settings": {
-            "collection": "banh-kẹo-dồ-an-vặt",
-            "title": "Bánh kẹo, đồ ăn vặt"
-          }
-        }
-      },
-      "block_order": [
-        "cat_01",
-        "cat_02",
-        "cat_03",
-        "cat_04",
-        "cat_05",
-        "cat_06",
-        "cat_07",
-        "cat_08",
-        "cat_09",
-        "cat_10",
-        "cat_11",
-        "cat_12",
-        "cat_13"
-      ],
-      "settings": {
-        "heading": "Danh sách sản phẩm",
-        "only_all": true,
-        "columns_desktop": 5,
-        "products_per_row": 12,
-        "padding_top": 24,
-        "padding_bottom": 48
-      }
-    },
-    "banner": {
-      "type": "main-collection-banner",
-      "disabled": true,
-      "settings": {
-        "show_collection_description": true,
-        "show_collection_image": false,
-        "color_scheme": "scheme-1",
-        "pf_show_banner": true,
-        "pf_banner_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/6814e16b-944b-461b-bfb1-8231ed7be634.png?v=1784528877"
-      }
-    },
-    "product-grid": {
-      "type": "pf-collection-grid",
-      "settings": {
-        "products_per_page": 36,
-        "columns_desktop": 6,
-        "sentence_case": true,
-        "show_sort": true,
-        "show_description": false,
-        "low_stock": 10,
-        "padding_top": 24,
-        "padding_bottom": 40,
-        "more_label": "Khám phá các sản phẩm khác",
-        "more_link": ""
-      }
-    },
-    "pf_combo_cta": {
-      "type": "pf-combo-cta",
-      "settings": {
-        "heading": "Chưa biết chọn món gì?",
-        "text": "Phomifood chọn giúp bạn. Combo đủ món, giá bao tiết kiệm!",
-        "button_label": "Xem combo",
-        "button_link": "shopify://collections/combo",
-        "only_handles": "all",
-        "padding_top": 24,
-        "padding_bottom": 48
-      }
-    },
     "pf_deal_hook": {
       "type": "pf-deal-hook",
       "blocks": {
@@ -348,9 +191,166 @@
         "step_1": "Chọn 1 món giá deal",
         "step_2": "Thêm vào giỏ cùng đơn hàng",
         "step_3": "Thanh toán — giá deal áp dụng ngay",
+        "full_width": true,
         "padding_top": 24,
-        "padding_bottom": 16,
-        "full_width": true
+        "padding_bottom": 16
+      }
+    },
+    "pf_catalog": {
+      "type": "pf-catalog",
+      "blocks": {
+        "cat_01": {
+          "type": "category",
+          "settings": {
+            "collection": "gia-xa-kho",
+            "title": "Giá giảm sâu"
+          }
+        },
+        "cat_02": {
+          "type": "category",
+          "settings": {
+            "collection": "hang-dộc-quyền",
+            "title": "Hàng độc quyền"
+          }
+        },
+        "cat_03": {
+          "type": "category",
+          "settings": {
+            "collection": "combo",
+            "title": "Combo tiết kiệm"
+          }
+        },
+        "cat_04": {
+          "type": "category",
+          "settings": {
+            "collection": "mi-an-liền",
+            "title": "Mì ăn liền"
+          }
+        },
+        "cat_05": {
+          "type": "category",
+          "settings": {
+            "collection": "bun-phở-kho",
+            "title": "Bún, phở khô"
+          }
+        },
+        "cat_06": {
+          "type": "category",
+          "settings": {
+            "collection": "gạo-nếp-cac-loại",
+            "title": "Gạo, nếp các loại"
+          }
+        },
+        "cat_07": {
+          "type": "category",
+          "settings": {
+            "collection": "bột-gia-vị",
+            "title": "Gia vị & bột nấu ăn"
+          }
+        },
+        "cat_08": {
+          "type": "category",
+          "settings": {
+            "collection": "banh-trang-cac-loại",
+            "title": "Bánh tráng các loại"
+          }
+        },
+        "cat_09": {
+          "type": "category",
+          "settings": {
+            "collection": "thực-phẩm-chế-biến-sẵn",
+            "title": "Thực phẩm chế biến sẵn"
+          }
+        },
+        "cat_10": {
+          "type": "category",
+          "settings": {
+            "collection": "ca-phe",
+            "title": "Cà phê & trà"
+          }
+        },
+        "cat_11": {
+          "type": "category",
+          "settings": {
+            "collection": "dồ-uống",
+            "title": "Đồ uống"
+          }
+        },
+        "cat_12": {
+          "type": "category",
+          "settings": {
+            "collection": "sữa-cac-loại",
+            "title": "Sữa các loại"
+          }
+        },
+        "cat_13": {
+          "type": "category",
+          "settings": {
+            "collection": "banh-kẹo-dồ-an-vặt",
+            "title": "Bánh kẹo, đồ ăn vặt"
+          }
+        }
+      },
+      "block_order": [
+        "cat_01",
+        "cat_02",
+        "cat_03",
+        "cat_04",
+        "cat_05",
+        "cat_06",
+        "cat_07",
+        "cat_08",
+        "cat_09",
+        "cat_10",
+        "cat_11",
+        "cat_12",
+        "cat_13"
+      ],
+      "settings": {
+        "heading": "Danh sách sản phẩm",
+        "only_all": true,
+        "columns_desktop": 5,
+        "products_per_row": 12,
+        "padding_top": 24,
+        "padding_bottom": 48
+      }
+    },
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_collection_description": true,
+        "show_collection_image": false,
+        "color_scheme": "scheme-1",
+        "pf_show_banner": true,
+        "pf_banner_url": "https://cdn.shopify.com/s/files/1/0749/9353/3018/files/6814e16b-944b-461b-bfb1-8231ed7be634.png?v=1784528877"
+      }
+    },
+    "product-grid": {
+      "type": "pf-collection-grid",
+      "settings": {
+        "products_per_page": 36,
+        "columns_desktop": 6,
+        "sentence_case": true,
+        "show_sort": true,
+        "show_description": false,
+        "more_label": "Khám phá các sản phẩm khác",
+        "more_link": "",
+        "low_stock": 10,
+        "padding_top": 24,
+        "padding_bottom": 40
+      }
+    },
+    "pf_combo_cta": {
+      "type": "pf-combo-cta",
+      "settings": {
+        "heading": "Chưa biết chọn món gì?",
+        "text": "Phomifood chọn giúp bạn. Combo đủ món, giá bao tiết kiệm!",
+        "button_label": "Xem combo",
+        "button_link": "shopify://collections/combo",
+        "only_handles": "all",
+        "padding_top": 24,
+        "padding_bottom": 48
       }
     }
   },
