@@ -10,6 +10,9 @@
 {%- assign vi = false -%}{%- if request.locale.iso_code == 'vi' -%}{%- assign vi = true -%}{%- endif -%}
 {%- assign pf_all = section.settings.view_all_link | default: '/pages/uu-dai-hom-nay' -%}
 {%- assign pf_page = false -%}{%- if template.name == 'page' -%}{%- assign pf_page = true -%}{%- endif -%}
+{%- comment -%} Ở template Danh mục: chỉ hiện trên /collections/all (trang Tất cả sản phẩm) {%- endcomment -%}
+{%- assign pf_show = true -%}{%- if template.name == 'collection' and collection.handle != 'all' -%}{%- assign pf_show = false -%}{%- endif -%}
+{%- if pf_show -%}
 
 <div class="pf-hd pf-fs{% if pf_page %} pf-fs--page{% endif %} color-scheme-1" id="pf-hd-{{ section.id }}" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
   <div class="page-width">
@@ -259,6 +262,7 @@
     update();
   })();
 </script>
+{%- endif -%}
 
 {% schema %}
 {
