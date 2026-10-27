@@ -740,6 +740,7 @@
       "type": "pf-promo-banner",
       "settings": {
         "image": "shopify://shop_images/uu-dai-duy-nhat-hom-nay-banner.webp",
+        "image_mobile": "shopify://shop_images/5c657608-7ba4-40c6-baf3-5b62329e1a2b.webp",
         "link": "shopify://pages/uu-dai-hom-nay",
         "alt": "Ưu đãi duy nhất trong hôm nay - giảm sâu tới 17%",
         "padding_top": 16,
