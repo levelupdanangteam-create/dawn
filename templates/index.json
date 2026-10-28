@@ -17,7 +17,8 @@
           "settings": {
             "image": "shopify://shop_images/1793167630349_3010115264489379495_3010115264489379495_b1539e26ab8cd140cf93337ddbc767d0.jpg",
             "link": "/collections/all",
-            "alt": "Phomifood"
+            "alt": "Phomifood",
+            "mobile_focus": 0
           }
         },
         "slide_2": {
@@ -25,7 +26,8 @@
           "settings": {
             "image": "shopify://shop_images/1793167620269_3010115264489379495_3010115264489379495_2ad687bcea3abd4a7c16d438c1c47409.jpg",
             "link": "/collections/all",
-            "alt": "Phomifood"
+            "alt": "Phomifood",
+            "mobile_focus": 0
           }
         },
         "slide_3": {
@@ -33,7 +35,8 @@
           "settings": {
             "image": "shopify://shop_images/1793167630369_3010115264489379495_3010115264489379495_958a1a64b47644008500f7f0342869c8.jpg",
             "link": "/collections/all",
-            "alt": "Phomifood"
+            "alt": "Phomifood",
+            "mobile_focus": 100
           }
         }
       },
@@ -48,7 +51,8 @@
         "fallback_files": "1793167630349_3010115264489379495_3010115264489379495_b1539e26ab8cd140cf93337ddbc767d0.jpg\n1793167620269_3010115264489379495_3010115264489379495_2ad687bcea3abd4a7c16d438c1c47409.jpg\n1793167630369_3010115264489379495_3010115264489379495_958a1a64b47644008500f7f0342869c8.jpg",
         "fallback_link": "/collections/all",
         "padding_top": 16,
-        "padding_bottom": 8
+        "padding_bottom": 8,
+        "mobile_ratio": "2 / 1"
       }
     },
     "pf_hero_float": {
