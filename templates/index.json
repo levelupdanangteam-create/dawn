@@ -12,19 +12,19 @@
     "pf_hero_slider": {
       "type": "pf-hero-slider",
       "blocks": {
-        "slide_1": {
+        "slide_2": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/1793167630349_3010115264489379495_3010115264489379495_b1539e26ab8cd140cf93337ddbc767d0.jpg",
-            "mobile_focus": 0,
+            "image": "shopify://shop_images/bc167f3e-11a5-4226-bdd3-967168070406.png",
+            "mobile_focus": 10,
             "link": "/collections/all",
             "alt": "Phomifood"
           }
         },
-        "slide_2": {
+        "slide_1": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/t_i_xu_ng.png",
+            "image": "shopify://shop_images/1793167630349_3010115264489379495_3010115264489379495_b1539e26ab8cd140cf93337ddbc767d0.jpg",
             "mobile_focus": 0,
             "link": "/collections/all",
             "alt": "Phomifood"
@@ -41,8 +41,8 @@
         }
       },
       "block_order": [
-        "slide_1",
         "slide_2",
+        "slide_1",
         "slide_3"
       ],
       "settings": {
