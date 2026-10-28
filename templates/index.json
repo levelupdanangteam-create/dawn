@@ -9,6 +9,48 @@
  */
 {
   "sections": {
+    "pf_hero_slider": {
+      "type": "pf-hero-slider",
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/1793167630349_3010115264489379495_3010115264489379495_b1539e26ab8cd140cf93337ddbc767d0.jpg",
+            "link": "/collections/all",
+            "alt": "Phomifood"
+          }
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/1793167620269_3010115264489379495_3010115264489379495_2ad687bcea3abd4a7c16d438c1c47409.jpg",
+            "link": "/collections/all",
+            "alt": "Phomifood"
+          }
+        },
+        "slide_3": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/1793167630369_3010115264489379495_3010115264489379495_958a1a64b47644008500f7f0342869c8.jpg",
+            "link": "/collections/all",
+            "alt": "Phomifood"
+          }
+        }
+      },
+      "block_order": [
+        "slide_1",
+        "slide_2",
+        "slide_3"
+      ],
+      "settings": {
+        "autoplay": true,
+        "interval": 5,
+        "fallback_files": "1793167630349_3010115264489379495_3010115264489379495_b1539e26ab8cd140cf93337ddbc767d0.jpg\n1793167620269_3010115264489379495_3010115264489379495_2ad687bcea3abd4a7c16d438c1c47409.jpg\n1793167630369_3010115264489379495_3010115264489379495_958a1a64b47644008500f7f0342869c8.jpg",
+        "fallback_link": "/collections/all",
+        "padding_top": 16,
+        "padding_bottom": 8
+      }
+    },
     "pf_hero_float": {
       "type": "pf-hero-float",
       "blocks": {
@@ -74,7 +116,8 @@
         "button_link": "shopify://collections/all",
         "padding_top": 48,
         "padding_bottom": 60
-      }
+      },
+      "disabled": true
     },
     "pf_story": {
       "type": "pf-our-story",
@@ -1043,6 +1086,7 @@
     }
   },
   "order": [
+    "pf_hero_slider",
     "pf_hero_float",
     "pf_story",
     "pf_why",
