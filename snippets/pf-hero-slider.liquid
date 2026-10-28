@@ -1,0 +1,188 @@
+{%- comment -%}
+  PHOMIFOOD: slider ảnh banner đầu trang chủ (thay cho hero pf-hero-float, 28/10).
+  - Mỗi block "Ảnh" = 1 slide: ảnh máy tính, ảnh điện thoại (tuỳ chọn), link (tuỳ chọn).
+  - Chưa có block nào → dùng danh sách tên file trong ô "Ảnh mặc định" (ảnh trong Content → Files).
+  - Tự chạy, dừng khi rê chuột/chạm, vuốt được trên điện thoại, có mũi tên + chấm.
+  Dùng: render 'pf-hero-slider' với blocks, files, link, autoplay, interval (giây), pt, pb.
+{%- endcomment -%}
+{%- liquid
+  assign pf_sec_interval = interval | default: 5
+  if autoplay == nil
+    assign autoplay = true
+  endif
+  assign pf_interval = pf_sec_interval | times: 1000
+  assign pf_files = files | newline_to_br | replace: '<br />', ',' | split: ','
+  assign pf_count = 0
+  if blocks.size > 0
+    for b in blocks
+      if b.settings.image != blank
+        assign pf_count = pf_count | plus: 1
+      endif
+    endfor
+  else
+    for f in pf_files
+      assign fn = f | strip
+      if fn != blank and images[fn] != blank
+        assign pf_count = pf_count | plus: 1
+      endif
+    endfor
+  endif
+-%}
+
+{%- if pf_count > 0 -%}
+<style>
+  .pf-hs { padding: {{ pt }}px 0 {{ pb }}px; }
+  .pf-hs__wrap { position: relative; max-width: 1440px; margin: 0 auto; padding: 0 1.6rem; }
+  .pf-hs__track {
+    display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;
+    border-radius: 16px; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .08);
+  }
+  .pf-hs__track::-webkit-scrollbar { display: none; }
+  .pf-hs__slide { flex: 0 0 100%; scroll-snap-align: start; scroll-snap-stop: always; position: relative; }
+  .pf-hs__slide a, .pf-hs__slide > span { display: block; }
+  .pf-hs__img { display: block; width: 100%; height: auto; aspect-ratio: var(--pf-ar, 2048 / 768); object-fit: cover; }
+  .pf-hs__img--m { display: none; }
+  .pf-hs__nav {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+    width: 4.4rem; height: 4.4rem; border-radius: 50%; border: 0; cursor: pointer;
+    background: rgba(255, 255, 255, .92); color: #1f5c2e; display: grid; place-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .18); transition: background .15s, transform .15s;
+  }
+  .pf-hs__nav:hover { background: #fff; transform: translateY(-50%) scale(1.06); }
+  .pf-hs__nav:focus-visible { outline: 3px solid #1f5c2e; outline-offset: 2px; }
+  .pf-hs__nav svg { width: 2rem; height: 2rem; }
+  .pf-hs__nav--prev { left: 2.8rem; }
+  .pf-hs__nav--next { right: 2.8rem; }
+  .pf-hs__dots { display: flex; justify-content: center; gap: .8rem; margin-top: 1.2rem; }
+  .pf-hs__dot {
+    width: .9rem; height: .9rem; padding: 0; border: 0; border-radius: 999px; cursor: pointer;
+    background: rgba(31, 92, 46, .25); transition: width .25s, background .25s;
+  }
+  .pf-hs__dot[aria-current="true"] { width: 2.6rem; background: #1f5c2e; }
+  .pf-hs__dot:focus-visible { outline: 2px solid #1f5c2e; outline-offset: 2px; }
+  @media (max-width: 749px) {
+    .pf-hs__wrap { padding: 0; }
+    .pf-hs__track { border-radius: 0; box-shadow: none; }
+    .pf-hs__nav { display: none; }
+    .pf-hs__img--m { display: block; }
+    .pf-hs__img--m + .pf-hs__img--d { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .pf-hs__track { scroll-behavior: auto; } }
+</style>
+
+<div class="pf-hs" data-pf-hs data-interval="{{ pf_interval }}" data-autoplay="{{ autoplay }}">
+  <div class="pf-hs__wrap">
+    <div class="pf-hs__track" role="region" aria-roledescription="carousel" aria-label="Ưu đãi Phomifood" tabindex="0" data-pf-hs-track>
+      {%- assign pf_i = 0 -%}
+      {%- if blocks.size > 0 -%}
+        {%- for b in blocks -%}
+          {%- if b.settings.image != blank -%}
+            {%- assign pf_i = pf_i | plus: 1 -%}
+            <div class="pf-hs__slide" role="group" aria-roledescription="slide" aria-label="{{ pf_i }} / {{ pf_count }}" {{ b.shopify_attributes }}>
+              {%- if b.settings.link != blank -%}<a href="{{ b.settings.link }}">{%- else -%}<span>{%- endif -%}
+              {%- assign pf_alt = b.settings.alt | default: b.settings.image.alt | default: 'Phomifood' -%}
+              {%- if b.settings.image_mobile != blank -%}
+                {{ b.settings.image_mobile | image_url: width: 1100 | image_tag: class: 'pf-hs__img pf-hs__img--m', widths: '375, 550, 750, 1100', sizes: '100vw', alt: pf_alt, loading: 'lazy' }}
+              {%- endif -%}
+              {%- if pf_i == 1 -%}
+                {{ b.settings.image | image_url: width: 2048 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '750, 1100, 1500, 2048', sizes: '(min-width: 1440px) 1408px, 100vw', alt: pf_alt, loading: 'eager', fetchpriority: 'high', style: '--pf-ar: auto' }}
+              {%- else -%}
+                {{ b.settings.image | image_url: width: 2048 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '750, 1100, 1500, 2048', sizes: '(min-width: 1440px) 1408px, 100vw', alt: pf_alt, loading: 'lazy', style: '--pf-ar: auto' }}
+              {%- endif -%}
+              {%- if b.settings.link != blank -%}</a>{%- else -%}</span>{%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for f in pf_files -%}
+          {%- assign fn = f | strip -%}
+          {%- if fn != blank and images[fn] != blank -%}
+            {%- assign pf_i = pf_i | plus: 1 -%}
+            <div class="pf-hs__slide" role="group" aria-roledescription="slide" aria-label="{{ pf_i }} / {{ pf_count }}">
+              {%- if link != blank -%}<a href="{{ link }}">{%- else -%}<span>{%- endif -%}
+              {%- if pf_i == 1 -%}
+                {{ images[fn] | image_url: width: 2048 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '750, 1100, 1500, 2048', sizes: '(min-width: 1440px) 1408px, 100vw', alt: 'Phomifood', loading: 'eager', fetchpriority: 'high', style: '--pf-ar: auto' }}
+              {%- else -%}
+                {{ images[fn] | image_url: width: 2048 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '750, 1100, 1500, 2048', sizes: '(min-width: 1440px) 1408px, 100vw', alt: 'Phomifood', loading: 'lazy', style: '--pf-ar: auto' }}
+              {%- endif -%}
+              {%- if link != blank -%}</a>{%- else -%}</span>{%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    {%- if pf_count > 1 -%}
+      <button type="button" class="pf-hs__nav pf-hs__nav--prev" aria-label="Ảnh trước" data-pf-hs-prev>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <button type="button" class="pf-hs__nav pf-hs__nav--next" aria-label="Ảnh tiếp theo" data-pf-hs-next>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+    {%- endif -%}
+  </div>
+
+  {%- if pf_count > 1 -%}
+    <div class="pf-hs__dots" data-pf-hs-dots>
+      {%- for i in (1..pf_count) -%}
+        <button type="button" class="pf-hs__dot" aria-label="Xem ảnh {{ i }}"{% if forloop.first %} aria-current="true"{% endif %}></button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>
+
+<script>
+  (function () {
+    var roots = document.querySelectorAll('[data-pf-hs]:not([data-ready])');
+    roots.forEach(function (root) {
+      root.setAttribute('data-ready', '1');
+      var track = root.querySelector('[data-pf-hs-track]');
+      var slides = track ? track.children : [];
+      var dots = root.querySelectorAll('[data-pf-hs-dots] button');
+      var n = slides.length;
+      if (!track || n < 2) return;
+      var cur = 0, timer = null, paused = false;
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var auto = root.dataset.autoplay === 'true' && !reduce;
+      var ms = parseInt(root.dataset.interval, 10) || 5000;
+
+      function go(i) {
+        cur = (i + n) % n;
+        track.scrollTo({ left: slides[cur].offsetLeft - track.offsetLeft, behavior: reduce ? 'auto' : 'smooth' });
+      }
+      function mark(i) {
+        cur = i;
+        dots.forEach(function (d, k) { if (k === i) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current'); });
+      }
+      var st;
+      track.addEventListener('scroll', function () {
+        clearTimeout(st);
+        st = setTimeout(function () { mark(Math.round(track.scrollLeft / track.clientWidth)); }, 60);
+      }, { passive: true });
+
+      function start() { stop(); if (auto && !paused && !document.hidden) timer = setInterval(function () { go(cur + 1); }, ms); }
+      function stop() { if (timer) { clearInterval(timer); timer = null; } }
+
+      var prev = root.querySelector('[data-pf-hs-prev]'), next = root.querySelector('[data-pf-hs-next]');
+      if (prev) prev.addEventListener('click', function () { go(cur - 1); start(); });
+      if (next) next.addEventListener('click', function () { go(cur + 1); start(); });
+      dots.forEach(function (d, k) { d.addEventListener('click', function () { go(k); start(); }); });
+      track.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); start(); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); start(); }
+      });
+
+      root.addEventListener('mouseenter', function () { paused = true; stop(); });
+      root.addEventListener('mouseleave', function () { paused = false; start(); });
+      root.addEventListener('focusin', function () { paused = true; stop(); });
+      root.addEventListener('focusout', function () { paused = false; start(); });
+      track.addEventListener('touchstart', function () { stop(); }, { passive: true });
+      track.addEventListener('touchend', function () { start(); }, { passive: true });
+      document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); else start(); });
+      start();
+    });
+  })();
+</script>
+{%- endif -%}
+

@@ -1,0 +1,38 @@
+{%- comment -%} Slider ảnh đầu trang chủ — markup ở snippets/pf-hero-slider.liquid {%- endcomment -%}
+{% render 'pf-hero-slider', blocks: section.blocks, files: section.settings.fallback_files, link: section.settings.fallback_link, autoplay: section.settings.autoplay, interval: section.settings.interval, pt: section.settings.padding_top, pb: section.settings.padding_bottom %}
+
+{% schema %}
+{
+  "name": "PF Hero Slider",
+  "tag": "section",
+  "class": "pf-hero-slider",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "checkbox", "id": "autoplay", "label": "Tự chạy", "default": true },
+    { "type": "range", "id": "interval", "label": "Thời gian mỗi ảnh", "min": 3, "max": 10, "step": 1, "unit": "s", "default": 5 },
+    {
+      "type": "textarea",
+      "id": "fallback_files",
+      "label": "Ảnh mặc định (khi chưa có block)",
+      "info": "Mỗi dòng 1 tên file trong Content → Files.",
+      "default": "1793167630349_3010115264489379495_3010115264489379495_b1539e26ab8cd140cf93337ddbc767d0.jpg\n1793167620269_3010115264489379495_3010115264489379495_2ad687bcea3abd4a7c16d438c1c47409.jpg\n1793167630369_3010115264489379495_3010115264489379495_958a1a64b47644008500f7f0342869c8.jpg"
+    },
+    { "type": "url", "id": "fallback_link", "label": "Link cho ảnh mặc định", "default": "/collections/all" },
+    { "type": "range", "id": "padding_top", "label": "Khoảng cách trên", "min": 0, "max": 60, "step": 4, "unit": "px", "default": 16 },
+    { "type": "range", "id": "padding_bottom", "label": "Khoảng cách dưới", "min": 0, "max": 60, "step": 4, "unit": "px", "default": 8 }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Ảnh",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Ảnh (máy tính)", "info": "Tỉ lệ khuyên dùng 2048 × 768." },
+        { "type": "image_picker", "id": "image_mobile", "label": "Ảnh điện thoại (tuỳ chọn)" },
+        { "type": "url", "id": "link", "label": "Link khi bấm vào ảnh" },
+        { "type": "text", "id": "alt", "label": "Mô tả ảnh (alt)" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "PF Hero Slider" }]
+}
+{% endschema %}
