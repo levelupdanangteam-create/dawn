@@ -63,11 +63,12 @@
   .pf-hs__dot[aria-current="true"] { width: 2.6rem; background: #1f5c2e; }
   .pf-hs__dot:focus-visible { outline: 2px solid #1f5c2e; outline-offset: 2px; }
   @media (max-width: 749px) {
+    .pf-hs { padding-top: 0; }
     .pf-hs__wrap { padding: 0; }
     .pf-hs__track { border-radius: 0; box-shadow: none; }
     .pf-hs__nav { display: none; }
     .pf-hs__img--d { aspect-ratio: {{ pf_m_ratio }}; object-fit: cover; object-position: var(--pf-mf, 50%) 50%; }
-    .pf-hs__img--m { display: block; }
+    .pf-hs__img--m { display: block; aspect-ratio: auto; }
     .pf-hs__img--m + .pf-hs__img--d { display: none; }
   }
   @media (prefers-reduced-motion: reduce) { .pf-hs__track { scroll-behavior: auto; } }
