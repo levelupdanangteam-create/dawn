@@ -1,0 +1,159 @@
+{%- comment -%}
+  Nút "Gửi đơn qua WhatsApp / Messenger" dưới nút Thanh toán trên trang giỏ hàng (thêm 28/10).
+  - WhatsApp: mở chat với số shop, tin nhắn điền sẵn danh sách SP + tổng tiền + link giỏ.
+  - Messenger: link m.me không cho điền sẵn tin nhắn, nên nút tự sao chép đơn rồi mở chat để khách dán.
+  Đơn luôn lấy mới từ /cart.js nên đúng cả khi khách vừa đổi số lượng.
+  Dùng: {% render 'pf-cart-chat-order' %}
+{%- endcomment -%}
+{%- assign pf_wa = '84338139402' -%}
+{%- assign pf_fb = 'phomifoodstore' -%}
+{%- assign vi = false -%}
+{%- if request.locale.iso_code == 'vi' -%}{%- assign vi = true -%}{%- endif -%}
+
+<style>
+  .pf-chat { margin-top: 1.4rem; }
+  .pf-chat__or {
+    display: flex; align-items: center; gap: 1rem; margin: 0 0 1rem;
+    font-size: 1.3rem; color: rgba(var(--color-foreground), .65); text-align: center;
+  }
+  .pf-chat__or::before, .pf-chat__or::after { content: ""; flex: 1; height: 1px; background: rgba(var(--color-foreground), .15); }
+  .pf-chat__row { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+  .pf-chat__btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: .7rem;
+    min-height: 4.6rem; padding: .8rem 1rem; border: 0; border-radius: 10px; cursor: pointer;
+    font: inherit; font-size: 1.45rem; font-weight: 700; color: #fff; text-decoration: none; line-height: 1.2;
+    transition: transform .12s ease, filter .12s ease;
+  }
+  .pf-chat__btn:hover { filter: brightness(1.06); transform: translateY(-1px); }
+  .pf-chat__btn:focus-visible { outline: 3px solid rgba(var(--color-foreground), .5); outline-offset: 2px; }
+  .pf-chat__btn svg { width: 2rem; height: 2rem; flex: none; }
+  .pf-chat__btn--wa { background: #25d366; }
+  .pf-chat__btn--fb { background: linear-gradient(135deg, #0084ff 0%, #a334fa 100%); }
+  .pf-chat__hint { margin: .7rem 0 0; font-size: 1.2rem; color: rgba(var(--color-foreground), .65); text-align: center; }
+  .pf-chat__toast {
+    position: fixed; left: 50%; bottom: 2.4rem; transform: translateX(-50%) translateY(1rem);
+    max-width: calc(100% - 3.2rem); z-index: 1000; padding: 1.1rem 1.6rem; border-radius: 10px;
+    background: #1f2a1f; color: #fff; font-size: 1.4rem; line-height: 1.4; text-align: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,.25); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
+  }
+  .pf-chat__toast.is-on { opacity: 1; transform: translateX(-50%) translateY(0); }
+  @media (max-width: 359px) { .pf-chat__row { grid-template-columns: 1fr; } }
+</style>
+
+<div class="pf-chat" data-pf-chat data-wa="{{ pf_wa }}" data-fb="{{ pf_fb }}" data-lang="{% if vi %}vi{% else %}en{% endif %}">
+  <p class="pf-chat__or">{% if vi %}hoặc gửi đơn qua chat{% else %}or send your order via chat{% endif %}</p>
+  <div class="pf-chat__row">
+    <a class="pf-chat__btn pf-chat__btn--wa" href="https://wa.me/{{ pf_wa }}" target="_blank" rel="noopener" data-pf-chat-wa>
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.69.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35zM12.04 21.5h-.01a9.45 9.45 0 0 1-4.82-1.32l-.35-.21-3.58.94.96-3.49-.23-.36a9.43 9.43 0 0 1-1.45-5.03c0-5.22 4.25-9.47 9.48-9.47 2.53 0 4.91.99 6.7 2.78a9.41 9.41 0 0 1 2.77 6.7c0 5.22-4.25 9.47-9.47 9.47zm8.06-17.53A11.33 11.33 0 0 0 12.04.63C5.76.63.65 5.74.65 12.02c0 2.01.52 3.97 1.52 5.69L.55 23.6l6.04-1.58a11.36 11.36 0 0 0 5.44 1.39h.01c6.28 0 11.39-5.11 11.39-11.39 0-3.04-1.18-5.9-3.33-8.05z"/></svg>
+      <span>{% if vi %}Gửi đơn qua WhatsApp{% else %}Order via WhatsApp{% endif %}</span>
+    </a>
+    <a class="pf-chat__btn pf-chat__btn--fb" href="https://m.me/{{ pf_fb }}" target="_blank" rel="noopener" data-pf-chat-fb>
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.52.5.5 5.25.5 11.66c0 3.35 1.38 6.25 3.62 8.25.19.17.3.4.31.65l.06 2.05a.92.92 0 0 0 1.29.81l2.29-1.01c.19-.09.41-.1.62-.05 1.05.29 2.17.44 3.31.44 6.48 0 11.5-4.75 11.5-11.15C23.5 5.25 18.48.5 12 .5zm6.9 8.58-3.38 5.36a1.73 1.73 0 0 1-2.5.46l-2.69-2.02a.69.69 0 0 0-.83 0l-3.63 2.76c-.48.37-1.12-.21-.79-.73l3.38-5.36a1.73 1.73 0 0 1 2.5-.46l2.69 2.02c.25.18.58.18.83 0l3.63-2.76c.48-.37 1.12.21.79.73z"/></svg>
+      <span>{% if vi %}Gửi đơn qua Messenger{% else %}Order via Messenger{% endif %}</span>
+    </a>
+  </div>
+  <p class="pf-chat__hint">{% if vi %}Messenger: đơn hàng được tự sao chép, bạn chỉ cần dán và gửi.{% else %}Messenger: your order is copied automatically, just paste and send.{% endif %}</p>
+</div>
+<div class="pf-chat__toast" role="status" aria-live="polite" data-pf-chat-toast></div>
+
+<script>
+  (function () {
+    var box = document.querySelector('[data-pf-chat]');
+    if (!box || box.dataset.ready) return;
+    box.dataset.ready = '1';
+    var vi = box.dataset.lang === 'vi';
+    var wa = box.dataset.wa, fb = box.dataset.fb;
+    var toast = document.querySelector('[data-pf-chat-toast]');
+    var cached = '';
+
+    function money(c) {
+      return '€' + (c / 100).toFixed(2).replace('.', ',');
+    }
+
+    function build(cart) {
+      var L = [];
+      L.push(vi ? 'Xin chào Phomifood, mình muốn đặt đơn hàng sau:' : 'Hello Phomifood, I would like to order:');
+      L.push('');
+      var perm = [];
+      cart.items.forEach(function (it, i) {
+        var name = it.product_title || it.title;
+        if (it.variant_title && it.variant_title !== 'Default Title') name += ' (' + it.variant_title + ')';
+        L.push((i + 1) + '. ' + name + ' x' + it.quantity + ' = ' + money(it.final_line_price));
+        perm.push(it.variant_id + ':' + it.quantity);
+      });
+      L.push('');
+      if (cart.total_discount > 0) {
+        L.push((vi ? 'Tạm tính: ' : 'Subtotal: ') + money(cart.original_total_price));
+        L.push((vi ? 'Giảm giá: -' : 'Discount: -') + money(cart.total_discount));
+      }
+      L.push((vi ? 'Tổng tiền hàng: ' : 'Items total: ') + money(cart.total_price) + (vi ? ' (chưa gồm phí ship)' : ' (shipping not included)'));
+      var noteEl = document.getElementById('Cart-note');
+      var note = (noteEl && noteEl.value.trim()) || (cart.note || '').trim();
+      if (note) L.push((vi ? 'Ghi chú: ' : 'Note: ') + note);
+      L.push('');
+      L.push((vi ? 'Giỏ hàng: ' : 'Cart: ') + location.origin + '/cart/' + perm.join(','));
+      L.push('');
+      L.push(vi ? 'Mình ở: (quốc gia / thành phố)' : 'My location: (country / city)');
+      return L.join('\n');
+    }
+
+    function refresh() {
+      return fetch('/cart.js', { credentials: 'same-origin', headers: { 'Accept': 'application/json' } })
+        .then(function (r) { return r.json(); })
+        .then(function (c) { cached = c.item_count ? build(c) : ''; return cached; })
+        .catch(function () { return cached; });
+    }
+
+    function show(msg) {
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.classList.add('is-on');
+      clearTimeout(show.t);
+      show.t = setTimeout(function () { toast.classList.remove('is-on'); }, 4500);
+    }
+
+    function copy(text) {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;';
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, text.length);
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        if (ok) return true;
+      } catch (e) {}
+      try { if (navigator.clipboard) { navigator.clipboard.writeText(text); return true; } } catch (e) {}
+      return false;
+    }
+
+    // Nút WhatsApp: dùng đơn đã lấy sẵn để mở ngay (tránh trình duyệt chặn cửa sổ mới).
+    box.querySelector('[data-pf-chat-wa]').addEventListener('click', function (e) {
+      var go = function (t) { return 'https://wa.me/' + wa + '?text=' + encodeURIComponent(t); };
+      if (cached) { this.href = go(cached); return; }
+      e.preventDefault();
+      refresh().then(function (t) { location.href = t ? go(t) : 'https://wa.me/' + wa; });
+    });
+
+    // Nút Messenger: sao chép đơn rồi mở chat với fanpage.
+    box.querySelector('[data-pf-chat-fb]').addEventListener('click', function () {
+      if (cached && copy(cached)) {
+        show(vi ? 'Đã sao chép đơn hàng. Bạn dán vào Messenger và bấm gửi nhé!' : 'Order copied. Paste it into Messenger and send!');
+      } else {
+        show(vi ? 'Đang mở Messenger, bạn nhắn tên sản phẩm giúp shop nhé.' : 'Opening Messenger, please type your order there.');
+      }
+    });
+
+    // Luôn giữ nội dung đơn mới nhất khi khách đổi số lượng / xoá sản phẩm / sửa ghi chú.
+    var deb;
+    function soon() { clearTimeout(deb); deb = setTimeout(refresh, 400); }
+    var items = document.getElementById('main-cart-items') || document.querySelector('cart-items');
+    if (items && window.MutationObserver) new MutationObserver(soon).observe(items, { childList: true, subtree: true });
+    var noteEl = document.getElementById('Cart-note');
+    if (noteEl) noteEl.addEventListener('input', soon);
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) soon(); });
+    refresh();
+  })();
+</script>

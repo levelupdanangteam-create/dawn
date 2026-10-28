@@ -143,6 +143,10 @@
                 </div>
               {%- endif -%}
 
+              {%- unless cart == empty -%}
+                {% render 'pf-cart-chat-order' %}
+              {%- endunless -%}
+
           {%- endcase -%}
         {% endfor %}
 
