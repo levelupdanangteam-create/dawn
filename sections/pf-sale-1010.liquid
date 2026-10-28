@@ -221,17 +221,28 @@
     if (t) {
       var pad = function (n) { return (n < 10 ? '0' : '') + n; };
       var q = function (k) { return t.querySelector('[data-' + k + ']'); };
+      // Ngày kết thúc cố định (giờ Séc, 23:59:59). Để trống = tự đếm tới hết Chủ nhật hằng tuần.
+      var fixedEnd = null, ed = '{{ section.settings.countdown_end | strip }}';
+      if (/^\d{4}-\d{2}-\d{2}$/.test(ed)) {
+        var p = ed.split('-').map(Number);
+        var off = (p[1] > 3 && p[1] < 10) ? 2 : 1; // CEST (UTC+2) mùa hè, CET (UTC+1) mùa đông
+        fixedEnd = new Date(Date.UTC(p[0], p[1] - 1, p[2], 23 - off, 59, 59));
+      }
       var tick = function () {
-        var now = new Date(), end = new Date(now);
-        end.setDate(now.getDate() + ((7 - now.getDay()) % 7));
-        end.setHours(23, 59, 59, 999);
+        var now = new Date(), end;
+        if (fixedEnd) { end = fixedEnd; } else {
+          end = new Date(now);
+          end.setDate(now.getDate() + ((7 - now.getDay()) % 7));
+          end.setHours(23, 59, 59, 999);
+        }
         var left = Math.max(0, Math.floor((end - now) / 1000));
+        if (fixedEnd && left <= 0) { t.hidden = true; return; }
         q('d').textContent = Math.floor(left / 86400);
         q('h').textContent = pad(Math.floor(left % 86400 / 3600));
         q('m').textContent = pad(Math.floor(left % 3600 / 60));
         q('s').textContent = pad(left % 60);
       };
-      tick(); t.hidden = false; setInterval(tick, 1000);
+      t.hidden = false; tick(); setInterval(tick, 1000);
     }
     var box = root.querySelector('.pf-s10');
     var btn = root.querySelector('.pf-s10__more');
@@ -254,8 +265,9 @@
     { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "Chỉ trong dịp 10.10" },
     { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "SIÊU SALE 10.10" },
     { "type": "text", "id": "subheading", "label": "Câu hook", "default": "Thêm vào giỏ là có hời – Chốt đơn kẻo lỡ!" },
-    { "type": "checkbox", "id": "show_countdown", "label": "Hiện đồng hồ đếm ngược (tới hết Chủ nhật)", "default": true },
+    { "type": "checkbox", "id": "show_countdown", "label": "Hiện đồng hồ đếm ngược", "default": true },
     { "type": "text", "id": "countdown_label", "label": "Chữ trên đồng hồ", "default": "Kết thúc sau" },
+    { "type": "text", "id": "countdown_end", "label": "Ngày kết thúc (YYYY-MM-DD)", "info": "VD 2026-11-05: đếm ngược tới 23:59 ngày đó (giờ Séc), hết hạn thì ẩn đồng hồ. Để trống = tự đếm tới hết Chủ nhật hằng tuần." },
     { "type": "text", "id": "stock_note", "label": "Ô thứ 3 (để trống = ẩn)", "default": "Số lượng có hạn" },
     { "type": "range", "id": "low_stock", "min": 0, "max": 50, "step": 1, "label": "Hiện \"Chỉ còn N\" khi tồn kho ≤", "info": "0 = tắt. Chỉ áp dụng sản phẩm có theo dõi tồn kho.", "default": 10 },
     { "type": "text", "id": "badge", "label": "Nhãn góc trái mỗi sản phẩm", "default": "Ưu đãi", "info": "VD: Ưu đãi, Hot deal. % giảm tự tính từ giá gạch và hiện ở ô đỏ góc phải — không cần ghi % ở đây." },

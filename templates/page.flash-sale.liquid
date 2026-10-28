@@ -11,6 +11,7 @@
   assign pf_heading = 'Giá Siêu Rẻ'
   assign pf_sub = 'Giá đáy cho hàng xả kho — mua ngay kẻo hết, hết là thôi!'
   assign pf_countdown_label = 'Kết thúc sau'
+  assign pf_countdown_end = '2026-11-05'
   assign pf_low_stock = 10
   assign vi = false
   if request.locale.iso_code == 'vi'
@@ -189,22 +190,32 @@
   (function () {
     var root = document.getElementById('pf-s10-flashpage');
     if (!root) return;
-    // Đồng hồ đếm ngược tới 23:59:59 Chủ nhật (giờ trên máy khách), sang tuần mới tự chạy lại
+    // Đồng hồ đếm ngược: tới pf_countdown_end nếu có, không thì tới hết Chủ nhật hằng tuần
     var t = root.querySelector('[data-pf-s10-timer]');
     if (t) {
       var pad = function (n) { return (n < 10 ? '0' : '') + n; };
       var q = function (k) { return t.querySelector('[data-' + k + ']'); };
+      var fixedEnd = null, ed = '{{ pf_countdown_end | strip }}';
+      if (/^\d{4}-\d{2}-\d{2}$/.test(ed)) {
+        var p = ed.split('-').map(Number);
+        var off = (p[1] > 3 && p[1] < 10) ? 2 : 1;
+        fixedEnd = new Date(Date.UTC(p[0], p[1] - 1, p[2], 23 - off, 59, 59));
+      }
       var tick = function () {
-        var now = new Date(), end = new Date(now);
-        end.setDate(now.getDate() + ((7 - now.getDay()) % 7));
-        end.setHours(23, 59, 59, 999);
+        var now = new Date(), end;
+        if (fixedEnd) { end = fixedEnd; } else {
+          end = new Date(now);
+          end.setDate(now.getDate() + ((7 - now.getDay()) % 7));
+          end.setHours(23, 59, 59, 999);
+        }
         var left = Math.max(0, Math.floor((end - now) / 1000));
+        if (fixedEnd && left <= 0) { t.hidden = true; return; }
         q('d').textContent = Math.floor(left / 86400);
         q('h').textContent = pad(Math.floor(left % 86400 / 3600));
         q('m').textContent = pad(Math.floor(left % 3600 / 60));
         q('s').textContent = pad(left % 60);
       };
-      tick(); t.hidden = false; setInterval(tick, 1000);
+      t.hidden = false; tick(); setInterval(tick, 1000);
     }
   })();
 </script>

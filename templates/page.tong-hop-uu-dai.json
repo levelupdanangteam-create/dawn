@@ -235,6 +235,7 @@
         "subheading": "",
         "show_countdown": true,
         "countdown_label": "Kết thúc sau",
+        "countdown_end": "2026-11-05",
         "stock_note": "",
         "low_stock": 10,
         "badge": "Xả kho",
