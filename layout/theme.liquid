@@ -283,11 +283,20 @@
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 
     {%- if settings.cart_type == 'drawer' -%}
-      {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
-      {{ 'component-cart.css' | asset_url | stylesheet_tag }}
-      {{ 'component-totals.css' | asset_url | stylesheet_tag }}
-      {{ 'component-price.css' | asset_url | stylesheet_tag }}
-      {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
+      {%- comment -%}PF speed 29/10: CSS giỏ trượt tải sau (không chặn hiển thị). Giỏ luôn nằm cố định + ẩn trước khi CSS về, nên không nháy/xô lệch trang.{%- endcomment -%}
+      <style>cart-drawer.drawer { position: fixed; top: 0; left: 0; width: 100vw; height: 100%; visibility: hidden; } cart-drawer.drawer.active { visibility: visible; }</style>
+      <link rel="stylesheet" href="{{ 'component-cart-drawer.css' | asset_url }}" media="print" onload="this.media='all'">
+      <link rel="stylesheet" href="{{ 'component-cart.css' | asset_url }}" media="print" onload="this.media='all'">
+      <link rel="stylesheet" href="{{ 'component-totals.css' | asset_url }}" media="print" onload="this.media='all'">
+      <link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
+      <link rel="stylesheet" href="{{ 'component-discounts.css' | asset_url }}" media="print" onload="this.media='all'">
+      <noscript>
+        {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
+        {{ 'component-cart.css' | asset_url | stylesheet_tag }}
+        {{ 'component-totals.css' | asset_url | stylesheet_tag }}
+        {{ 'component-price.css' | asset_url | stylesheet_tag }}
+        {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
+      </noscript>
     {%- endif -%}
 
     {%- comment -%}PF speed: removed preload of Assistant font (unused, Montserrat overrides it).{%- endcomment -%}

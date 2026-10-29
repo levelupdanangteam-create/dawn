@@ -88,9 +88,9 @@
               {%- assign pf_style = '--pf-ar: auto; --pf-mf: ' | append: pf_mf | append: '%' -%}
               {%- comment -%} PF speed 29/10: <picture> — mỗi thiết bị chỉ tải 1 ảnh; slide 1 luôn được ưu tiên tải (kể cả ảnh điện thoại). {%- endcomment -%}
               {%- if pf_i == 1 -%}
-                {%- assign pf_load = 'eager' -%}{%- assign pf_fp = 'high' -%}
+                {%- assign pf_load = 'eager' -%}{%- assign pf_fp = 'high' -%}{%- assign pf_pre = true -%}
               {%- else -%}
-                {%- assign pf_load = 'lazy' -%}{%- assign pf_fp = 'auto' -%}
+                {%- assign pf_load = 'lazy' -%}{%- assign pf_fp = 'auto' -%}{%- assign pf_pre = false -%}
               {%- endif -%}
               {%- if b.settings.image_mobile != blank -%}
                 {%- assign pf_mi = b.settings.image_mobile -%}
@@ -100,7 +100,7 @@
                   {{ b.settings.image | image_url: width: 2880 | image_tag: class: 'pf-hs__img pf-hs__img--d pf-hs__img--hasm', widths: '750, 1100, 1500, 2048, 2880', sizes: '100vw', alt: pf_alt, loading: pf_load, fetchpriority: pf_fp, style: pf_style }}
                 </picture>
               {%- else -%}
-                {{ b.settings.image | image_url: width: 2880 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '550, 750, 1100, 1500, 2048, 2880', sizes: '100vw', alt: pf_alt, loading: pf_load, fetchpriority: pf_fp, style: pf_style }}
+                {{ b.settings.image | image_url: width: 2880 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '550, 750, 1100, 1500, 2048, 2880', sizes: '100vw', alt: pf_alt, loading: pf_load, fetchpriority: pf_fp, preload: pf_pre, style: pf_style }}
               {%- endif -%}
               {%- if b.settings.link != blank -%}</a>{%- else -%}</span>{%- endif -%}
             </div>
@@ -114,7 +114,7 @@
             <div class="pf-hs__slide" role="group" aria-roledescription="slide" aria-label="{{ pf_i }} / {{ pf_count }}">
               {%- if link != blank -%}<a href="{{ link }}">{%- else -%}<span>{%- endif -%}
               {%- if pf_i == 1 -%}
-                {{ images[fn] | image_url: width: 2880 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '550, 750, 1100, 1500, 2048, 2880', sizes: '100vw', alt: 'Phomifood', loading: 'eager', fetchpriority: 'high', style: '--pf-ar: auto' }}
+                {{ images[fn] | image_url: width: 2880 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '550, 750, 1100, 1500, 2048, 2880', sizes: '100vw', alt: 'Phomifood', loading: 'eager', fetchpriority: 'high', preload: true, style: '--pf-ar: auto' }}
               {%- else -%}
                 {{ images[fn] | image_url: width: 2880 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '550, 750, 1100, 1500, 2048, 2880', sizes: '100vw', alt: 'Phomifood', loading: 'lazy', style: '--pf-ar: auto' }}
               {%- endif -%}
@@ -156,7 +156,9 @@
       if (!track || n < 2) return;
       var cur = 0, timer = null, paused = false;
       var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var auto = root.dataset.autoplay === 'true' && !reduce;
+      // PF speed 29/10: không tự chạy trên điện thoại (đỡ tải thêm ảnh + đỡ việc cho máy); khách vẫn vuốt được.
+      var phone = window.matchMedia && window.matchMedia('(max-width: 749px)').matches;
+      var auto = root.dataset.autoplay === 'true' && !reduce && !phone;
       var ms = parseInt(root.dataset.interval, 10) || 5000;
 
       function go(i) {
