@@ -35,8 +35,8 @@
   }
   .pf-pop__imglink { display: block; }
   .pf-pop__img {
-    display: block; width: 100%; height: auto; border-radius: 16px;
-    box-shadow: 0 24px 60px rgba(0, 0, 0, .45);
+    /* Ảnh PNG nền trong suốt: không bo góc, không đổ bóng/nền khối phía sau ảnh */
+    display: block; width: 100%; height: auto; background: transparent; box-shadow: none; border-radius: 0;
   }
   .pf-pop__x {
     position: absolute; top: -1.4rem; right: -1.4rem; z-index: 2;
