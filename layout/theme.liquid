@@ -418,6 +418,8 @@
       {% render 'pf-sticky-cart' %}
     {%- endunless -%}
 
+    {%- comment -%} Nút tìm kiếm nổi góc dưới bên phải (điện thoại: nằm trên thanh giỏ hàng cố định) {%- endcomment -%}
+    {% render 'pf-search-fab' %}
     {% render 'pf-popups' %}
     {%- comment -%} Popup "… đã mua …" (pf-salespop.liquid) — đã tắt. Bật lại: render 'pf-salespop'. {%- endcomment -%}
     {% render 'pf-contact-buttons' %}
