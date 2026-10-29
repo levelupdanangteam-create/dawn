@@ -20,13 +20,14 @@
 
 <style>
   .pf-pop {
-    position: fixed; inset: 0; z-index: 9999;
+    position: fixed; inset: 0; z-index: 2147483000; /* trên cả thanh giỏ hàng dính đáy */
     display: none; align-items: center; justify-content: center; padding: 2rem;
   }
   .pf-pop.is-open { display: flex; }
   .pf-pop__backdrop {
-    /* Làm mờ trang phía sau để ảnh popup nổi bật */
-    position: absolute; inset: 0; background: rgba(0, 0, 0, .45);
+    /* Làm mờ trang phía sau để ảnh popup nổi bật.
+       display:block bắt buộc: Dawn (base.css) ẩn mọi div rỗng bằng div:empty { display: none } */
+    display: block !important; position: absolute; inset: 0; background: rgba(0, 0, 0, .45);
     -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); animation: pf-pop-fade .25s ease;
     cursor: pointer; /* iOS Safari chỉ phát sự kiện click trên phần tử có cursor:pointer */
   }
