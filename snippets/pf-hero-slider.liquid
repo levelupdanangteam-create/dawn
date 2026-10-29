@@ -67,7 +67,9 @@
     .pf-hs__img--d { aspect-ratio: {{ pf_m_ratio }}; object-fit: cover; object-position: var(--pf-mf, 50%) 50%; }
     .pf-hs__img--m { display: block; aspect-ratio: auto; }
     .pf-hs__img--m + .pf-hs__img--d { display: none; }
+    .pf-hs__img--d.pf-hs__img--hasm { aspect-ratio: var(--pf-mar, auto); object-position: 50% 50%; }
   }
+  .pf-hs__slide picture { display: block; }
   @media (prefers-reduced-motion: reduce) { .pf-hs__track { scroll-behavior: auto; } }
 </style>
 
@@ -84,13 +86,21 @@
               {%- assign pf_alt = b.settings.alt | default: b.settings.image.alt | default: 'Phomifood' -%}
               {%- assign pf_mf = b.settings.mobile_focus | default: 50 -%}
               {%- assign pf_style = '--pf-ar: auto; --pf-mf: ' | append: pf_mf | append: '%' -%}
-              {%- if b.settings.image_mobile != blank -%}
-                {{ b.settings.image_mobile | image_url: width: 1100 | image_tag: class: 'pf-hs__img pf-hs__img--m', widths: '375, 550, 750, 1100', sizes: '100vw', alt: pf_alt, loading: 'lazy' }}
-              {%- endif -%}
+              {%- comment -%} PF speed 29/10: <picture> — mỗi thiết bị chỉ tải 1 ảnh; slide 1 luôn được ưu tiên tải (kể cả ảnh điện thoại). {%- endcomment -%}
               {%- if pf_i == 1 -%}
-                {{ b.settings.image | image_url: width: 2880 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '750, 1100, 1500, 2048, 2880', sizes: '100vw', alt: pf_alt, loading: 'eager', fetchpriority: 'high', style: pf_style }}
+                {%- assign pf_load = 'eager' -%}{%- assign pf_fp = 'high' -%}
               {%- else -%}
-                {{ b.settings.image | image_url: width: 2880 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '750, 1100, 1500, 2048, 2880', sizes: '100vw', alt: pf_alt, loading: 'lazy', style: pf_style }}
+                {%- assign pf_load = 'lazy' -%}{%- assign pf_fp = 'auto' -%}
+              {%- endif -%}
+              {%- if b.settings.image_mobile != blank -%}
+                {%- assign pf_mi = b.settings.image_mobile -%}
+                {%- assign pf_style = pf_style | append: '; --pf-mar: ' | append: pf_mi.width | append: ' / ' | append: pf_mi.height -%}
+                <picture>
+                  <source media="(max-width: 749px)" srcset="{{ pf_mi | image_url: width: 375 }} 375w, {{ pf_mi | image_url: width: 550 }} 550w, {{ pf_mi | image_url: width: 750 }} 750w, {{ pf_mi | image_url: width: 1100 }} 1100w" sizes="100vw" width="{{ pf_mi.width }}" height="{{ pf_mi.height }}">
+                  {{ b.settings.image | image_url: width: 2880 | image_tag: class: 'pf-hs__img pf-hs__img--d pf-hs__img--hasm', widths: '750, 1100, 1500, 2048, 2880', sizes: '100vw', alt: pf_alt, loading: pf_load, fetchpriority: pf_fp, style: pf_style }}
+                </picture>
+              {%- else -%}
+                {{ b.settings.image | image_url: width: 2880 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '550, 750, 1100, 1500, 2048, 2880', sizes: '100vw', alt: pf_alt, loading: pf_load, fetchpriority: pf_fp, style: pf_style }}
               {%- endif -%}
               {%- if b.settings.link != blank -%}</a>{%- else -%}</span>{%- endif -%}
             </div>
@@ -104,9 +114,9 @@
             <div class="pf-hs__slide" role="group" aria-roledescription="slide" aria-label="{{ pf_i }} / {{ pf_count }}">
               {%- if link != blank -%}<a href="{{ link }}">{%- else -%}<span>{%- endif -%}
               {%- if pf_i == 1 -%}
-                {{ images[fn] | image_url: width: 2880 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '750, 1100, 1500, 2048, 2880', sizes: '100vw', alt: 'Phomifood', loading: 'eager', fetchpriority: 'high', style: '--pf-ar: auto' }}
+                {{ images[fn] | image_url: width: 2880 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '550, 750, 1100, 1500, 2048, 2880', sizes: '100vw', alt: 'Phomifood', loading: 'eager', fetchpriority: 'high', style: '--pf-ar: auto' }}
               {%- else -%}
-                {{ images[fn] | image_url: width: 2880 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '750, 1100, 1500, 2048, 2880', sizes: '100vw', alt: 'Phomifood', loading: 'lazy', style: '--pf-ar: auto' }}
+                {{ images[fn] | image_url: width: 2880 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '550, 750, 1100, 1500, 2048, 2880', sizes: '100vw', alt: 'Phomifood', loading: 'lazy', style: '--pf-ar: auto' }}
               {%- endif -%}
               {%- if link != blank -%}</a>{%- else -%}</span>{%- endif -%}
             </div>
