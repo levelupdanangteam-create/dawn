@@ -20,7 +20,7 @@
   }
 
   /* PF 26/10 — Đồng nhất trang sản phẩm: bo góc (ảnh/khung 16px, nút & ô chọn dạng viên thuốc),
-     màu theo bộ nhận diện (xanh #1e8541 / vàng #ffc61a / đỏ giá), nút "Thanh toán ngay" (.pf-buy-now) vàng nhấp nháy. */
+     màu theo bộ nhận diện (xanh #1e8541 / vàng #ffc61a / đỏ giá), nút "Thanh toán ngay" (.pf-buy-now) xanh thương hiệu chữ trắng, nhấp nháy (29/10). */
   .product__media-list .product__media-item .product-media-container,
   .product__media-list .product__media,
   .product__media-wrapper .media { border-radius: 16px !important; overflow: hidden; }
@@ -36,21 +36,21 @@
   .product__info-container .product-form__buttons { display: grid; gap: 1.2rem; }
   .product__info-container .product-form__buttons .pf-buy-now {
     width: 100%; margin: 0; min-height: 5.4rem; border: 0 !important; border-radius: 999px !important;
-    background: #ffc61a !important; color: #14672f !important;
+    background: #1e8541 !important; color: #fff !important;
     font-weight: 800 !important; font-size: 1.7rem !important; letter-spacing: .02em;
-    box-shadow: 0 6px 16px rgba(255, 170, 0, .35);
+    box-shadow: 0 6px 16px rgba(30, 133, 65, .3);
     animation: pf-buynow-pulse 1.6s ease-in-out infinite;
   }
   .product__info-container .product-form__buttons .pf-buy-now::before,
   .product__info-container .product-form__buttons .pf-buy-now::after { display: none !important; }
   .product__info-container .product-form__buttons .pf-buy-now:not([disabled]):hover {
-    background: #ffd23f !important; color: #14672f !important; animation-play-state: paused;
+    background: #14672f !important; color: #fff !important; animation-play-state: paused;
   }
   .product__info-container .product-form__buttons .pf-buy-now[disabled] { animation: none; opacity: .55; }
   /* Nhấp nháy bằng viền sáng tỏa ra (không phóng to nút) → nút luôn thẳng hàng với "Thêm vào giỏ" */
   @keyframes pf-buynow-pulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 198, 26, .7), 0 6px 16px rgba(255, 170, 0, .3); filter: brightness(1); }
-    50% { box-shadow: 0 0 0 9px rgba(255, 198, 26, 0), 0 8px 20px rgba(255, 170, 0, .45); filter: brightness(1.06); }
+    0%, 100% { box-shadow: 0 0 0 0 rgba(30, 133, 65, .55), 0 6px 16px rgba(30, 133, 65, .25); filter: brightness(1); }
+    50% { box-shadow: 0 0 0 9px rgba(30, 133, 65, 0), 0 8px 20px rgba(30, 133, 65, .4); filter: brightness(1.06); }
   }
   @media (prefers-reduced-motion: reduce) {
     .product__info-container .product-form__buttons .pf-buy-now { animation: none !important; }
