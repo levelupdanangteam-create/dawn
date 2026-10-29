@@ -25,8 +25,9 @@
   }
   .pf-pop.is-open { display: flex; }
   .pf-pop__backdrop {
-    position: absolute; inset: 0; background: rgba(0, 0, 0, .62);
-    backdrop-filter: blur(2px); animation: pf-pop-fade .25s ease;
+    /* Làm mờ trang phía sau để ảnh popup nổi bật */
+    position: absolute; inset: 0; background: rgba(0, 0, 0, .45);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); animation: pf-pop-fade .25s ease;
     cursor: pointer; /* iOS Safari chỉ phát sự kiện click trên phần tử có cursor:pointer */
   }
   .pf-pop__box {
