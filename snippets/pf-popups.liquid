@@ -125,24 +125,9 @@
       document.documentElement.style.overflow = '';
       window.PFPopups.markClosed();
     }
-    // Điện thoại: nhớ "đã xem" 24h bằng localStorage (sessionStorage trên mobile hay bị
-    // xoá khi đóng tab / chuyển app / mở từ Facebook, Zalo → popup hiện lại nhiều lần).
-    // Máy tính: giữ nguyên 1 lần mỗi phiên.
-    var IS_MOBILE = false;
-    try { IS_MOBILE = window.matchMedia('(max-width: 749px)').matches; } catch (e) {}
-    var MOBILE_TTL = 24 * 60 * 60 * 1000; // 24 giờ
-    function seen(flag) {
-      if (ss(flag)) return true;
-      if (!IS_MOBILE) return false;
-      try {
-        var t = parseInt(localStorage.getItem(flag) || '0', 10);
-        return !!t && (Date.now() - t) < MOBILE_TTL;
-      } catch (e) { return false; }
-    }
-    function markSeen(flag) {
-      ss(flag, '1');
-      if (IS_MOBILE) { try { localStorage.setItem(flag, String(Date.now())); } catch (e) {} }
-    }
+    // Điện thoại và máy tính như nhau: mỗi phiên truy cập hiện 1 lần (nhớ "đã xem" bằng sessionStorage).
+    function seen(flag) { return !!ss(flag); }
+    function markSeen(flag) { ss(flag, '1'); }
 
     function schedule(flag, id, delay, ignoreCd) {
       if (seen(flag)) return;
@@ -168,7 +153,7 @@
       if (e.key === 'Escape') { close(document.querySelector('.pf-pop.is-open')); }
     });
 
-    // Single promo popup — 20s after landing; desktop: once per session, mobile: once per 24h.
+    // Single promo popup — 20s after landing; once per session on both desktop and mobile.
     schedule('pf_fs_shown', 'pf-pop-freeship', FREESHIP_DELAY);
   })();
 </script>
