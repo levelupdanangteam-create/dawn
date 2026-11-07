@@ -16,7 +16,7 @@
   assign pf_count = 0
   if blocks.size > 0
     for b in blocks
-      if b.settings.image != blank
+      if b.settings.image != blank or b.settings.asset_file != blank
         assign pf_count = pf_count | plus: 1
       endif
     endfor
@@ -79,7 +79,7 @@
       {%- assign pf_i = 0 -%}
       {%- if blocks.size > 0 -%}
         {%- for b in blocks -%}
-          {%- if b.settings.image != blank -%}
+          {%- if b.settings.image != blank or b.settings.asset_file != blank -%}
             {%- assign pf_i = pf_i | plus: 1 -%}
             <div class="pf-hs__slide" role="group" aria-roledescription="slide" aria-label="{{ pf_i }} / {{ pf_count }}" {{ b.shopify_attributes }}>
               {%- if b.settings.link != blank -%}<a href="{{ b.settings.link }}">{%- else -%}<span>{%- endif -%}
@@ -92,7 +92,11 @@
               {%- else -%}
                 {%- assign pf_load = 'lazy' -%}{%- assign pf_fp = 'auto' -%}{%- assign pf_pre = false -%}
               {%- endif -%}
-              {%- if b.settings.image_mobile != blank -%}
+              {%- if b.settings.image == blank -%}
+                {%- comment -%} 07/11: ảnh nằm trong thư mục assets của theme (đẩy qua GitHub). Điện thoại giữ nguyên tỉ lệ ảnh, không cắt. {%- endcomment -%}
+                {%- assign pf_aw = b.settings.asset_width | default: 2000 -%}{%- assign pf_ah = b.settings.asset_height | default: 750 -%}
+                <img class="pf-hs__img pf-hs__img--d pf-hs__img--hasm" src="{{ b.settings.asset_file | asset_url }}" width="{{ pf_aw }}" height="{{ pf_ah }}" alt="{{ b.settings.alt | default: 'Phomifood' | escape }}" loading="{{ pf_load }}" fetchpriority="{{ pf_fp }}" style="--pf-ar: auto; --pf-mar: {{ pf_aw }} / {{ pf_ah }}">
+              {%- elsif b.settings.image_mobile != blank -%}
                 {%- assign pf_mi = b.settings.image_mobile -%}
                 {%- assign pf_style = pf_style | append: '; --pf-mar: ' | append: pf_mi.width | append: ' / ' | append: pf_mi.height -%}
                 <picture>

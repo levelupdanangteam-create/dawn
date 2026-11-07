@@ -44,7 +44,10 @@
         { "type": "image_picker", "id": "image_mobile", "label": "Ảnh điện thoại (tuỳ chọn)" },
         { "type": "range", "id": "mobile_focus", "label": "Điện thoại: phần ảnh giữ lại khi cắt", "info": "0% = giữ bên trái, 50% = giữa, 100% = giữ bên phải.", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50 },
         { "type": "url", "id": "link", "label": "Link khi bấm vào ảnh" },
-        { "type": "text", "id": "alt", "label": "Mô tả ảnh (alt)" }
+        { "type": "text", "id": "alt", "label": "Mô tả ảnh (alt)" },
+        { "type": "text", "id": "asset_file", "label": "Hoặc: tên file ảnh trong theme (assets)", "info": "Chỉ dùng khi không chọn ảnh ở trên. Điện thoại hiện nguyên ảnh, không cắt." },
+        { "type": "number", "id": "asset_width", "label": "Chiều rộng ảnh theme (px)", "default": 2000 },
+        { "type": "number", "id": "asset_height", "label": "Chiều cao ảnh theme (px)", "default": 750 }
       ]
     }
   ],
