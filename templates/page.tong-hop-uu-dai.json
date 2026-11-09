@@ -281,7 +281,9 @@
         "link": "shopify://collections/all",
         "alt": "11.11 Sale chấn động - giá từ 1.90€, giảm đến 42,4%, từ 7/11 đến 11/11",
         "padding_top": 16,
-        "padding_bottom": 24
+        "padding_bottom": 24,
+        "image": "shopify://shop_images/Untitled_design_10.png",
+        "image_mobile": "shopify://shop_images/Untitled_design_11.png"
       }
     }
   },
