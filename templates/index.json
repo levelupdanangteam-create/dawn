@@ -557,9 +557,9 @@
         "stock_17"
       ],
       "settings": {
-        "eyebrow": "Số lượng có hạn",
-        "heading": "Duy nhất hôm nay",
-        "subheading": "Giá tốt chỉ trong hôm nay — hết giờ là thôi",
+        "eyebrow": "Từ 7/11 đến 11/11",
+        "heading": "SIÊU SALE 11.11",
+        "subheading": "Giá sốc chỉ trong đợt sale 7/11 – 11/11, hết giờ là thôi!",
         "show_countdown": true,
         "countdown_label": "Kết thúc sau",
         "view_all_label": "Xem tất cả",
@@ -572,7 +572,8 @@
         "step_3": "Thanh toán — giá deal áp dụng ngay",
         "full_width": false,
         "padding_top": 60,
-        "padding_bottom": 60
+        "padding_bottom": 60,
+        "countdown_end": "2026-11-11T23:59:59+01:00"
       }
     },
     "pf_sale_1010": {
