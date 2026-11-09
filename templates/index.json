@@ -12,6 +12,18 @@
     "pf_hero_slider": {
       "type": "pf-hero-slider",
       "blocks": {
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/58948d1d-b327-4885-96bb-9cc28679c09a.png",
+            "mobile_focus": 35,
+            "link": "/collections/all",
+            "alt": "Phomifood",
+            "asset_file": "",
+            "asset_width": 2000,
+            "asset_height": 750
+          }
+        },
         "slide_sale_1111": {
           "type": "slide",
           "settings": {
@@ -21,18 +33,6 @@
             "link": "shopify://collections/all",
             "alt": "11.11 Sale chấn động - giá từ 1.90€, giảm đến 42,4%, từ 7/11 đến 11/11",
             "asset_file": "pf-hero-sale-1111.webp",
-            "asset_width": 2000,
-            "asset_height": 750
-          }
-        },
-        "slide_2": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/58948d1d-b327-4885-96bb-9cc28679c09a.png",
-            "mobile_focus": 35,
-            "link": "/collections/all",
-            "alt": "Phomifood",
-            "asset_file": "",
             "asset_width": 2000,
             "asset_height": 750
           }
@@ -75,8 +75,8 @@
         }
       },
       "block_order": [
-        "slide_sale_1111",
         "slide_2",
+        "slide_sale_1111",
         "slide_6PjB83",
         "slide_1",
         "slide_3"
@@ -562,6 +562,7 @@
         "subheading": "Giá sốc chỉ trong đợt sale 7/11 – 11/11, hết giờ là thôi!",
         "show_countdown": true,
         "countdown_label": "Kết thúc sau",
+        "countdown_end": "2026-11-11T23:59:59+01:00",
         "view_all_label": "Xem tất cả",
         "view_all_link": "",
         "more_label": "Xem các sản phẩm khác",
@@ -572,8 +573,7 @@
         "step_3": "Thanh toán — giá deal áp dụng ngay",
         "full_width": false,
         "padding_top": 60,
-        "padding_bottom": 60,
-        "countdown_end": "2026-11-11T23:59:59+01:00"
+        "padding_bottom": 60
       }
     },
     "pf_sale_1010": {
@@ -602,6 +602,9 @@
         "image_mobile": "shopify://shop_images/8861ac51-3fbf-42ea-add7-9feb9954521b_1f66bfaf-cb37-41f1-a832-b3a9a513a9b5.png",
         "link": "shopify://pages/tra-cuu-phi-ship",
         "alt": "Đơn từ 139€ Freeship hoặc giảm 10% giá trị đơn hàng",
+        "asset_file": "",
+        "asset_width": 2000,
+        "asset_height": 750,
         "padding_top": 60,
         "padding_bottom": 60
       }
@@ -847,6 +850,9 @@
         "image_mobile": "shopify://shop_images/5c657608-7ba4-40c6-baf3-5b62329e1a2b.webp",
         "link": "shopify://pages/uu-dai-hom-nay",
         "alt": "Ưu đãi duy nhất trong hôm nay - giảm sâu tới 17%",
+        "asset_file": "",
+        "asset_width": 2000,
+        "asset_height": 750,
         "padding_top": 60,
         "padding_bottom": 60
       }
