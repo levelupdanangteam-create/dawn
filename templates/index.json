@@ -12,13 +12,29 @@
     "pf_hero_slider": {
       "type": "pf-hero-slider",
       "blocks": {
+        "slide_sale_1111": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Untitled_design_10.png",
+            "image_mobile": "shopify://shop_images/Untitled_design_11.png",
+            "mobile_focus": 50,
+            "link": "shopify://collections/all",
+            "alt": "11.11 Sale chấn động - giá từ 1.90€, giảm đến 42,4%, từ 7/11 đến 11/11",
+            "asset_file": "pf-hero-sale-1111.webp",
+            "asset_width": 2000,
+            "asset_height": 750
+          }
+        },
         "slide_2": {
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/58948d1d-b327-4885-96bb-9cc28679c09a.png",
             "mobile_focus": 35,
             "link": "/collections/all",
-            "alt": "Phomifood"
+            "alt": "Phomifood",
+            "asset_file": "",
+            "asset_width": 2000,
+            "asset_height": 750
           }
         },
         "slide_6PjB83": {
@@ -27,7 +43,10 @@
             "image": "shopify://shop_images/4b374c1f-8688-4ffe-ad21-1ef8265a0960.png",
             "mobile_focus": 20,
             "link": "",
-            "alt": ""
+            "alt": "",
+            "asset_file": "",
+            "asset_width": 2000,
+            "asset_height": 750
           }
         },
         "slide_1": {
@@ -36,7 +55,10 @@
             "image": "shopify://shop_images/1793167630349_3010115264489379495_3010115264489379495_b1539e26ab8cd140cf93337ddbc767d0.jpg",
             "mobile_focus": 0,
             "link": "/collections/all",
-            "alt": "Phomifood"
+            "alt": "Phomifood",
+            "asset_file": "",
+            "asset_width": 2000,
+            "asset_height": 750
           }
         },
         "slide_3": {
@@ -45,18 +67,10 @@
             "image": "shopify://shop_images/1793167630369_3010115264489379495_3010115264489379495_958a1a64b47644008500f7f0342869c8.jpg",
             "mobile_focus": 100,
             "link": "/collections/all",
-            "alt": "Phomifood"
-          }
-        },
-        "slide_sale_1111": {
-          "type": "slide",
-          "settings": {
-            "asset_file": "pf-hero-sale-1111.webp",
+            "alt": "Phomifood",
+            "asset_file": "",
             "asset_width": 2000,
-            "asset_height": 750,
-            "link": "shopify://collections/all",
-            "alt": "11.11 Sale chấn động - giá từ 1.90€, giảm đến 42,4%, từ 7/11 đến 11/11",
-            "mobile_focus": 50
+            "asset_height": 750
           }
         }
       },
