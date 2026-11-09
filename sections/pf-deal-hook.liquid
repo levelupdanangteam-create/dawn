@@ -23,8 +23,9 @@
           <h2 class="pf-hd__title pf-fs__title">{% render 'pf-tr', s: section.settings.heading %}</h2>
         </div>
         {%- if section.settings.show_countdown -%}
-          <div class="pf-fs__timer" data-pf-hd-timer hidden>
+          <div class="pf-fs__timer" data-pf-hd-timer{% if section.settings.countdown_end != blank %} data-end="{{ section.settings.countdown_end | escape }}"{% endif %} hidden>
             <span class="pf-fs__timer-label">{% render 'pf-tr', s: section.settings.countdown_label %}</span>
+            <b data-d hidden>0</b><span class="pf-fs__dlabel" data-dl hidden>{% if request.locale.iso_code == 'vi' %}ngày{% else %}d{% endif %}</span>
             <b data-h>00</b><span class="pf-fs__colon" aria-hidden="true">:</span><b data-m>00</b><span class="pf-fs__colon" aria-hidden="true">:</span><b data-s>00</b>
           </div>
         {%- endif -%}
@@ -96,7 +97,8 @@
   }
   #pf-hd-{{ section.id }} .pf-fs__title::after { content: none !important; }
   #pf-hd-{{ section.id }} .pf-fs__timer { display: inline-flex; align-items: center; gap: .5rem; }
-  #pf-hd-{{ section.id }} .pf-fs__timer[hidden] { display: none; }
+  #pf-hd-{{ section.id }} .pf-fs__timer[hidden], #pf-hd-{{ section.id }} .pf-fs__timer [hidden] { display: none !important; }
+  #pf-hd-{{ section.id }} .pf-fs__dlabel { font-size: 1.3rem; font-weight: 700; color: #fff; margin: 0 .3rem 0 -.1rem; }
   #pf-hd-{{ section.id }} .pf-fs__timer-label { font-size: 1.4rem; font-weight: 600; color: rgba(255, 255, 255, .88); margin-right: .4rem; white-space: nowrap; }
   #pf-hd-{{ section.id }} .pf-fs__timer b {
     min-width: 3.6rem; text-align: center; background: #ffc61a; color: var(--g-d); border-radius: 8px;
@@ -226,21 +228,30 @@
     var root = document.getElementById('pf-hd-{{ section.id }}');
     if (!root) return;
 
-    // Đồng hồ đếm ngược tới 23:59:59 theo giờ trên máy khách, hết giờ tự quay vòng sang ngày mới.
+    // Đồng hồ đếm ngược: mặc định tới 23:59:59 hôm nay (giờ máy khách, tự quay vòng sang ngày mới).
+    // Có "Thời điểm kết thúc" (data-end) thì đếm tới mốc đó, hiện thêm số ngày; qua mốc thì ẩn đồng hồ (09/11).
     var timer = root.querySelector('[data-pf-hd-timer]');
     if (timer) {
       var h = timer.querySelector('[data-h]'), m = timer.querySelector('[data-m]'), s = timer.querySelector('[data-s]');
+      var d = timer.querySelector('[data-d]'), dl = timer.querySelector('[data-dl]');
+      var fixedEnd = timer.getAttribute('data-end') ? new Date(timer.getAttribute('data-end')) : null;
+      if (fixedEnd && isNaN(fixedEnd)) fixedEnd = null;
       var pad = function (n) { return (n < 10 ? '0' : '') + n; };
       var tick = function () {
-        var now = new Date(), end = new Date(now);
-        end.setHours(23, 59, 59, 999);
+        var now = new Date(), end = fixedEnd || new Date(now);
+        if (!fixedEnd) end.setHours(23, 59, 59, 999);
         var left = Math.max(0, Math.floor((end - now) / 1000));
+        if (fixedEnd && left <= 0) { timer.hidden = true; return; }
+        var days = Math.floor(left / 86400);
+        d.hidden = dl.hidden = days < 1;
+        d.textContent = days;
+        left = left % 86400;
         h.textContent = pad(Math.floor(left / 3600));
         m.textContent = pad(Math.floor(left % 3600 / 60));
         s.textContent = pad(left % 60);
       };
-      tick();
       timer.hidden = false;
+      tick();
       setInterval(tick, 1000);
     }
 
@@ -278,6 +289,7 @@
     { "type": "text", "id": "subheading", "label": "Mô tả ngắn", "default": "Giá sốc cho món Việt quen thuộc — hết là thôi" },
     { "type": "checkbox", "id": "show_countdown", "label": "Hiện đồng hồ đếm ngược (tới hết ngày)", "default": true },
     { "type": "text", "id": "countdown_label", "label": "Chữ cạnh đồng hồ", "default": "Kết thúc sau" },
+    { "type": "text", "id": "countdown_end", "label": "Thời điểm kết thúc (để trống = hết ngày hôm nay)", "info": "Dạng 2026-11-11T23:59:59+01:00 (giờ Praha). Qua mốc này đồng hồ tự ẩn." },
     { "type": "text", "id": "view_all_label", "label": "Chữ nút bên phải thanh tiêu đề", "default": "Xem tất cả" },
     { "type": "url", "id": "view_all_link", "label": "Link nút (để trống = trang Duy nhất hôm nay)" },
     { "type": "text", "id": "more_label", "label": "Nút cuối trang ưu đãi riêng", "default": "Xem các sản phẩm khác" },
