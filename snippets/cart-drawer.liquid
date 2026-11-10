@@ -52,8 +52,6 @@
   #CartDrawer .totals__total { white-space: nowrap; font-size: 1.6rem; line-height: 1.2; letter-spacing: 0; }
   #CartDrawer .totals__total .pf-tax-note { font-size: 1.2rem; font-weight: 500; color: #8a8273; letter-spacing: 0; }
   #CartDrawer .totals__total-value { white-space: nowrap; font-size: 2rem; line-height: 1.2; letter-spacing: 0; }
-  #CartDrawer .pf-drawer-nofee { margin: .4rem 0 0; font-size: 1.25rem; line-height: 1.45; color: #6a6255; text-align: left; }
-  #CartDrawer .pf-drawer-nofee b { color: #14672f; font-weight: 800; }
   @media screen and (max-width: 420px) {
     #CartDrawer .totals__total { font-size: 1.45rem; }
     #CartDrawer .totals__total .pf-tax-note { font-size: 1.1rem; }
@@ -662,18 +660,11 @@
 
           <div class="totals" role="status">
             <h2 class="totals__total">
-              {%- if request.locale.iso_code == 'vi' -%}Giá{%- else -%}Price{%- endif -%}
+              {%- if request.locale.iso_code == 'vi' -%}Giá tạm tính{%- else -%}Subtotal{%- endif -%}
+              {%- if cart.taxes_included %} <span class="pf-tax-note">{% if request.locale.iso_code == 'vi' %}(đã bao gồm thuế){% else %}(tax incl.){% endif %}</span>{%- endif -%}
             </h2>
             <p class="totals__total-value">{{ cart.total_price | money }}</p>
           </div>
-          {%- comment -%} 10/11: cam kết không phí ẩn ngay dưới giá. Giỏ trượt chưa cộng phí ship (ship tính theo nước ở trang giỏ hàng) nên ghi rõ để không sai. {%- endcomment -%}
-          <p class="pf-drawer-nofee">
-            {%- if request.locale.iso_code == 'vi' -%}
-              Đã gồm thuế. <b>Không phát sinh thêm phí ẩn</b> — phí ship (nếu có) hiện rõ ở trang giỏ hàng.
-            {%- else -%}
-              Taxes included. <b>No hidden fees</b> — shipping (if any) is shown clearly on the cart page.
-            {%- endif -%}
-          </p>
           {%- comment -%} Thanh tiến độ ưu đãi (Freeship / giảm 10% từ 139€) — thay cho dòng "xem chi tiết ở trang giỏ hàng" (25/10). {%- endcomment -%}
           <div class="pf-drawer-deal pf-drawer-deal--foot">{% render 'pf-cart-shipbar' %}</div>
 
