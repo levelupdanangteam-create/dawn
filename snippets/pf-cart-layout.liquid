@@ -25,6 +25,9 @@
   @media screen and (min-width: 750px) {
     #main-cart-items .cart-item__quantity-wrapper { align-items: center; }
     #main-cart-items .cart-item__quantity, #main-cart-items .cart-item__totals { vertical-align: middle; }
+    /* Dawn đẩy giá Thành tiền xuống 1rem (margin-top) → lệch so với ô số lượng; bỏ để 2 cột thẳng hàng */
+    #main-cart-items .cart-item__totals .cart-item__price-wrapper > * { margin-top: 0 !important; }
+    #main-cart-items .cart-item__totals .cart-item__price-wrapper { display: flex; flex-direction: column; align-items: flex-end; justify-content: center; }
   }
 
 

@@ -171,6 +171,8 @@
       var ov = drawer.querySelector('#CartDrawer-Overlay');
       if (ov && !ov.__pfBound) { ov.__pfBound = true; ov.addEventListener('click', function () { drawer.close(); }); }
       drawer.open(viewBtn);
+      // 10/11: mở giỏ là lấy lại nội dung mới nhất (tránh giỏ trượt trống/cũ)
+      if (window.pfRefreshCartIcon) window.pfRefreshCartIcon(false);
     });
 
     if (closeBtn) closeBtn.addEventListener('click', hide);

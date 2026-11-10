@@ -49,7 +49,12 @@
     // 2) Vẽ lại icon + giỏ trượt bằng HTML mới của Shopify
     fetch(cartUrl() + '?sections=cart-icon-bubble,cart-drawer' + bust, { headers: { Accept: 'application/json' }, cache: 'no-store' })
       .then(function (r) { return r.json(); })
-      .then(function (data) {
+      .then(function (data) { applySections(data, openDrawer); })
+      .catch(function () {});
+  }
+
+  // Vẽ lại icon + giỏ trượt từ HTML các section Shopify trả về (từ /cart/add.js hoặc ?sections=).
+  function applySections(data, openDrawer) {
         var html = data && data['cart-icon-bubble'];
         var target = document.getElementById('cart-icon-bubble');
         if (html && target) {
@@ -74,8 +79,6 @@
             drawer.open();
           }
         }
-      })
-      .catch(function () {});
   }
   window.pfRefreshCartIcon = refreshBubble;
 
@@ -114,15 +117,21 @@
       var label = btn ? btn.innerHTML : '';
       if (btn) { btn.disabled = true; btn.textContent = 'Đang thêm…'; }
 
-      fetch(addUrl(), {
+      var fd = new FormData(form);
+      fd.append('sections', 'cart-drawer,cart-icon-bubble');
+      fd.append('sections_url', window.location.pathname);
+      (origFetch || fetch).call(window, root() + 'cart/add.js', {
         method: 'POST',
-        body: new FormData(form),
+        body: fd,
         headers: { Accept: 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
       })
         .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
         .then(function (res) {
           if (!res.ok) throw res.data;
-          later();
+          // 10/11: giỏ trượt + icon lấy thẳng từ phản hồi thêm giỏ → hiện đúng ngay, không bị trống
+          if (res.data && res.data.sections) applySections(res.data.sections, true); else later(true);
+          (origFetch || fetch).call(window, root() + 'cart.js?_=' + Date.now(), { headers: { Accept: 'application/json' }, cache: 'no-store' })
+            .then(function (r) { return r.json(); }).then(function (c) { setCount(c.item_count); }).catch(function () {});
           try { document.dispatchEvent(new CustomEvent('pf:cart:added', { detail: res.data })); } catch (_) {}
           if (btn) { btn.textContent = 'Đã thêm ✓'; }
           setTimeout(function () { if (btn) { btn.innerHTML = label; btn.disabled = false; } }, 1600);
