@@ -91,7 +91,9 @@ class CartDrawer extends HTMLElement {
 
     setTimeout(() => {
       this.querySelector('#CartDrawer-Overlay').addEventListener('click', this.close.bind(this));
-      this.open();
+      // PF 10/11: thêm giỏ ở trang sản phẩm không mở giỏ trượt, chỉ chạy hiệu ứng bay vào icon giỏ.
+      if (window.pfFlyToCart) window.pfFlyToCart();
+      else this.open();
     });
   }
 
