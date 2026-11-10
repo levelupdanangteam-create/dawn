@@ -18,8 +18,6 @@
   <div class="pf-tot__row"><span>{% if vi %}Phí ship{% else %}Shipping{% endif %} <em data-pf-tot-country></em></span><span data-pf-tot-ship>—</span></div>
   <div class="pf-tot__row pf-tot__row--green" data-pf-tot-discrow hidden><span>{% if vi %}Giảm 10% (từ €139){% else %}10% off (from €139){% endif %}</span><span data-pf-tot-disc></span></div>
   <div class="pf-tot__total"><span>{% if vi %}Tổng cộng{% else %}Total{% endif %}</span><span data-pf-tot-total>{{ cart.total_price | money }}</span></div>
-  {%- comment -%} 10/11: cam kết không phí ẩn, ngay dưới Tổng cộng {%- endcomment -%}
-  <p class="pf-tot__nofee"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>{% if vi %}<b>Không phí ẩn</b> — giá bạn thấy là giá bạn trả.{% else %}<b>No hidden fees</b> — the price you see is the price you pay.{% endif %}</p>
 </div>
 <script>
   (function () {
@@ -79,6 +77,4 @@
   .pf-tot__row[hidden] { display: none; }
   .pf-tot__total { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-top: .6rem; padding-top: 1rem; border-top: 1px dashed #e2d9c9; font-size: 1.7rem; font-weight: 800; color: #2a2622; }
   .pf-tot__total span:last-child { font-size: 2.4rem; font-weight: 900; color: #d62828; }
-  .pf-tot__nofee { display: flex; align-items: center; gap: .6rem; margin: .8rem 0 0; font-size: 1.35rem; color: #14672f; }
-  .pf-tot__nofee b { font-weight: 800; }
 </style>
