@@ -20,6 +20,12 @@
   #main-cart-items cart-remove-button .button { color: #8a8273; }
   #main-cart-items cart-remove-button .button:hover { color: #c0392b; }
   #main-cart-items .cart-item__totals .price { font-size: 1.8rem; font-weight: 800; color: #2a2622; }
+  /* 10/11: dòng báo lỗi số lượng (trống) chiếm chỗ dưới ô số lượng → ô bị lệch lên so với Thành tiền. Ẩn khi không có lỗi để ô số lượng nằm giữa hàng, thẳng với Thành tiền. */
+  #main-cart-items .cart-item__error:has(.cart-item__error-text:empty) { display: none; }
+  @media screen and (min-width: 750px) {
+    #main-cart-items .cart-item__quantity-wrapper { align-items: center; }
+    #main-cart-items .cart-item__quantity, #main-cart-items .cart-item__totals { vertical-align: middle; }
+  }
 
 
   /* ===== Điện thoại: mỗi SP là 1 khối gọn — ảnh nhỏ | tên + giá + quy cách | thành tiền,
