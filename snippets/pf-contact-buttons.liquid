@@ -1,7 +1,7 @@
 {%- comment -%}
   Menu cố định cuối màn hình — CHỈ trên điện thoại (< 750px). 11/11.
   5 mục: Trang chủ · Sản phẩm · Ưu đãi · Mua sỉ · Giỏ hàng (có số lượng, bấm mở giỏ trượt).
-  Tự đẩy thanh giỏ hàng cố định (pf-sticky-cart) và nút tìm kiếm nổi (pf-search-fab) lên trên menu.
+  Ẩn thanh giỏ hàng nổi (pf-sticky-cart) trên điện thoại; đẩy nút tìm kiếm nổi (pf-search-fab) lên trên menu.
   (Nút liên hệ nổi WhatsApp/Messenger cũ đã gỡ 25/10 — WhatsApp https://wa.me/84338139402 · Messenger https://m.me/phomifoodstore)
   Gỡ menu: xoá toàn bộ nội dung bên dưới khối comment này.
 {%- endcomment -%}
@@ -90,12 +90,11 @@
 
     /* Chừa chỗ cho menu ở cuối trang */
     body { padding-bottom: var(--pf-bn-h); }
-    body.pf-stc-on { padding-bottom: calc(var(--pf-bn-h) + 8.4rem); }
-    /* Thanh giỏ hàng cố định nằm ngay trên menu */
-    .pf-stc { bottom: calc(var(--pf-bn-h) + .8rem); }
-    /* Nút tìm kiếm nổi nằm trên menu (và trên thanh giỏ hàng nếu đang hiện) */
-    .pf-sfab { bottom: calc(var(--pf-bn-h) + 1.2rem); }
-    body.pf-stc-on .pf-sfab { bottom: calc(var(--pf-bn-h) + 8.6rem); }
+    body.pf-stc-on { padding-bottom: var(--pf-bn-h); }
+    /* 11/11: ẩn thanh giỏ hàng nổi (pf-sticky-cart) trên điện thoại — đã có mục Giỏ hàng + số lượng ở menu */
+    .pf-stc { display: none !important; }
+    /* Nút tìm kiếm nổi nằm ngay trên menu */
+    .pf-sfab, body.pf-stc-on .pf-sfab { bottom: calc(var(--pf-bn-h) + 1.2rem); }
   }
   @media print { .pf-bn { display: none !important; } }
 </style>
