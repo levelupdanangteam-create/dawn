@@ -1,5 +1,146 @@
 {%- comment -%}
-  Nút liên hệ nổi (WhatsApp + Messenger, góc phải dưới) — ĐÃ GỠ theo yêu cầu (25/10).
-  Snippet giữ lại nhưng không hiển thị gì.
-  Bật lại: WhatsApp https://wa.me/84338139402 · Messenger https://m.me/phomifoodstore
+  Menu cố định cuối màn hình — CHỈ trên điện thoại (< 750px). 11/11.
+  5 mục: Trang chủ · Sản phẩm · Ưu đãi · Mua sỉ · Giỏ hàng (có số lượng, bấm mở giỏ trượt).
+  Tự đẩy thanh giỏ hàng cố định (pf-sticky-cart) và nút tìm kiếm nổi (pf-search-fab) lên trên menu.
+  (Nút liên hệ nổi WhatsApp/Messenger cũ đã gỡ 25/10 — WhatsApp https://wa.me/84338139402 · Messenger https://m.me/phomifoodstore)
+  Gỡ menu: xoá toàn bộ nội dung bên dưới khối comment này.
 {%- endcomment -%}
+{%- liquid
+  assign t = template.name
+  assign a_home = false
+  assign a_prod = false
+  assign a_deal = false
+  assign a_si = false
+  assign a_cart = false
+  if t == 'index'
+    assign a_home = true
+  elsif t == 'page' and page.handle == 'tong-hop-uu-dai'
+    assign a_deal = true
+  elsif t == 'collection' or t == 'list-collections' or t == 'product' or t == 'search'
+    assign a_prod = true
+  elsif t == 'page' and page.handle == 'mua-si'
+    assign a_si = true
+  elsif t == 'cart'
+    assign a_cart = true
+  endif
+-%}
+<nav class="pf-bn" id="pf-bottom-nav" aria-label="Menu nhanh">
+  <a href="{{ routes.root_url }}" class="pf-bn__i{% if a_home %} is-active{% endif %}"{% if a_home %} aria-current="page"{% endif %}>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></svg>
+    <span>Trang chủ</span>
+  </a>
+  <a href="{{ routes.collections_url }}/all" class="pf-bn__i{% if a_prod %} is-active{% endif %}"{% if a_prod %} aria-current="page"{% endif %}>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg>
+    <span>Sản phẩm</span>
+  </a>
+  <a href="/pages/tong-hop-uu-dai" class="pf-bn__i{% if a_deal %} is-active{% endif %}"{% if a_deal %} aria-current="page"{% endif %}>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12.6V4a1 1 0 0 1 1-1h8.6a1 1 0 0 1 .7.3l7.4 7.4a1 1 0 0 1 0 1.4l-8.6 8.6a1 1 0 0 1-1.4 0l-7.4-7.4a1 1 0 0 1-.3-.7z"/><circle cx="7.8" cy="7.8" r="1.4"/><path d="m9.5 15.5 5-5"/></svg>
+    <span>Ưu đãi</span>
+  </a>
+  <a href="/pages/mua-si" class="pf-bn__i{% if a_si %} is-active{% endif %}"{% if a_si %} aria-current="page"{% endif %}>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"/><path d="M3 7.5 12 12l9-4.5"/><path d="M12 12v9"/><path d="m7.5 5.2 9 4.6"/></svg>
+    <span>Mua sỉ</span>
+  </a>
+  <a href="{{ routes.cart_url }}" class="pf-bn__i pf-bn__cart{% if a_cart %} is-active{% endif %}" id="pf-bn-cart"{% if a_cart %} aria-current="page"{% endif %}>
+    <span class="pf-bn__ic">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8z"/><path d="M9 10V6.5a3 3 0 0 1 6 0V10"/></svg>
+      <b class="pf-bn__badge" id="pf-bn-count"{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</b>
+    </span>
+    <span>Giỏ hàng</span>
+  </a>
+</nav>
+
+<style>
+  .pf-bn { display: none; }
+  @media screen and (max-width: 749px) {
+    :root { --pf-bn-h: calc(6.4rem + env(safe-area-inset-bottom, 0px)); }
+    .pf-bn {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 22;
+      height: var(--pf-bn-h); padding-bottom: env(safe-area-inset-bottom, 0px);
+      background: rgba(255, 255, 255, .97);
+      -webkit-backdrop-filter: saturate(160%) blur(10px); backdrop-filter: saturate(160%) blur(10px);
+      border-top: 1px solid #ece3d4; box-shadow: 0 -6px 20px rgba(30, 40, 20, .08);
+    }
+    .pf-bn__i {
+      position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .35rem;
+      text-decoration: none; color: #6a6255; font-size: 1.15rem; font-weight: 600; letter-spacing: 0; line-height: 1.1;
+      -webkit-tap-highlight-color: transparent; transition: color .15s ease;
+    }
+    .pf-bn__i svg {
+      width: 2.4rem; height: 2.4rem; fill: none; stroke: currentColor; stroke-width: 1.8;
+      stroke-linecap: round; stroke-linejoin: round; transition: transform .15s ease;
+    }
+    .pf-bn__i:active svg { transform: scale(.88); }
+    .pf-bn__i.is-active { color: #1e8541; font-weight: 800; }
+    .pf-bn__i.is-active svg { stroke-width: 2.2; }
+    .pf-bn__i.is-active::before {
+      content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 3.2rem; height: .3rem; border-radius: 0 0 4px 4px; background: #1e8541;
+    }
+    .pf-bn__ic { position: relative; display: inline-flex; }
+    .pf-bn__badge {
+      position: absolute; top: -.6rem; right: -1rem; min-width: 1.9rem; height: 1.9rem; padding: 0 .5rem;
+      border-radius: 999px; background: #d62828; color: #fff; font-size: 1.1rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center; border: 2px solid #fff; line-height: 1;
+    }
+    .pf-bn__badge[hidden] { display: none; }
+    .pf-bn__badge.pf-bump { animation: pfBnBump .45s ease; }
+    @keyframes pfBnBump { 0% { transform: scale(1); } 40% { transform: scale(1.35); } 100% { transform: scale(1); } }
+
+    /* Chừa chỗ cho menu ở cuối trang */
+    body { padding-bottom: var(--pf-bn-h); }
+    body.pf-stc-on { padding-bottom: calc(var(--pf-bn-h) + 8.4rem); }
+    /* Thanh giỏ hàng cố định nằm ngay trên menu */
+    .pf-stc { bottom: calc(var(--pf-bn-h) + .8rem); }
+    /* Nút tìm kiếm nổi nằm trên menu (và trên thanh giỏ hàng nếu đang hiện) */
+    .pf-sfab { bottom: calc(var(--pf-bn-h) + 1.2rem); }
+    body.pf-stc-on .pf-sfab { bottom: calc(var(--pf-bn-h) + 8.6rem); }
+  }
+  @media print { .pf-bn { display: none !important; } }
+</style>
+
+<script>
+  (function () {
+    if (window.__pfBottomNav) return;
+    window.__pfBottomNav = true;
+    var badge = document.getElementById('pf-bn-count');
+    var cartBtn = document.getElementById('pf-bn-cart');
+
+    function setCount(n) {
+      if (!badge) return;
+      var old = parseInt(badge.textContent, 10) || 0;
+      badge.textContent = n > 99 ? '99+' : n;
+      badge.hidden = !(n > 0);
+      if (n > old) { badge.classList.remove('pf-bump'); void badge.offsetWidth; badge.classList.add('pf-bump'); }
+    }
+    var t;
+    function refresh() {
+      clearTimeout(t);
+      t = setTimeout(function () {
+        fetch((window.Shopify && Shopify.routes ? Shopify.routes.root : '/') + 'cart.js', { headers: { Accept: 'application/json' } })
+          .then(function (r) { return r.json(); })
+          .then(function (c) { setCount(c.item_count || 0); })
+          .catch(function () {});
+      }, 250);
+    }
+    document.addEventListener('pf:cart:added', refresh);
+    var bubble = document.getElementById('cart-icon-bubble');
+    if (bubble && 'MutationObserver' in window) {
+      new MutationObserver(refresh).observe(bubble, { childList: true, subtree: true, characterData: true });
+    }
+    // Quay lại trang bằng nút Back (bfcache) → cập nhật số lượng
+    window.addEventListener('pageshow', function (e) { if (e.persisted) refresh(); });
+
+    // Bấm "Giỏ hàng": mở giỏ trượt nếu theme đang dùng, không thì sang trang giỏ
+    if (cartBtn) cartBtn.addEventListener('click', function (e) {
+      var drawer = document.querySelector('cart-drawer');
+      if (!drawer || typeof drawer.open !== 'function') return;
+      e.preventDefault();
+      var ov = drawer.querySelector('#CartDrawer-Overlay');
+      if (ov && !ov.__pfBound) { ov.__pfBound = true; ov.addEventListener('click', function () { drawer.close(); }); }
+      drawer.open(cartBtn);
+      if (window.pfRefreshCartIcon) window.pfRefreshCartIcon(false);
+    });
+  })();
+</script>
