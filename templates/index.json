@@ -27,8 +27,6 @@
         "slide_sale_1111": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/Untitled_design_10.png",
-            "image_mobile": "shopify://shop_images/Untitled_design_11.png",
             "mobile_focus": 50,
             "link": "shopify://collections/all",
             "alt": "11.11 Sale chấn động - giá từ 1.90€, giảm đến 42,4%, từ 7/11 đến 11/11",
@@ -558,11 +556,11 @@
       ],
       "settings": {
         "eyebrow": "Từ 7/11 đến 11/11",
-        "heading": "SIÊU SALE 11.11",
-        "subheading": "Giá sốc chỉ trong đợt sale 7/11 – 11/11, hết giờ là thôi!",
+        "heading": "DUY NHẤT HÔM NAY",
+        "subheading": "Giá sốc chỉ duy nhất hôm nay, hết giờ là thôi!",
         "show_countdown": true,
         "countdown_label": "Kết thúc sau",
-        "countdown_end": "2026-11-11T23:59:59+01:00",
+        "countdown_end": "",
         "view_all_label": "Xem tất cả",
         "view_all_link": "",
         "more_label": "Xem các sản phẩm khác",
