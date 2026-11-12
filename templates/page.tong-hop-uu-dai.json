@@ -18,20 +18,6 @@
         "padding_bottom": 0
       }
     },
-    "pf_sale1111_banner": {
-      "type": "pf-promo-banner",
-      "settings": {
-        "image": "shopify://shop_images/Untitled_design_10.png",
-        "image_mobile": "shopify://shop_images/Untitled_design_11.png",
-        "link": "shopify://collections/all",
-        "alt": "11.11 Sale chấn động - giá từ 1.90€, giảm đến 42,4%, từ 7/11 đến 11/11",
-        "asset_file": "pf-hero-sale-1111.webp",
-        "asset_width": 2000,
-        "asset_height": 750,
-        "padding_top": 16,
-        "padding_bottom": 24
-      }
-    },
     "pf_deal_banner": {
       "type": "pf-promo-banner",
       "disabled": true,
@@ -300,7 +286,6 @@
   },
   "order": [
     "pf_head",
-    "pf_sale1111_banner",
     "pf_deal_banner",
     "pf_deal",
     "pf_xk_banner",
