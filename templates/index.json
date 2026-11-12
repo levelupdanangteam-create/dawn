@@ -24,17 +24,6 @@
             "asset_height": 750
           }
         },
-        "slide_sale_1111": {
-          "type": "slide",
-          "settings": {
-            "mobile_focus": 50,
-            "link": "shopify://collections/all",
-            "alt": "11.11 Sale chấn động - giá từ 1.90€, giảm đến 42,4%, từ 7/11 đến 11/11",
-            "asset_file": "pf-hero-sale-1111.webp",
-            "asset_width": 2000,
-            "asset_height": 750
-          }
-        },
         "slide_6PjB83": {
           "type": "slide",
           "settings": {
@@ -74,7 +63,6 @@
       },
       "block_order": [
         "slide_2",
-        "slide_sale_1111",
         "slide_6PjB83",
         "slide_1",
         "slide_3"
