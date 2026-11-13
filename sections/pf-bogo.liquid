@@ -62,6 +62,118 @@
 </div>
 
 <style>
+  /* CSS thẻ + bố cục .pf-simple chép từ khối stylesheet của snippet pf-flash-card, gói trong section để không phụ thuộc file CSS gộp của Shopify (13/11) */
+#pf-bogo-{{ section.id }} .pf-fs__card .pf-fs__price { flex-direction: row !important; align-items: baseline !important; flex-wrap: wrap; gap: .1rem .7rem; }
+#pf-bogo-{{ section.id }} .pf-fs__card .pf-fs__row { flex: 1 1 auto; align-items: flex-start !important; }
+#pf-bogo-{{ section.id }} .pf-fs__card .pf-fs__addform { width: 100%; margin: 1rem 0 0 !important; }
+#pf-bogo-{{ section.id }} .pf-fs__card .pf-fs__add.pf-fs__add--text {
+    display: block !important; box-sizing: border-box; width: 100% !important; height: auto !important; margin: 0;
+    border: 1.5px solid #ffc61a !important; border-radius: 999px !important; background: #ffc61a !important; color: #14672f !important;
+    font-family: inherit; font-size: 1.4rem !important; font-weight: 700; line-height: 1.2; padding: .9rem .6rem !important;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; transition: background .15s ease;
+  }
+#pf-bogo-{{ section.id }} .pf-fs__card .pf-fs__add.pf-fs__add--text:hover:not([disabled]) { background: #f5b400 !important; border-color: #f5b400 !important; color: #14672f !important; }
+#pf-bogo-{{ section.id }} .pf-fs__card .pf-fs__add.pf-fs__add--text[disabled] { opacity: .85; cursor: default; }
+#pf-bogo-{{ section.id }} .pf-fs__card > .pf-fs__add.pf-fs__add--text[disabled] { margin-top: 1rem; background: #b9b3a8 !important; border-color: #b9b3a8 !important; color: #fff !important; }
+#pf-bogo-{{ section.id }} .pf-fs__card .pf-fs__add.pf-fs__add--text::after { content: none !important; }
+#pf-bogo-{{ section.id }} .pf-fs__card .pf-fs__bar { margin-top: .9rem !important; }
+#pf-bogo-{{ section.id }} { --g: #1e8541; --g-d: #14672f; --g-soft: #eef6f0; --line: #ececec; --ink: #2a2622; --mut: #8a8173; --r: #d62828; }
+#pf-bogo-{{ section.id }} .pf-simple__full { max-width: none; padding-inline: clamp(1.6rem, 3vw, 4.8rem); }
+#pf-bogo-{{ section.id }} .pf-simple__head { display: flex; align-items: center; gap: 1.2rem 2.4rem; flex-wrap: wrap; padding: 0 0 1.4rem; border-bottom: 1px solid var(--line); }
+#pf-bogo-{{ section.id }} .pf-simple__head .pf-simple__title {
+    margin: 0; color: var(--g) !important; font-family: var(--font-heading-family, sans-serif) !important; font-weight: 900 !important;
+    font-size: clamp(2.4rem, 2.8vw, 3.4rem) !important; line-height: 1.15 !important; text-transform: none !important; letter-spacing: 0 !important; text-align: left;
+  }
+#pf-bogo-{{ section.id }} .pf-simple__head .pf-simple__title::after { content: none !important; }
+#pf-bogo-{{ section.id }} .pf-simple__all {
+    margin-left: auto; background: #fff; color: var(--g-d); border: 1.5px solid var(--g); text-decoration: none; font-size: 1.4rem; font-weight: 700;
+    padding: .8rem 2rem; border-radius: 999px; white-space: nowrap; transition: background .15s ease, color .15s ease;
+  }
+#pf-bogo-{{ section.id }} .pf-simple__all:hover { background: var(--g); color: #fff; }
+#pf-bogo-{{ section.id }} .pf-simple__sub { margin: 1rem 0 0; font-size: 1.4rem; color: var(--mut); }
+#pf-bogo-{{ section.id }} .pf-simple__grid { display: grid; grid-template-columns: repeat(var(--cols, 6), minmax(0, 1fr)); gap: 1.2rem; margin-top: 1.6rem; }
+#pf-bogo-{{ section.id }} .pf-simple__slider { position: relative; margin-top: 1.6rem; }
+#pf-bogo-{{ section.id }} .pf-simple__track { --per: var(--cols, 6); --gap: 1.2rem; display: flex; gap: var(--gap); overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 0; }
+#pf-bogo-{{ section.id }} .pf-simple__track::-webkit-scrollbar { display: none; }
+#pf-bogo-{{ section.id }} .pf-simple__track > .pf-fs__card { flex: 0 0 calc((100% - (var(--per) - 1) * var(--gap)) / var(--per)); scroll-snap-align: start; }
+#pf-bogo-{{ section.id }} .pf-simple__arrow {
+    position: absolute; top: 40%; z-index: 2; width: 4rem; height: 4rem; border-radius: 50%; border: 1px solid #e6e6e6; padding: 0; cursor: pointer;
+    display: grid; place-items: center; background: #fff; color: var(--ink); box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  }
+#pf-bogo-{{ section.id }} .pf-simple__arrow:hover { color: #fff; background: var(--g); border-color: var(--g); }
+#pf-bogo-{{ section.id }} .pf-simple__arrow[disabled] { opacity: 0; pointer-events: none; }
+#pf-bogo-{{ section.id }} .pf-simple__arrow--prev { left: -1rem; }
+#pf-bogo-{{ section.id }} .pf-simple__arrow--next { right: -1rem; }
+#pf-bogo-{{ section.id }} .pf-simple__more-wrap { text-align: center; margin-top: 2.4rem; }
+@keyframes pf-arrow-blink{
+    0%, 100% { transform: scale(1); box-shadow: 0 2px 10px rgba(0,0,0,.22), 0 0 0 0 rgba(255, 198, 26, .85); }
+    50% { transform: scale(1.12); box-shadow: 0 2px 10px rgba(0,0,0,.22), 0 0 0 9px rgba(255, 198, 26, 0); }
+  }
+@media (prefers-reduced-motion: reduce) {
+#pf-bogo-{{ section.id }} .pf-simple__arrow--next, #pf-bogo-{{ section.id }} .pf-fs__arrow--next { animation: none !important; }
+}
+#pf-bogo-{{ section.id }} .pf-simple__more {
+    display: inline-flex; align-items: center; gap: .6rem; cursor: pointer; font-family: inherit;
+    background: #fff; border: 1.5px solid var(--g); color: var(--g-d); font-weight: 700; font-size: 1.5rem;
+    padding: .9rem 2.6rem; border-radius: 999px; transition: background .15s ease, color .15s ease;
+  }
+#pf-bogo-{{ section.id }} .pf-simple__more:hover { background: var(--g); color: #fff; }
+#pf-bogo-{{ section.id }} .pf-s10__card--hidden { display: none !important; }
+#pf-bogo-{{ section.id }} .is-expanded .pf-s10__card--hidden { display: flex !important; }
+#pf-bogo-{{ section.id }} .pf-fs__card { display: flex; flex-direction: column; min-width: 0; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1rem 1.1rem; overflow: visible; transform: none; box-shadow: none; }
+#pf-bogo-{{ section.id }} .pf-fs__media { position: relative; display: block; aspect-ratio: 1 / 1; border-radius: 8px; overflow: hidden; background: #fff; }
+#pf-bogo-{{ section.id }} .pf-fs__media img, #pf-bogo-{{ section.id }} .pf-fs__media svg { width: 100%; height: 100%; object-fit: contain; display: block; transition: transform .3s ease; }
+#pf-bogo-{{ section.id }} .pf-fs__card:hover .pf-fs__media img { transform: scale(1.04); }
+#pf-bogo-{{ section.id }} .pf-fs__badge { position: absolute; top: .4rem; left: .4rem; background: #fdecec; color: var(--r); font-size: 1.2rem; font-weight: 700; line-height: 1; padding: .45rem .6rem; border-radius: 6px; }
+#pf-bogo-{{ section.id }} .pf-fs__name { display: block; margin-top: 1rem; font-size: 1.5rem; line-height: 1.35; color: var(--ink); text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
+#pf-bogo-{{ section.id }} .pf-fs__name:hover { color: var(--g); }
+#pf-bogo-{{ section.id }} .pf-fs__row { display: flex; margin-top: .6rem; }
+#pf-bogo-{{ section.id }} .pf-fs__price { display: flex; min-width: 0; }
+#pf-bogo-{{ section.id }} .pf-fs__now { font-size: 2rem; font-weight: 800; color: var(--g); line-height: 1.2; white-space: nowrap; }
+#pf-bogo-{{ section.id }} .pf-fs__was { font-size: 1.3rem; color: var(--mut); line-height: 1.3; white-space: nowrap; }
+#pf-bogo-{{ section.id }} .pf-fs__bar { position: relative; height: 2rem; border-radius: 999px; background: var(--g-soft); overflow: hidden; }
+#pf-bogo-{{ section.id }} .pf-fs__bar i { position: absolute; inset: 0 auto 0 0; border-radius: 999px; background: #cfe8d6; }
+#pf-bogo-{{ section.id }} .pf-fs__bar span { position: relative; display: block; text-align: center; font-size: 1.2rem; font-weight: 700; line-height: 2rem; color: var(--g-d); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 .6rem; }
+#pf-bogo-{{ section.id }} .pf-fs__bar--out { background: #f0f0f0; }
+#pf-bogo-{{ section.id }} .pf-fs__bar--out i { background: #e0e0e0; }
+#pf-bogo-{{ section.id }} .pf-fs__bar--out span { color: var(--mut); }
+@media (min-width: 1600px) {
+#pf-bogo-{{ section.id }} .pf-simple__grid { gap: 1.6rem; }
+}
+@media (max-width: 1199px) {
+#pf-bogo-{{ section.id }} .pf-simple__grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+#pf-bogo-{{ section.id }} .pf-simple__track { --per: 5; }
+}
+@media (max-width: 989px) {
+#pf-bogo-{{ section.id }} .pf-simple__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+#pf-bogo-{{ section.id }} .pf-simple__track { --per: 4; }
+}
+@media (max-width: 749px) {
+#pf-bogo-{{ section.id }} .pf-simple__head { padding: 0 0 1rem; gap: .8rem 1rem; }
+#pf-bogo-{{ section.id }} .pf-simple__head .pf-simple__title { font-size: 2.1rem !important; }
+#pf-bogo-{{ section.id }} .pf-simple__all { font-size: 1.2rem; padding: .5rem 1.2rem; }
+#pf-bogo-{{ section.id }} .pf-simple__sub { margin: .8rem 0 0; font-size: 1.25rem; }
+#pf-bogo-{{ section.id }} .pf-simple__grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: .8rem !important; margin-top: 1.2rem; }
+#pf-bogo-{{ section.id }} .pf-simple__slider { margin-top: 1.2rem; }
+#pf-bogo-{{ section.id }} .pf-simple__track { --per: 2.3; --gap: .8rem; }
+#pf-bogo-{{ section.id }} .pf-simple__arrow { top: 34%; width: 3.4rem; height: 3.4rem; box-shadow: 0 2px 10px rgba(0,0,0,.22); }
+#pf-bogo-{{ section.id }} .pf-simple__arrow svg { width: 16px; height: 16px; }
+#pf-bogo-{{ section.id }} .pf-simple__arrow--prev { left: .2rem; }
+#pf-bogo-{{ section.id }} .pf-simple__arrow--next { right: .2rem; }
+#pf-bogo-{{ section.id }} .pf-simple__arrow--next:not([disabled]) { background: #ffc61a; border-color: #ffc61a; color: #14672f; animation: pf-arrow-blink 1.3s ease-in-out infinite; }
+#pf-bogo-{{ section.id }} .pf-fs__card { padding: .7rem .7rem .8rem; }
+#pf-bogo-{{ section.id }} .pf-fs__badge { font-size: 1.05rem; padding: .35rem .45rem; }
+#pf-bogo-{{ section.id }} .pf-fs__name { font-size: 1.3rem; margin-top: .7rem; }
+#pf-bogo-{{ section.id }} .pf-fs__now { font-size: 1.6rem; }
+#pf-bogo-{{ section.id }} .pf-fs__was { font-size: 1.15rem; }
+#pf-bogo-{{ section.id }} .pf-fs__bar { height: 1.8rem; }
+#pf-bogo-{{ section.id }} .pf-fs__bar span { font-size: 1.05rem; line-height: 1.8rem; }
+}
+@media (max-width: 749px) {
+#pf-bogo-{{ section.id }} .pf-fs__card .pf-fs__add.pf-fs__add--text { font-size: 1.2rem !important; padding: .75rem .4rem !important; }
+#pf-bogo-{{ section.id }} .pf-fs__card .pf-fs__addform { margin-top: .8rem !important; }
+}
+  /* Riêng section Mua 1 tặng 1 */
   #pf-bogo-{{ section.id }} .pf-simple__head { gap: 1rem 1.6rem; }
   #pf-bogo-{{ section.id }} .pf-bogo__title-wrap { display: inline-flex; align-items: center; gap: 1.2rem; min-width: 0; }
   #pf-bogo-{{ section.id }} .pf-bogo__pill {
