@@ -8,7 +8,9 @@
   CSS thẻ dùng chung .pf-simple / .pf-fs__card trong snippet pf-flash-card.
 {%- endcomment -%}
 {%- assign vi = false -%}{%- if request.locale.iso_code == 'vi' -%}{%- assign vi = true -%}{%- endif -%}
-{%- assign pf_page = false -%}{%- if template.name == 'page' -%}{%- assign pf_page = true -%}{%- endif -%}
+{%- assign pf_page = false -%}
+{%- if section.settings.layout == 'grid' -%}{%- assign pf_page = true -%}
+{%- elsif section.settings.layout != 'slider' and template.name == 'page' -%}{%- assign pf_page = true -%}{%- endif -%}
 {%- assign pf_col = section.settings.collection -%}
 {%- if pf_col == blank -%}{%- assign pf_col = collections['mua-1-tang-1'] -%}{%- endif -%}
 {%- assign pf_use_col = false -%}
@@ -176,6 +178,10 @@
   /* Riêng section Mua 1 tặng 1 */
   #pf-bogo-{{ section.id }} .pf-simple__head { gap: 1rem 1.6rem; }
   #pf-bogo-{{ section.id }} .pf-bogo__title-wrap { display: inline-flex; align-items: center; gap: 1.2rem; min-width: 0; }
+  #pf-bogo-{{ section.id }} .pf-simple__head { flex-wrap: nowrap; }
+  #pf-bogo-{{ section.id }} .pf-bogo__title { white-space: nowrap; }
+  #pf-bogo-{{ section.id }} .pf-bogo__timer { flex: 0 0 auto; }
+  @media (max-width: 989px) { #pf-bogo-{{ section.id }} .pf-simple__head { flex-wrap: wrap; } #pf-bogo-{{ section.id }} .pf-bogo__title { white-space: normal; } }
   #pf-bogo-{{ section.id }} .pf-bogo__pill {
     flex: 0 0 auto; display: inline-grid; place-items: center; min-width: 4.6rem; height: 4.6rem; padding: 0 .8rem; box-sizing: border-box;
     border-radius: 999px; background: #d62828; color: #fff; font-weight: 900; font-size: 1.8rem; line-height: 1; box-shadow: 0 4px 12px rgba(214, 40, 40, .28);
@@ -286,8 +292,9 @@
   "tag": "section",
   "settings": [
     { "type": "paragraph", "content": "Sản phẩm lấy từ danh mục bên dưới (mặc định: Mua 1 tặng 1). Thẻ hiện variant có tick 'Mua 1 tặng 1' (metafield variant). Nút trên thẻ thêm 2 sản phẩm vào giỏ để discount tự động trừ sản phẩm thứ 2. Nếu thêm khối 'Sản phẩm 1+1' thì dùng các khối thay cho danh mục." },
+    { "type": "select", "id": "layout", "label": "Kiểu hiển thị", "default": "auto", "options": [ { "value": "auto", "label": "Tự động (trang chủ: hàng trượt; trang riêng: lưới)" }, { "value": "slider", "label": "Hàng trượt ngang + nút Xem tất cả" }, { "value": "grid", "label": "Lưới hiện hết + nút Xem thêm" } ] },
     { "type": "collection", "id": "collection", "label": "Danh mục sản phẩm 1+1", "info": "Để trống = danh mục 'mua-1-tang-1'." },
-    { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "ƯU ĐÃI MUA 1 TẶNG 1 - DEAL SIÊU HỜI, GIÁ SIÊU RẺ" },
+    { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "ƯU ĐÃI MUA 1 TẶNG 1" },
     { "type": "text", "id": "subheading", "label": "Mô tả ngắn", "default": "Số lượng có hạn, chốt ngay kẻo hết" },
     { "type": "checkbox", "id": "show_countdown", "label": "Hiện đồng hồ đếm ngược", "default": true },
     { "type": "text", "id": "countdown_label", "label": "Chữ cạnh đồng hồ", "default": "Kết thúc sau" },
