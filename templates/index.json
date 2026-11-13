@@ -1116,6 +1116,134 @@
         "padding_top": 56,
         "padding_bottom": 56
       }
+    },
+    "pf_bogo": {
+      "type": "pf-bogo",
+      "blocks": {
+        "bogo_01": {
+          "type": "product",
+          "settings": {
+            "product": "gia-vi-thit-kho-tau-knor-28g-x-6-goi-x-10-day",
+            "variant_title": "Lẻ"
+          }
+        },
+        "bogo_02": {
+          "type": "product",
+          "settings": {
+            "product": "nuoc-cot-dua-wonderfarm",
+            "variant_title": "Lẻ (1 hộp)"
+          }
+        },
+        "bogo_03": {
+          "type": "product",
+          "settings": {
+            "product": "black-beans-dậu-den-xanh-long-400g-50-goi",
+            "variant_title": "Lẻ"
+          }
+        },
+        "bogo_04": {
+          "type": "product",
+          "settings": {
+            "product": "sua-dinh-duong-fristi-vi-tao-80ml-x-48-hop",
+            "variant_title": "Lốc (6)"
+          }
+        },
+        "bogo_05": {
+          "type": "product",
+          "settings": {
+            "product": "sua-dinh-duong-fristi-vi-dao-tien-nhat-ban-80ml-x-48-hop",
+            "variant_title": "Lốc (6)"
+          }
+        },
+        "bogo_06": {
+          "type": "product",
+          "settings": {
+            "product": "sua-th-true-milk-it-duong-180ml-x-48-hop",
+            "variant_title": "Lốc"
+          }
+        },
+        "bogo_07": {
+          "type": "product",
+          "settings": {
+            "product": "sua-th-true-milk-nguyen-chat-it-duong",
+            "variant_title": "Lốc (4)"
+          }
+        },
+        "bogo_08": {
+          "type": "product",
+          "settings": {
+            "product": "vừng-trắng",
+            "variant_title": "Lẻ"
+          }
+        },
+        "bogo_09": {
+          "type": "product",
+          "settings": {
+            "product": "vừng-den",
+            "variant_title": ""
+          }
+        },
+        "bogo_10": {
+          "type": "product",
+          "settings": {
+            "product": "hoa-hoi-100g-x-50",
+            "variant_title": "Lẻ"
+          }
+        },
+        "bogo_11": {
+          "type": "product",
+          "settings": {
+            "product": "che-vang-100g-100g-x-100-goi",
+            "variant_title": "Lẻ"
+          }
+        },
+        "bogo_12": {
+          "type": "product",
+          "settings": {
+            "product": "che-vang-200g-200g-x-50-goi",
+            "variant_title": "Lẻ"
+          }
+        },
+        "bogo_13": {
+          "type": "product",
+          "settings": {
+            "product": "que-cat-ngan-100g-x-50",
+            "variant_title": "Lẻ"
+          }
+        },
+        "bogo_14": {
+          "type": "product",
+          "settings": {
+            "product": "nam-huong-100g-x-50",
+            "variant_title": "Lẻ"
+          }
+        }
+      },
+      "block_order": [
+        "bogo_01",
+        "bogo_02",
+        "bogo_03",
+        "bogo_04",
+        "bogo_05",
+        "bogo_06",
+        "bogo_07",
+        "bogo_08",
+        "bogo_09",
+        "bogo_10",
+        "bogo_11",
+        "bogo_12",
+        "bogo_13",
+        "bogo_14"
+      ],
+      "settings": {
+        "heading": "Mua 1 Tặng 1",
+        "subheading": "Thêm 2 vào giỏ, chỉ trả tiền 1 — quà tặng tự trừ trong giỏ hàng",
+        "view_all_label": "Xem tất cả",
+        "view_all_link": "",
+        "columns_desktop": 6,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
     }
   },
   "order": [
@@ -1125,6 +1253,7 @@
     "pf_why",
     "pf_cat_tiles",
     "pf_deal_hook",
+    "pf_bogo",
     "pf_sale_1010",
     "pf_promo_banner",
     "custom_liquid_m33TFL",

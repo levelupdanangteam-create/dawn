@@ -124,6 +124,7 @@
                       show_badges: true,
                       price_class: 'price--large'
                     -%}
+                    {%- render 'pf-bogo-note', variant: product.selected_or_first_available_variant -%}
                   </div>
                   {%- if product.quantity_price_breaks_configured? -%}
                     <div class="volume-pricing-note" id="Volume-Note-{{ section.id }}">
@@ -295,7 +296,7 @@
                             max="{{ product.selected_or_first_available_variant.quantity_rule.max }}"
                           {% endif %}
                           step="{{ product.selected_or_first_available_variant.quantity_rule.increment }}"
-                          value="{{ product.selected_or_first_available_variant.quantity_rule.min }}"
+                          value="{% if product.selected_or_first_available_variant.metafields.custom.mua_1_tang_1.value == true and product.selected_or_first_available_variant.quantity_rule.min < 2 %}2{% else %}{{ product.selected_or_first_available_variant.quantity_rule.min }}{% endif %}"
                           form="{{ product_form_id }}"
                         >
                         <button class="quantity__button" name="plus" type="button">
@@ -807,6 +808,33 @@
     </div>
   {%- endif -%}
 </product-info>
+
+{%- comment -%} 13/11 Mua 1 tặng 1: variant có metafield custom.mua_1_tang_1 → số lượng mặc định 2 (Thêm vào giỏ / Thanh toán ngay thêm thẳng 2). {%- endcomment -%}
+<style>
+  .product-form__input input[type='radio'] + label .pf-bogo-vtag { display: inline-block; margin-left: .4rem; padding: .1rem .5rem; border-radius: 999px; background: #d62828; color: #fff; font-size: 1.1rem; font-weight: 800; line-height: 1.5; vertical-align: middle; }
+</style>
+<script>
+  (function () {
+    var sid = '{{ section.id }}';
+    var apply = function () {
+      var price = document.getElementById('price-' + sid);
+      var qty = document.getElementById('Quantity-' + sid);
+      if (!price || !qty) return;
+      var bogo = !!price.querySelector('[data-pf-bogo]');
+      var v = parseInt(qty.value, 10) || 1;
+      if (bogo && v < 2) qty.value = 2;
+      else if (!bogo && qty.dataset.pfBogoSet === '1' && v === 2) qty.value = qty.min || 1;
+      qty.dataset.pfBogoSet = bogo ? '1' : '';
+    };
+    var init = function () {
+      apply();
+      if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
+        subscribe(PUB_SUB_EVENTS.variantChange, function () { setTimeout(apply, 0); });
+      }
+    };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+  })();
+</script>
 
 {% schema %}
 {

@@ -1,0 +1,25 @@
+{%- comment -%}
+  Ghi chú "Mua 1 tặng 1" dưới giá trang sản phẩm (13/11).
+  Hiện khi variant đang chọn có metafield custom.mua_1_tang_1 = true (bật/tắt trong Admin → sản phẩm → variant).
+  Nằm trong #price-{section.id} nên tự cập nhật khi khách đổi variant. Có data-pf-bogo → script ở main-product
+  đặt số lượng = 2 để nút Thêm vào giỏ / Thanh toán ngay thêm thẳng 2 sản phẩm (sản phẩm thứ 2 được discount tự động trừ 100%).
+  Params: variant
+{%- endcomment -%}
+{%- if variant and variant.metafields.custom.mua_1_tang_1.value == true -%}
+  {%- assign vi = false -%}{%- if request.locale.iso_code == 'vi' -%}{%- assign vi = true -%}{%- endif -%}
+  <div class="pf-bogo-note" data-pf-bogo>
+    <span class="pf-bogo-note__tag">1+1</span>
+    <span class="pf-bogo-note__txt">
+      {%- if vi -%}
+        <strong>Mua 1 tặng 1</strong>{% unless variant.product.has_only_default_variant %} cho loại <strong>{{ variant.title }}</strong>{% endunless %} — thêm 2 vào giỏ, sản phẩm thứ 2 miễn phí
+      {%- else -%}
+        <strong>Buy 1 get 1</strong>{% unless variant.product.has_only_default_variant %} on <strong>{{ variant.title }}</strong>{% endunless %} — add 2, the second one is free
+      {%- endif -%}
+    </span>
+  </div>
+  <style>
+    .pf-bogo-note { display: flex; align-items: center; gap: .8rem; margin: .8rem 0 .4rem; padding: .7rem 1rem; border-radius: 10px; background: #fff5dc; border: 1px dashed #f5b400; color: #7c4a03; font-size: 1.35rem; line-height: 1.35; }
+    .pf-bogo-note__tag { flex: 0 0 auto; display: inline-grid; place-items: center; min-width: 3.4rem; height: 2.6rem; padding: 0 .6rem; border-radius: 999px; background: #d62828; color: #fff; font-weight: 900; font-size: 1.3rem; }
+    .pf-bogo-note strong { color: #b91c1c; }
+  </style>
+{%- endif -%}
