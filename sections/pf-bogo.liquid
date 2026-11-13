@@ -1,20 +1,37 @@
 {%- comment -%}
-  "Mua 1 tặng 1" (13/11) — đặt ngay dưới "Duy Nhất Hôm Nay" trên trang chủ.
-  Mỗi khối = 1 sản phẩm + tên variant được discount Buy X Get Y (vd. "Lẻ", "Lốc (6)").
-  Nút trên thẻ thêm ĐÚNG variant đó với số lượng 2 vào giỏ (AJAX qua .pf-card-actions__form / pf-cart-ajax.js),
-  nên discount 1+1 (tự động) khớp ngay. Để trống tên variant = lấy variant có metafield custom.mua_1_tang_1.
+  "Mua 1 tặng 1" (13/11).
+  - Trang chủ: 1 hàng thẻ trượt ngang, ngay dưới "Duy Nhất Hôm Nay"; có đồng hồ đếm ngược + nút "Xem tất cả" → /pages/mua-1-tang-1.
+  - Trang riêng /pages/mua-1-tang-1 (template page.mua-1-tang-1): lưới hiện hết sản phẩm + nút "Xem thêm các sản phẩm khác".
+  Nguồn sản phẩm: danh mục ở cài đặt section (mặc định: collection "mua-1-tang-1"); variant hiển thị = variant có
+  metafield custom.mua_1_tang_1 = true (không có thì variant đầu tiên còn hàng). Nếu không chọn danh mục thì dùng các khối "Sản phẩm 1+1".
+  Nút thêm ĐÚNG variant đó với số lượng 2 vào giỏ (AJAX qua .pf-card-actions__form / pf-cart-ajax.js) → discount 1+1 tự động trừ sản phẩm thứ 2.
   CSS thẻ dùng chung .pf-simple / .pf-fs__card trong snippet pf-flash-card.
 {%- endcomment -%}
 {%- assign vi = false -%}{%- if request.locale.iso_code == 'vi' -%}{%- assign vi = true -%}{%- endif -%}
+{%- assign pf_page = false -%}{%- if template.name == 'page' -%}{%- assign pf_page = true -%}{%- endif -%}
+{%- assign pf_col = section.settings.collection -%}
+{%- if pf_col == blank -%}{%- assign pf_col = collections['mua-1-tang-1'] -%}{%- endif -%}
+{%- assign pf_use_col = false -%}
+{%- if section.blocks.size == 0 and pf_col != blank and pf_col.products_count > 0 -%}{%- assign pf_use_col = true -%}{%- endif -%}
+{%- assign pf_all = section.settings.view_all_link | default: '/pages/mua-1-tang-1' -%}
 
-<div id="pf-bogo-{{ section.id }}" class="pf-simple pf-bogo" style="padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
+<div id="pf-bogo-{{ section.id }}" class="pf-simple pf-bogo{% if pf_page %} pf-bogo--page{% endif %}" style="padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
   <div class="page-width pf-simple__full">
     <div class="pf-bogo__box" style="--cols: {{ section.settings.columns_desktop }};">
       <div class="pf-simple__head">
-        <span class="pf-bogo__pill" aria-hidden="true">1+1</span>
-        <h2 class="pf-bogo__title pf-simple__title">{% render 'pf-tr', s: section.settings.heading %}</h2>
-        {%- if section.settings.view_all_label != blank and section.settings.view_all_link != blank -%}
-          <a class="pf-simple__all" href="{{ section.settings.view_all_link }}">{% render 'pf-tr', s: section.settings.view_all_label %}</a>
+        <div class="pf-bogo__title-wrap">
+          <span class="pf-bogo__pill" aria-hidden="true">1+1</span>
+          <h2 class="pf-bogo__title pf-simple__title">{% render 'pf-tr', s: section.settings.heading %}</h2>
+        </div>
+        {%- if section.settings.show_countdown -%}
+          <div class="pf-bogo__timer" data-pf-bogo-timer{% if section.settings.countdown_end != blank %} data-end="{{ section.settings.countdown_end | escape }}"{% endif %} hidden>
+            <span class="pf-bogo__timer-label">{% render 'pf-tr', s: section.settings.countdown_label %}</span>
+            <b data-d>0</b><span class="pf-bogo__unit">{% if vi %}ngày{% else %}d{% endif %}</span>
+            <b data-h>00</b><span class="pf-bogo__colon" aria-hidden="true">:</span><b data-m>00</b><span class="pf-bogo__colon" aria-hidden="true">:</span><b data-s>00</b>
+          </div>
+        {%- endif -%}
+        {%- if pf_page == false and section.settings.view_all_label != blank -%}
+          <a class="pf-simple__all" href="{{ pf_all }}">{% render 'pf-tr', s: section.settings.view_all_label %}</a>
         {%- endif -%}
       </div>
       {%- if section.settings.subheading != blank -%}<p class="pf-simple__sub">{% render 'pf-tr', s: section.settings.subheading %}</p>{%- endif -%}
@@ -22,93 +39,82 @@
       <div class="pf-simple__slider">
         <button type="button" class="pf-simple__arrow pf-simple__arrow--prev" aria-label="{% if vi %}Trước{% else %}Previous{% endif %}" disabled><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
         <div class="pf-ex__grid pf-simple__track" data-pf-sl-track>
-          {%- for block in section.blocks -%}
-            {%- assign p = block.settings.product -%}
-            {%- if p == blank or p.id == blank -%}{%- continue -%}{%- endif -%}
-            {%- liquid
-              assign want = block.settings.variant_title | strip | downcase
-              assign v = p.selected_or_first_available_variant
-              if want == blank
-                for vv in p.variants
-                  if vv.metafields.custom.mua_1_tang_1.value == true
-                    assign v = vv
-                    break
-                  endif
-                endfor
-              else
-                for vv in p.variants
-                  assign t = vv.title | strip | downcase
-                  if t == want
-                    assign v = vv
-                    break
-                  endif
-                endfor
-              endif
-              assign was_cents = v.price | times: 2
-            -%}
-            <div class="pf-fs__card pf-ex__card pf-bogo__card" {{ block.shopify_attributes }}>
-              <a href="{{ v.url | default: p.url }}" class="pf-fs__media" tabindex="-1" aria-hidden="true">
-                {%- assign img = v.featured_image | default: p.featured_image -%}
-                {%- if img -%}
-                  <img src="{{ img | image_url: width: 400 }}" srcset="{{ img | image_url: width: 240 }} 240w, {{ img | image_url: width: 400 }} 400w" sizes="(max-width: 749px) 42vw, 220px" alt="{{ p.title | escape }}" loading="lazy" width="400" height="400">
-                {%- else -%}
-                  {{ 'product-1' | placeholder_svg_tag }}
-                {%- endif -%}
-                <span class="pf-fs__badge pf-bogo__badge">{% if vi %}Mua 1 tặng 1{% else %}Buy 1 get 1{% endif %}</span>
-              </a>
-
-              <a class="pf-fs__name" href="{{ v.url | default: p.url }}" title="{{ p.title | escape }}">{% render 'pf-short-title', title: p.title %}</a>
-              {%- unless p.has_only_default_variant -%}<span class="pf-bogo__variant">{{ v.title }}</span>{%- endunless -%}
-
-              <div class="pf-fs__row">
-                <div class="pf-fs__price">
-                  <span class="pf-fs__now">{{ v.price | money }}</span>
-                  <s class="pf-fs__was">{{ was_cents | money }}</s>
-                </div>
-              </div>
-
-              <div class="pf-fs__bar{% unless v.available %} pf-fs__bar--out{% endunless %}">
-                <i style="width: 100%"></i>
-                <span>{%- if v.available -%}{% if vi %}Nhận 2, trả tiền 1{% else %}Get 2, pay for 1{% endif %}{%- else -%}{% if vi %}Đã hết hàng{% else %}Sold out{% endif %}{%- endif -%}</span>
-              </div>
-
-              {%- if v.available -%}
-                {%- assign pf_add_id = 'pf-bogo-' | append: section.id | append: '-' | append: v.id -%}
-                {%- form 'product', p, id: pf_add_id, class: 'pf-card-actions__form pf-fs__addform' -%}
-                  <input type="hidden" name="id" value="{{ v.id }}">
-                  <input type="hidden" name="quantity" value="2">
-                  <button type="submit" class="pf-fs__add pf-fs__add--text">{% if vi %}Thêm 2 vào giỏ{% else %}Add 2 to cart{% endif %}</button>
-                {%- endform -%}
-              {%- else -%}
-                <button type="button" class="pf-fs__add pf-fs__add--text" disabled>{% if vi %}Hết hàng{% else %}Sold out{% endif %}</button>
-              {%- endif -%}
-            </div>
-          {%- endfor -%}
+          {%- if pf_use_col -%}
+            {%- for p in pf_col.products limit: 100 -%}
+              {%- render 'pf-bogo-card', p: p, want: '', section_id: section.id, vi: vi -%}
+            {%- endfor -%}
+          {%- else -%}
+            {%- for block in section.blocks -%}
+              {%- render 'pf-bogo-card', p: block.settings.product, want: block.settings.variant_title, section_id: section.id, vi: vi, block_attrs: block.shopify_attributes -%}
+            {%- endfor -%}
+          {%- endif -%}
         </div>
         <button type="button" class="pf-simple__arrow pf-simple__arrow--next" aria-label="{% if vi %}Sau{% else %}Next{% endif %}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
       </div>
+
+      {%- if pf_page and section.settings.more_label != blank -%}
+        <div class="pf-bogo__more-wrap">
+          <a class="pf-bogo__more" href="{{ section.settings.more_link | default: '/collections/all' }}">{% render 'pf-tr', s: section.settings.more_label %} <span aria-hidden="true">›</span></a>
+        </div>
+      {%- endif -%}
     </div>
   </div>
 </div>
 
 <style>
-  #pf-bogo-{{ section.id }} .pf-simple__head { gap: 1rem 1.2rem; }
+  #pf-bogo-{{ section.id }} .pf-simple__head { gap: 1rem 1.6rem; }
+  #pf-bogo-{{ section.id }} .pf-bogo__title-wrap { display: inline-flex; align-items: center; gap: 1.2rem; min-width: 0; }
   #pf-bogo-{{ section.id }} .pf-bogo__pill {
     flex: 0 0 auto; display: inline-grid; place-items: center; min-width: 4.6rem; height: 4.6rem; padding: 0 .8rem; box-sizing: border-box;
     border-radius: 999px; background: #d62828; color: #fff; font-weight: 900; font-size: 1.8rem; line-height: 1; box-shadow: 0 4px 12px rgba(214, 40, 40, .28);
   }
+  #pf-bogo-{{ section.id }} .pf-bogo__timer { display: inline-flex; align-items: center; gap: .4rem; }
+  #pf-bogo-{{ section.id }} .pf-bogo__timer[hidden] { display: none !important; }
+  #pf-bogo-{{ section.id }} .pf-bogo__timer [hidden] { display: none !important; }
+  #pf-bogo-{{ section.id }} .pf-bogo__timer-label { font-size: 1.4rem; font-weight: 600; color: var(--mut); margin-right: .3rem; white-space: nowrap; }
+  #pf-bogo-{{ section.id }} .pf-bogo__timer b {
+    min-width: 3.4rem; text-align: center; background: #d62828; color: #fff; border-radius: 8px;
+    font-size: 1.7rem; font-weight: 800; line-height: 1; padding: .6rem .45rem; font-variant-numeric: tabular-nums;
+  }
+  #pf-bogo-{{ section.id }} .pf-bogo__unit { font-size: 1.3rem; font-weight: 700; color: #d62828; margin: 0 .3rem 0 0; }
+  #pf-bogo-{{ section.id }} .pf-bogo__colon { font-size: 1.7rem; font-weight: 800; color: #d62828; }
   #pf-bogo-{{ section.id }} .pf-bogo__badge { background: #d62828 !important; color: #fff !important; }
   #pf-bogo-{{ section.id }} .pf-bogo__variant { display: block; margin-top: .2rem; font-size: 1.25rem; color: var(--mut); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  #pf-bogo-{{ section.id }} .pf-fs__bar i { background: #fde2a6; }
-  #pf-bogo-{{ section.id }} .pf-fs__bar { background: #fff5dc; margin-top: .9rem; }
-  #pf-bogo-{{ section.id }} .pf-fs__bar span { color: #b45309; }
   #pf-bogo-{{ section.id }} .pf-simple__track { --per: var(--cols, 6); }
-  @media (max-width: 1199px) { #pf-bogo-{{ section.id }} .pf-simple__track { --per: 5; } }
-  @media (max-width: 989px) { #pf-bogo-{{ section.id }} .pf-simple__track { --per: 4; } }
+  /* Trang riêng: lưới hiện hết sản phẩm */
+  #pf-bogo-{{ section.id }}.pf-bogo--page .pf-simple__track { display: grid; grid-template-columns: repeat(var(--cols, 6), minmax(0, 1fr)); gap: 1.2rem; overflow: visible; scroll-snap-type: none; }
+  #pf-bogo-{{ section.id }}.pf-bogo--page .pf-simple__track > .pf-fs__card { flex: none; }
+  #pf-bogo-{{ section.id }}.pf-bogo--page .pf-simple__arrow { display: none !important; }
+  #pf-bogo-{{ section.id }} .pf-bogo__more-wrap { display: flex; justify-content: center; margin-top: 2.6rem; }
+  #pf-bogo-{{ section.id }} .pf-bogo__more {
+    display: inline-flex; align-items: center; gap: .6rem; background: #ffc61a; color: #14672f; text-decoration: none;
+    font-size: 1.6rem; font-weight: 800; padding: 1.2rem 3.2rem; border-radius: 999px; box-shadow: 0 6px 16px rgba(0, 0, 0, .12); line-height: 1.35;
+    transition: background .15s ease, transform .15s ease;
+  }
+  #pf-bogo-{{ section.id }} .pf-bogo__more:hover { background: #f5b400; transform: translateY(-1px); }
+  #pf-bogo-{{ section.id }} .pf-bogo__more span { font-size: 2rem; line-height: 1; }
+  @media (max-width: 1199px) {
+    #pf-bogo-{{ section.id }} .pf-simple__track { --per: 5; }
+    #pf-bogo-{{ section.id }}.pf-bogo--page .pf-simple__track { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  }
+  @media (max-width: 989px) {
+    #pf-bogo-{{ section.id }} .pf-simple__track { --per: 4; }
+    #pf-bogo-{{ section.id }}.pf-bogo--page .pf-simple__track { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
   @media (max-width: 749px) {
     #pf-bogo-{{ section.id }} .pf-simple__track { --per: 2.3; }
+    #pf-bogo-{{ section.id }}.pf-bogo--page .pf-simple__track { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: .8rem !important; overflow: visible !important; }
+    #pf-bogo-{{ section.id }}.pf-bogo--page .pf-simple__track > .pf-fs__card { flex: none !important; }
+    #pf-bogo-{{ section.id }} .pf-bogo__title-wrap { flex: 1 1 100%; gap: .8rem; }
     #pf-bogo-{{ section.id }} .pf-bogo__pill { min-width: 3.6rem; height: 3.6rem; font-size: 1.4rem; }
+    #pf-bogo-{{ section.id }} .pf-bogo__title { font-size: 2rem !important; }
+    #pf-bogo-{{ section.id }} .pf-bogo__timer { gap: .25rem; }
+    #pf-bogo-{{ section.id }} .pf-bogo__timer-label { font-size: 1.1rem; margin-right: .1rem; }
+    #pf-bogo-{{ section.id }} .pf-bogo__timer b { min-width: 2.6rem; font-size: 1.3rem; padding: .4rem .3rem; border-radius: 6px; }
+    #pf-bogo-{{ section.id }} .pf-bogo__unit { font-size: 1.1rem; }
+    #pf-bogo-{{ section.id }} .pf-bogo__colon { font-size: 1.3rem; }
     #pf-bogo-{{ section.id }} .pf-bogo__variant { font-size: 1.1rem; }
+    #pf-bogo-{{ section.id }} .pf-bogo__more { width: 100%; justify-content: center; font-size: 1.45rem; padding: 1.1rem 1.6rem; }
   }
 </style>
 
@@ -117,10 +123,36 @@
     var root = document.getElementById('pf-bogo-{{ section.id }}');
     if (!root) return;
 
-    /* Hàng trượt ngang: nút trước/sau */
+    /* Đồng hồ đếm ngược tới "Thời điểm kết thúc" (mặc định hết 30/11); qua mốc thì ẩn */
+    var timer = root.querySelector('[data-pf-bogo-timer]');
+    if (timer && timer.getAttribute('data-end')) {
+      var end = new Date(timer.getAttribute('data-end'));
+      if (!isNaN(end)) {
+        var d = timer.querySelector('[data-d]'), du = timer.querySelector('.pf-bogo__unit');
+        var h = timer.querySelector('[data-h]'), m = timer.querySelector('[data-m]'), s = timer.querySelector('[data-s]');
+        var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+        var iv;
+        var tick = function () {
+          var left = Math.floor((end - new Date()) / 1000);
+          if (left <= 0) { timer.hidden = true; clearInterval(iv); return; }
+          var days = Math.floor(left / 86400);
+          d.hidden = du.hidden = days < 1;
+          d.textContent = days;
+          left = left % 86400;
+          h.textContent = pad(Math.floor(left / 3600));
+          m.textContent = pad(Math.floor(left % 3600 / 60));
+          s.textContent = pad(left % 60);
+        };
+        timer.hidden = false;
+        tick();
+        iv = setInterval(tick, 1000);
+      }
+    }
+
+    /* Hàng trượt ngang: nút trước/sau (trang chủ) */
     var track = root.querySelector('[data-pf-sl-track]');
     var prev = root.querySelector('.pf-simple__arrow--prev'), next = root.querySelector('.pf-simple__arrow--next');
-    if (track && prev && next) {
+    if (track && prev && next && !root.classList.contains('pf-bogo--page')) {
       var step = function () {
         var c = track.querySelector('.pf-fs__card'); var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
         if (!c) return track.clientWidth;
@@ -133,7 +165,6 @@
       var t; track.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(update, 60); }, { passive: true });
       window.addEventListener('resize', update); window.addEventListener('load', update); update();
     }
-
   })();
 </script>
 
@@ -142,11 +173,17 @@
   "name": "Mua 1 tặng 1",
   "tag": "section",
   "settings": [
-    { "type": "paragraph", "content": "Mỗi khối = 1 sản phẩm có discount Mua 1 tặng 1. Nút trên thẻ thêm 2 sản phẩm (đúng variant) vào giỏ để discount tự khớp." },
-    { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Mua 1 Tặng 1" },
-    { "type": "text", "id": "subheading", "label": "Mô tả ngắn", "default": "Thêm 2 vào giỏ, chỉ trả tiền 1 — quà tặng tự trừ trong giỏ hàng" },
-    { "type": "text", "id": "view_all_label", "label": "Chữ nút bên phải tiêu đề", "default": "Xem tất cả" },
-    { "type": "url", "id": "view_all_link", "label": "Link nút (để trống = ẩn nút)" },
+    { "type": "paragraph", "content": "Sản phẩm lấy từ danh mục bên dưới (mặc định: Mua 1 tặng 1). Thẻ hiện variant có tick 'Mua 1 tặng 1' (metafield variant). Nút trên thẻ thêm 2 sản phẩm vào giỏ để discount tự động trừ sản phẩm thứ 2. Nếu thêm khối 'Sản phẩm 1+1' thì dùng các khối thay cho danh mục." },
+    { "type": "collection", "id": "collection", "label": "Danh mục sản phẩm 1+1", "info": "Để trống = danh mục 'mua-1-tang-1'." },
+    { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "ƯU ĐÃI MUA 1 TẶNG 1 - DEAL SIÊU HỜI, GIÁ SIÊU RẺ" },
+    { "type": "text", "id": "subheading", "label": "Mô tả ngắn", "default": "Số lượng có hạn, chốt ngay kẻo hết" },
+    { "type": "checkbox", "id": "show_countdown", "label": "Hiện đồng hồ đếm ngược", "default": true },
+    { "type": "text", "id": "countdown_label", "label": "Chữ cạnh đồng hồ", "default": "Kết thúc sau" },
+    { "type": "text", "id": "countdown_end", "label": "Thời điểm kết thúc", "default": "2026-11-30T23:59:59+01:00", "info": "Dạng 2026-11-30T23:59:59+01:00 (giờ Praha). Qua mốc này đồng hồ tự ẩn." },
+    { "type": "text", "id": "view_all_label", "label": "Chữ nút Xem tất cả (trang chủ)", "default": "Xem tất cả" },
+    { "type": "url", "id": "view_all_link", "label": "Link nút Xem tất cả (để trống = trang Mua 1 tặng 1)" },
+    { "type": "text", "id": "more_label", "label": "Nút cuối trang riêng", "default": "Xem thêm các sản phẩm khác" },
+    { "type": "url", "id": "more_link", "label": "Link nút cuối trang (để trống = tất cả sản phẩm)" },
     { "type": "range", "id": "columns_desktop", "min": 3, "max": 6, "step": 1, "label": "Số thẻ / hàng (desktop)", "default": 6 },
     { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách trên", "default": 40 },
     { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Khoảng cách dưới", "default": 40 }
@@ -158,7 +195,7 @@
       "name": "Sản phẩm 1+1",
       "settings": [
         { "type": "product", "id": "product", "label": "Chọn sản phẩm" },
-        { "type": "text", "id": "variant_title", "label": "Tên variant được tặng", "info": "Đúng tên variant trong discount, vd: Lẻ, Lốc (6). Để trống = variant có tick Mua 1 tặng 1 (metafield), không có thì variant đầu tiên còn hàng." }
+        { "type": "text", "id": "variant_title", "label": "Tên variant được tặng", "info": "Vd: Lẻ, Lốc (6). Để trống = variant có tick Mua 1 tặng 1, không có thì variant đầu tiên còn hàng." }
       ]
     }
   ],

@@ -1,0 +1,60 @@
+{%- comment -%}
+  Thẻ sản phẩm "Mua 1 tặng 1" (section pf-bogo, 13/11).
+  Params: p (product), want (tên variant, để trống = variant có metafield custom.mua_1_tang_1), section_id, vi, block_attrs.
+  Nút "Thêm vào giỏ hàng" thêm 2 sản phẩm của variant 1+1 (AJAX .pf-card-actions__form) → discount tự động trừ sản phẩm thứ 2.
+{%- endcomment -%}
+{%- if p != blank and p.id -%}
+  {%- liquid
+    assign want = want | strip | downcase
+    assign v = p.selected_or_first_available_variant
+    if want == blank
+      for vv in p.variants
+        if vv.metafields.custom.mua_1_tang_1.value == true
+          assign v = vv
+          break
+        endif
+      endfor
+    else
+      for vv in p.variants
+        assign t = vv.title | strip | downcase
+        if t == want
+          assign v = vv
+          break
+        endif
+      endfor
+    endif
+    assign was_cents = v.price | times: 2
+    assign img = v.featured_image | default: p.featured_image
+  -%}
+  <div class="pf-fs__card pf-ex__card pf-bogo__card"{% if block_attrs %} {{ block_attrs }}{% endif %}>
+    <a href="{{ v.url | default: p.url }}" class="pf-fs__media" tabindex="-1" aria-hidden="true">
+      {%- if img -%}
+        <img src="{{ img | image_url: width: 400 }}" srcset="{{ img | image_url: width: 240 }} 240w, {{ img | image_url: width: 400 }} 400w" sizes="(max-width: 749px) 42vw, 220px" alt="{{ p.title | escape }}" loading="lazy" width="400" height="400">
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag }}
+      {%- endif -%}
+      <span class="pf-fs__badge pf-bogo__badge">{% if vi %}Mua 1 tặng 1{% else %}Buy 1 get 1{% endif %}</span>
+    </a>
+
+    <a class="pf-fs__name" href="{{ v.url | default: p.url }}" title="{{ p.title | escape }}">{% render 'pf-short-title', title: p.title %}</a>
+    {%- unless p.has_only_default_variant -%}<span class="pf-bogo__variant">{{ v.title }}</span>{%- endunless -%}
+
+    <div class="pf-fs__row">
+      <div class="pf-fs__price">
+        <span class="pf-fs__now">{{ v.price | money }}</span>
+        <s class="pf-fs__was">{{ was_cents | money }}</s>
+      </div>
+    </div>
+
+    {%- if v.available -%}
+      {%- assign pf_add_id = 'pf-bogo-' | append: section_id | append: '-' | append: v.id -%}
+      {%- form 'product', p, id: pf_add_id, class: 'pf-card-actions__form pf-fs__addform' -%}
+        <input type="hidden" name="id" value="{{ v.id }}">
+        <input type="hidden" name="quantity" value="2">
+        <button type="submit" class="pf-fs__add pf-fs__add--text">{% if vi %}Thêm vào giỏ hàng{% else %}Add to cart{% endif %}</button>
+      {%- endform -%}
+    {%- else -%}
+      <button type="button" class="pf-fs__add pf-fs__add--text" disabled>{% if vi %}Hết hàng{% else %}Sold out{% endif %}</button>
+    {%- endif -%}
+  </div>
+{%- endif -%}
