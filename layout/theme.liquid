@@ -337,7 +337,7 @@
     </script>
 
     {%- comment -%}PHOMIFOOD: force Montserrat across the whole site.{%- endcomment -%}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    {%- comment -%}PF speed 16/11: bỏ preconnect fonts.googleapis.com (thẻ preload CSS font ngay bên dưới đã mở kết nối này) — PageSpeed cảnh báo > 4 preconnect (Shopify + app đã tự thêm vài cái).{%- endcomment -%}
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     {%- comment -%}PF speed 29/10: tải font Montserrat KHÔNG chặn hiển thị (trang hiện bằng font hệ thống trước, đổi sang Montserrat khi tải xong).{%- endcomment -%}
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
