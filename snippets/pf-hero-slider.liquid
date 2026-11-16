@@ -103,7 +103,16 @@
               {%- if b.settings.image == blank -%}
                 {%- comment -%} 07/11: ảnh nằm trong thư mục assets của theme (đẩy qua GitHub). Điện thoại giữ nguyên tỉ lệ ảnh, không cắt. {%- endcomment -%}
                 {%- assign pf_aw = b.settings.asset_width | default: 2000 -%}{%- assign pf_ah = b.settings.asset_height | default: 750 -%}
+                {%- if b.settings.asset_mobile != blank -%}
+                  {%- comment -%} 16/11: ảnh điện thoại riêng trong assets {%- endcomment -%}
+                  {%- assign pf_mw = b.settings.asset_mobile_width | default: 1100 -%}{%- assign pf_mh = b.settings.asset_mobile_height | default: 550 -%}
+                  <picture>
+                    <source media="(max-width: 749px)" srcset="{{ b.settings.asset_mobile | asset_url }}" width="{{ pf_mw }}" height="{{ pf_mh }}">
+                    <img class="pf-hs__img pf-hs__img--d pf-hs__img--hasm" src="{{ b.settings.asset_file | asset_url }}" width="{{ pf_aw }}" height="{{ pf_ah }}" alt="{{ b.settings.alt | default: 'Phomifood' | escape }}" loading="{{ pf_load }}" fetchpriority="{{ pf_fp }}" style="--pf-ar: auto; --pf-mar: {{ pf_mw }} / {{ pf_mh }}">
+                  </picture>
+                {%- else -%}
                 <img class="pf-hs__img pf-hs__img--d pf-hs__img--hasm" src="{{ b.settings.asset_file | asset_url }}" width="{{ pf_aw }}" height="{{ pf_ah }}" alt="{{ b.settings.alt | default: 'Phomifood' | escape }}" loading="{{ pf_load }}" fetchpriority="{{ pf_fp }}" style="--pf-ar: auto; --pf-mar: {{ pf_aw }} / {{ pf_ah }}">
+                {%- endif -%}
               {%- elsif b.settings.image_mobile != blank -%}
                 {%- assign pf_mi = b.settings.image_mobile -%}
                 {%- assign pf_style = pf_style | append: '; --pf-mar: ' | append: pf_mi.width | append: ' / ' | append: pf_mi.height -%}
