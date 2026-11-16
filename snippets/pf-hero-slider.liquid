@@ -92,6 +92,8 @@
               {%- else -%}
                 {%- assign pf_load = 'lazy' -%}{%- assign pf_fp = 'auto' -%}{%- assign pf_pre = false -%}
               {%- endif -%}
+              {%- comment -%} PF speed 16/11: slide 2+ để ảnh ở data-pf-src(set) → không tải lúc mở trang; JS bên dưới nạp sau khi trang tải xong / khi khách vuốt. {%- endcomment -%}
+              {%- capture pf_img -%}
               {%- if b.settings.image == blank -%}
                 {%- comment -%} 07/11: ảnh nằm trong thư mục assets của theme (đẩy qua GitHub). Điện thoại giữ nguyên tỉ lệ ảnh, không cắt. {%- endcomment -%}
                 {%- assign pf_aw = b.settings.asset_width | default: 2000 -%}{%- assign pf_ah = b.settings.asset_height | default: 750 -%}
@@ -104,8 +106,11 @@
                   {{ b.settings.image | image_url: width: 2880 | image_tag: class: 'pf-hs__img pf-hs__img--d pf-hs__img--hasm', widths: '750, 1100, 1500, 2048, 2880', sizes: '100vw', alt: pf_alt, loading: pf_load, fetchpriority: pf_fp, style: pf_style }}
                 </picture>
               {%- else -%}
-                {{ b.settings.image | image_url: width: 2880 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '550, 750, 1100, 1500, 2048, 2880', sizes: '100vw', alt: pf_alt, loading: pf_load, fetchpriority: pf_fp, preload: pf_pre, style: pf_style }}
+                {%- comment -%} PF speed 16/11: điện thoại chọn bản ~1100px thay vì 1500px (sizes 90vw) — vẫn nét, nhẹ hơn ~45% {%- endcomment -%}
+                {{ b.settings.image | image_url: width: 2880 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '550, 750, 1100, 1500, 2048, 2880', sizes: '(max-width: 749px) 90vw, 100vw', alt: pf_alt, loading: pf_load, fetchpriority: pf_fp, preload: pf_pre, style: pf_style }}
               {%- endif -%}
+              {%- endcapture -%}
+              {%- if pf_i > 1 -%}{{ pf_img | replace: ' srcset="', ' data-pf-srcset="' | replace: ' src="', ' data-pf-src="' }}{%- else -%}{{ pf_img }}{%- endif -%}
               {%- if b.settings.link != blank -%}</a>{%- else -%}</span>{%- endif -%}
             </div>
           {%- endif -%}
@@ -120,7 +125,8 @@
               {%- if pf_i == 1 -%}
                 {{ images[fn] | image_url: width: 2880 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '550, 750, 1100, 1500, 2048, 2880', sizes: '100vw', alt: 'Phomifood', loading: 'eager', fetchpriority: 'high', preload: true, style: '--pf-ar: auto' }}
               {%- else -%}
-                {{ images[fn] | image_url: width: 2880 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '550, 750, 1100, 1500, 2048, 2880', sizes: '100vw', alt: 'Phomifood', loading: 'lazy', style: '--pf-ar: auto' }}
+                {%- capture pf_img -%}{{ images[fn] | image_url: width: 2880 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '550, 750, 1100, 1500, 2048, 2880', sizes: '(max-width: 749px) 90vw, 100vw', alt: 'Phomifood', loading: 'lazy', style: '--pf-ar: auto' }}{%- endcapture -%}
+                {{ pf_img | replace: ' srcset="', ' data-pf-srcset="' | replace: ' src="', ' data-pf-src="' }}
               {%- endif -%}
               {%- if link != blank -%}</a>{%- else -%}</span>{%- endif -%}
             </div>
@@ -159,6 +165,17 @@
       var n = slides.length;
       if (!track || n < 2) return;
       var cur = 0, timer = null, paused = false;
+      // PF speed 16/11: nạp ảnh slide 2+ (đang để ở data-pf-src/srcset) — sau khi trang tải xong hoặc khi khách tương tác.
+      var lazyDone = false;
+      function loadRest() {
+        if (lazyDone) return; lazyDone = true;
+        root.querySelectorAll('[data-pf-srcset]').forEach(function (el) { el.setAttribute('srcset', el.getAttribute('data-pf-srcset')); el.removeAttribute('data-pf-srcset'); });
+        root.querySelectorAll('[data-pf-src]').forEach(function (el) { el.setAttribute('src', el.getAttribute('data-pf-src')); el.removeAttribute('data-pf-src'); });
+      }
+      function later() { setTimeout(function () { (window.requestIdleCallback || function (f) { setTimeout(f, 1) })(loadRest); }, 1500); }
+      if (document.readyState === 'complete') later(); else window.addEventListener('load', later, { once: true });
+      ['touchstart', 'pointerdown', 'scroll'].forEach(function (ev) { track.addEventListener(ev, loadRest, { passive: true, once: true }); });
+      root.querySelectorAll('button').forEach(function (b) { b.addEventListener('click', loadRest, { once: true }); });
       var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       // PF speed 29/10: không tự chạy trên điện thoại (đỡ tải thêm ảnh + đỡ việc cho máy); khách vẫn vuốt được.
       var phone = window.matchMedia && window.matchMedia('(max-width: 749px)').matches;
@@ -166,6 +183,7 @@
       var ms = parseInt(root.dataset.interval, 10) || 5000;
 
       function go(i) {
+        loadRest();
         cur = (i + n) % n;
         track.scrollTo({ left: slides[cur].offsetLeft - track.offsetLeft, behavior: reduce ? 'auto' : 'smooth' });
       }

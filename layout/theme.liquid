@@ -1,6 +1,21 @@
 <!doctype html>
 <html class="js" lang="{{ request.locale.iso_code }}">
   <head>
+    {%- if template.name == 'index' -%}
+      {%- comment -%} PF speed 16/11: trang chủ không hiển thị gì của Judge.me (chỉ dùng ở trang sản phẩm) → chặn file Judge.me tải ở trang chủ. Xoá khối này để bỏ chặn. {%- endcomment -%}
+      <script>
+        (function () {
+          var re = /(^|\/\/)([a-z0-9-]+\.)*judge\.me\/|judgeme/i;
+          function kill(n) {
+            if (n.tagName === 'SCRIPT' && n.src && re.test(n.src)) { n.type = 'javascript/blocked'; if (n.parentNode) n.parentNode.removeChild(n); }
+            else if (n.tagName === 'LINK' && n.href && re.test(n.href) && /stylesheet|preload/.test(n.rel)) { if (n.parentNode) n.parentNode.removeChild(n); }
+          }
+          var mo = new MutationObserver(function (ms) { ms.forEach(function (m) { m.addedNodes.forEach(function (n) { if (n.nodeType === 1) kill(n); }); }); });
+          mo.observe(document.documentElement, { childList: true, subtree: true });
+          window.addEventListener('load', function () { setTimeout(function () { mo.disconnect(); }, 8000); });
+        })();
+      </script>
+    {%- endif -%}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
