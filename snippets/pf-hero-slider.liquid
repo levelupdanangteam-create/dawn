@@ -107,7 +107,16 @@
                 </picture>
               {%- else -%}
                 {%- comment -%} PF speed 16/11: điện thoại chọn bản ~1100px thay vì 1500px (sizes 90vw) — vẫn nét, nhẹ hơn ~45% {%- endcomment -%}
+                {%- if b.settings.asset_desktop != blank -%}
+                  {%- comment -%} 16/11: ảnh riêng cho MÁY TÍNH nằm trong assets của theme; điện thoại vẫn dùng ảnh đã chọn ở trên (cắt như cũ). {%- endcomment -%}
+                  {%- if pf_i == 1 -%}<link rel="preload" as="image" href="{{ b.settings.asset_desktop | asset_url }}" media="(min-width: 750px)" fetchpriority="high">{%- endif -%}
+                  <picture>
+                    <source media="(min-width: 750px)" srcset="{{ b.settings.asset_desktop | asset_url }}" width="{{ b.settings.asset_width | default: 2000 }}" height="{{ b.settings.asset_height | default: 750 }}">
+                    {{ b.settings.image | image_url: width: 1100 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '550, 750, 1100', sizes: '(max-width: 749px) 90vw, 100vw', alt: pf_alt, loading: pf_load, fetchpriority: pf_fp, style: pf_style }}
+                  </picture>
+                {%- else -%}
                 {{ b.settings.image | image_url: width: 2880 | image_tag: class: 'pf-hs__img pf-hs__img--d', widths: '550, 750, 1100, 1500, 2048, 2880', sizes: '(max-width: 749px) 90vw, 100vw', alt: pf_alt, loading: pf_load, fetchpriority: pf_fp, preload: pf_pre, style: pf_style }}
+                {%- endif -%}
               {%- endif -%}
               {%- endcapture -%}
               {%- if pf_i > 1 -%}{{ pf_img | replace: ' srcset="', ' data-pf-srcset="' | replace: ' src="', ' data-pf-src="' }}{%- else -%}{{ pf_img }}{%- endif -%}
