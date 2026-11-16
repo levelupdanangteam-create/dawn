@@ -12,12 +12,28 @@
 {% render 'pf-ship-rates' %}
 <div class="pf-tot" data-pf-tot data-sub="{{ cart.total_price }}" data-goal="{{ cart.items_subtotal_price }}" data-weight="{{ cart.total_weight }}" data-cc="{{ localization.country.iso_code }}">
   <div class="pf-tot__row"><span>{% if vi %}Tạm tính{% else %}Subtotal{% endif %} ({{ cart.item_count }})</span><span>{{ sub_before | money }}</span></div>
-  {%- if cart.total_discount > 0 -%}
-    <div class="pf-tot__row pf-tot__row--green"><span>{% if vi %}Giảm giá{% else %}Discount{% endif %}</span><span>−{{ cart.total_discount | money }}</span></div>
+  {%- comment -%} 16/11: tách từng ưu đãi Shopify đang áp (VD "Giảm thêm 3% đơn từ 209€"), phần còn lại (giảm theo sản phẩm) gộp 1 dòng {%- endcomment -%}
+  {%- assign pf_order_disc = 0 -%}
+  {%- for d in cart.cart_level_discount_applications -%}
+    {%- assign pf_order_disc = pf_order_disc | plus: d.total_allocated_amount -%}
+    <div class="pf-tot__row pf-tot__row--green"><span>{{ d.title }}</span><span>−{{ d.total_allocated_amount | money }}</span></div>
+  {%- endfor -%}
+  {%- assign pf_item_disc = cart.total_discount | minus: pf_order_disc -%}
+  {%- if pf_item_disc > 0 -%}
+    <div class="pf-tot__row pf-tot__row--green"><span>{% if vi %}Giảm giá sản phẩm{% else %}Product discounts{% endif %}</span><span>−{{ pf_item_disc | money }}</span></div>
   {%- endif -%}
   <div class="pf-tot__row"><span>{% if vi %}Phí ship{% else %}Shipping{% endif %} <em data-pf-tot-country></em></span><span data-pf-tot-ship>—</span></div>
   <div class="pf-tot__row pf-tot__row--green" data-pf-tot-discrow hidden><span>{% if vi %}Giảm 10% (từ €139){% else %}10% off (from €139){% endif %}</span><span data-pf-tot-disc></span></div>
   <div class="pf-tot__total"><span>{% if vi %}Tổng cộng{% else %}Total{% endif %}</span><span data-pf-tot-total>{{ cart.total_price | money }}</span></div>
+  {%- comment -%} 16/11: gợi ý mốc ưu đãi tiếp theo (209€ giảm thêm 3%, 249€ giảm thêm 5%) theo tạm tính {%- endcomment -%}
+  {%- assign pf_sub = cart.items_subtotal_price -%}
+  {%- if pf_sub >= 13900 and pf_sub < 20900 -%}
+    {%- assign pf_gap = 20900 | minus: pf_sub -%}
+    <p class="pf-tot__next">{% if vi %}Mua thêm <b>{{ pf_gap | money }}</b> để được <b>giảm thêm 3%</b>{% else %}Add <b>{{ pf_gap | money }}</b> more for an <b>extra 3% off</b>{% endif %}</p>
+  {%- elsif pf_sub >= 20900 and pf_sub < 24900 -%}
+    {%- assign pf_gap = 24900 | minus: pf_sub -%}
+    <p class="pf-tot__next">{% if vi %}Mua thêm <b>{{ pf_gap | money }}</b> để được <b>giảm thêm 5%</b> (thay cho 3%){% else %}Add <b>{{ pf_gap | money }}</b> more for an <b>extra 5% off</b> (instead of 3%){% endif %}</p>
+  {%- endif -%}
 </div>
 <script>
   (function () {
@@ -77,4 +93,6 @@
   .pf-tot__row[hidden] { display: none; }
   .pf-tot__total { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-top: .6rem; padding-top: 1rem; border-top: 1px dashed #e2d9c9; font-size: 1.7rem; font-weight: 800; color: #2a2622; }
   .pf-tot__total span:last-child { font-size: 2.4rem; font-weight: 900; color: #d62828; }
+  .pf-tot__next { margin: .8rem 0 0; padding: .7rem 1rem; border-radius: 10px; background: #fff7d6; font-size: 1.3rem; color: #2a2622; }
+  .pf-tot__next b { color: #14672f; font-weight: 800; }
 </style>
