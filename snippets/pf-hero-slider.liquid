@@ -14,10 +14,14 @@
   assign pf_interval = pf_sec_interval | times: 1000
   assign pf_files = files | newline_to_br | replace: '<br />', ',' | split: ','
   assign pf_count = 0
+  assign pf_donly = ''
   if blocks.size > 0
     for b in blocks
       if b.settings.image != blank or b.settings.asset_file != blank
         assign pf_count = pf_count | plus: 1
+        if b.settings.desktop_only
+          assign pf_donly = pf_donly | append: ',' | append: pf_count | append: ','
+        endif
       endif
     endfor
   else
@@ -70,6 +74,8 @@
     .pf-hs__img--d.pf-hs__img--hasm { aspect-ratio: var(--pf-mar, auto); object-position: 50% 50%; }
   }
   .pf-hs__slide picture { display: block; }
+  /* 16/11: slide chỉ hiện trên máy tính (chưa có bản điện thoại) */
+  @media (max-width: 749px) { .pf-hs__slide--donly, .pf-hs__dot--donly { display: none !important; } }
   @media (prefers-reduced-motion: reduce) { .pf-hs__track { scroll-behavior: auto; } }
 </style>
 
@@ -81,7 +87,7 @@
         {%- for b in blocks -%}
           {%- if b.settings.image != blank or b.settings.asset_file != blank -%}
             {%- assign pf_i = pf_i | plus: 1 -%}
-            <div class="pf-hs__slide" role="group" aria-roledescription="slide" aria-label="{{ pf_i }} / {{ pf_count }}" {{ b.shopify_attributes }}>
+            <div class="pf-hs__slide{% if b.settings.desktop_only %} pf-hs__slide--donly{% endif %}" role="group" aria-roledescription="slide" aria-label="{{ pf_i }} / {{ pf_count }}" {{ b.shopify_attributes }}>
               {%- if b.settings.link != blank -%}<a href="{{ b.settings.link }}">{%- else -%}<span>{%- endif -%}
               {%- assign pf_alt = b.settings.alt | default: b.settings.image.alt | default: 'Phomifood' -%}
               {%- assign pf_mf = b.settings.mobile_focus | default: 50 -%}
@@ -157,7 +163,8 @@
   {%- if pf_count > 1 -%}
     <div class="pf-hs__dots" data-pf-hs-dots>
       {%- for i in (1..pf_count) -%}
-        <button type="button" class="pf-hs__dot" aria-label="Xem ảnh {{ i }}"{% if forloop.first %} aria-current="true"{% endif %}></button>
+        {%- capture pf_k -%},{{ i }},{%- endcapture -%}
+        <button type="button" class="pf-hs__dot{% if pf_donly contains pf_k %} pf-hs__dot--donly{% endif %}" aria-label="Xem ảnh {{ i }}"{% if forloop.first %} aria-current="true"{% endif %}></button>
       {%- endfor -%}
     </div>
   {%- endif -%}
@@ -169,8 +176,10 @@
     roots.forEach(function (root) {
       root.setAttribute('data-ready', '1');
       var track = root.querySelector('[data-pf-hs-track]');
-      var slides = track ? track.children : [];
-      var dots = root.querySelectorAll('[data-pf-hs-dots] button');
+      // 16/11: bỏ qua slide/chấm đang ẩn (slide chỉ dành cho máy tính khi xem trên điện thoại)
+      var vis = function (el) { return el.offsetParent !== null || getComputedStyle(el).display !== 'none'; };
+      var slides = track ? Array.prototype.filter.call(track.children, vis) : [];
+      var dots = Array.prototype.filter.call(root.querySelectorAll('[data-pf-hs-dots] button'), vis);
       var n = slides.length;
       if (!track || n < 2) return;
       var cur = 0, timer = null, paused = false;

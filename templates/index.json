@@ -18,11 +18,10 @@
             "image": "shopify://shop_images/58948d1d-b327-4885-96bb-9cc28679c09a.png",
             "mobile_focus": 35,
             "link": "/collections/all",
-            "alt": "Ưu đãi theo bậc - càng mua càng giảm: đơn từ 139€ freeship/giảm 10%, đạt 209€ giảm thêm 3%, đạt 249€ giảm thêm 5%",
+            "alt": "Phomifood",
             "asset_file": "",
             "asset_width": 2000,
-            "asset_height": 750,
-            "asset_desktop": "pf-hero-139-tiers-v2.webp"
+            "asset_height": 750
           }
         },
         "slide_6PjB83": {
@@ -60,10 +59,23 @@
             "asset_width": 2000,
             "asset_height": 750
           }
+        },
+        "slide_uu_dai_bac": {
+          "type": "slide",
+          "settings": {
+            "asset_file": "pf-hero-139-tiers-v2.webp",
+            "asset_width": 2000,
+            "asset_height": 750,
+            "link": "/collections/all",
+            "alt": "Ưu đãi theo bậc - càng mua càng giảm: đơn từ 139€ freeship/giảm 10%, đạt 209€ giảm thêm 3%, đạt 249€ giảm thêm 5%",
+            "desktop_only": true,
+            "mobile_focus": 50
+          }
         }
       },
       "block_order": [
         "slide_2",
+        "slide_uu_dai_bac",
         "slide_6PjB83",
         "slide_1",
         "slide_3"
