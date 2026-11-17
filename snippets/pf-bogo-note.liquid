@@ -1,7 +1,7 @@
 {%- comment -%}
   17/11: dòng nhắc "Mua 1 tặng 1" dưới sản phẩm trong giỏ (trang giỏ + giỏ trượt).
   Áp cho variant có metafield custom.mua_1_tang_1 = true (cùng variant mà discount 1+1 tự động trừ, mỗi đơn tối đa 1 lần).
-  Tổng SL của variant trong giỏ = 1 → nhắc thêm 1 + nút "+1". Đã ≥ 2 (kể cả dòng quà €0 Shopify tách riêng) → không hiện gì.
+  Tổng SL của variant trong giỏ = 1 → nhắc "Mua thêm 1 được tặng 1" (1 dòng, không nút). Đã ≥ 2 (kể cả dòng quà €0 Shopify tách riêng) → không hiện gì.
   Dùng: render 'pf-bogo-note', line: item
 {%- endcomment -%}
 {%- if line.variant.metafields.custom.mua_1_tang_1 == true -%}
@@ -10,30 +10,13 @@
   {%- assign pf_bq = 0 -%}
   {%- for it in cart.items -%}{%- if it.variant_id == line.variant_id -%}{%- assign pf_bq = pf_bq | plus: it.quantity -%}{%- endif -%}{%- endfor -%}
   {%- if pf_bq < 2 -%}
-    <p class="pf-bogo-note"><span>🎁 {% if vi %}Thêm 1 để được <b>tặng 1</b>{% else %}Add 1 more, get <b>1 free</b>{% endif %}</span>
-      <button type="button" class="pf-bogo-note__add" data-pf-bogo-add>{% if vi %}+ Thêm 1{% else %}+ Add 1{% endif %}</button></p>
+    <p class="pf-bogo-note">🎁 {% if vi %}Mua thêm 1 được <b>tặng 1</b>{% else %}Add 1 more, get <b>1 free</b>{% endif %}</p>
   {%- endif -%}
 {%- endif -%}
 {%- unless pf_bogo_note_css -%}
 <style>
-  .pf-bogo-note { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .8rem; margin: .5rem 0 0; padding: .45rem .9rem; border-radius: 8px; background: #fff3d6; color: #8a4b00; font-size: 1.25rem; line-height: 1.35; width: fit-content; max-width: 100%; }
+  .pf-bogo-note { display: inline-block; margin: .5rem 0 0; padding: .4rem .9rem; border-radius: 8px; background: #fff3d6; color: #8a4b00; font-size: 1.25rem; line-height: 1.35; white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
   .pf-bogo-note b { font-weight: 800; color: #c0261f; }
-  .pf-bogo-note--ok { background: #e7f5ec; color: #14672f; }
-  .pf-bogo-note--ok b { color: #14672f; }
-  .pf-bogo-note__add { border: 0; border-radius: 999px; padding: .25rem .9rem; background: #ffc61a; color: #14672f; font: inherit; font-weight: 800; cursor: pointer; }
-  .pf-bogo-note__add:hover { background: #f5b400; }
+  @media (max-width: 749px) { .pf-bogo-note { font-size: 1.15rem; padding: .35rem .7rem; } }
 </style>
-<script>
-  (function () {
-    if (window.__pfBogoNote) return; window.__pfBogoNote = true;
-    // "+ Thêm 1": bấm nút + của ô số lượng cùng dòng (giỏ của Dawn tự cập nhật, discount 1+1 tự trừ)
-    document.addEventListener('click', function (e) {
-      var b = e.target.closest && e.target.closest('[data-pf-bogo-add]');
-      if (!b) return;
-      var row = b.closest('.cart-item, tr');
-      var plus = row && row.querySelector('quantity-input button[name="plus"], .quantity__button[name="plus"]');
-      if (plus) { b.disabled = true; plus.click(); }
-    });
-  })();
-</script>
 {%- endunless -%}
