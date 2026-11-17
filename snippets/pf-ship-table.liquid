@@ -23,6 +23,12 @@
   </div>
   <p class="pf-ship__note" data-pf-ship-note aria-live="polite"></p>
 </div>
+{%- comment -%} 17/11: form đổi quốc gia mua hàng chuẩn của Shopify (ẩn), dùng cho ô chọn nước phía trên {%- endcomment -%}
+{%- form 'localization', id: 'PfLocForm', class: 'pf-loc-form' -%}
+  <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
+  <input type="hidden" name="return_to" value="{{ routes.cart_url }}">
+{%- endform -%}
+<style>.pf-loc-form { display: none; }</style>
 <script>
   (function () {
     document.querySelectorAll('[data-pf-ship]').forEach(function (box) {
@@ -61,12 +67,11 @@
       function syncCountry(cc) {
         if (!cc || cc === SHOP_CC) return;
         try { if (sessionStorage.getItem('pf_loc_try') === cc) return; sessionStorage.setItem('pf_loc_try', cc); } catch (e) {}
-        var f = document.createElement('form');
-        f.method = 'post'; f.action = (window.Shopify && Shopify.routes ? Shopify.routes.root : '/') + 'localization'; f.style.display = 'none';
-        [['form_type', 'localization'], ['utf8', '✓'], ['country_code', cc], ['return_to', window.location.pathname]].forEach(function (kv) {
-          var i = document.createElement('input'); i.type = 'hidden'; i.name = kv[0]; i.value = kv[1]; f.appendChild(i);
-        });
-        document.body.appendChild(f); sel.disabled = true; f.submit();
+        // Dùng form 'localization' do chính Shopify dựng (có đủ _method=put, return_to…) — tự tạo form tay bị 404.
+        var f = document.getElementById('PfLocForm');
+        if (!f) return;
+        f.querySelector('[name="country_code"]').value = cc;
+        sel.disabled = true; f.submit();
       }
       try { var saved = sessionStorage.getItem('pf_ship_cc'); if (saved && sel.querySelector('option[value="' + saved + '"]')) sel.value = saved; } catch (e) {}
       // Đã khớp → xoá cờ; chưa khớp → thử đổi 1 lần (cờ pf_loc_try chặn lặp tải lại nếu Shopify không nhận nước đó)
