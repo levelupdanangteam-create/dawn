@@ -960,11 +960,23 @@
             "title": "Sữa các loại",
             "subtitle": ""
           }
+        },
+        "banner_uu_dai_bac": {
+          "type": "banner",
+          "settings": {
+            "asset_file": "pf-banner-uu-dai-bac.webp",
+            "asset_mobile": "pf-banner-uu-dai-bac-mobile.webp",
+            "asset_width": 2000,
+            "asset_height": 669,
+            "link": "/collections/all",
+            "alt": "Ưu đãi theo bậc - càng mua càng giảm: đơn từ 139€ freeship/giảm 10%, đạt 209€ giảm thêm 3%, đạt 249€ giảm thêm 5%"
+          }
         }
       },
       "block_order": [
         "c1",
         "c2",
+        "banner_uu_dai_bac",
         "c3",
         "c4",
         "c5",

@@ -18,7 +18,17 @@
     {%- for block in section.blocks -%}
       {%- if block.type == 'banner' -%}
         {%- assign img = block.settings.image -%}
-        {%- if img != blank -%}
+        {%- if img == blank and block.settings.asset_file != blank -%}
+          {%- comment -%} 17/11: ảnh trong assets của theme (máy tính + điện thoại riêng) {%- endcomment -%}
+          <div class="pf-cr__banner" {{ block.shopify_attributes }}>
+            {%- if block.settings.link != blank -%}<a class="pf-cr__banner-link" href="{{ block.settings.link }}">{%- else -%}<div class="pf-cr__banner-link">{%- endif -%}
+              <picture>
+                {%- if block.settings.asset_mobile != blank -%}<source media="(max-width: 749px)" srcset="{{ block.settings.asset_mobile | asset_url }}">{%- endif -%}
+                <img src="{{ block.settings.asset_file | asset_url }}" alt="{{ block.settings.alt | escape }}" width="{{ block.settings.asset_width | default: 2000 }}" height="{{ block.settings.asset_height | default: 669 }}" loading="lazy">
+              </picture>
+            {%- if block.settings.link != blank -%}</a>{%- else -%}</div>{%- endif -%}
+          </div>
+        {%- elsif img != blank -%}
           {%- assign img_m = block.settings.image_mobile | default: img -%}
           <div class="pf-cr__banner" {{ block.shopify_attributes }}>
             {%- if block.settings.link != blank -%}<a class="pf-cr__banner-link" href="{{ block.settings.link }}">{%- else -%}<div class="pf-cr__banner-link">{%- endif -%}
@@ -134,7 +144,11 @@
         { "type": "image_picker", "id": "image", "label": "Ảnh banner (máy tính)" },
         { "type": "image_picker", "id": "image_mobile", "label": "Ảnh cho điện thoại (không bắt buộc)" },
         { "type": "url", "id": "link", "label": "Link khi bấm vào banner" },
-        { "type": "text", "id": "alt", "label": "Mô tả ảnh (alt)" }
+        { "type": "text", "id": "alt", "label": "Mô tả ảnh (alt)" },
+        { "type": "text", "id": "asset_file", "label": "Hoặc: tên file ảnh trong theme (assets)" },
+        { "type": "text", "id": "asset_mobile", "label": "Ảnh điện thoại trong theme (assets)" },
+        { "type": "number", "id": "asset_width", "label": "Chiều rộng ảnh (px)", "default": 2000 },
+        { "type": "number", "id": "asset_height", "label": "Chiều cao ảnh (px)", "default": 669 }
       ]
     }
   ],
