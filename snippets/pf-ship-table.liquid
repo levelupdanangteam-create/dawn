@@ -55,19 +55,27 @@
           .then(function (c) { box.dataset.sub = c.items_subtotal_price; box.dataset.total = c.total_price; box.dataset.weight = c.total_weight; render(); if (window.pfShip) window.pfShip.update(); })
           .catch(function () {});
       }
+      // 17/11: ô nước này cũng đổi QUỐC GIA MUA HÀNG của Shopify (Market) → giỏ + thanh toán áp đúng ưu đãi của nước đó
+      // (10%/13%/15% cho IE, DK, FI, SE; 3%/5% các nước khác). Dùng form chuẩn /localization của Shopify.
+      var SHOP_CC = {{ localization.country.iso_code | json }};
+      function syncCountry(cc) {
+        if (!cc || cc === SHOP_CC) return;
+        try { if (sessionStorage.getItem('pf_loc_try') === cc) return; sessionStorage.setItem('pf_loc_try', cc); } catch (e) {}
+        var f = document.createElement('form');
+        f.method = 'post'; f.action = (window.Shopify && Shopify.routes ? Shopify.routes.root : '/') + 'localization'; f.style.display = 'none';
+        [['form_type', 'localization'], ['utf8', '✓'], ['country_code', cc], ['return_to', window.location.pathname]].forEach(function (kv) {
+          var i = document.createElement('input'); i.type = 'hidden'; i.name = kv[0]; i.value = kv[1]; f.appendChild(i);
+        });
+        document.body.appendChild(f); sel.disabled = true; f.submit();
+      }
       try { var saved = sessionStorage.getItem('pf_ship_cc'); if (saved && sel.querySelector('option[value="' + saved + '"]')) sel.value = saved; } catch (e) {}
+      // Đã khớp → xoá cờ; chưa khớp → thử đổi 1 lần (cờ pf_loc_try chặn lặp tải lại nếu Shopify không nhận nước đó)
+      if (sel.value === SHOP_CC) { try { sessionStorage.removeItem('pf_loc_try'); } catch (e) {} }
+      else syncCountry(sel.value);
       sel.addEventListener('change', function () {
         render(); if (window.pfShip) window.pfShip.setCc(sel.value);
-        // 17/11: đổi luôn quốc gia mua hàng của Shopify (Market) → giỏ hàng/thanh toán áp đúng ưu đãi của nước đó (10%/13%/15% cho IE, DK, FI, SE; 3%/5% các nước khác)
-        if (sel.value && sel.value !== {{ localization.country.iso_code | json }}) {
-          var fd = new FormData();
-          fd.append('form_type', 'localization'); fd.append('utf8', '✓');
-          fd.append('country_code', sel.value); fd.append('return_to', window.location.pathname);
-          sel.disabled = true;
-          fetch((window.Shopify && Shopify.routes ? Shopify.routes.root : '/') + 'localization', { method: 'POST', body: fd, credentials: 'same-origin' })
-            .then(function () { window.location.reload(); })
-            .catch(function () { sel.disabled = false; });
-        }
+        try { sessionStorage.removeItem('pf_loc_try'); } catch (e) {}
+        syncCountry(sel.value);
       });
       // Giỏ đổi số lượng/xoá SP → lấy lại tổng tiền + cân nặng
       try { if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') subscribe(PUB_SUB_EVENTS.cartUpdate, refresh); } catch (e) {}
