@@ -56,7 +56,19 @@
           .catch(function () {});
       }
       try { var saved = sessionStorage.getItem('pf_ship_cc'); if (saved && sel.querySelector('option[value="' + saved + '"]')) sel.value = saved; } catch (e) {}
-      sel.addEventListener('change', function () { render(); if (window.pfShip) window.pfShip.setCc(sel.value); });
+      sel.addEventListener('change', function () {
+        render(); if (window.pfShip) window.pfShip.setCc(sel.value);
+        // 17/11: đổi luôn quốc gia mua hàng của Shopify (Market) → giỏ hàng/thanh toán áp đúng ưu đãi của nước đó (10%/13%/15% cho IE, DK, FI, SE; 3%/5% các nước khác)
+        if (sel.value && sel.value !== {{ localization.country.iso_code | json }}) {
+          var fd = new FormData();
+          fd.append('form_type', 'localization'); fd.append('utf8', '✓');
+          fd.append('country_code', sel.value); fd.append('return_to', window.location.pathname);
+          sel.disabled = true;
+          fetch((window.Shopify && Shopify.routes ? Shopify.routes.root : '/') + 'localization', { method: 'POST', body: fd, credentials: 'same-origin' })
+            .then(function () { window.location.reload(); })
+            .catch(function () { sel.disabled = false; });
+        }
+      });
       // Giỏ đổi số lượng/xoá SP → lấy lại tổng tiền + cân nặng
       try { if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') subscribe(PUB_SUB_EVENTS.cartUpdate, refresh); } catch (e) {}
       var tm; function later() { clearTimeout(tm); tm = setTimeout(refresh, 150); }
