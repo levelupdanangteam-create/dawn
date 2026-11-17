@@ -1,16 +1,17 @@
 {%- comment -%}
   17/11: dòng nhắc "Mua 1 tặng 1" dưới sản phẩm trong giỏ (trang giỏ + giỏ trượt).
   Áp cho variant có metafield custom.mua_1_tang_1 = true (cùng variant mà discount 1+1 tự động trừ, mỗi đơn tối đa 1 lần).
-  SL 1 → nhắc thêm 1 + nút "+1" (bấm nút + của chính dòng đó). SL ≥ 2 → báo đã được tặng.
+  Tổng SL của variant trong giỏ = 1 → nhắc thêm 1 + nút "+1". Đã ≥ 2 (kể cả dòng quà €0 Shopify tách riêng) → không hiện gì.
   Dùng: render 'pf-bogo-note', line: item
 {%- endcomment -%}
 {%- if line.variant.metafields.custom.mua_1_tang_1 == true -%}
   {%- assign vi = true -%}{%- if request.locale.iso_code != 'vi' -%}{%- assign vi = false -%}{%- endif -%}
-  {%- if line.quantity < 2 -%}
-    <p class="pf-bogo-note">🎁 {% if vi %}Thêm 1 để được <b>tặng 1</b> (Mua 1 tặng 1){% else %}Add 1 more to get <b>1 free</b> (Buy 1 get 1){% endif %}
+  {%- comment -%} Shopify tách món được tặng thành 1 dòng riêng (€0) → cộng số lượng của CÙNG variant trên mọi dòng trong giỏ {%- endcomment -%}
+  {%- assign pf_bq = 0 -%}
+  {%- for it in cart.items -%}{%- if it.variant_id == line.variant_id -%}{%- assign pf_bq = pf_bq | plus: it.quantity -%}{%- endif -%}{%- endfor -%}
+  {%- if pf_bq < 2 -%}
+    <p class="pf-bogo-note"><span>🎁 {% if vi %}Thêm 1 để được <b>tặng 1</b>{% else %}Add 1 more, get <b>1 free</b>{% endif %}</span>
       <button type="button" class="pf-bogo-note__add" data-pf-bogo-add>{% if vi %}+ Thêm 1{% else %}+ Add 1{% endif %}</button></p>
-  {%- else -%}
-    <p class="pf-bogo-note pf-bogo-note--ok">✓ {% if vi %}Đã được <b>tặng 1</b> (Mua 1 tặng 1){% else %}<b>1 free</b> applied (Buy 1 get 1){% endif %}</p>
   {%- endif -%}
 {%- endif -%}
 {%- unless pf_bogo_note_css -%}
