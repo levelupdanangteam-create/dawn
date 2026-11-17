@@ -10,7 +10,7 @@
   {%- assign pf_bq = 0 -%}
   {%- for it in cart.items -%}{%- if it.variant_id == line.variant_id -%}{%- assign pf_bq = pf_bq | plus: it.quantity -%}{%- endif -%}{%- endfor -%}
   {%- if pf_bq < 2 -%}
-    <p class="pf-bogo-note">🎁 {% if vi %}Mua thêm 1 được <b>tặng 1</b>{% else %}Add 1 more, get <b>1 free</b>{% endif %}</p>
+    <p class="pf-bogo-note">{% if vi %}Thêm 1 để được <b>tặng 1</b>{% else %}Add 1 more to get <b>1 free</b>{% endif %}</p>
   {%- endif -%}
 {%- endif -%}
 {%- unless pf_bogo_note_css -%}
