@@ -12,7 +12,7 @@
     "pf_head": {
       "type": "custom-liquid",
       "settings": {
-        "custom_liquid": "<div class=\"bf-hero\">\n  <div class=\"page-width bf-in\">\n    <nav class=\"bf-crumb\"><a href=\"/\">Trang chủ</a><span aria-hidden=\"true\">/</span><span>Black Friday</span></nav>\n    <div class=\"bf-top\">\n      <div class=\"bf-copy\">\n        <p class=\"bf-kicker\">27 – 30.11 · Chỉ 4 ngày</p>\n        <h1 class=\"bf-title\"><span class=\"bf-title__b\">BLACK</span> <span class=\"bf-title__f\">FRIDAY</span></h1>\n        <p class=\"bf-tag\"><span>DEAL</span> CHỒNG <span>DEAL</span></p>\n        <p class=\"bf-sub\">5 tầng ưu đãi tự cộng dồn ngay trong giỏ hàng. Không cần săn mã, không cần nhập mã.</p>\n        <div class=\"bf-cd\" data-bf-end=\"2026-11-30T23:59:59+01:00\" aria-label=\"Thời gian còn lại\">\n          <span class=\"bf-cd__lbl\">Kết thúc sau</span>\n          <span class=\"bf-cd__box\"><b data-bf=\"d\">0</b><i>ngày</i></span>\n          <span class=\"bf-cd__box\"><b data-bf=\"h\">00</b><i>giờ</i></span>\n          <span class=\"bf-cd__box\"><b data-bf=\"m\">00</b><i>phút</i></span>\n          <span class=\"bf-cd__box\"><b data-bf=\"s\">00</b><i>giây</i></span>\n        </div>\n        <a class=\"bf-cta\" href=\"/collections/all\">Đi chợ ngay</a>\n      </div>\n      <ol class=\"bf-stack\" aria-label=\"5 tầng ưu đãi\">\n        <li class=\"bf-step bf-step--5\"><a href=\"#tang-4-5\" data-pf-go=\"pf_bf_tier\"><span class=\"bf-step__n\">5</span><span class=\"bf-step__t\">Freeship</span><span class=\"bf-step__d\">Đơn từ 139€</span></a></li>\n        <li class=\"bf-step bf-step--4\"><a href=\"#tang-4-5\" data-pf-go=\"pf_bf_tier\"><span class=\"bf-step__n\">4</span><span class=\"bf-step__t\">Giảm theo bậc</span><span class=\"bf-step__d\">Thêm 3% từ 209€, 5% từ 249€</span></a></li>\n        <li class=\"bf-step bf-step--3\"><a href=\"#gia-sieu-re\" data-pf-go=\"pf_xk\"><span class=\"bf-step__n\">3</span><span class=\"bf-step__t\">Giá siêu rẻ &amp; Combo</span><span class=\"bf-step__d\">Giá đã giảm sẵn</span></a></li>\n        <li class=\"bf-step bf-step--2\"><a href=\"/pages/mua-1-tang-1\" data-pf-go=\"pf_bogo\"><span class=\"bf-step__n\">2</span><span class=\"bf-step__t\">Mua 1 tặng 1</span><span class=\"bf-step__d\">Mua 1 được 2</span></a></li>\n        <li class=\"bf-step bf-step--1\"><a href=\"#gia-soc\" data-pf-go=\"pf_deal\"><span class=\"bf-step__n\">1</span><span class=\"bf-step__t\">Giá sốc</span><span class=\"bf-step__d\">Giảm đến 42%</span></a></li>\n      </ol>\n    </div>\n  </div>\n</div>\n<style>\n  #MainContent { background: #0b0b0b; }\n  #MainContent > .shopify-section + .shopify-section { margin-top: 12px; }\n  .bf-hero { --bf-gold: #ffc61a; --bf-red: #e11d2e; color: #fff; padding: 28px 0 36px; background:\n      radial-gradient(circle at 85% 10%, rgba(225, 29, 46, .35), rgba(225, 29, 46, 0) 45%),\n      radial-gradient(circle at 10% 100%, rgba(255, 198, 26, .18), rgba(255, 198, 26, 0) 40%), #0b0b0b; }\n  .bf-in { max-width: none; padding-inline: clamp(1.6rem, 3vw, 4.8rem); }\n  .bf-crumb { display: flex; gap: .6rem; font-size: 1.3rem; color: rgba(255,255,255,.55); margin-bottom: 1.8rem; }\n  .bf-crumb a { color: var(--bf-gold); font-weight: 700; text-decoration: none; }\n  .bf-top { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 3.2rem; align-items: end; }\n  .bf-kicker { margin: 0 0 .8rem; display: inline-block; padding: .5rem 1.2rem; border-radius: 999px; background: var(--bf-red); font-size: 1.3rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }\n  .bf-title { margin: 0; font-weight: 900; font-size: clamp(4.4rem, 7.4vw, 9.6rem); line-height: .95; letter-spacing: -.02em; color: #fff; }\n  .bf-title__f { color: var(--bf-gold); }\n  .bf-tag { margin: 1.2rem 0 0; font-weight: 900; font-size: clamp(2.4rem, 3.4vw, 4.2rem); letter-spacing: .04em; line-height: 1.1; }\n  .bf-tag span { display: inline-block; padding: 0 .8rem; background: var(--bf-gold); color: #0b0b0b; border-radius: 6px; transform: rotate(-2deg); }\n  .bf-tag span + span { background: var(--bf-red); color: #fff; transform: rotate(2deg); }\n  .bf-sub { margin: 1.4rem 0 0; font-size: 1.6rem; line-height: 1.5; color: rgba(255,255,255,.82); max-width: 52ch; }\n  .bf-cd { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem; margin-top: 2rem; }\n  .bf-cd[hidden] { display: none; }\n  .bf-cd__lbl { font-size: 1.4rem; font-weight: 700; color: rgba(255,255,255,.8); margin-right: .4rem; }\n  .bf-cd__box { display: inline-flex; flex-direction: column; align-items: center; min-width: 6rem; padding: .6rem .8rem; border-radius: 10px; background: #1b1b1b; border: 1px solid rgba(255,198,26,.45); }\n  .bf-cd__box b { font-size: 2.6rem; font-weight: 900; color: var(--bf-gold); font-variant-numeric: tabular-nums; line-height: 1.1; }\n  .bf-cd__box i { font-style: normal; font-size: 1.1rem; color: rgba(255,255,255,.6); }\n  .bf-cta { display: inline-flex; margin-top: 2.2rem; padding: 1.3rem 3rem; border-radius: 999px; background: var(--bf-gold); color: #0b0b0b; font-size: 1.6rem; font-weight: 900; text-decoration: none; text-transform: uppercase; letter-spacing: .06em; transition: transform .15s ease, background .15s ease; }\n  .bf-cta:hover { background: #fff; transform: translateY(-2px); }\n  .bf-stack { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .8rem; }\n  .bf-step a { display: grid; grid-template-columns: 5.2rem 1fr; grid-template-rows: auto auto; column-gap: 1.4rem; align-items: center; padding: 1.2rem 1.6rem; border-radius: 14px; text-decoration: none; color: #fff; background: #161616; border: 1px solid rgba(255,255,255,.1); transition: transform .15s ease, border-color .15s ease; }\n  .bf-step a:hover { transform: translateX(-4px); border-color: var(--bf-gold); }\n  .bf-step--5 { margin-left: 0; } .bf-step--4 { margin-left: 6%; } .bf-step--3 { margin-left: 12%; } .bf-step--2 { margin-left: 18%; } .bf-step--1 { margin-left: 24%; }\n  .bf-step__n { grid-row: 1 / 3; display: grid; place-items: center; width: 5.2rem; height: 5.2rem; border-radius: 12px; background: var(--bf-gold); color: #0b0b0b; font-size: 2.4rem; font-weight: 900; }\n  .bf-step--5 .bf-step__n, .bf-step--3 .bf-step__n, .bf-step--1 .bf-step__n { background: var(--bf-red); color: #fff; }\n  .bf-step__t { font-size: 1.7rem; font-weight: 800; }\n  .bf-step__d { font-size: 1.3rem; color: rgba(255,255,255,.65); }\n\n  /* Các khối sản phẩm trên nền đen */\n  #MainContent .pf-fs .pf-fs__wrap { background: radial-gradient(circle at 92% -10%, rgba(225,29,46,.35), rgba(225,29,46,0) 40%), #161616 !important; border: 1px solid rgba(255,198,26,.35); box-shadow: none !important; }\n  #MainContent .pf-fs .pf-hd__title.pf-fs__title { background: linear-gradient(transparent 80%, #e11d2e 80%, #e11d2e 92%, transparent 92%) !important; }\n  #MainContent .pf-fs .pf-fs__all { background: #ffc61a; border-color: #ffc61a; color: #0b0b0b; }\n  #MainContent .pf-simple .pf-simple__head, #MainContent .pf-xk .pf-xk__head { border-bottom-color: rgba(255,255,255,.15) !important; }\n  #MainContent .pf-simple .pf-simple__head .pf-simple__title, #MainContent .pf-xk .pf-s10__title.pf-xk__title { color: #ffc61a !important; }\n  #MainContent .pf-simple .pf-simple__sub, #MainContent .pf-xk .pf-xk__sub, #MainContent .pf-bogo .pf-simple__sub { color: rgba(255,255,255,.7) !important; }\n  #MainContent .pf-simple .pf-simple__all, #MainContent .pf-xk .pf-xk__all { background: transparent !important; color: #ffc61a !important; border-color: #ffc61a !important; }\n  #MainContent .pf-simple .pf-simple__all:hover, #MainContent .pf-xk .pf-xk__all:hover { background: #ffc61a !important; color: #0b0b0b !important; }\n  #MainContent .pf-xk .pf-xk__max { display: none !important; }\n  #MainContent .pf-bogo .pf-bogo__timer-label, #MainContent .pf-xk .pf-xk__timer-label { color: rgba(255,255,255,.8) !important; }\n  #MainContent .pf-cb__more, #MainContent .pf-s10__more, #MainContent .pf-bogo__more { background: #ffc61a !important; color: #0b0b0b !important; border-color: #ffc61a !important; }\n\n  @media (max-width: 989px) {\n    .bf-top { grid-template-columns: 1fr; gap: 2.4rem; }\n    .bf-step--4, .bf-step--3, .bf-step--2, .bf-step--1 { margin-left: 0; }\n  }\n  @media (max-width: 749px) {\n    .bf-hero { padding: 18px 0 28px; }\n    .bf-sub { font-size: 1.45rem; }\n    .bf-cd__box { min-width: 5.2rem; }\n    .bf-cd__box b { font-size: 2.2rem; }\n    .bf-cd__lbl { flex: 1 1 100%; }\n    .bf-step a { grid-template-columns: 4.4rem 1fr; padding: 1rem 1.2rem; }\n    .bf-step__n { width: 4.4rem; height: 4.4rem; font-size: 2rem; }\n  }\n  @media (prefers-reduced-motion: reduce) { .bf-step a, .bf-cta { transition: none; } }\n</style>\n<script>\n  document.addEventListener('click', function (e) {\n    var a = e.target.closest && e.target.closest('[data-pf-go]');\n    if (!a) return;\n    var el = document.querySelector('[id$=\"__' + a.getAttribute('data-pf-go') + '\"]');\n    if (!el) return;\n    e.preventDefault();\n    var top = el.getBoundingClientRect().top + window.pageYOffset - 90;\n    window.scrollTo({ top: top, behavior: 'smooth' });\n  });\n  (function () {\n    var box = document.querySelector('.bf-cd');\n    if (!box) return;\n    var end = new Date(box.getAttribute('data-bf-end')).getTime();\n    var pad = function (n) { return (n < 10 ? '0' : '') + n; };\n    var set = function (k, v) { var el = box.querySelector('[data-bf=\"' + k + '\"]'); if (el) el.textContent = v; };\n    function tick() {\n      var s = Math.floor((end - Date.now()) / 1000);\n      if (s <= 0) { box.hidden = true; return; }\n      set('d', Math.floor(s / 86400)); set('h', pad(Math.floor(s % 86400 / 3600))); set('m', pad(Math.floor(s % 3600 / 60))); set('s', pad(s % 60));\n      setTimeout(tick, 1000);\n    }\n    tick();\n  })();\n</script>\n",
+        "custom_liquid": "<div class=\"pf-uh\">\n  <div class=\"page-width pf-uh__in\">\n    <nav class=\"pf-uh__crumb\"><a href=\"/\">Trang chủ</a><span aria-hidden=\"true\">/</span><span>Black Friday</span></nav>\n    <p class=\"pf-uh__kicker\">Cập nhật mỗi ngày</p>\n    <h1 class=\"pf-uh__title\">Black Friday</h1>\n    <p class=\"pf-uh__sub\">Tất cả chương trình đang diễn ra trên Phomifood.eu — bấm để xem nhanh từng đợt ưu đãi.</p>\n    <div class=\"pf-uh__chips\">\n      <a class=\"pf-uh__chip\" href=\"#duy-nhat-hom-nay\" data-pf-go=\"pf_deal\">🎉 Duy nhất hôm nay</a>\n      <a class=\"pf-uh__chip\" href=\"#freeship\" data-pf-go=\"pf_ship_banner\">🚚 Freeship đơn từ 139€ / Giảm 10%</a>\n      <a class=\"pf-uh__chip\" href=\"#uu-dai-theo-bac\" data-pf-go=\"pf_tier_banner\">🛒 Ưu đãi theo bậc</a>\n      <a class=\"pf-uh__chip\" href=\"/pages/mua-1-tang-1\" data-pf-go=\"pf_bogo\">🛍️ Mua 1 tặng 1</a>\n      <a class=\"pf-uh__chip\" href=\"#gia-xa-kho\" data-pf-go=\"pf_xk_banner\">🔥 Giá siêu rẻ</a>\n      <a class=\"pf-uh__chip\" href=\"#combo\" data-pf-go=\"pf_combo\">🎁 Combo tiết kiệm</a>\n    </div>\n  </div>\n</div>\n<style>\n  #MainContent > .shopify-section + .shopify-section { margin-top: 12px; }\n  /* Mọi banner cách sản phẩm phía trên 20px (24 + 12 - 16), phía dưới vẫn 60px */\n  #MainContent > .shopify-section:has(> .pf-promo) { margin-top: -16px; }\n  #MainContent { background: #0b0b0b; }\n  .pf-uh { padding: 28px 0 18px; color: #fff; background: radial-gradient(circle at 85% 0%, rgba(225, 29, 46, .35), rgba(225, 29, 46, 0) 45%), #0b0b0b; }\n  .pf-uh__in { max-width: none; padding-inline: clamp(1.6rem, 3vw, 4.8rem); }\n  .pf-uh__crumb { display: flex; gap: .6rem; font-size: 1.3rem; color: rgba(255,255,255,.55); margin-bottom: 1.4rem; }\n  .pf-uh__crumb a { color: #ffc61a; font-weight: 700; text-decoration: none; }\n  .pf-uh__kicker { margin: 0 0 .6rem; font-size: 1.2rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #ff4d5a; }\n  .pf-uh__title { margin: 0; font-weight: 900; font-size: clamp(3.2rem, 4.6vw, 5.6rem); line-height: 1.05; color: #ffc61a; letter-spacing: -.01em; text-transform: uppercase; }\n  .pf-uh__sub { margin: .8rem 0 0; font-size: 1.5rem; color: rgba(255,255,255,.75); }\n  .pf-uh__chips { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.8rem; }\n  .pf-uh__chip { display: inline-flex; align-items: center; padding: .9rem 1.6rem; border-radius: 999px; border: 1.5px solid #ffc61a; color: #ffc61a; background: #161616; font-size: 1.4rem; font-weight: 700; text-decoration: none; transition: background .15s, color .15s; }\n  .pf-uh__chip:hover { background: #ffc61a; color: #0b0b0b; }\n  /* Các khối sản phẩm trên nền đen */\n  #MainContent .pf-fs .pf-fs__wrap { background: radial-gradient(circle at 92% -10%, rgba(225,29,46,.35), rgba(225,29,46,0) 40%), #161616 !important; border: 1px solid rgba(255,198,26,.35); box-shadow: none !important; }\n  #MainContent .pf-fs .pf-hd__title.pf-fs__title { background: linear-gradient(transparent 80%, #e11d2e 80%, #e11d2e 92%, transparent 92%) !important; }\n  #MainContent .pf-fs .pf-fs__all { background: #ffc61a; border-color: #ffc61a; color: #0b0b0b; }\n  #MainContent .pf-simple .pf-simple__head, #MainContent .pf-xk .pf-xk__head { border-bottom-color: rgba(255,255,255,.15) !important; }\n  #MainContent .pf-simple .pf-simple__head .pf-simple__title, #MainContent .pf-xk .pf-s10__title.pf-xk__title { color: #ffc61a !important; }\n  #MainContent .pf-simple .pf-simple__sub, #MainContent .pf-xk .pf-xk__sub { color: rgba(255,255,255,.7) !important; }\n  #MainContent .pf-simple .pf-simple__all, #MainContent .pf-xk .pf-xk__all { background: transparent !important; color: #ffc61a !important; border-color: #ffc61a !important; }\n  #MainContent .pf-simple .pf-simple__all:hover, #MainContent .pf-xk .pf-xk__all:hover { background: #ffc61a !important; color: #0b0b0b !important; }\n  #MainContent .pf-bogo .pf-bogo__timer-label, #MainContent .pf-xk .pf-xk__timer-label { color: rgba(255,255,255,.8) !important; }\n  #MainContent .pf-cb__more, #MainContent .pf-s10__more, #MainContent .pf-bogo__more { background: #ffc61a !important; color: #0b0b0b !important; border-color: #ffc61a !important; }\n  @media (max-width: 749px) {\n    .pf-uh { padding-top: 18px; }\n    .pf-uh__sub { font-size: 1.35rem; }\n    .pf-uh__chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: -1.6rem; padding-inline: 1.6rem; }\n    .pf-uh__chips::-webkit-scrollbar { display: none; }\n    .pf-uh__chip { flex: 0 0 auto; font-size: 1.3rem; padding: .8rem 1.3rem; }\n  }\n</style>\n<script>\n  document.addEventListener('click', function (e) {\n    var a = e.target.closest && e.target.closest('[data-pf-go]');\n    if (!a) return;\n    var el = document.querySelector('[id$=\"__' + a.getAttribute('data-pf-go') + '\"]');\n    if (!el) return;\n    e.preventDefault();\n    var top = el.getBoundingClientRect().top + window.pageYOffset - 90;\n    window.scrollTo({ top: top, behavior: 'smooth' });\n  });\n</script>",
         "color_scheme": "",
         "padding_top": 0,
         "padding_bottom": 0
@@ -202,12 +202,12 @@
         "stock_15"
       ],
       "settings": {
-        "eyebrow": "Tầng 1 · Black Friday 27–30/11",
-        "heading": "Giá Sốc Black Friday",
-        "subheading": "Giảm đến 42%, số lượng có hạn. Giá sốc tự cộng với các tầng khác trong giỏ.",
+        "eyebrow": "Từ 7/11 đến 11/11",
+        "heading": "Duy Nhất Hôm Nay",
+        "subheading": "Giá sốc chỉ trong hôm nay, hết giờ là thôi!",
         "show_countdown": true,
         "countdown_label": "Kết thúc sau",
-        "countdown_end": "2026-11-30T23:59:59+01:00",
+        "countdown_end": "",
         "view_all_label": "Xem tất cả",
         "view_all_link": "",
         "more_label": "Xem các sản phẩm khác",
@@ -233,18 +233,17 @@
         "asset_height": 750,
         "padding_top": 0,
         "padding_bottom": 24
-      },
-      "disabled": true
+      }
     },
     "pf_xk": {
       "type": "pf-sale-1010",
       "settings": {
-        "eyebrow": "TẦNG 3",
+        "eyebrow": "SALE SỐC",
         "heading": "Giá Siêu Rẻ",
         "subheading": "",
         "show_countdown": true,
         "countdown_label": "Kết thúc sau",
-        "countdown_end": "2026-11-30T23:59:59+01:00",
+        "countdown_end": "2026-11-05",
         "stock_note": "",
         "low_stock": 10,
         "badge": "Xả kho",
@@ -267,14 +266,13 @@
         "asset_height": 750,
         "padding_top": 0,
         "padding_bottom": 24
-      },
-      "disabled": true
+      }
     },
     "pf_combo": {
       "type": "pf-combo",
       "settings": {
-        "heading": "Tầng 3 · Combo tiết kiệm",
-        "subheading": "Combo giảm sẵn đến 10%, gom một lần đủ món.",
+        "heading": "Combo tiết kiệm - Khỏi phân vân",
+        "subheading": "",
         "collection": "combo",
         "products_to_show": 12,
         "initial_count": 6,
@@ -289,8 +287,8 @@
       "type": "pf-bogo",
       "settings": {
         "collection": "mua-1-tang-1",
-        "heading": "TẦNG 2 · MUA 1 TẶNG 1",
-        "subheading": "Mua 1 được 2, tự cộng với giá sốc và giảm theo bậc.",
+        "heading": "ƯU ĐÃI MUA 1 TẶNG 1",
+        "subheading": "Số lượng có hạn, chốt ngay kẻo hết",
         "show_countdown": true,
         "countdown_label": "Kết thúc sau",
         "countdown_end": "2026-11-30T23:59:59+01:00",
@@ -317,29 +315,18 @@
         "alt": "Ưu đãi theo bậc - càng mua càng giảm: đơn từ 139€ freeship/giảm 10%, đạt 209€ giảm thêm 3%, đạt 249€ giảm thêm 5%",
         "padding_top": 16,
         "padding_bottom": 24
-      },
-      "disabled": true
-    },
-    "pf_bf_tier": {
-      "type": "custom-liquid",
-      "settings": {
-        "custom_liquid": "<div class=\"bf-tier\" id=\"tang-4-5\">\n  <div class=\"page-width bf-tier__in\">\n    <div class=\"bf-tier__grid\">\n      <div class=\"bf-tier__card\">\n        <p class=\"bf-tier__lbl\"><span>4</span> Tầng 4 · Giảm theo bậc</p>\n        <h2 class=\"bf-tier__h\">Càng mua càng giảm</h2>\n        <ul class=\"bf-tier__steps\">\n          <li><b>139€</b><span>Freeship (IE, DK, FI, SE: giảm 10%)</span></li>\n          <li><b>209€</b><span>Giảm thêm 3%</span></li>\n          <li><b>249€</b><span>Giảm thêm 5%</span></li>\n        </ul>\n        <p class=\"bf-tier__note\">Mốc 209€ và 249€ không cộng dồn với nhau, áp dụng mức cao nhất đạt được. Tự trừ trong giỏ hàng.</p>\n      </div>\n      <div class=\"bf-tier__card bf-tier__card--ex\">\n        <p class=\"bf-tier__lbl\"><span>5</span> Tầng 5 · Freeship + ví dụ</p>\n        <h2 class=\"bf-tier__h\">Giỏ 254€ chồng đủ 5 tầng</h2>\n        <dl class=\"bf-tier__calc\">\n          <div><dt>Tạm tính (đã gồm giá sốc, 1 tặng 1, giá siêu rẻ, combo)</dt><dd>€254,00</dd></div>\n          <div><dt>Giảm thêm 5% (đơn từ 249€)</dt><dd>−€12,70</dd></div>\n          <div><dt>Phí ship</dt><dd class=\"bf-free\">Freeship</dd></div>\n          <div class=\"bf-tier__total\"><dt>Khách trả</dt><dd>€241,30</dd></div>\n        </dl>\n        <a class=\"bf-tier__cta\" href=\"/collections/all\">Gom đồ ngay</a>\n      </div>\n    </div>\n  </div>\n</div>\n<style>\n  .bf-tier { padding: 24px 0 48px; color: #fff; }\n  .bf-tier__in { max-width: none; padding-inline: clamp(1.6rem, 3vw, 4.8rem); }\n  .bf-tier__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.6rem; }\n  .bf-tier__card { background: #161616; border: 1px solid rgba(255,198,26,.35); border-radius: 20px; padding: 2.4rem clamp(1.6rem, 2.4vw, 3.2rem); display: flex; flex-direction: column; gap: 1.2rem; }\n  .bf-tier__card--ex { background: radial-gradient(circle at 100% 0%, rgba(225,29,46,.35), rgba(225,29,46,0) 45%), #161616; }\n  .bf-tier__lbl { margin: 0; display: flex; align-items: center; gap: .8rem; font-size: 1.3rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #ffc61a; }\n  .bf-tier__lbl span { display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 8px; background: #ffc61a; color: #0b0b0b; font-size: 1.6rem; }\n  .bf-tier__h { margin: 0; font-size: clamp(2.4rem, 2.8vw, 3.4rem); font-weight: 900; color: #fff; }\n  .bf-tier__steps { list-style: none; margin: 0; padding: 0; display: grid; gap: .8rem; }\n  .bf-tier__steps li { display: flex; align-items: center; gap: 1.4rem; padding: 1.2rem 1.4rem; border-radius: 12px; background: #1f1f1f; }\n  .bf-tier__steps b { min-width: 7.2rem; font-size: 2.2rem; font-weight: 900; color: #ffc61a; }\n  .bf-tier__steps span { font-size: 1.5rem; }\n  .bf-tier__note { margin: 0; font-size: 1.3rem; color: rgba(255,255,255,.6); }\n  .bf-tier__calc { margin: 0; display: grid; gap: .2rem; }\n  .bf-tier__calc div { display: flex; justify-content: space-between; gap: 1.6rem; padding: 1rem 0; border-bottom: 1px dashed rgba(255,255,255,.15); font-size: 1.5rem; }\n  .bf-tier__calc dt { color: rgba(255,255,255,.8); }\n  .bf-tier__calc dd { margin: 0; font-weight: 800; white-space: nowrap; font-variant-numeric: tabular-nums; }\n  .bf-tier__calc .bf-free { color: #4ade80; }\n  .bf-tier__total { border-bottom: 0 !important; font-size: 2rem !important; }\n  .bf-tier__total dt { color: #fff !important; font-weight: 800; }\n  .bf-tier__total dd { color: #ffc61a; font-size: 2.6rem; }\n  .bf-tier__cta { align-self: flex-start; margin-top: .4rem; padding: 1.2rem 2.8rem; border-radius: 999px; background: #ffc61a; color: #0b0b0b; font-size: 1.5rem; font-weight: 900; text-decoration: none; text-transform: uppercase; letter-spacing: .06em; }\n  .bf-tier__cta:hover { background: #fff; }\n  @media (max-width: 749px) {\n    .bf-tier__grid { grid-template-columns: 1fr; }\n    .bf-tier__calc div { font-size: 1.35rem; }\n  }\n</style>\n",
-        "color_scheme": "",
-        "padding_top": 0,
-        "padding_bottom": 0
       }
     }
   },
   "order": [
     "pf_head",
-    "pf_deal",
-    "pf_bogo",
-    "pf_xk",
-    "pf_combo",
-    "pf_bf_tier",
     "pf_tier_banner",
     "pf_deal_banner",
+    "pf_deal",
+    "pf_bogo",
     "pf_xk_banner",
-    "pf_ship_banner"
+    "pf_xk",
+    "pf_ship_banner",
+    "pf_combo"
   ]
 }
