@@ -89,9 +89,25 @@
             "desktop_only": false,
             "mobile_focus": 50
           }
+        },
+        "slide_black_friday": {
+          "type": "slide",
+          "settings": {
+            "asset_file": "pf-hero-black-friday.webp",
+            "asset_width": 2000,
+            "asset_height": 750,
+            "asset_mobile": "pf-hero-black-friday-mobile.webp",
+            "asset_mobile_width": 1100,
+            "asset_mobile_height": 550,
+            "link": "/pages/tong-hop-uu-dai",
+            "alt": "Black Friday 23/11 - 30/11: Deal chồng deal - Mua 1 tặng 1, giảm tới 42%, Freeship, mua càng nhiều giảm càng nhiều",
+            "desktop_only": false,
+            "mobile_focus": 50
+          }
         }
       },
       "block_order": [
+        "slide_black_friday",
         "slide_2",
         "slide_bogo",
         "slide_uu_dai_bac",
