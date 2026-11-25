@@ -726,11 +726,14 @@
       </div>
 
       {%- comment -%} Khối "Thường được mua kèm" đặt ngay dưới thông tin sản phẩm, TRÊN video sản phẩm. {%- endcomment -%}
+      {%- comment -%} Chế độ landing (bật trong cài đặt section): ẩn mua kèm / giao hàng / mô tả / lưu ý để landing nằm ngay dưới phần mua. {%- endcomment -%}
+      {%- unless section.settings.pf_landing_mode -%}
       {% render 'pf-bought-together' %}
 
       {%- comment -%} Concept trang SP: Thông tin giao hàng → Giới thiệu + Thông tin nổi bật + Lưu ý. {%- endcomment -%}
       {% render 'pf-pd-delivery' %}
       {% render 'pf-pd-details' %}
+      {%- endunless -%}
 
       {%- comment -%} Giấy chứng nhận (metafield custom.certificates) — nằm TRÊN video sản phẩm. {%- endcomment -%}
       {% render 'pf-certificates', product: product %}
@@ -2230,6 +2233,12 @@
     }
   ],
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "pf_landing_mode",
+      "label": "Chế độ landing (ẩn mua kèm, giao hàng, mô tả, lưu ý)",
+      "default": false
+    },
     {
       "type": "checkbox",
       "id": "enable_sticky_info",

@@ -231,6 +231,60 @@
     </div>
   </div>
 
+  {%- when 'product' -%}
+  {%- assign pv = product.selected_or_first_available_variant -%}
+  <div class="pfts-product" {{ block.shopify_attributes }}>
+    <div class="pfts-product__inner">
+      <div class="pfts-product__media">
+        {%- assign pimg = block.settings.image | default: product.featured_image -%}
+        {%- if pimg != blank -%}
+          {{ pimg | image_url: width: 900 | image_tag: loading: 'lazy', alt: product.title }}
+        {%- endif -%}
+      </div>
+      <div class="pfts-product__info">
+        {%- if block.settings.eyebrow != blank -%}<div class="pfts-chip pfts-chip--cream">{{ block.settings.eyebrow }}</div>{%- endif -%}
+        <h2 class="pfts-h2">{{ block.settings.heading | default: product.title }}</h2>
+        {%- if block.settings.body != blank -%}<div class="pfts-body">{{ block.settings.body }}</div>{%- endif -%}
+        <div class="pfts-product__price">
+          {%- if product.price_varies -%}{{ product.price_min | money }} – {{ product.price_max | money }}{%- else -%}{{ product.price | money }}{%- endif -%}
+        </div>
+        {%- if block.settings.note != blank -%}<div class="pfts-product__note">{{ block.settings.note }}</div>{%- endif -%}
+        <div class="pfts-product__btns">
+          {%- if pv.available -%}
+            <a class="pfts-btn pfts-btn--red" href="/cart/{{ pv.id }}:1">{{ block.settings.buy_label }}</a>
+            {%- form 'product', product, class: 'pfts-product__form' -%}
+              <input type="hidden" name="id" value="{{ pv.id }}">
+              <button type="submit" class="pfts-btn pfts-btn--ghost">{{ block.settings.cart_label }}</button>
+            {%- endform -%}
+          {%- else -%}
+            <span class="pfts-btn pfts-btn--ghost" aria-disabled="true">{{ 'products.product.sold_out' | t }}</span>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%- when 'brand' -%}
+  <div class="pfts-brand" {{ block.shopify_attributes }}>
+    <div class="pfts-brand__inner">
+      <div class="pfts-center" style="margin-bottom:36px;">
+        {%- if block.settings.eyebrow != blank -%}<div class="pfts-chip pfts-chip--solidred">{{ block.settings.eyebrow }}</div>{%- endif -%}
+        {%- if block.settings.heading != blank -%}<h2 class="pfts-h2 pfts-h2--light">{{ block.settings.heading }}</h2>{%- endif -%}
+        {%- if block.settings.body != blank -%}<div class="pfts-brand__body">{{ block.settings.body }}</div>{%- endif -%}
+      </div>
+      <div class="pfts-brand__btns">
+        {%- if block.settings.messenger_url != blank -%}<a class="pfts-btn pfts-btn--gold" href="{{ block.settings.messenger_url }}" target="_blank" rel="noopener">Nhắn Messenger</a>{%- endif -%}
+        {%- if block.settings.zalo_url != blank -%}<a class="pfts-btn pfts-btn--red" href="{{ block.settings.zalo_url }}" target="_blank" rel="noopener">Zalo</a>{%- endif -%}
+        {%- if block.settings.whatsapp_url != blank -%}<a class="pfts-btn pfts-btn--dark" href="{{ block.settings.whatsapp_url }}" target="_blank" rel="noopener">WhatsApp</a>{%- endif -%}
+      </div>
+      <div class="pfts-brand__cols">
+        {%- if block.settings.col1 != blank -%}<div>{{ block.settings.col1 }}</div>{%- endif -%}
+        {%- if block.settings.col2 != blank -%}<div>{{ block.settings.col2 }}</div>{%- endif -%}
+      </div>
+      {%- if block.settings.closing != blank -%}<div class="pfts-brand__closing">{{ block.settings.closing }}</div>{%- endif -%}
+    </div>
+  </div>
+
   {%- endcase -%}
 {%- endfor -%}
 </div>
@@ -325,6 +379,38 @@
     .pfts-giftband__text { left:24px; max-width:260px; }
     .pfts-tl__row { flex-direction:column; }
   }
+  {{ section.settings.heading_font | font_face: font_display: 'swap' }}
+  #pfts-{{ section.id }} .pfts-h2, #pfts-{{ section.id }} .pfts-h3-serif { font-family: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }}; font-weight: {{ section.settings.heading_font.weight }}; letter-spacing: 0; }
+  .pfts-h2 { font-size:27px; }
+  .pfts-chip--cream { background:#F8F3E9; color:#B4182A; }
+  .pfts-chip--solidred { background:#B4182A; color:#fff; }
+  .pfts-product { background:#fff; border-top:1px solid #EFE6D8; border-bottom:1px solid #EFE6D8; padding:60px 32px; }
+  .pfts-product__inner { max-width:1040px; margin:0 auto; display:flex; gap:48px; align-items:center; flex-wrap:wrap; }
+  .pfts-product__media { flex:1 1 360px; min-width:260px; background:#F8F3E9; border-radius:24px; padding:28px; }
+  .pfts-product__media img { width:100%; max-height:380px; object-fit:contain; display:block; margin:0 auto; border-radius:14px; }
+  .pfts-product__info { flex:1 1 360px; min-width:260px; }
+  .pfts-product__info .pfts-body { margin-bottom:20px; }
+  .pfts-product__price { font-size:28px; font-weight:800; color:#B4182A; margin-bottom:6px; }
+  .pfts-product__note { font-size:12px; color:#1C7A42; font-weight:600; margin-bottom:22px; }
+  .pfts-product__btns { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+  .pfts-product__form { margin:0; }
+  .pfts-btn--ghost { background:#fff; color:#2B241C; border:1.5px solid #EFE6D8; }
+  .pfts-btn--gold { background:#D4A017; color:#1F2A22; }
+  .pfts-btn--dark { background:#2F3E31; color:#FBF5E9; border:1px solid #42513F; }
+  .pfts-btn { min-height:44px; }
+  .pfts-brand { background:#1E2B20; color:#FBF5E9; padding:68px 32px 44px; }
+  .pfts-brand__inner { max-width:880px; margin:0 auto; }
+  .pfts-brand__body { font-size:13px; color:#D6DBC9; max-width:560px; margin:14px auto 0; line-height:1.8; }
+  .pfts-brand__btns { display:flex; justify-content:center; gap:14px; flex-wrap:wrap; margin-bottom:36px; }
+  .pfts-brand__cols { border-top:1px solid #33402F; padding-top:28px; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; font-size:12px; color:#AEBDA8; line-height:1.9; }
+  .pfts-brand__cols strong { color:#FBF5E9; }
+  .pfts-brand__cols p { margin:0; }
+  .pfts-brand__closing { margin-top:24px; padding-top:18px; border-top:1px solid #33402F; text-align:center; font-size:12px; color:#9FB09A; line-height:1.8; }
+  @media (max-width:749px) {
+    .pfts-brand__cols { grid-template-columns:1fr; }
+    .pfts-product { padding:44px 20px; }
+    .pfts-h2 { font-size:23px; }
+  }
 {% endstyle %}
 
 {% schema %}
@@ -332,142 +418,622 @@
   "name": "PF — Câu chuyện Trà Sâm",
   "tag": "section",
   "class": "section",
-  "settings": [],
+  "settings": [
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Font tiêu đề",
+      "default": "playfair_display_n7"
+    }
+  ],
   "blocks": [
     {
       "type": "pain",
       "name": "Nỗi lòng (mở đầu)",
       "settings": [
-        { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "NỖI LÒNG NGƯỜI XA XỨ" },
-        { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Ở đây lo đủ thứ, mà vẫn canh cánh một nỗi lo khác" },
-        { "type": "richtext", "id": "body", "label": "Nội dung", "default": "<p>Bố mẹ ở quê mỗi ngày một già. Muốn gửi về cho ông bà, cho các con một chút hương vị quê nhà cho đúng, cho thật — nhưng đồ Việt ở đây khó tìm, sợ mua phải hàng trôi nổi, mà nhờ người xách tay thì chờ cả tháng chưa chắc có.</p>" }
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Nhãn nhỏ",
+          "default": "NỖI LÒNG NGƯỜI XA XỨ"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Tiêu đề",
+          "default": "Ở đây lo đủ thứ, mà vẫn canh cánh một nỗi lo khác"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Nội dung",
+          "default": "<p>Bố mẹ ở quê mỗi ngày một già. Muốn gửi về cho ông bà, cho các con một chút hương vị quê nhà cho đúng, cho thật — nhưng đồ Việt ở đây khó tìm, sợ mua phải hàng trôi nổi, mà nhờ người xách tay thì chờ cả tháng chưa chắc có.</p>"
+        }
       ]
     },
     {
       "type": "photo_band",
       "name": "Ảnh cầu nối cảm xúc",
       "settings": [
-        { "type": "image_picker", "id": "image", "label": "Ảnh" },
-        { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "NHƯNG VẪN CÒN MỘT CÁCH" },
-        { "type": "text", "id": "heading", "label": "Dòng chữ nổi", "default": "Một chút quê nhà, mỗi sáng xa xứ" }
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Ảnh"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Nhãn nhỏ",
+          "default": "NHƯNG VẪN CÒN MỘT CÁCH"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Dòng chữ nổi",
+          "default": "Một chút quê nhà, mỗi sáng xa xứ"
+        }
       ]
     },
     {
       "type": "origin",
       "name": "Nguồn gốc / Vườn sâm",
       "settings": [
-        { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "NGUỒN GỐC RÕ RÀNG" },
-        { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Từ vườn sâm Thổ Hào, Thanh Chương" },
-        { "type": "richtext", "id": "body", "label": "Nội dung", "default": "<p>Không phải hàng trôi nổi không rõ đi đâu về đâu — mà là giống sâm quý được trồng và phục tráng ngay tại quê, có tên, có địa chỉ, có người đứng sau.</p>" },
-        { "type": "image_picker", "id": "image_main", "label": "Ảnh toàn cảnh vườn (để trống nếu chưa có ảnh thật)" },
-        { "type": "image_picker", "id": "image_root", "label": "Ảnh cận cảnh củ sâm" },
-        { "type": "image_picker", "id": "image_harvest", "label": "Ảnh người thu hoạch" }
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Nhãn nhỏ",
+          "default": "NGUỒN GỐC RÕ RÀNG"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Tiêu đề",
+          "default": "Từ vườn sâm Thổ Hào, Thanh Chương"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Nội dung",
+          "default": "<p>Không phải hàng trôi nổi không rõ đi đâu về đâu — mà là giống sâm quý được trồng và phục tráng ngay tại quê, có tên, có địa chỉ, có người đứng sau.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_main",
+          "label": "Ảnh toàn cảnh vườn (để trống nếu chưa có ảnh thật)"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_root",
+          "label": "Ảnh cận cảnh củ sâm"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_harvest",
+          "label": "Ảnh người thu hoạch"
+        }
       ]
     },
     {
       "type": "timeline",
       "name": "Hành trình 300 năm",
       "settings": [
-        { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "MỘT HÀNH TRÌNH 300 NĂM" },
-        { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Từ làng Thổ Hào đến tách trà hôm nay" },
-        { "type": "text", "id": "y1_label", "label": "Mốc 1 — nhãn", "default": "1743" },
-        { "type": "text", "id": "y1_title", "label": "Mốc 1 — tiêu đề", "default": "Một giống sâm quý về làng — rồi suýt thành ký ức" },
-        { "type": "richtext", "id": "y1_body", "label": "Mốc 1 — nội dung", "default": "<p>Tiến sĩ Phạm Kinh Vỹ đưa giống sâm quý về làng Thổ Hào, Thanh Chương, Nghệ An — sách Đại Nam Nhất Thống Chí còn ghi: \"Nam sâm, sản ở núi Thổ Hào\". Qua nhiều biến động, giống sâm ấy dần mai một, chỉ còn sót lại vài gốc rải rác trong làng.</p>" },
-        { "type": "image_picker", "id": "y1_image", "label": "Mốc 1 — ảnh minh hoạ" },
-        { "type": "text", "id": "y2_label", "label": "Mốc 2 — nhãn", "default": "2016" },
-        { "type": "text", "id": "y2_title", "label": "Mốc 2 — tiêu đề", "default": "Một người con khác trở về phục tráng" },
-        { "type": "richtext", "id": "y2_body", "label": "Mốc 2 — nội dung", "default": "<p>TS. Nguyễn Hải Minh — từng học và làm việc qua Nga, Đức, Nhật Bản, Thái Lan — trở về làng, hồi sinh cây sâm từ những gốc còn sót lại.</p>" },
-        { "type": "text", "id": "y3_label", "label": "Mốc 3 — nhãn", "default": "HÔM NAY" },
-        { "type": "text", "id": "y3_title", "label": "Mốc 3 — tiêu đề", "default": "Từ gốc sâm hồi sinh, đến tách trà mỗi ngày" },
-        { "type": "richtext", "id": "y3_body", "label": "Mốc 3 — nội dung", "default": "<p>Gia công tại Hengpokhan (ISO 22000:2018), cao sâm bào chế tại HADIPHA (GMP-WHO), kiểm nghiệm bởi VNTEST 2025.</p>" },
-        { "type": "image_picker", "id": "y3_image", "label": "Mốc 3 — ảnh (mặc định dùng ảnh sản phẩm nếu để trống)" }
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Nhãn nhỏ",
+          "default": "MỘT HÀNH TRÌNH 300 NĂM"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Tiêu đề",
+          "default": "Từ làng Thổ Hào đến tách trà hôm nay"
+        },
+        {
+          "type": "text",
+          "id": "y1_label",
+          "label": "Mốc 1 — nhãn",
+          "default": "1743"
+        },
+        {
+          "type": "text",
+          "id": "y1_title",
+          "label": "Mốc 1 — tiêu đề",
+          "default": "Một giống sâm quý về làng — rồi suýt thành ký ức"
+        },
+        {
+          "type": "richtext",
+          "id": "y1_body",
+          "label": "Mốc 1 — nội dung",
+          "default": "<p>Tiến sĩ Phạm Kinh Vỹ đưa giống sâm quý về làng Thổ Hào, Thanh Chương, Nghệ An — sách Đại Nam Nhất Thống Chí còn ghi: \"Nam sâm, sản ở núi Thổ Hào\". Qua nhiều biến động, giống sâm ấy dần mai một, chỉ còn sót lại vài gốc rải rác trong làng.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "y1_image",
+          "label": "Mốc 1 — ảnh minh hoạ"
+        },
+        {
+          "type": "text",
+          "id": "y2_label",
+          "label": "Mốc 2 — nhãn",
+          "default": "2016"
+        },
+        {
+          "type": "text",
+          "id": "y2_title",
+          "label": "Mốc 2 — tiêu đề",
+          "default": "Một người con khác trở về phục tráng"
+        },
+        {
+          "type": "richtext",
+          "id": "y2_body",
+          "label": "Mốc 2 — nội dung",
+          "default": "<p>TS. Nguyễn Hải Minh — từng học và làm việc qua Nga, Đức, Nhật Bản, Thái Lan — trở về làng, hồi sinh cây sâm từ những gốc còn sót lại.</p>"
+        },
+        {
+          "type": "text",
+          "id": "y3_label",
+          "label": "Mốc 3 — nhãn",
+          "default": "HÔM NAY"
+        },
+        {
+          "type": "text",
+          "id": "y3_title",
+          "label": "Mốc 3 — tiêu đề",
+          "default": "Từ gốc sâm hồi sinh, đến tách trà mỗi ngày"
+        },
+        {
+          "type": "richtext",
+          "id": "y3_body",
+          "label": "Mốc 3 — nội dung",
+          "default": "<p>Gia công tại Hengpokhan (ISO 22000:2018), cao sâm bào chế tại HADIPHA (GMP-WHO), kiểm nghiệm bởi VNTEST 2025.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "y3_image",
+          "label": "Mốc 3 — ảnh (mặc định dùng ảnh sản phẩm nếu để trống)"
+        }
       ]
     },
     {
       "type": "trust",
       "name": "Bằng chứng tin cậy",
       "settings": [
-        { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "— VÌ SAO CHỌN TRÀ SÂM THỔ HÀO —" },
-        { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Bốn điều chúng tôi đảm bảo" },
-        { "type": "text", "id": "icon1", "label": "Icon 1", "default": "🌱" },
-        { "type": "text", "id": "title1", "label": "Tiêu đề 1", "default": "Nguồn gốc rõ ràng" },
-        { "type": "text", "id": "body1", "label": "Mô tả 1", "default": "Sâm Thổ Hào trồng tại Thanh Chương, Nghệ An" },
-        { "type": "text", "id": "icon2", "label": "Icon 2", "default": "🧪" },
-        { "type": "text", "id": "title2", "label": "Tiêu đề 2", "default": "Kiểm nghiệm VNTEST" },
-        { "type": "text", "id": "body2", "label": "Mô tả 2", "default": "Saponin 5,2%, không aflatoxin, kim loại nặng, thuốc trừ sâu" },
-        { "type": "text", "id": "icon3", "label": "Icon 3", "default": "🏭" },
-        { "type": "text", "id": "title3", "label": "Tiêu đề 3", "default": "Chuẩn ISO & GMP-WHO" },
-        { "type": "text", "id": "body3", "label": "Mô tả 3", "default": "Gia công Hengpokhan, cao sâm HADIPHA" },
-        { "type": "text", "id": "icon4", "label": "Icon 4", "default": "📄" },
-        { "type": "text", "id": "title4", "label": "Tiêu đề 4", "default": "Phiếu kiểm nghiệm" },
-        { "type": "text", "id": "body4", "label": "Mô tả 4", "default": "Ảnh phiếu thật — đang chờ cập nhật" }
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Nhãn nhỏ",
+          "default": "— VÌ SAO CHỌN TRÀ SÂM THỔ HÀO —"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Tiêu đề",
+          "default": "Bốn điều chúng tôi đảm bảo"
+        },
+        {
+          "type": "text",
+          "id": "icon1",
+          "label": "Icon 1",
+          "default": "🌱"
+        },
+        {
+          "type": "text",
+          "id": "title1",
+          "label": "Tiêu đề 1",
+          "default": "Nguồn gốc rõ ràng"
+        },
+        {
+          "type": "text",
+          "id": "body1",
+          "label": "Mô tả 1",
+          "default": "Sâm Thổ Hào trồng tại Thanh Chương, Nghệ An"
+        },
+        {
+          "type": "text",
+          "id": "icon2",
+          "label": "Icon 2",
+          "default": "🧪"
+        },
+        {
+          "type": "text",
+          "id": "title2",
+          "label": "Tiêu đề 2",
+          "default": "Kiểm nghiệm VNTEST"
+        },
+        {
+          "type": "text",
+          "id": "body2",
+          "label": "Mô tả 2",
+          "default": "Saponin 5,2%, không aflatoxin, kim loại nặng, thuốc trừ sâu"
+        },
+        {
+          "type": "text",
+          "id": "icon3",
+          "label": "Icon 3",
+          "default": "🏭"
+        },
+        {
+          "type": "text",
+          "id": "title3",
+          "label": "Tiêu đề 3",
+          "default": "Chuẩn ISO & GMP-WHO"
+        },
+        {
+          "type": "text",
+          "id": "body3",
+          "label": "Mô tả 3",
+          "default": "Gia công Hengpokhan, cao sâm HADIPHA"
+        },
+        {
+          "type": "text",
+          "id": "icon4",
+          "label": "Icon 4",
+          "default": "📄"
+        },
+        {
+          "type": "text",
+          "id": "title4",
+          "label": "Tiêu đề 4",
+          "default": "Phiếu kiểm nghiệm"
+        },
+        {
+          "type": "text",
+          "id": "body4",
+          "label": "Mô tả 4",
+          "default": "Ảnh phiếu thật — đang chờ cập nhật"
+        }
       ]
     },
     {
       "type": "howto",
       "name": "Cách dùng",
       "settings": [
-        { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "CÁCH DÙNG" },
-        { "type": "text", "id": "step1_icon", "label": "Bước 1 — icon", "default": "📦" },
-        { "type": "text", "id": "step1_title", "label": "Bước 1 — tiêu đề", "default": "Lấy một gói cốm" },
-        { "type": "text", "id": "step1_text", "label": "Bước 1 — mô tả", "default": "Xé gói, đổ vào ly hoặc cốc quen thuộc" },
-        { "type": "image_picker", "id": "step2_image", "label": "Bước 2 — ảnh" },
-        { "type": "text", "id": "step2_title", "label": "Bước 2 — tiêu đề", "default": "Pha với nước ấm" },
-        { "type": "text", "id": "step2_text", "label": "Bước 2 — mô tả", "default": "Khoảng 150ml nước ấm 70–80°C" },
-        { "type": "text", "id": "step3_icon", "label": "Bước 3 — icon", "default": "☕" },
-        { "type": "text", "id": "step3_title", "label": "Bước 3 — tiêu đề", "default": "Khuấy đều & thưởng thức" },
-        { "type": "text", "id": "step3_text", "label": "Bước 3 — mô tả", "default": "Dành vài phút ngồi xuống, chậm lại cho riêng mình" }
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Nhãn nhỏ",
+          "default": "CÁCH DÙNG"
+        },
+        {
+          "type": "text",
+          "id": "step1_icon",
+          "label": "Bước 1 — icon",
+          "default": "📦"
+        },
+        {
+          "type": "text",
+          "id": "step1_title",
+          "label": "Bước 1 — tiêu đề",
+          "default": "Lấy một gói cốm"
+        },
+        {
+          "type": "text",
+          "id": "step1_text",
+          "label": "Bước 1 — mô tả",
+          "default": "Xé gói, đổ vào ly hoặc cốc quen thuộc"
+        },
+        {
+          "type": "image_picker",
+          "id": "step2_image",
+          "label": "Bước 2 — ảnh"
+        },
+        {
+          "type": "text",
+          "id": "step2_title",
+          "label": "Bước 2 — tiêu đề",
+          "default": "Pha với nước ấm"
+        },
+        {
+          "type": "text",
+          "id": "step2_text",
+          "label": "Bước 2 — mô tả",
+          "default": "Khoảng 150ml nước ấm 70–80°C"
+        },
+        {
+          "type": "text",
+          "id": "step3_icon",
+          "label": "Bước 3 — icon",
+          "default": "☕"
+        },
+        {
+          "type": "text",
+          "id": "step3_title",
+          "label": "Bước 3 — tiêu đề",
+          "default": "Khuấy đều & thưởng thức"
+        },
+        {
+          "type": "text",
+          "id": "step3_text",
+          "label": "Bước 3 — mô tả",
+          "default": "Dành vài phút ngồi xuống, chậm lại cho riêng mình"
+        }
       ]
     },
     {
       "type": "gift_band",
       "name": "Quà biếu",
       "settings": [
-        { "type": "image_picker", "id": "image", "label": "Ảnh" },
-        { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "QUÀ BIẾU" },
-        { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Một món quà gửi gắm tấm lòng" },
-        { "type": "richtext", "id": "body", "label": "Nội dung", "default": "<p>Biếu bố mẹ một món quà quê đúng vị. Chuẩn bị quà Tết gửi về cho gia đình, hoặc làm quà cho đối tác, bạn bè. Phomifood đã có sẵn hàng tại kho Praha — không cần chờ xách tay từ Việt Nam.</p>" },
-        { "type": "text", "id": "cta_label", "label": "Nút bấm", "default": "Đặt quà biếu" }
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Ảnh"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Nhãn nhỏ",
+          "default": "QUÀ BIẾU"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Tiêu đề",
+          "default": "Một món quà gửi gắm tấm lòng"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Nội dung",
+          "default": "<p>Biếu bố mẹ một món quà quê đúng vị. Chuẩn bị quà Tết gửi về cho gia đình, hoặc làm quà cho đối tác, bạn bè. Phomifood đã có sẵn hàng tại kho Praha — không cần chờ xách tay từ Việt Nam.</p>"
+        },
+        {
+          "type": "text",
+          "id": "cta_label",
+          "label": "Nút bấm",
+          "default": "Đặt quà biếu"
+        }
       ]
     },
     {
       "type": "lifestyle_grid",
       "name": "Ảnh đời sống",
       "settings": [
-        { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "TRÀ SÂM THỔ HÀO TRONG ĐỜI SỐNG" },
-        { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Một món quà, một khoảnh khắc sum vầy" },
-        { "type": "image_picker", "id": "image1", "label": "Ảnh 1" },
-        { "type": "image_picker", "id": "image2", "label": "Ảnh 2" },
-        { "type": "image_picker", "id": "image3", "label": "Ảnh 3" },
-        { "type": "image_picker", "id": "image4", "label": "Ảnh 4" },
-        { "type": "text", "id": "caption", "label": "Ghi chú nguồn ảnh", "default": "Ảnh từ bộ nhận diện của nhà sản xuất Hào Sâm Đại Việt — chưa phải ảnh khách hàng Phomifood thực tế, sẽ cập nhật khi có" }
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Nhãn nhỏ",
+          "default": "TRÀ SÂM THỔ HÀO TRONG ĐỜI SỐNG"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Tiêu đề",
+          "default": "Một món quà, một khoảnh khắc sum vầy"
+        },
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "Ảnh 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "image2",
+          "label": "Ảnh 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "image3",
+          "label": "Ảnh 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "image4",
+          "label": "Ảnh 4"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Ghi chú nguồn ảnh",
+          "default": "Ảnh từ bộ nhận diện của nhà sản xuất Hào Sâm Đại Việt — chưa phải ảnh khách hàng Phomifood thực tế, sẽ cập nhật khi có"
+        }
       ]
     },
     {
       "type": "combo",
       "name": "Chọn combo",
       "settings": [
-        { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "CHỌN COMBO PHÙ HỢP" },
-        { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Dành cho mình, cho gia đình, hay cho cả một mùa Tết" },
-        { "type": "text", "id": "subheading", "label": "Dòng phụ", "default": "Đơn từ 169€ — freeship hoặc giảm 10% toàn đơn" },
-        { "type": "text", "id": "c1_title", "label": "Gói 1 — tên", "default": "Chăm mình" },
-        { "type": "text", "id": "c1_sub", "label": "Gói 1 — mô tả", "default": "1 hộp Trà Sâm Thổ Hào" },
-        { "type": "text", "id": "c1_note", "label": "Gói 1 — ghi chú", "default": "Dùng mỗi ngày, bắt đầu từ việc nhỏ" },
-        { "type": "text", "id": "c2_badge", "label": "Gói 2 — nhãn nổi bật", "default": "ĐƯỢC CHỌN NHIỀU" },
-        { "type": "text", "id": "c2_title", "label": "Gói 2 — tên", "default": "Mình và bố mẹ" },
-        { "type": "text", "id": "c2_sub", "label": "Gói 2 — mô tả", "default": "2 hộp Trà Sâm Thổ Hào" },
-        { "type": "text", "id": "c2_note", "label": "Gói 2 — ghi chú", "default": "Một hộp cho mình, một hộp gửi về quê" },
-        { "type": "text", "id": "c3_title", "label": "Gói 3 — tên", "default": "Quà Tết sum vầy" },
-        { "type": "text", "id": "c3_sub", "label": "Gói 3 — mô tả", "default": "3–5 hộp + túi quà Tết" },
-        { "type": "text", "id": "c3_note", "label": "Gói 3 — ghi chú", "default": "Vừa đạt mốc freeship, vừa trọn vẹn quà biếu" }
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Nhãn nhỏ",
+          "default": "CHỌN COMBO PHÙ HỢP"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Tiêu đề",
+          "default": "Dành cho mình, cho gia đình, hay cho cả một mùa Tết"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Dòng phụ",
+          "default": "Đơn từ 169€ — freeship hoặc giảm 10% toàn đơn"
+        },
+        {
+          "type": "text",
+          "id": "c1_title",
+          "label": "Gói 1 — tên",
+          "default": "Chăm mình"
+        },
+        {
+          "type": "text",
+          "id": "c1_sub",
+          "label": "Gói 1 — mô tả",
+          "default": "1 hộp Trà Sâm Thổ Hào"
+        },
+        {
+          "type": "text",
+          "id": "c1_note",
+          "label": "Gói 1 — ghi chú",
+          "default": "Dùng mỗi ngày, bắt đầu từ việc nhỏ"
+        },
+        {
+          "type": "text",
+          "id": "c2_badge",
+          "label": "Gói 2 — nhãn nổi bật",
+          "default": "ĐƯỢC CHỌN NHIỀU"
+        },
+        {
+          "type": "text",
+          "id": "c2_title",
+          "label": "Gói 2 — tên",
+          "default": "Mình và bố mẹ"
+        },
+        {
+          "type": "text",
+          "id": "c2_sub",
+          "label": "Gói 2 — mô tả",
+          "default": "2 hộp Trà Sâm Thổ Hào"
+        },
+        {
+          "type": "text",
+          "id": "c2_note",
+          "label": "Gói 2 — ghi chú",
+          "default": "Một hộp cho mình, một hộp gửi về quê"
+        },
+        {
+          "type": "text",
+          "id": "c3_title",
+          "label": "Gói 3 — tên",
+          "default": "Quà Tết sum vầy"
+        },
+        {
+          "type": "text",
+          "id": "c3_sub",
+          "label": "Gói 3 — mô tả",
+          "default": "3–5 hộp + túi quà Tết"
+        },
+        {
+          "type": "text",
+          "id": "c3_note",
+          "label": "Gói 3 — ghi chú",
+          "default": "Vừa đạt mốc freeship, vừa trọn vẹn quà biếu"
+        }
       ]
     },
     {
       "type": "commitment",
       "name": "Cam kết",
       "settings": [
-        { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Cam kết từ Phomifood" },
-        { "type": "richtext", "id": "body", "label": "Nội dung", "default": "<p>Hàng chính hãng, có nguồn gốc rõ ràng • Gửi từ kho EU, không cần chờ xách tay • Hỗ trợ tiếng Việt qua WhatsApp / Messenger</p>" }
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Tiêu đề",
+          "default": "Cam kết từ Phomifood"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Nội dung",
+          "default": "<p>Hàng chính hãng, có nguồn gốc rõ ràng • Gửi từ kho EU, không cần chờ xách tay • Hỗ trợ tiếng Việt qua WhatsApp / Messenger</p>"
+        }
+      ]
+    },
+    {
+      "type": "product",
+      "name": "Sản phẩm",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Ảnh (để trống = ảnh sản phẩm)"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Nhãn nhỏ",
+          "default": "SẢN PHẨM"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Tiêu đề (để trống = tên sản phẩm)"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Mô tả",
+          "default": "<p>Cao sâm Thổ Hào (Panax vietnamensis var. Tho Hao) được gia công tại Hengpokhan, bào chế cao sâm tại HADIPHA theo chuẩn GMP-WHO, kiểm nghiệm bởi VNTEST 2025.</p>"
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Dòng ưu đãi dưới giá",
+          "default": "Đơn từ 169€ — freeship hoặc giảm 10%"
+        },
+        {
+          "type": "text",
+          "id": "buy_label",
+          "label": "Nút mua ngay",
+          "default": "Mua ngay"
+        },
+        {
+          "type": "text",
+          "id": "cart_label",
+          "label": "Nút thêm vào giỏ",
+          "default": "Thêm vào giỏ"
+        }
+      ]
+    },
+    {
+      "type": "brand",
+      "name": "Phomifood (cuối trang)",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Nhãn nhỏ",
+          "default": "PHOMIFOOD.EU"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Tiêu đề",
+          "default": "Chợ Sapa Praha, hơn 10 năm phục vụ người Việt tại Châu Âu"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Nội dung",
+          "default": "<p>Phomifood mang những sản phẩm Việt Nam khác biệt, khó tìm, đến tận tay người Việt xa xứ — nhanh chóng, đúng vị, đáng tin.</p>"
+        },
+        {
+          "type": "url",
+          "id": "messenger_url",
+          "label": "Link Messenger"
+        },
+        {
+          "type": "url",
+          "id": "zalo_url",
+          "label": "Link Zalo (để trống = ẩn nút)"
+        },
+        {
+          "type": "url",
+          "id": "whatsapp_url",
+          "label": "Link WhatsApp"
+        },
+        {
+          "type": "richtext",
+          "id": "col1",
+          "label": "Cột trái",
+          "default": "<p><strong>Nhà sản xuất</strong></p><p>CTCP Hào Sâm Đại Việt (HASAVI)<br/>MST: 2902217572<br/>17 Phạm Kinh Vỹ, Trường Vinh, Nghệ An</p>"
+        },
+        {
+          "type": "richtext",
+          "id": "col2",
+          "label": "Cột phải",
+          "default": "<p><strong>Nhà phân phối tại EU</strong></p><p>ABC International S.R.O — Phomifood.eu<br/>Kho: Praha, Czech Republic</p>"
+        },
+        {
+          "type": "textarea",
+          "id": "closing",
+          "label": "Câu kết",
+          "default": "Năm 1743, một người con đi xa đã mang giống sâm quý về cho làng. Hôm nay, Phomifood mang dòng sâm ấy đến với những người con xa xứ."
+        }
       ]
     }
   ],
@@ -475,16 +1041,36 @@
     {
       "name": "PF — Câu chuyện Trà Sâm",
       "blocks": [
-        { "type": "pain" },
-        { "type": "photo_band" },
-        { "type": "origin" },
-        { "type": "timeline" },
-        { "type": "trust" },
-        { "type": "howto" },
-        { "type": "gift_band" },
-        { "type": "lifestyle_grid" },
-        { "type": "combo" },
-        { "type": "commitment" }
+        {
+          "type": "pain"
+        },
+        {
+          "type": "photo_band"
+        },
+        {
+          "type": "origin"
+        },
+        {
+          "type": "timeline"
+        },
+        {
+          "type": "trust"
+        },
+        {
+          "type": "howto"
+        },
+        {
+          "type": "gift_band"
+        },
+        {
+          "type": "lifestyle_grid"
+        },
+        {
+          "type": "combo"
+        },
+        {
+          "type": "commitment"
+        }
       ]
     }
   ]
