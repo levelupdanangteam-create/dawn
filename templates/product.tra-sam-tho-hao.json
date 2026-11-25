@@ -58,7 +58,7 @@
         "q6": { "type": "question", "settings": { "question": "Tôi có thể thanh toán bằng gì?", "answer": "<p>Thanh toán trực tuyến an toàn qua Shopify. Các phương thức khả dụng (thẻ, ví điện tử…) hiển thị ở bước thanh toán.</p>" } }
       },
       "block_order": ["g1", "q1", "q2", "q4", "g2", "q5", "q6"],
-      "settings": { "heading": "Câu hỏi thường gặp", "padding_top": 32, "padding_bottom": 24 }
+      "settings": { "heading": "Câu hỏi thường gặp", "padding_top": 32, "padding_bottom": 24 } 
     },
     "pf_same_category": {
       "type": "pf-same-category",
