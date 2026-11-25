@@ -1,0 +1,78 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": { "type": "text", "settings": { "text": "{{ product.vendor }}", "text_style": "uppercase" }, "disabled": true },
+        "title": { "type": "title", "settings": {} },
+        "price": { "type": "price", "settings": {} },
+        "variant_picker": { "type": "variant_picker", "settings": { "picker_type": "button", "swatch_shape": "circle" } },
+        "quantity_selector": { "type": "quantity_selector", "settings": {} },
+        "buy_buttons": { "type": "buy_buttons", "settings": { "show_dynamic_checkout": true, "show_gift_card_recipient": true } },
+        "description": { "type": "description", "settings": {}, "disabled": true },
+        "share": { "type": "share", "settings": { "share_label": "Share" } }
+      },
+      "block_order": ["vendor", "title", "price", "variant_picker", "quantity_selector", "buy_buttons", "description", "share"],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-1",
+        "media_size": "large",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "thumbnail_slider",
+        "mobile_thumbnails": "show",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 12
+      }
+    },
+    "pf_tra_sam_story": {
+      "type": "pf-tra-sam-story",
+      "blocks": {
+        "b1": { "type": "pain", "settings": {} },
+        "b2": { "type": "photo_band", "settings": {} },
+        "b3": { "type": "origin", "settings": {} },
+        "b4": { "type": "timeline", "settings": {} },
+        "b5": { "type": "trust", "settings": {} },
+        "b6": { "type": "howto", "settings": {} },
+        "b7": { "type": "gift_band", "settings": {} },
+        "b8": { "type": "lifestyle_grid", "settings": {} },
+        "b9": { "type": "combo", "settings": {} },
+        "b10": { "type": "commitment", "settings": {} }
+      },
+      "block_order": ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9", "b10"],
+      "settings": {}
+    },
+    "pf_product_faq": {
+      "type": "pf-product-faq",
+      "blocks": {
+        "g1": { "type": "group", "settings": { "title": "Vận chuyển & đơn hàng" } },
+        "q1": { "type": "question", "settings": { "question": "Bao lâu thì tôi nhận được hàng?", "answer": "<p>Đơn được đóng gói trong <strong>ngày làm việc kế tiếp</strong> tại kho EU của PHOMIFOOD (Praha, CH Séc) và giao trong <strong>2–5 ngày làm việc</strong> đến hầu hết các nước châu Âu (không tính cuối tuần, ngày lễ).</p>" } },
+        "q2": { "type": "question", "settings": { "question": "Có miễn phí vận chuyển không?", "answer": "<p>Có. Đơn từ <strong>169€</strong> được <strong>Freeship</strong> hoặc <strong>giảm 10%</strong>. Thanh tiến độ trong giỏ hàng cho biết bạn còn thiếu bao nhiêu.</p>" } },
+        "q4": { "type": "question", "settings": { "question": "Làm sao để theo dõi đơn hàng?", "answer": "<p>Bấm <strong>Theo dõi đơn hàng</strong> ở đầu trang để nhắn PHOMIFOOD qua WhatsApp, hoặc nhắn qua Messenger — shop sẽ gửi tình trạng đơn cho bạn.</p>" } },
+        "g2": { "type": "group", "settings": { "title": "Thanh toán & đổi trả" } },
+        "q5": { "type": "question", "settings": { "question": "Hàng bị lỗi khi nhận thì sao?", "answer": "<p>Sản phẩm bị lỗi khi giao nhận được <strong>hoàn tiền 100%</strong>. Nếu phát hiện hàng giả, PHOMIFOOD hoàn <strong>120%</strong> giá trị sản phẩm. Chụp ảnh tình trạng hàng và nhắn shop ngay khi nhận.</p>" } },
+        "q6": { "type": "question", "settings": { "question": "Tôi có thể thanh toán bằng gì?", "answer": "<p>Thanh toán trực tuyến an toàn qua Shopify. Các phương thức khả dụng (thẻ, ví điện tử…) hiển thị ở bước thanh toán.</p>" } }
+      },
+      "block_order": ["g1", "q1", "q2", "q4", "g2", "q5", "q6"],
+      "settings": { "heading": "Câu hỏi thường gặp", "padding_top": 32, "padding_bottom": 24 }
+    },
+    "pf_same_category": {
+      "type": "pf-same-category",
+      "settings": {
+        "heading": "Sản phẩm cùng danh mục",
+        "related_heading": "Sản phẩm liên quan",
+        "category_handles": "bun-phở-kho\nmi-an-liền\nbột-gia-vị\ndồ-uống\nsữa-cac-loại\nbanh-kẹo-dồ-an-vặt\nthực-phẩm-chế-biến-sẵn\ngạo-nếp-cac-loại\nbanh-trang-cac-loại\ncombo",
+        "exclude_handles": "ban-chay-nhat\nsieu-sale-10-10\nhang-dộc-quyền\nall\nfrontpage",
+        "products_to_show": 12,
+        "initial_count": 8,
+        "padding_top": 24,
+        "padding_bottom": 40
+      }
+    }
+  },
+  "order": ["main", "pf_tra_sam_story", "pf_product_faq", "pf_same_category"]
+}

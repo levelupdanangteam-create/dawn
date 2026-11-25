@@ -1,0 +1,492 @@
+{%- comment -%}
+  PHOMIFOOD — Trà Sâm Thổ Hào: section kể chuyện thương hiệu, dùng riêng cho template sản phẩm này.
+  Mỗi block là 1 khối nội dung độc lập, có thể sắp xếp lại / ẩn / nhân bản trong trình chỉnh sửa theme.
+{%- endcomment -%}
+<div class="pfts" id="pfts-{{ section.id }}">
+{%- for block in section.blocks -%}
+  {%- case block.type -%}
+
+  {%- when 'pain' -%}
+  <div class="pfts-wrap pfts-pain" {{ block.shopify_attributes }}>
+    {%- if block.settings.eyebrow != blank -%}<div class="pfts-chip pfts-chip--red">{{ block.settings.eyebrow }}</div>{%- endif -%}
+    {%- if block.settings.heading != blank -%}<h2 class="pfts-h2">{{ block.settings.heading }}</h2>{%- endif -%}
+    {%- if block.settings.body != blank -%}<div class="pfts-body">{{ block.settings.body }}</div>{%- endif -%}
+  </div>
+
+  {%- when 'photo_band' -%}
+  <div class="pfts-photoband" {{ block.shopify_attributes }}>
+    {%- if block.settings.image != blank -%}
+      {{ block.settings.image | image_url: width: 1600 | image_tag: loading: 'lazy', class: 'pfts-photoband__img' }}
+    {%- else -%}
+      <div class="pfts-pending pfts-pending--band"><span>🖼️</span><em>Ảnh đang chờ cập nhật</em></div>
+    {%- endif -%}
+    <div class="pfts-photoband__overlay"></div>
+    <div class="pfts-photoband__text">
+      {%- if block.settings.eyebrow != blank -%}<div class="pfts-eyebrow pfts-eyebrow--gold">{{ block.settings.eyebrow }}</div>{%- endif -%}
+      {%- if block.settings.heading != blank -%}<div class="pfts-h3-serif">{{ block.settings.heading }}</div>{%- endif -%}
+    </div>
+  </div>
+
+  {%- when 'origin' -%}
+  <div class="pfts-wrap pfts-origin" {{ block.shopify_attributes }}>
+    <div class="pfts-center pfts-intro">
+      {%- if block.settings.eyebrow != blank -%}<div class="pfts-chip pfts-chip--green">{{ block.settings.eyebrow }}</div>{%- endif -%}
+      {%- if block.settings.heading != blank -%}<h2 class="pfts-h2">{{ block.settings.heading }}</h2>{%- endif -%}
+      {%- if block.settings.body != blank -%}<div class="pfts-body pfts-body--sm">{{ block.settings.body }}</div>{%- endif -%}
+    </div>
+    <div class="pfts-origin__grid">
+      <div class="pfts-origin__main">
+        {%- if block.settings.image_main != blank -%}
+          {{ block.settings.image_main | image_url: width: 1200 | image_tag: loading: 'lazy' }}
+        {%- else -%}
+          <div class="pfts-pending"><span>🌱</span><em>Toàn cảnh vườn — đang chờ ảnh thật</em></div>
+        {%- endif -%}
+      </div>
+      <div class="pfts-origin__side">
+        <div class="pfts-origin__small">
+          {%- if block.settings.image_root != blank -%}
+            {{ block.settings.image_root | image_url: width: 600 | image_tag: loading: 'lazy' }}
+          {%- else -%}
+            <div class="pfts-pending"><span>🫚</span><em>Cận cảnh củ sâm</em></div>
+          {%- endif -%}
+        </div>
+        <div class="pfts-origin__small">
+          {%- if block.settings.image_harvest != blank -%}
+            {{ block.settings.image_harvest | image_url: width: 600 | image_tag: loading: 'lazy' }}
+          {%- else -%}
+            <div class="pfts-pending"><span>👩‍🌾</span><em>Người thu hoạch</em></div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%- when 'timeline' -%}
+  <div class="pfts-timeline" {{ block.shopify_attributes }}>
+    <div class="pfts-timeline__inner">
+      <div class="pfts-center" style="margin-bottom:40px;">
+        {%- if block.settings.eyebrow != blank -%}<div class="pfts-chip pfts-chip--gold">{{ block.settings.eyebrow }}</div>{%- endif -%}
+        {%- if block.settings.heading != blank -%}<h2 class="pfts-h2 pfts-h2--light">{{ block.settings.heading }}</h2>{%- endif -%}
+      </div>
+      <div class="pfts-tl">
+        <div class="pfts-tl__item">
+          <div class="pfts-tl__dot pfts-tl__dot--gold"></div>
+          {%- if block.settings.y1_label != blank -%}<div class="pfts-chip pfts-chip--gold pfts-chip--sm">{{ block.settings.y1_label }}</div>{%- endif -%}
+          {%- if block.settings.y1_title != blank -%}<div class="pfts-tl__title">{{ block.settings.y1_title }}</div>{%- endif -%}
+          <div class="pfts-tl__row">
+            {%- if block.settings.y1_body != blank -%}<div class="pfts-tl__body">{{ block.settings.y1_body }}</div>{%- endif -%}
+            <div class="pfts-tl__thumb">
+              {%- if block.settings.y1_image != blank -%}
+                {{ block.settings.y1_image | image_url: width: 200 | image_tag: loading: 'lazy' }}
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+        <div class="pfts-tl__item">
+          <div class="pfts-tl__dot pfts-tl__dot--green"></div>
+          {%- if block.settings.y2_label != blank -%}<div class="pfts-chip pfts-chip--green pfts-chip--sm">{{ block.settings.y2_label }}</div>{%- endif -%}
+          {%- if block.settings.y2_title != blank -%}<div class="pfts-tl__title">{{ block.settings.y2_title }}</div>{%- endif -%}
+          {%- if block.settings.y2_body != blank -%}<div class="pfts-tl__body">{{ block.settings.y2_body }}</div>{%- endif -%}
+        </div>
+        <div class="pfts-tl__item">
+          <div class="pfts-tl__dot pfts-tl__dot--gold"></div>
+          {%- if block.settings.y3_label != blank -%}<div class="pfts-chip pfts-chip--gold pfts-chip--sm">{{ block.settings.y3_label }}</div>{%- endif -%}
+          {%- if block.settings.y3_title != blank -%}<div class="pfts-tl__title">{{ block.settings.y3_title }}</div>{%- endif -%}
+          <div class="pfts-tl__row">
+            {%- if block.settings.y3_body != blank -%}<div class="pfts-tl__body">{{ block.settings.y3_body }}</div>{%- endif -%}
+            <div class="pfts-tl__thumb">
+              {%- if block.settings.y3_image != blank -%}
+                {{ block.settings.y3_image | image_url: width: 200 | image_tag: loading: 'lazy' }}
+              {%- else -%}
+                {{ product.featured_image | image_url: width: 200 | image_tag: loading: 'lazy' }}
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%- when 'trust' -%}
+  <div class="pfts-wrap pfts-trust" {{ block.shopify_attributes }}>
+    <div class="pfts-center" style="margin-bottom:36px;">
+      {%- if block.settings.eyebrow != blank -%}<div class="pfts-eyebrow-line">{{ block.settings.eyebrow }}</div>{%- endif -%}
+      {%- if block.settings.heading != blank -%}<h2 class="pfts-h2">{{ block.settings.heading }}</h2>{%- endif -%}
+    </div>
+    <div class="pfts-trust__grid">
+      {%- for i in (1..4) -%}
+        {%- assign icon_key = 'icon' | append: i -%}
+        {%- assign title_key = 'title' | append: i -%}
+        {%- assign body_key = 'body' | append: i -%}
+        {%- assign icon_val = block.settings[icon_key] -%}
+        {%- assign title_val = block.settings[title_key] -%}
+        {%- assign body_val = block.settings[body_key] -%}
+        {%- if title_val != blank -%}
+        <div class="pfts-trust__item">
+          <div class="pfts-trust__ico">{{ icon_val }}</div>
+          <div class="pfts-trust__title">{{ title_val }}</div>
+          <div class="pfts-trust__body">{{ body_val }}</div>
+        </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- when 'howto' -%}
+  <div class="pfts-wrap pfts-howto" {{ block.shopify_attributes }}>
+    {%- if block.settings.eyebrow != blank -%}<div class="pfts-center"><div class="pfts-chip pfts-chip--green">{{ block.settings.eyebrow }}</div></div>{%- endif -%}
+    <div class="pfts-howto__grid">
+      <div class="pfts-howto__step">
+        <div class="pfts-howto__ico">{{ block.settings.step1_icon }}</div>
+        <div class="pfts-howto__title">{{ block.settings.step1_title }}</div>
+        <div class="pfts-howto__text">{{ block.settings.step1_text }}</div>
+      </div>
+      <div class="pfts-howto__step">
+        <div class="pfts-howto__photo">
+          {%- if block.settings.step2_image != blank -%}
+            {{ block.settings.step2_image | image_url: width: 300 | image_tag: loading: 'lazy' }}
+          {%- endif -%}
+        </div>
+        <div class="pfts-howto__title">{{ block.settings.step2_title }}</div>
+        <div class="pfts-howto__text">{{ block.settings.step2_text }}</div>
+      </div>
+      <div class="pfts-howto__step">
+        <div class="pfts-howto__ico">{{ block.settings.step3_icon }}</div>
+        <div class="pfts-howto__title">{{ block.settings.step3_title }}</div>
+        <div class="pfts-howto__text">{{ block.settings.step3_text }}</div>
+      </div>
+    </div>
+  </div>
+
+  {%- when 'gift_band' -%}
+  <div class="pfts-giftband" {{ block.shopify_attributes }}>
+    {%- if block.settings.image != blank -%}
+      {{ block.settings.image | image_url: width: 1600 | image_tag: loading: 'lazy', class: 'pfts-giftband__img' }}
+    {%- else -%}
+      <div class="pfts-pending pfts-pending--band"><span>🎁</span><em>Ảnh đang chờ cập nhật</em></div>
+    {%- endif -%}
+    <div class="pfts-giftband__overlay"></div>
+    <div class="pfts-giftband__text">
+      {%- if block.settings.eyebrow != blank -%}<div class="pfts-chip pfts-chip--gold">{{ block.settings.eyebrow }}</div>{%- endif -%}
+      {%- if block.settings.heading != blank -%}<div class="pfts-h3-serif">{{ block.settings.heading }}</div>{%- endif -%}
+      {%- if block.settings.body != blank -%}<div class="pfts-giftband__body">{{ block.settings.body }}</div>{%- endif -%}
+      {%- if block.settings.cta_label != blank -%}<a href="#pfts-{{ section.id }}" class="pfts-btn pfts-btn--red">{{ block.settings.cta_label }}</a>{%- endif -%}
+    </div>
+  </div>
+
+  {%- when 'lifestyle_grid' -%}
+  <div class="pfts-wrap pfts-life" {{ block.shopify_attributes }}>
+    <div class="pfts-center" style="margin-bottom:28px;">
+      {%- if block.settings.eyebrow != blank -%}<div class="pfts-chip pfts-chip--gold2">{{ block.settings.eyebrow }}</div>{%- endif -%}
+      {%- if block.settings.heading != blank -%}<h2 class="pfts-h2">{{ block.settings.heading }}</h2>{%- endif -%}
+    </div>
+    <div class="pfts-life__grid">
+      {%- for i in (1..4) -%}
+        {%- assign img_key = 'image' | append: i -%}
+        {%- assign img_val = block.settings[img_key] -%}
+        <div class="pfts-life__cell">
+          {%- if img_val != blank -%}
+            {{ img_val | image_url: width: 500 | image_tag: loading: 'lazy' }}
+          {%- else -%}
+            <div class="pfts-pending"><span>📷</span></div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+    {%- if block.settings.caption != blank -%}<div class="pfts-life__caption">{{ block.settings.caption }}</div>{%- endif -%}
+  </div>
+
+  {%- when 'combo' -%}
+  <div class="pfts-wrap pfts-combo" {{ block.shopify_attributes }}>
+    <div class="pfts-center" style="margin-bottom:32px;">
+      {%- if block.settings.eyebrow != blank -%}<div class="pfts-chip pfts-chip--red">{{ block.settings.eyebrow }}</div>{%- endif -%}
+      {%- if block.settings.heading != blank -%}<h2 class="pfts-h2">{{ block.settings.heading }}</h2>{%- endif -%}
+      {%- if block.settings.subheading != blank -%}<p class="pfts-combo__sub">{{ block.settings.subheading }}</p>{%- endif -%}
+    </div>
+    <div class="pfts-combo__grid">
+      <div class="pfts-combo__card">
+        <div class="pfts-combo__t">{{ block.settings.c1_title }}</div>
+        <div class="pfts-combo__s">{{ block.settings.c1_sub }}</div>
+        <div class="pfts-combo__n pfts-combo__n--green">{{ block.settings.c1_note }}</div>
+      </div>
+      <div class="pfts-combo__card pfts-combo__card--mid">
+        <div class="pfts-combo__badge">{{ block.settings.c2_badge }}</div>
+        <div class="pfts-combo__t pfts-combo__t--light">{{ block.settings.c2_title }}</div>
+        <div class="pfts-combo__s pfts-combo__s--light">{{ block.settings.c2_sub }}</div>
+        <div class="pfts-combo__n pfts-combo__n--gold">{{ block.settings.c2_note }}</div>
+      </div>
+      <div class="pfts-combo__card">
+        <div class="pfts-combo__t">{{ block.settings.c3_title }}</div>
+        <div class="pfts-combo__s">{{ block.settings.c3_sub }}</div>
+        <div class="pfts-combo__n pfts-combo__n--gold2">{{ block.settings.c3_note }}</div>
+      </div>
+    </div>
+  </div>
+
+  {%- when 'commitment' -%}
+  <div class="pfts-wrap pfts-commit-wrap" {{ block.shopify_attributes }}>
+    <div class="pfts-commit">
+      {%- if block.settings.heading != blank -%}<div class="pfts-commit__h">{{ block.settings.heading }}</div>{%- endif -%}
+      {%- if block.settings.body != blank -%}<div class="pfts-commit__b">{{ block.settings.body }}</div>{%- endif -%}
+    </div>
+  </div>
+
+  {%- endcase -%}
+{%- endfor -%}
+</div>
+
+{% style %}
+  .pfts { background:#F8F3E9; color:#2B241C; font-family: inherit; }
+  .pfts-wrap { max-width:1040px; margin:0 auto; padding:52px 32px; }
+  .pfts-center { text-align:center; max-width:720px; margin:0 auto; }
+  .pfts-chip { display:inline-flex; align-items:center; gap:8px; border-radius:999px; font-weight:700; font-size:11px; letter-spacing:.3px; padding:6px 16px; margin-bottom:16px; }
+  .pfts-chip--sm { padding:4px 12px; margin-bottom:10px; }
+  .pfts-chip--red { background:#FDE3E6; color:#B4182A; }
+  .pfts-chip--green { background:#E7F3EA; color:#1C7A42; }
+  .pfts-chip--gold { background:#D4A017; color:#1F2A22; }
+  .pfts-chip--gold2 { background:#FBF0D4; color:#A3780F; }
+  .pfts-eyebrow { font-size:11px; font-weight:700; letter-spacing:.4px; margin-bottom:6px; }
+  .pfts-eyebrow--gold { color:#D4A017; }
+  .pfts-eyebrow-line { font-size:12px; font-weight:700; color:#8A7A66; letter-spacing:.5px; margin-bottom:8px; }
+  .pfts-h2 { font-size:26px; line-height:1.3; margin:0 0 14px; color:#2B241C; font-weight:700; }
+  .pfts-h2--light { color:#FBF5E9; margin:0; }
+  .pfts-h3-serif { font-size:19px; font-weight:700; }
+  .pfts-body { font-size:14px; line-height:1.8; color:#6B5F4D; }
+  .pfts-body--sm { font-size:13px; }
+  .pfts-pain { text-align:center; }
+  .pfts-photoband { position:relative; margin:0 20px; height:240px; overflow:hidden; border-radius:18px; }
+  .pfts-photoband__img { width:100%; height:100%; object-fit:cover; display:block; }
+  .pfts-photoband__overlay { position:absolute; inset:0; background:linear-gradient(0deg, rgba(30,43,32,.65) 0%, rgba(30,43,32,0) 55%); }
+  .pfts-photoband__text { position:absolute; left:32px; bottom:20px; color:#fff; }
+  .pfts-origin__grid { max-width:1000px; margin:24px auto 0; display:flex; gap:16px; flex-wrap:wrap; }
+  .pfts-origin__main { flex:1.4 1 380px; min-height:260px; border-radius:14px; overflow:hidden; }
+  .pfts-origin__main img { width:100%; height:100%; object-fit:cover; display:block; min-height:260px; }
+  .pfts-origin__side { flex:1 1 220px; display:flex; flex-direction:column; gap:16px; }
+  .pfts-origin__small { min-height:122px; border-radius:14px; overflow:hidden; }
+  .pfts-origin__small img { width:100%; height:100%; object-fit:cover; display:block; min-height:122px; }
+  .pfts-pending { background:#FBF8F1; border:1.5px dashed #D9CBAE; border-radius:14px; width:100%; height:100%; min-height:120px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; color:#A4927A; padding:16px; gap:4px; font-size:11px; font-weight:700; }
+  .pfts-pending span { font-size:22px; }
+  .pfts-pending--band { position:absolute; inset:0; }
+  .pfts-timeline { background:#1E2B20; padding:60px 24px; color:#FBF5E9; }
+  .pfts-timeline__inner { max-width:800px; margin:0 auto; }
+  .pfts-tl { position:relative; padding-left:28px; border-left:2px solid #37452F; display:flex; flex-direction:column; gap:28px; }
+  .pfts-tl__dot { width:14px; height:14px; border-radius:999px; position:absolute; left:-36px; margin-top:4px; }
+  .pfts-tl__dot--gold { background:#D4A017; }
+  .pfts-tl__dot--green { background:#1C7A42; }
+  .pfts-tl__title { font-weight:700; font-size:16px; margin-bottom:8px; }
+  .pfts-tl__body { font-size:14px; line-height:1.8; color:#D6DBC9; flex:1; }
+  .pfts-tl__row { display:flex; gap:18px; align-items:flex-start; flex-wrap:wrap; }
+  .pfts-tl__thumb { width:88px; height:88px; border-radius:14px; overflow:hidden; flex:0 0 88px; }
+  .pfts-tl__thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+  .pfts-trust__grid { display:flex; gap:26px; justify-content:center; flex-wrap:wrap; max-width:880px; margin:0 auto; }
+  .pfts-trust__item { flex:1 1 160px; text-align:center; }
+  .pfts-trust__ico { width:84px; height:84px; border-radius:999px; background:#F1EADC; display:flex; align-items:center; justify-content:center; font-size:30px; margin:0 auto 12px; }
+  .pfts-trust__title { font-weight:700; font-size:14px; margin-bottom:6px; }
+  .pfts-trust__body { font-size:12px; color:#8A7A66; line-height:1.6; }
+  .pfts-howto__grid { display:flex; gap:28px; justify-content:center; flex-wrap:wrap; max-width:740px; margin:24px auto 0; text-align:center; }
+  .pfts-howto__step { flex:1 1 180px; }
+  .pfts-howto__ico { width:80px; height:80px; border-radius:999px; background:#fff; border:3px solid #E7F3EA; display:flex; align-items:center; justify-content:center; font-size:32px; margin:0 auto 12px; }
+  .pfts-howto__photo { width:110px; height:110px; border-radius:999px; overflow:hidden; margin:0 auto 12px; border:5px solid #fff; box-shadow:0 8px 20px rgba(0,0,0,.12); }
+  .pfts-howto__photo img { width:100%; height:100%; object-fit:cover; display:block; }
+  .pfts-howto__title { font-weight:700; font-size:14px; margin-bottom:6px; }
+  .pfts-howto__text { font-size:12px; color:#8A7A66; }
+  .pfts-giftband { position:relative; height:400px; overflow:hidden; }
+  .pfts-giftband__img { width:100%; height:100%; object-fit:cover; display:block; }
+  .pfts-giftband__overlay { position:absolute; inset:0; background:linear-gradient(90deg, rgba(30,43,32,.82) 0%, rgba(30,43,32,.45) 45%, rgba(30,43,32,.05) 72%); }
+  .pfts-giftband__text { position:absolute; left:40px; top:50%; transform:translateY(-50%); max-width:420px; color:#fff; }
+  .pfts-giftband__body { font-size:14px; line-height:1.8; color:#E9E4D6; margin:10px 0 20px; }
+  .pfts-btn { display:inline-flex; align-items:center; justify-content:center; border-radius:999px; font-weight:700; cursor:pointer; border:none; text-decoration:none; padding:13px 26px; font-size:13px; }
+  .pfts-btn--red { background:#B4182A; color:#fff; }
+  .pfts-life__grid { max-width:980px; margin:0 auto; display:grid; grid-template-columns:repeat(4, 1fr); gap:14px; }
+  .pfts-life__cell { min-height:150px; border-radius:14px; overflow:hidden; background:#FBF8F1; }
+  .pfts-life__cell img { width:100%; height:100%; object-fit:cover; display:block; min-height:150px; }
+  .pfts-life__caption { text-align:center; font-size:11px; color:#B9A88C; margin-top:16px; max-width:900px; margin-left:auto; margin-right:auto; }
+  .pfts-combo__sub { font-size:13px; color:#8A7A66; margin:6px 0 0; }
+  .pfts-combo__grid { display:flex; gap:22px; flex-wrap:wrap; max-width:1040px; margin:0 auto; }
+  .pfts-combo__card { flex:1 1 280px; background:#fff; border-radius:18px; padding:28px; border:1px solid #EFE6D8; border-top:4px solid #1C7A42; }
+  .pfts-combo__card--mid { background:#1E2B20; border:2px solid #B4182A; position:relative; }
+  .pfts-combo__card:last-child { border-top-color:#D4A017; }
+  .pfts-combo__badge { position:absolute; top:-12px; right:22px; background:#B4182A; color:#fff; font-size:10px; font-weight:700; padding:4px 10px; border-radius:999px; }
+  .pfts-combo__t { font-weight:700; font-size:16px; margin-bottom:8px; }
+  .pfts-combo__t--light { color:#fff; }
+  .pfts-combo__s { font-size:12px; color:#8A7A66; margin-bottom:18px; }
+  .pfts-combo__s--light { color:#D6DBC9; }
+  .pfts-combo__n { font-size:12px; font-weight:600; }
+  .pfts-combo__n--green { color:#1C7A42; }
+  .pfts-combo__n--gold { color:#D4A017; }
+  .pfts-combo__n--gold2 { color:#A3780F; }
+  .pfts-commit-wrap { padding-top:0; padding-bottom:52px; max-width:900px; }
+  .pfts-commit { background:#fff; border:1px solid #EFE6D8; border-radius:18px; padding:32px; text-align:center; }
+  .pfts-commit__h { font-weight:700; font-size:15px; margin-bottom:10px; color:#2B241C; }
+  .pfts-commit__b { font-size:13px; color:#6B5F4D; line-height:1.8; }
+  @media (max-width:749px) {
+    .pfts-origin__grid, .pfts-trust__grid, .pfts-howto__grid, .pfts-combo__grid { flex-direction:column; }
+    .pfts-life__grid { grid-template-columns:repeat(2,1fr); }
+    .pfts-giftband__text { left:24px; max-width:260px; }
+    .pfts-tl__row { flex-direction:column; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "PF — Câu chuyện Trà Sâm",
+  "tag": "section",
+  "class": "section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "pain",
+      "name": "Nỗi lòng (mở đầu)",
+      "settings": [
+        { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "NỖI LÒNG NGƯỜI XA XỨ" },
+        { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Ở đây lo đủ thứ, mà vẫn canh cánh một nỗi lo khác" },
+        { "type": "richtext", "id": "body", "label": "Nội dung", "default": "<p>Bố mẹ ở quê mỗi ngày một già. Muốn gửi về cho ông bà, cho các con một chút hương vị quê nhà cho đúng, cho thật — nhưng đồ Việt ở đây khó tìm, sợ mua phải hàng trôi nổi, mà nhờ người xách tay thì chờ cả tháng chưa chắc có.</p>" }
+      ]
+    },
+    {
+      "type": "photo_band",
+      "name": "Ảnh cầu nối cảm xúc",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Ảnh", "default": "shopify://shop_images/IMG_5367.jpg" },
+        { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "NHƯNG VẪN CÒN MỘT CÁCH" },
+        { "type": "text", "id": "heading", "label": "Dòng chữ nổi", "default": "Một chút quê nhà, mỗi sáng xa xứ" }
+      ]
+    },
+    {
+      "type": "origin",
+      "name": "Nguồn gốc / Vườn sâm",
+      "settings": [
+        { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "NGUỒN GỐC RÕ RÀNG" },
+        { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Từ vườn sâm Thổ Hào, Thanh Chương" },
+        { "type": "richtext", "id": "body", "label": "Nội dung", "default": "<p>Không phải hàng trôi nổi không rõ đi đâu về đâu — mà là giống sâm quý được trồng và phục tráng ngay tại quê, có tên, có địa chỉ, có người đứng sau.</p>" },
+        { "type": "image_picker", "id": "image_main", "label": "Ảnh toàn cảnh vườn (để trống nếu chưa có ảnh thật)" },
+        { "type": "image_picker", "id": "image_root", "label": "Ảnh cận cảnh củ sâm" },
+        { "type": "image_picker", "id": "image_harvest", "label": "Ảnh người thu hoạch", "default": "shopify://shop_images/IMG_7558.jpg" }
+      ]
+    },
+    {
+      "type": "timeline",
+      "name": "Hành trình 300 năm",
+      "settings": [
+        { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "MỘT HÀNH TRÌNH 300 NĂM" },
+        { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Từ làng Thổ Hào đến tách trà hôm nay" },
+        { "type": "text", "id": "y1_label", "label": "Mốc 1 — nhãn", "default": "1743" },
+        { "type": "text", "id": "y1_title", "label": "Mốc 1 — tiêu đề", "default": "Một giống sâm quý về làng — rồi suýt thành ký ức" },
+        { "type": "richtext", "id": "y1_body", "label": "Mốc 1 — nội dung", "default": "<p>Tiến sĩ Phạm Kinh Vỹ đưa giống sâm quý về làng Thổ Hào, Thanh Chương, Nghệ An — sách Đại Nam Nhất Thống Chí còn ghi: \"Nam sâm, sản ở núi Thổ Hào\". Qua nhiều biến động, giống sâm ấy dần mai một, chỉ còn sót lại vài gốc rải rác trong làng.</p>" },
+        { "type": "image_picker", "id": "y1_image", "label": "Mốc 1 — ảnh minh hoạ" },
+        { "type": "text", "id": "y2_label", "label": "Mốc 2 — nhãn", "default": "2016" },
+        { "type": "text", "id": "y2_title", "label": "Mốc 2 — tiêu đề", "default": "Một người con khác trở về phục tráng" },
+        { "type": "richtext", "id": "y2_body", "label": "Mốc 2 — nội dung", "default": "<p>TS. Nguyễn Hải Minh — từng học và làm việc qua Nga, Đức, Nhật Bản, Thái Lan — trở về làng, hồi sinh cây sâm từ những gốc còn sót lại.</p>" },
+        { "type": "text", "id": "y3_label", "label": "Mốc 3 — nhãn", "default": "HÔM NAY" },
+        { "type": "text", "id": "y3_title", "label": "Mốc 3 — tiêu đề", "default": "Từ gốc sâm hồi sinh, đến tách trà mỗi ngày" },
+        { "type": "richtext", "id": "y3_body", "label": "Mốc 3 — nội dung", "default": "<p>Gia công tại Hengpokhan (ISO 22000:2018), cao sâm bào chế tại HADIPHA (GMP-WHO), kiểm nghiệm bởi VNTEST 2025.</p>" },
+        { "type": "image_picker", "id": "y3_image", "label": "Mốc 3 — ảnh (mặc định dùng ảnh sản phẩm nếu để trống)" }
+      ]
+    },
+    {
+      "type": "trust",
+      "name": "Bằng chứng tin cậy",
+      "settings": [
+        { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "— VÌ SAO CHỌN TRÀ SÂM THỔ HÀO —" },
+        { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Bốn điều chúng tôi đảm bảo" },
+        { "type": "text", "id": "icon1", "label": "Icon 1", "default": "🌱" },
+        { "type": "text", "id": "title1", "label": "Tiêu đề 1", "default": "Nguồn gốc rõ ràng" },
+        { "type": "text", "id": "body1", "label": "Mô tả 1", "default": "Sâm Thổ Hào trồng tại Thanh Chương, Nghệ An" },
+        { "type": "text", "id": "icon2", "label": "Icon 2", "default": "🧪" },
+        { "type": "text", "id": "title2", "label": "Tiêu đề 2", "default": "Kiểm nghiệm VNTEST" },
+        { "type": "text", "id": "body2", "label": "Mô tả 2", "default": "Saponin 5,2%, không aflatoxin, kim loại nặng, thuốc trừ sâu" },
+        { "type": "text", "id": "icon3", "label": "Icon 3", "default": "🏭" },
+        { "type": "text", "id": "title3", "label": "Tiêu đề 3", "default": "Chuẩn ISO & GMP-WHO" },
+        { "type": "text", "id": "body3", "label": "Mô tả 3", "default": "Gia công Hengpokhan, cao sâm HADIPHA" },
+        { "type": "text", "id": "icon4", "label": "Icon 4", "default": "📄" },
+        { "type": "text", "id": "title4", "label": "Tiêu đề 4", "default": "Phiếu kiểm nghiệm" },
+        { "type": "text", "id": "body4", "label": "Mô tả 4", "default": "Ảnh phiếu thật — đang chờ cập nhật" }
+      ]
+    },
+    {
+      "type": "howto",
+      "name": "Cách dùng",
+      "settings": [
+        { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "CÁCH DÙNG" },
+        { "type": "text", "id": "step1_icon", "label": "Bước 1 — icon", "default": "📦" },
+        { "type": "text", "id": "step1_title", "label": "Bước 1 — tiêu đề", "default": "Lấy một gói cốm" },
+        { "type": "text", "id": "step1_text", "label": "Bước 1 — mô tả", "default": "Xé gói, đổ vào ly hoặc cốc quen thuộc" },
+        { "type": "image_picker", "id": "step2_image", "label": "Bước 2 — ảnh", "default": "shopify://shop_images/IMG_5367.jpg" },
+        { "type": "text", "id": "step2_title", "label": "Bước 2 — tiêu đề", "default": "Pha với nước ấm" },
+        { "type": "text", "id": "step2_text", "label": "Bước 2 — mô tả", "default": "Khoảng 150ml nước ấm 70–80°C" },
+        { "type": "text", "id": "step3_icon", "label": "Bước 3 — icon", "default": "☕" },
+        { "type": "text", "id": "step3_title", "label": "Bước 3 — tiêu đề", "default": "Khuấy đều & thưởng thức" },
+        { "type": "text", "id": "step3_text", "label": "Bước 3 — mô tả", "default": "Dành vài phút ngồi xuống, chậm lại cho riêng mình" }
+      ]
+    },
+    {
+      "type": "gift_band",
+      "name": "Quà biếu",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Ảnh", "default": "shopify://shop_images/IMG_5378.jpg" },
+        { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "QUÀ BIẾU" },
+        { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Một món quà gửi gắm tấm lòng" },
+        { "type": "richtext", "id": "body", "label": "Nội dung", "default": "<p>Biếu bố mẹ một món quà quê đúng vị. Chuẩn bị quà Tết gửi về cho gia đình, hoặc làm quà cho đối tác, bạn bè. Phomifood đã có sẵn hàng tại kho Praha — không cần chờ xách tay từ Việt Nam.</p>" },
+        { "type": "text", "id": "cta_label", "label": "Nút bấm", "default": "Đặt quà biếu" }
+      ]
+    },
+    {
+      "type": "lifestyle_grid",
+      "name": "Trà Sâm Thổ Hào trong đời sống",
+      "settings": [
+        { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "TRÀ SÂM THỔ HÀO TRONG ĐỜI SỐNG" },
+        { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Một món quà, một khoảnh khắc sum vầy" },
+        { "type": "image_picker", "id": "image1", "label": "Ảnh 1", "default": "shopify://shop_images/IMG_5232_ff280a98-9f5d-42c9-8e9d-e2499eb9389d.jpg" },
+        { "type": "image_picker", "id": "image2", "label": "Ảnh 2", "default": "shopify://shop_images/IMG_5376.jpg" },
+        { "type": "image_picker", "id": "image3", "label": "Ảnh 3", "default": "shopify://shop_images/IMG_5407.jpg" },
+        { "type": "image_picker", "id": "image4", "label": "Ảnh 4", "default": "shopify://shop_images/IMG_5253.jpg" },
+        { "type": "text", "id": "caption", "label": "Ghi chú nguồn ảnh", "default": "Ảnh từ bộ nhận diện của nhà sản xuất Hào Sâm Đại Việt — chưa phải ảnh khách hàng Phomifood thực tế, sẽ cập nhật khi có" }
+      ]
+    },
+    {
+      "type": "combo",
+      "name": "Chọn combo",
+      "settings": [
+        { "type": "text", "id": "eyebrow", "label": "Nhãn nhỏ", "default": "CHỌN COMBO PHÙ HỢP" },
+        { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Dành cho mình, cho gia đình, hay cho cả một mùa Tết" },
+        { "type": "text", "id": "subheading", "label": "Dòng phụ", "default": "Đơn từ 169€ — freeship hoặc giảm 10% toàn đơn" },
+        { "type": "text", "id": "c1_title", "label": "Gói 1 — tên", "default": "Chăm mình" },
+        { "type": "text", "id": "c1_sub", "label": "Gói 1 — mô tả", "default": "1 hộp Trà Sâm Thổ Hào" },
+        { "type": "text", "id": "c1_note", "label": "Gói 1 — ghi chú", "default": "Dùng mỗi ngày, bắt đầu từ việc nhỏ" },
+        { "type": "text", "id": "c2_badge", "label": "Gói 2 — nhãn nổi bật", "default": "ĐƯỢC CHỌN NHIỀU" },
+        { "type": "text", "id": "c2_title", "label": "Gói 2 — tên", "default": "Mình và bố mẹ" },
+        { "type": "text", "id": "c2_sub", "label": "Gói 2 — mô tả", "default": "2 hộp Trà Sâm Thổ Hào" },
+        { "type": "text", "id": "c2_note", "label": "Gói 2 — ghi chú", "default": "Một hộp cho mình, một hộp gửi về quê" },
+        { "type": "text", "id": "c3_title", "label": "Gói 3 — tên", "default": "Quà Tết sum vầy" },
+        { "type": "text", "id": "c3_sub", "label": "Gói 3 — mô tả", "default": "3–5 hộp + túi quà Tết" },
+        { "type": "text", "id": "c3_note", "label": "Gói 3 — ghi chú", "default": "Vừa đạt mốc freeship, vừa trọn vẹn quà biếu" }
+      ]
+    },
+    {
+      "type": "commitment",
+      "name": "Cam kết",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Tiêu đề", "default": "Cam kết từ Phomifood" },
+        { "type": "richtext", "id": "body", "label": "Nội dung", "default": "<p>Hàng chính hãng, có nguồn gốc rõ ràng • Gửi từ kho EU, không cần chờ xách tay • Hỗ trợ tiếng Việt qua WhatsApp / Messenger</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PF — Câu chuyện Trà Sâm",
+      "blocks": [
+        { "type": "pain" },
+        { "type": "photo_band" },
+        { "type": "origin" },
+        { "type": "timeline" },
+        { "type": "trust" },
+        { "type": "howto" },
+        { "type": "gift_band" },
+        { "type": "lifestyle_grid" },
+        { "type": "combo" },
+        { "type": "commitment" }
+      ]
+    }
+  ]
+}
+{% endschema %}
