@@ -51,7 +51,7 @@
         "pf_chips": {
           "type": "custom_liquid",
           "settings": {
-            "custom_liquid": "<div class=\"pf-ts-chips\" style=\"display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px;\"><span style=\"background:#1C7A42;color:#fff;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:700;letter-spacing:.3px;\">PHOMIFOOD.EU</span><span style=\"background:#D4A017;color:#1F2A22;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:700;letter-spacing:.3px;\">DI SẢN 300 NĂM — NÚI THỔ HÀO</span></div>"
+            "custom_liquid": "<div class=\"pf-ts-chips\" style=\"display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px;\"><span style=\"background:#D4A017;color:#1F2A22;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:700;letter-spacing:.3px;\">DI SẢN 300 NĂM — NÚI THỔ HÀO</span></div>"
           }
         },
         "pf_intro": {
