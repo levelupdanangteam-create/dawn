@@ -380,7 +380,7 @@
     .pfts-tl__row { flex-direction:column; }
   }
   {{ section.settings.heading_font | font_face: font_display: 'swap' }}
-  #pfts-{{ section.id }} .pfts-h2, #pfts-{{ section.id }} .pfts-h3-serif { font-family: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }}; font-weight: {{ section.settings.heading_font.weight }}; letter-spacing: 0; }
+  #pfts-{{ section.id }} .pfts-h2, #pfts-{{ section.id }} .pfts-h3-serif { font-family: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }} !important; font-weight: {{ section.settings.heading_font.weight }}; letter-spacing: 0; }
   .pfts-h2 { font-size:27px; }
   .pfts-chip--cream { background:#F8F3E9; color:#B4182A; }
   .pfts-chip--solidred { background:#B4182A; color:#fff; }
