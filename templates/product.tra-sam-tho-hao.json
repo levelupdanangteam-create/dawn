@@ -176,7 +176,9 @@
         "b13": {
           "type": "benefits",
           "settings": {
-            "image": "shopify://shop_images/tra-sam-pha-goi.jpg"
+            "image": "shopify://shop_images/tra-sam-pha-goi.jpg",
+            "spec3_value": "Đạt",
+            "spec3_label": "Không aflatoxin, kim loại nặng, thuốc trừ sâu"
           }
         }
       },
