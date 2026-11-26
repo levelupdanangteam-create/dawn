@@ -433,7 +433,7 @@
   #pfts-{{ section.id }} .pfts-eyebrow-line { color:#A07A22; }
 
   /* Mở đầu: nền đỏ son, dấu ngoặc kép lớn */
-  #pfts-{{ section.id }} .pfts-pain { max-width:none; background:radial-gradient(ellipse at 50% 0%, #A31B2E 0%, var(--ts-red-d) 55%, #3A060D 100%); color:var(--ts-ivory); padding:96px 24px 104px; position:relative; }
+  #pfts-{{ section.id }} .pfts-pain { max-width:none; background:radial-gradient(ellipse at 50% 0%, rgba(163,27,46,.9) 0%, rgba(163,27,46,0) 60%), linear-gradient(180deg, #6A0C18 0%, #3A060D 100%); color:var(--ts-ivory); padding:96px 24px 104px; position:relative; }
   #pfts-{{ section.id }} .pfts-pain::before { content:"“"; display:block; font-family:Georgia,serif; font-size:120px; line-height:.6; color:var(--ts-gold); opacity:.55; margin-bottom:18px; }
   #pfts-{{ section.id }} .pfts-pain .pfts-h2 { color:#fff; max-width:820px; margin-left:auto; margin-right:auto; }
   #pfts-{{ section.id }} .pfts-pain .pfts-body { color:#F1DCCB; max-width:720px; margin:0 auto; font-size:17px; }
@@ -545,6 +545,23 @@
   /* Dawn ẩn div rỗng (div:empty) → bật lại lớp phủ ảnh */
   #pfts-{{ section.id }} .pfts-photoband__overlay, #pfts-{{ section.id }} .pfts-giftband__overlay { display:block !important; }
   #pfts-{{ section.id }} .pfts-photoband__text, #pfts-{{ section.id }} .pfts-giftband__text { text-shadow:0 2px 18px rgba(0,0,0,.45); }
+  /* Chuyển cảnh mềm giữa ảnh và nền (layer mask) */
+  #pfts-{{ section.id }} .pfts-photoband { background:linear-gradient(180deg, #3A060D 0 50%, var(--ts-ivory) 50% 100%); height:clamp(380px,52vw,640px); }
+  #pfts-{{ section.id }} .pfts-photoband__img, #pfts-{{ section.id }} .pfts-photoband__overlay,
+  #pfts-{{ section.id }} .pfts-giftband__img, #pfts-{{ section.id }} .pfts-giftband__overlay {
+    -webkit-mask-image:linear-gradient(180deg, transparent 0%, #000 22%, #000 78%, transparent 100%);
+            mask-image:linear-gradient(180deg, transparent 0%, #000 22%, #000 78%, transparent 100%); }
+  #pfts-{{ section.id }} .pfts-photoband__overlay { background:radial-gradient(ellipse 60% 45% at 50% 50%, rgba(26,16,13,.62) 0%, rgba(26,16,13,.25) 60%, rgba(26,16,13,0) 100%); }
+  #pfts-{{ section.id }} .pfts-photoband__text { top:50%; bottom:auto; transform:translate(-50%,-50%); }
+  #pfts-{{ section.id }} .pfts-giftband { background:var(--ts-ivory); height:clamp(500px,54vw,680px); }
+  @media (max-width:749px) {
+    #pfts-{{ section.id }} .pfts-photoband { height:420px; }
+    #pfts-{{ section.id }} .pfts-photoband__overlay { background:radial-gradient(ellipse 90% 40% at 50% 50%, rgba(26,16,13,.65) 0%, rgba(26,16,13,0) 100%); }
+    #pfts-{{ section.id }} .pfts-giftband { height:auto; min-height:600px; }
+    #pfts-{{ section.id }} .pfts-giftband__img, #pfts-{{ section.id }} .pfts-giftband__overlay {
+      -webkit-mask-image:linear-gradient(180deg, transparent 0%, #000 18%);
+              mask-image:linear-gradient(180deg, transparent 0%, #000 18%); }
+  }
   /* Hiện dần khi cuộn (chỉ khi JS chạy) */
   #pfts-{{ section.id }}.pfts--anim > * { opacity:0; transform:translateY(28px); transition:opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); }
   #pfts-{{ section.id }}.pfts--anim > .is-in { opacity:1; transform:none; }

@@ -95,12 +95,16 @@
       "blocks": {
         "b1": {
           "type": "pain",
-          "settings": {}
+          "settings": {
+            "heading": "Một chút quê nhà, giữa trời Âu",
+            "body": "<p>Cho mình một tách ấm sau ca làm dài, cho bố mẹ, người thân, đối tác một món quà Việt tử tế. Nhưng đồ Việt ở đây khó tìm, sợ mua phải hàng trôi nổi, mà nhờ xách tay thì chờ cả tháng chưa chắc có.</p>"
+          }
         },
         "b2": {
           "type": "photo_band",
           "settings": {
-            "image": "shopify://shop_images/IMG_5367.jpg"
+            "image": "shopify://shop_images/IMG_5367.jpg",
+            "heading": "Giờ đã có sẵn tại kho Praha"
           }
         },
         "b3": {
