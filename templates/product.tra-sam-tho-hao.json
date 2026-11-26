@@ -115,7 +115,8 @@
           "type": "timeline",
           "settings": {
             "y1_image": "shopify://shop_images/z7351875187527_5d0be43d008771fc55fd7f0f383e3ab6.jpg",
-            "y3_image": "shopify://shop_images/4_bbb76cb5-f491-4c38-bb85-0779872c0c9e.png"
+            "y3_image": "shopify://shop_images/4_bbb76cb5-f491-4c38-bb85-0779872c0c9e.png",
+            "y2_image": "shopify://shop_images/tra-sam-tu-duong-2016.jpg"
           }
         },
         "b5": {
@@ -125,7 +126,9 @@
         "b6": {
           "type": "howto",
           "settings": {
-            "step2_image": "shopify://shop_images/IMG_5367.jpg"
+            "step2_image": "shopify://shop_images/IMG_5367.jpg",
+            "step1_image": "shopify://shop_images/tra-sam-pha-goi.jpg",
+            "step3_image": "shopify://shop_images/tra-sam-ong-ba-thuong-thuc.jpg"
           }
         },
         "b7": {
