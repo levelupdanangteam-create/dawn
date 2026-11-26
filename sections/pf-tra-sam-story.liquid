@@ -559,8 +559,9 @@
     #pfts-{{ section.id }} .pfts-photoband__overlay { background:radial-gradient(ellipse 90% 40% at 50% 50%, rgba(26,16,13,.65) 0%, rgba(26,16,13,0) 100%); }
     #pfts-{{ section.id }} .pfts-giftband { height:auto; min-height:600px; }
     #pfts-{{ section.id }} .pfts-giftband__img, #pfts-{{ section.id }} .pfts-giftband__overlay {
-      -webkit-mask-image:linear-gradient(180deg, transparent 0%, #000 18%);
-              mask-image:linear-gradient(180deg, transparent 0%, #000 18%); }
+      -webkit-mask-image:linear-gradient(180deg, transparent 0%, #000 18%, #000 88%, transparent 100%);
+              mask-image:linear-gradient(180deg, transparent 0%, #000 18%, #000 88%, transparent 100%); }
+    #pfts-{{ section.id }} .pfts-giftband__text { bottom:72px; }
   }
   /* Hiện dần khi cuộn (chỉ khi JS chạy) */
   #pfts-{{ section.id }}.pfts--anim > * { opacity:0; transform:translateY(28px); transition:opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); }
