@@ -152,7 +152,9 @@
         },
         "b9": {
           "type": "combo",
-          "settings": {}
+          "settings": {
+            "subheading": "Đơn từ 139€ — freeship hoặc giảm 10% toàn đơn"
+          }
         },
         "b10": {
           "type": "commitment",
@@ -160,13 +162,21 @@
         },
         "b11": {
           "type": "product",
-          "settings": {}
+          "settings": {
+            "note": "Đơn từ 139€ — freeship hoặc giảm 10%"
+          }
         },
         "b12": {
           "type": "brand",
           "settings": {
             "messenger_url": "https://m.me/phomifoodstore",
             "whatsapp_url": "https://wa.me/84338139402"
+          }
+        },
+        "b13": {
+          "type": "benefits",
+          "settings": {
+            "image": "shopify://shop_images/tra-sam-pha-goi.jpg"
           }
         }
       },
@@ -176,6 +186,7 @@
         "b3",
         "b4",
         "b5",
+        "b13",
         "b11",
         "b6",
         "b7",
@@ -206,7 +217,7 @@
           "type": "question",
           "settings": {
             "question": "Có miễn phí vận chuyển không?",
-            "answer": "<p>Có. Đơn từ <strong>169€</strong> được <strong>Freeship</strong> hoặc <strong>giảm 10%</strong>. Thanh tiến độ trong giỏ hàng cho biết bạn còn thiếu bao nhiêu.</p>"
+            "answer": "<p>Có. Đơn từ <strong>139€</strong> được <strong>Freeship</strong> hoặc <strong>giảm 10%</strong>. Thanh tiến độ trong giỏ hàng cho biết bạn còn thiếu bao nhiêu.</p>"
           }
         },
         "q4": {
