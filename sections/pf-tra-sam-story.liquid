@@ -563,6 +563,11 @@
               mask-image:linear-gradient(180deg, transparent 0%, #000 18%, #000 88%, transparent 100%); }
     #pfts-{{ section.id }} .pfts-giftband__text { bottom:72px; }
   }
+  /* Chống rớt 1 chữ cuối xuống dòng: cân dòng tiêu đề, đoạn văn ngắt đẹp (áp dụng toàn trang này) */
+  body:has(#pfts-{{ section.id }}) :is(h1,h2,h3,h4,.h1,.h2,.h3,.product__title,summary,.accordion__title) { text-wrap:balance; }
+  body:has(#pfts-{{ section.id }}) :is(p,li,.rte) { text-wrap:pretty; }
+  #pfts-{{ section.id }} :is(.pfts-h2,.pfts-h3-serif,.pfts-tl__title,.pfts-trust__title,.pfts-howto__title,.pfts-combo__t,.pfts-commit__h,.pfts-chip,.pfts-eyebrow) { text-wrap:balance; }
+  #pfts-{{ section.id }} :is(.pfts-body,.pfts-tl__body,.pfts-trust__body,.pfts-howto__text,.pfts-combo__s,.pfts-combo__n,.pfts-combo__sub,.pfts-commit__b,.pfts-giftband__body,.pfts-brand__body,.pfts-brand__closing,.pfts-product__note,.pfts-life__caption) { text-wrap:pretty; }
   /* Hiện dần khi cuộn (chỉ khi JS chạy) */
   #pfts-{{ section.id }}.pfts--anim > * { opacity:0; transform:translateY(28px); transition:opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); }
   #pfts-{{ section.id }}.pfts--anim > .is-in { opacity:1; transform:none; }
@@ -610,6 +615,14 @@ if(window.Shopify&&Shopify.designMode)return;
 var els=r.children;r.classList.add('pfts--anim');
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('is-in');io.unobserve(e.target);}});},{rootMargin:'0px 0px -8% 0px'});
 Array.prototype.forEach.call(els,function(el){io.observe(el);});})();
+</script>
+
+<script>
+/* Dự phòng cho trình duyệt cũ: nối 2 chữ cuối bằng khoảng trắng không ngắt để không rớt 1 chữ */
+(function(){var r=document.getElementById('pfts-{{ section.id }}');if(!r)return;
+var sel='.pfts-h2,.pfts-h3-serif,.pfts-tl__title,.pfts-trust__title,.pfts-trust__body,.pfts-howto__title,.pfts-howto__text,.pfts-combo__t,.pfts-combo__s,.pfts-combo__n,.pfts-combo__sub,.pfts-commit__h,.pfts-commit__b,.pfts-body p,.pfts-tl__body p,.pfts-giftband__body p,.pfts-giftband__body,.pfts-brand__body,.pfts-brand__closing,.pfts-product__note,.pfts-life__caption,.pfts-chip';
+r.querySelectorAll(sel).forEach(function(el){var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),n,last=null;while(n=w.nextNode()){if(/\S/.test(n.nodeValue))last=n;}
+if(!last)return;var t=last.nodeValue.replace(/\s+$/,''),i=t.lastIndexOf(' ');if(i>0)last.nodeValue=t.slice(0,i)+'\u00A0'+t.slice(i+1)+last.nodeValue.slice(t.length);});})();
 </script>
 
 {% schema %}
